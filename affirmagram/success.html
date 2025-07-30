@@ -126,7 +126,7 @@
 
         emailjs.sendForm("service_9milish", "template_zbc5o5a", this)
           .then(function() {
-            window.top.location.replace("/affirmagram-sent?msg=" + encodedMessage);
+            window.top.location.replace("/affirmagram/sent?msg=" + encodedMessage);
           }, function(error) {
             alert('❌ Failed to send: ' + JSON.stringify(error));
             sendBtn.disabled = false;
