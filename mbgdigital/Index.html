@@ -33,7 +33,24 @@
       text-align: center;
       padding: 5px 20px;
     }
+.logo-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
 
+.logo-header img {
+  max-height: 36px;
+  width: auto;
+}
+
+.logo-header h1 {
+  font-size: 36px;
+  color: #FF6B00;
+  margin: 0;
+}
     .hero h1 {
       font-size: 36px;
       margin-top: 0px;
@@ -128,11 +145,11 @@
 
   <div class="container">
 
-    <div class="logo">
-      <img src="/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png" alt="MBG Digital Logo">
-    </div>
     <div class="hero">
-      <h1>MBG Digital</h1>
+      <div class="logo-header">
+  <img src="/mbgdigital/boomerang-logo.png" alt="Boomerang Logo">
+  <h1>MBG Digital</h1>
+</div>
       <p>Clean. Edgy. Unforgettable.<br>Logos, websites, and digital visuals that actually work.</p>
       <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Start Your Project</button>
     </div>
