@@ -73,15 +73,6 @@
   </style>
 </head>
 <body>
-<div id="raw-output" style="background:#ffffcc;padding:10px;border:1px solid #999;">
-  Raw URL Test...
-</div>
-
-<script>
-  const raw = window.location.href;
-  const out = document.getElementById("raw-output");
-  out.innerHTML = `<strong>URL:</strong> ${raw}`;
-</script>
 <section class="section">
   <h2>Your AffirmaGram™ Message is Below</h2>
   <div class="glow-box">
@@ -137,19 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
 <p style="font-size:12px; color:#888;">
 DEBUG: Raw query = <span id="rawQuery"></span> | msg = <span id="msgVal"></span>
 </p>
-
-<script>
-  const raw = window.location.search;
-  const params = new URLSearchParams(raw);
-  const msg = params.get("msg");
-
-  document.getElementById("rawQuery").textContent = raw;
-  document.getElementById("msgVal").textContent = msg;
-
-  console.log("RAW QUERY:", raw);
-  console.log("MSG VALUE:", msg);
-</script>
-
 <div style="text-align: center; font-size: 14px; color: #555; margin-top: 40px;">
   Made with ❤️ – Powered by <strong>MBG Digital</strong>
 </div>
