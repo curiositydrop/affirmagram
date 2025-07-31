@@ -73,6 +73,7 @@
   </style>
 </head>
 <body>
+
 <section class="section">
   <h2>Your AffirmaGram™ Message is Below</h2>
   <div class="glow-box">
@@ -124,26 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 </script>
-
-<p style="font-size:12px; color:#888;">
-DEBUG: Raw query = <span id="rawQuery"></span> | msg = <span id="msgVal"></span>
-</p>
 <div style="text-align: center; font-size: 14px; color: #555; margin-top: 40px;">
   Made with ❤️ – Powered by <strong>MBG Digital</strong>
 </div>
-
-<script>
-  const url = window.location.href;
-  const queryPart = url.includes('?') ? url.split('?')[1] : "";
-  const paramsFinal = new URLSearchParams(queryPart);
-  const msgFinal = paramsFinal.get("msg");
-
-  document.body.innerHTML += `<div style="background:#ffe;padding:10px;border-top:2px dashed #ccc;margin-top:20px">
-    <strong>TEST OUTPUT:</strong><br>
-    Full URL: ${url}<br>
-    Query Part: ${queryPart}<br>
-    Message Param: ${msgFinal}
-  </div>`;
-</script>
 </body>
 </html>
