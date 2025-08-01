@@ -7,10 +7,11 @@
   <style>
     body {
       margin: 0;
-      background-color: #000000;
-      color: #FFFFFF;
+      background-color: #000;
+      color: #fff;
       font-family: 'Segoe UI', sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
     .container {
@@ -19,54 +20,45 @@
       padding: 40px 20px;
     }
 
+    /* HERO SECTION */
     .hero {
       text-align: center;
       padding: 60px 20px 40px;
       background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-      box-shadow: 0 0 60px rgba(255, 107, 0, 0.2) inset;
+      box-shadow: 0 0 60px rgba(255, 107, 0, 0.25) inset;
+      position: relative;
     }
 
     .logo-title {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .boomerang-logo {
       height: 80px;
-      width: auto;
       transform: scaleX(-1);
-      margin-right: 0px;
-      display: inline-block;
-      vertical-align: middle;
       filter: drop-shadow(0 0 4px white) drop-shadow(0 0 12px #FF6B00);
     }
 
-    .hero h1 {
+    .logo-title h1 {
       font-size: 48px;
-      margin-top: 0px;
-      margin-bottom: 10px;
       color: #FF6B00;
       text-shadow: 0 0 6px rgba(255, 107, 0, 0.5);
     }
 
-    .logo-title h1 {
-      position: relative;
-      top: 6px;
-    }
-
     .hero p {
       font-size: 22px;
-      color: #FFFFFF;
-      margin-bottom: 10px;
+      margin: 12px auto 10px;
+      max-width: 90%;
     }
 
     .hero .mike-line {
       font-style: italic;
-      font-size: 17px;
-      color: #ffaa77;
-      margin-top: 10px;
+      font-size: 18px;
+      color: #00FFF7;
+      margin-top: 12px;
     }
 
     .cta-button {
@@ -90,10 +82,60 @@
       transform: scale(0.95);
     }
 
+    .headline {
+      font-size: 32px;
+      color: #FF6B00;
+      text-align: center;
+      margin-top: 80px;
+      margin-bottom: 0;
+    }
+
+    .status-line {
+      text-align: center;
+      color: #00FFF7;
+      font-size: 16px;
+      font-style: italic;
+      margin: 10px 0 40px;
+    }
+
+    /* ICON SECTION */
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .feature-icon {
+      background: #111;
+      border: 1px solid #333;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      width: 140px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 247, 0.1);
+    }
+
+    .feature-icon:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 14px rgba(0, 255, 247, 0.3);
+    }
+
+    .feature-icon span {
+      font-size: 36px;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .feature-icon p {
+      font-size: 16px;
+    }
+
     .section-title {
       color: #FF6B00;
-      font-size: 32px;
-      margin-top: 90px;
+      font-size: 28px;
       margin-bottom: 10px;
       text-align: center;
     }
@@ -196,6 +238,28 @@
       <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Start Your Project</button>
     </div>
 
+    <h2 class="headline">I don’t just build websites. I build curiosity magnets.</h2>
+    <p class="status-line">🔥 3 builds in progress. Only 2 open slots left this month.</p>
+
+    <div class="features">
+      <div class="feature-icon">
+        <span>⚡</span>
+        <p>Fast as hell</p>
+      </div>
+      <div class="feature-icon">
+        <span>🎯</span>
+        <p>On-brand & bold</p>
+      </div>
+      <div class="feature-icon">
+        <span>🚀</span>
+        <p>Launch-ready</p>
+      </div>
+      <div class="feature-icon">
+        <span>🤯</span>
+        <p>Custom AF</p>
+      </div>
+    </div>
+
     <div>
       <h2 class="section-title">What I Do</h2>
       <div class="services">
@@ -224,13 +288,6 @@
           <p>Logo, site, brand sheet, and profile design — wrapped up clean and ready to deploy.</p>
         </div>
       </div>
-    </div>
-
-    <div class="hero">
-      <h2 class="section-title">Why MBG?</h2>
-      <p>I’m not an agency. I’m not outsourcing to someone cheaper.  
-      You get me. My hands, my eyes, my experience.  
-      And everything I build? It’s designed to keep your customers coming back — just like a boomerang.</p>
     </div>
 
     <div class="testimonial">
