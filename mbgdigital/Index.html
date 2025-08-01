@@ -7,15 +7,14 @@
   <style>
     body {
       margin: 0;
-      background-color: #000;
-      color: #fff;
+      background: #0d0d0d;
       font-family: 'Segoe UI', sans-serif;
-      line-height: 1.6;
+      color: #f2f2f2;
       overflow-x: hidden;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 40px 20px;
     }
@@ -23,121 +22,77 @@
     /* HERO SECTION */
     .hero {
       text-align: center;
-      padding: 60px 20px 40px;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-      box-shadow: 0 0 60px rgba(255, 107, 0, 0.25) inset;
-      position: relative;
+      padding: 100px 20px 80px;
+      background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+      color: #f2f2f2;
+      box-shadow: inset 0 0 60px rgba(255, 215, 0, 0.1);
     }
 
-    .logo-title {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .boomerang-logo {
-      height: 80px;
-      transform: scaleX(-1);
-      filter: drop-shadow(0 0 4px white) drop-shadow(0 0 12px #FF6B00);
-    }
-
-    .logo-title h1 {
-      font-size: 48px;
-      color: #FF6B00;
-      text-shadow: 0 0 6px rgba(255, 107, 0, 0.5);
+    .hero h1 {
+      font-size: 52px;
+      color: #00f0ff;
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
     }
 
     .hero p {
       font-size: 22px;
-      margin: 12px auto 10px;
-      max-width: 90%;
-    }
-
-    .hero .mike-line {
-      font-style: italic;
-      font-size: 18px;
-      color: #00FFF7;
-      margin-top: 12px;
+      color: #bbb;
+      margin-top: 10px;
     }
 
     .cta-button {
-      background-color: #FF6B00;
-      color: #000000;
+      background: #ffd700;
+      color: #000;
       padding: 16px 36px;
-      border: none;
       font-size: 20px;
+      border: none;
+      border-radius: 6px;
       margin-top: 30px;
       cursor: pointer;
-      border-radius: 6px;
-      transition: transform 0.2s ease, background-color 0.3s ease;
+      transition: transform 0.2s ease, background 0.3s ease;
     }
 
     .cta-button:hover {
-      background-color: #ffa64d;
-      transform: scale(1.08);
+      background: #ffcc00;
+      transform: scale(1.05);
     }
 
-    .cta-button:active {
-      transform: scale(0.95);
+    /* TYPING TERMINAL SECTION */
+    .terminal-section {
+      background: #000;
+      padding: 60px 20px;
+      color: #00f0ff;
+      font-family: monospace;
     }
 
-    .headline {
-      font-size: 32px;
-      color: #FF6B00;
+    .terminal-section h2 {
       text-align: center;
-      margin-top: 80px;
-      margin-bottom: 0;
-    }
-
-    .status-line {
-      text-align: center;
-      color: #00FFF7;
-      font-size: 16px;
-      font-style: italic;
-      margin: 10px 0 40px;
-    }
-
-    /* ICON SECTION */
-    .features {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 60px;
-      flex-wrap: wrap;
-    }
-
-    .feature-icon {
-      background: #111;
-      border: 1px solid #333;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      width: 140px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 0 10px rgba(0, 255, 247, 0.1);
-    }
-
-    .feature-icon:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 0 14px rgba(0, 255, 247, 0.3);
-    }
-
-    .feature-icon span {
-      font-size: 36px;
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .feature-icon p {
-      font-size: 16px;
-    }
-
-    .section-title {
-      color: #FF6B00;
       font-size: 28px;
-      margin-bottom: 10px;
+      color: #ffd700;
+      margin-bottom: 30px;
+    }
+
+    .terminal-box {
+      background: #0d0d0d;
+      padding: 30px;
+      border-radius: 8px;
+      border: 1px solid #222;
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: 300px;
+      white-space: pre-wrap;
+      overflow: hidden;
+      font-size: 16px;
+    }
+
+    /* SERVICES SECTION */
+    .section-title {
       text-align: center;
+      font-size: 32px;
+      color: #ffd700;
+      margin-top: 100px;
+      margin-bottom: 20px;
     }
 
     .services {
@@ -148,165 +103,131 @@
     }
 
     .service-box {
-      background-color: #1c1c1c;
+      background: #1a1a1a;
       padding: 24px;
-      border-radius: 8px;
-      border-left: 4px solid #FF6B00;
-      box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
-      transition: transform 0.2s ease;
+      border-radius: 10px;
+      border-left: 5px solid #00f0ff;
+      box-shadow: 0 0 14px rgba(0, 240, 255, 0.15);
+      transition: all 0.3s ease;
     }
 
     .service-box:hover {
-      transform: translateY(-6px);
+      transform: translateY(-5px);
+      box-shadow: 0 0 18px rgba(0, 240, 255, 0.3);
     }
 
     .service-box h3 {
-      color: #FFFFFF;
-      margin-bottom: 10px;
-      font-size: 20px;
+      margin-top: 0;
+      color: #f2f2f2;
     }
 
-    .testimonial {
-      background-color: #111;
-      border-left: 4px solid #FF6B00;
-      padding: 20px;
-      margin: 60px 0 40px;
-      font-style: italic;
-      box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
-    }
-
-    .contact-section {
-      background-color: #1a1a1a;
-      padding: 50px 20px;
+    /* CONTACT */
+    .contact {
       text-align: center;
-      border-radius: 8px;
       margin-top: 80px;
     }
 
-    .contact-section h2 {
-      color: #FF6B00;
-      font-size: 30px;
-      margin-bottom: 20px;
+    .contact h2 {
+      color: #00f0ff;
+      font-size: 28px;
+      margin-bottom: 10px;
     }
 
-    .contact-section p {
+    .contact p {
       font-size: 18px;
-      margin-bottom: 30px;
+      color: #aaa;
     }
 
     .footer {
       text-align: center;
-      padding: 50px 20px;
+      padding: 40px 20px;
+      color: #777;
       font-size: 14px;
-      color: #888;
-    }
-
-    .footer span {
-      display: block;
-      margin-top: 10px;
-      font-style: italic;
-      color: #aaa;
-    }
-
-    a {
-      color: #FF6B00;
-      text-decoration: none;
-    }
-
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 36px;
-      }
-      .cta-button {
-        font-size: 18px;
-        padding: 14px 28px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-
-    <div class="hero">
-      <div class="logo-title">
-        <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" alt="Boomerang Logo" class="boomerang-logo">
-        <h1>MBG Digital</h1>
-      </div>
-      <p>Clean. Edgy. Unforgettable.<br>Logos, websites, and digital visuals that actually work.</p>
-      <p class="mike-line">Let’s turn that ‘just an idea’ into something that actually works.</p>
-      <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Start Your Project</button>
-    </div>
-
-    <h2 class="headline">I don’t just build websites. I build curiosity magnets.</h2>
-    <p class="status-line">🔥 3 builds in progress. Only 2 open slots left this month.</p>
-
-    <div class="features">
-      <div class="feature-icon">
-        <span>⚡</span>
-        <p>Fast as hell</p>
-      </div>
-      <div class="feature-icon">
-        <span>🎯</span>
-        <p>On-brand & bold</p>
-      </div>
-      <div class="feature-icon">
-        <span>🚀</span>
-        <p>Launch-ready</p>
-      </div>
-      <div class="feature-icon">
-        <span>🤯</span>
-        <p>Custom AF</p>
-      </div>
-    </div>
-
-    <div>
-      <h2 class="section-title">What I Do</h2>
-      <div class="services">
-        <div class="service-box">
-          <h3>Logo Design</h3>
-          <p>Custom logos built from scratch — no templates, no fluff. Just identity that sticks.</p>
-        </div>
-        <div class="service-box">
-          <h3>Website Design</h3>
-          <p>One-pagers, multi-page builds, full custom sites. Clean, fast, and built for today.</p>
-        </div>
-        <div class="service-box">
-          <h3>Brand Starter Kit</h3>
-          <p>Logo, colors, fonts, tone, digital letterhead — everything you need to launch right.</p>
-        </div>
-        <div class="service-box">
-          <h3>Product & Launch Pages</h3>
-          <p>From mockups to launch graphics to landing pages that convert — let’s sell your thing.</p>
-        </div>
-        <div class="service-box">
-          <h3>Social & Promo Graphics</h3>
-          <p>Reel covers, banners, quote cards — everything for social that makes people stop scrolling.</p>
-        </div>
-        <div class="service-box">
-          <h3>The Digital One-Punch™</h3>
-          <p>Logo, site, brand sheet, and profile design — wrapped up clean and ready to deploy.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial">
-      <p>"MBG made my brand look like a million bucks — without spending it." – J.M.</p>
-    </div>
-
-    <div class="contact-section">
-      <h2>Let’s Work Together</h2>
-      <p>Got a project? Reach out directly at <a href="mailto:info@curiositydrop.com">info@mbgdigital.com</a><br>or call/text 207.468.5509</p>
-      <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Send an Email</button>
-    </div>
-
-    <div class="footer">
-      &copy; 2025 MBG Digital · Mike Bergeron · 207.468.5509 · info@curiositydrop.com<br>
-      <em>PS: If you're curious how I built this site — I built it myself. And I can build yours too.</em>
-      <span>Proudly built with caffeine, chaos, and curiosity.</span>
-    </div>
-
+  <div class="hero">
+    <h1>Luxury Branding. Tech Precision. MBG Results.</h1>
+    <p>Custom websites and visuals that captivate, convert, and command attention.</p>
+    <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Start Your Build</button>
   </div>
+
+  <div class="terminal-section">
+    <h2>Our Next Build Could Be Yours...</h2>
+    <div class="terminal-box" id="terminalBox">
+      ▍
+    </div>
+  </div>
+
+  <div class="container">
+    <h2 class="section-title">What I Build</h2>
+    <div class="services">
+      <div class="service-box">
+        <h3>Logo Design</h3>
+        <p>Strategic identity systems that turn heads and make brands memorable.</p>
+      </div>
+      <div class="service-box">
+        <h3>Website Overhauls</h3>
+        <p>Fast, clean, mobile-first designs tailored to your brand.</p>
+      </div>
+      <div class="service-box">
+        <h3>One-Pager Launch Kits</h3>
+        <p>Landing pages built to sell, not just sit there.</p>
+      </div>
+      <div class="service-box">
+        <h3>Promo Graphics</h3>
+        <p>Social media visuals, reel covers, and launch banners that stop scrolling.</p>
+      </div>
+      <div class="service-box">
+        <h3>The Digital One-Punch™</h3>
+        <p>Your logo, site, brand assets & launch kit — ready in one clean shot.</p>
+      </div>
+    </div>
+
+    <div class="contact">
+      <h2>Let’s Talk</h2>
+      <p>Email me at <a href="mailto:info@curiositydrop.com">info@curiositydrop.com</a> or text 207.468.5509</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 MBG Digital · Built by Mike Bergeron · All Rights Reimagined<br>
+    <em>Want this level of awesome? Let’s build something bold.</em>
+  </div>
+
+  <script>
+    const lines = [
+      "▍Initializing MBG Build Engine...",
+      "▍Connecting brand schema...",
+      "▍Writing index.html...",
+      "▍<html>",
+      "▍  <head>",
+      "▍    <title>Your Business Reborn</title>",
+      "▍  </head>",
+      "▍  <body>",
+      "▍    <h1>This ain't no template.</h1>",
+      "▍    <p>This is a custom-built magnet.</p>",
+      "▍  </body>",
+      "▍</html>",
+      "▍Deploying curiosity layer...",
+      "▍Build complete. 🚀 Sending client traffic ➤"
+    ];
+
+    let index = 0;
+    const terminal = document.getElementById("terminalBox");
+
+    function typeLine() {
+      if (index < lines.length) {
+        terminal.innerHTML += "\n" + lines[index];
+        index++;
+        setTimeout(typeLine, 400);
+      }
+    }
+
+    window.onload = typeLine;
+  </script>
 
 </body>
 </html>
