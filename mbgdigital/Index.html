@@ -284,7 +284,7 @@
       emailjs.sendForm("service_ud75mun", "template_zbc5o5a", this)
         .then(function () {
           alert("✅ Message sent successfully!");
-          document.getElementById("contact-form").reset();
+          document.getElementById("contact-form").reset(); // ✅ Now safely after alert
         }, function (error) {
           alert("❌ Failed to send message:\n" + JSON.stringify(error));
         });
