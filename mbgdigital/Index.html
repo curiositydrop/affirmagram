@@ -274,29 +274,46 @@
     }
   </script>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script><script>
   (function () {
     emailjs.init("9hiC18Xybyo97thaL");
 
     document.getElementById("contact-form").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      emailjs.sendForm("service_ud75mun", "template_gd8nsqe", this)
+      const form = this;
+
+      emailjs.sendForm("service_ud75mun", "template_gd8nsqe", form)
         .then(function () {
-          // Confetti
+          // CONFETTI
           confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
 
-          // Toast
+          // TOAST
           const toast = document.createElement("div");
           toast.className = "toast";
           toast.innerText = "Boom. Message sent. You're officially on our radar.";
+          Object.assign(toast.style, {
+            position: "fixed",
+            bottom: "30px",
+            right: "30px",
+            backgroundColor: "black",
+            color: "#f0b132",
+            padding: "15px 20px",
+            borderRadius: "8px",
+            fontWeight: "bold",
+            fontFamily: "monospace",
+            boxShadow: "0 0 10px #f0b132",
+            zIndex: "9999"
+          });
           document.body.appendChild(toast);
-          setTimeout(() => toast.remove(), 4000);
 
-          // Thank You
-          document.getElementById("contact-form").style.display = "none";
-          document.getElementById("thank-you").style.display = "block";
+          // RESET + TRANSITION AFTER SHORT DELAY
+          setTimeout(() => {
+            toast.remove();
+            form.reset();
+            form.style.display = "none";
+            document.getElementById("thank-you").style.display = "block";
+          }, 2500); // 2.5 seconds to allow everything to finish
         }, function (error) {
           alert("❌ Failed to send message:\n" + JSON.stringify(error));
         });
