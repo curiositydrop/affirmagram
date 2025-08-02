@@ -7,249 +7,264 @@
   <style>
     body {
       margin: 0;
-      background-color: #000000;
-      color: #FFFFFF;
       font-family: 'Segoe UI', sans-serif;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      background: #0d0d0d;
+      color: #f2f2f2;
     }
 
     .hero {
-      text-align: center;
-      padding: 60px 20px 40px;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
-      box-shadow: 0 0 60px rgba(255, 107, 0, 0.2) inset;
-    }
-
-    .logo-title {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .boomerang-logo {
-      height: 80px;
-      width: auto;
-      transform: scaleX(-1);
-      margin-right: 0px;
-      display: inline-block;
-      vertical-align: middle;
-      filter: drop-shadow(0 0 4px white) drop-shadow(0 0 12px #FF6B00);
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      margin-top: 0px;
-      margin-bottom: 10px;
-      color: #FF6B00;
-      text-shadow: 0 0 6px rgba(255, 107, 0, 0.5);
-    }
-
-    .logo-title h1 {
       position: relative;
-      top: 6px;
+      text-align: center;
+      padding: 100px 20px 60px;
+      overflow: hidden;
+    }
+
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      z-index: -1;
+      object-fit: cover;
+      opacity: 0.25;
+    }
+
+    .typed-line {
+      font-size: 2.6rem;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+    }
+
+    .line1 {
+      display: inline-block;
+      animation: typing1 2.2s steps(12, end) forwards;
+    }
+
+    .line2 {
+      display: inline-block;
+      animation: typing2 2.2s steps(14, end) forwards, hide-cursor 0.1s 4.6s forwards;
+      animation-delay: 2.4s;
+      animation-fill-mode: forwards;
+      border-right: 2px solid #fff;
+      margin-top: 10px;
+    }
+
+    @keyframes typing1 {
+      from { width: 0 }
+      to { width: 12ch }
+    }
+
+    @keyframes typing2 {
+      from { width: 0 }
+      to { width: 14ch }
+    }
+
+    @keyframes hide-cursor {
+      to { border-right: none; }
     }
 
     .hero p {
-      font-size: 22px;
-      color: #FFFFFF;
-      margin-bottom: 10px;
+      font-size: 1.5rem;
+      max-width: 700px;
+      margin: 20px auto 0;
+      line-height: 1.6;
     }
 
-    .hero .mike-line {
-      font-style: italic;
-      font-size: 17px;
-      color: #ffaa77;
-      margin-top: 10px;
-    }
-
-    .cta-button {
-      background-color: #FF6B00;
-      color: #000000;
-      padding: 16px 36px;
-      border: none;
-      font-size: 20px;
-      margin-top: 30px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: transform 0.2s ease, background-color 0.3s ease;
-    }
-
-    .cta-button:hover {
-      background-color: #ffa64d;
-      transform: scale(1.08);
-    }
-
-    .cta-button:active {
-      transform: scale(0.95);
-    }
-
-    .section-title {
-      color: #FF6B00;
-      font-size: 32px;
-      margin-top: 90px;
-      margin-bottom: 10px;
-      text-align: center;
-    }
-
-    .services {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-    }
-
-    .service-box {
-      background-color: #1c1c1c;
-      padding: 24px;
-      border-radius: 8px;
-      border-left: 4px solid #FF6B00;
-      box-shadow: 0 0 16px rgba(255, 107, 0, 0.3);
-      transition: transform 0.2s ease;
-    }
-
-    .service-box:hover {
-      transform: translateY(-6px);
-    }
-
-    .service-box h3 {
-      color: #FFFFFF;
-      margin-bottom: 10px;
-      font-size: 20px;
-    }
-
-    .testimonial {
-      background-color: #111;
-      border-left: 4px solid #FF6B00;
+    .logo-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
       padding: 20px;
-      margin: 60px 0 40px;
-      font-style: italic;
-      box-shadow: 0 0 12px rgba(255, 107, 0, 0.2);
+      background-color: #000;
+      border-bottom: 2px solid #ff6f00;
     }
 
-    .contact-section {
-      background-color: #1a1a1a;
-      padding: 50px 20px;
+    .logo-bar img {
+      height: 40px;
+    }
+
+    .logo-bar span {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    .section {
+      background-color: #f2f2f2;
+      color: #000;
+      padding: 60px 20px;
       text-align: center;
-      border-radius: 8px;
-      margin-top: 80px;
     }
 
-    .contact-section h2 {
-      color: #FF6B00;
-      font-size: 30px;
+    .section h2 {
+      font-size: 2rem;
       margin-bottom: 20px;
     }
 
-    .contact-section p {
-      font-size: 18px;
-      margin-bottom: 30px;
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .service-box {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 20px;
+      width: 280px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .service-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .service-description {
+      display: none;
+      margin-top: 15px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      color: #000;
     }
 
     .footer {
-      text-align: center;
-      padding: 50px 20px;
-      font-size: 14px;
+      background-color: #1c1c1c;
       color: #888;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
     }
 
-    .footer span {
-      display: block;
-      margin-top: 10px;
-      font-style: italic;
-      color: #aaa;
-    }
-
-    a {
-      color: #FF6B00;
+    .cta {
+      margin-top: 40px;
+      display: inline-block;
+      background: #ff6f00;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
       text-decoration: none;
+      transition: background 0.3s ease;
     }
 
-    @media (max-width: 600px) {
-      .hero h1 {
-        font-size: 36px;
-      }
-      .cta-button {
-        font-size: 18px;
-        padding: 14px 28px;
-      }
+    .cta:hover {
+      background: #ffa733;
+    }
+
+    .sticky-cta {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff6f00;
+      color: #000;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-decoration: none;
+      z-index: 999;
+    }
+
+    .contact {
+      background: #fff;
+      color: #000;
+      padding: 50px 20px;
+      text-align: center;
+    }
+
+    .contact input, .contact textarea {
+      width: 100%;
+      max-width: 500px;
+      padding: 10px;
+      margin: 10px auto;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .contact button {
+      background: #ff6f00;
+      color: #000;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-
-    <div class="hero">
-      <div class="logo-title">
-        <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" alt="Boomerang Logo" class="boomerang-logo">
-        <h1>MBG Digital</h1>
-      </div>
-      <p>Clean. Edgy. Unforgettable.<br>Logos, websites, and digital visuals that actually work.</p>
-      <p class="mike-line">Let’s turn that ‘just an idea’ into something that actually works.</p>
-      <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Start Your Project</button>
-    </div>
-
-    <div>
-      <h2 class="section-title">What I Do</h2>
-      <div class="services">
-        <div class="service-box">
-          <h3>Logo Design</h3>
-          <p>Custom logos built from scratch — no templates, no fluff. Just identity that sticks.</p>
-        </div>
-        <div class="service-box">
-          <h3>Website Design</h3>
-          <p>One-pagers, multi-page builds, full custom sites. Clean, fast, and built for today.</p>
-        </div>
-        <div class="service-box">
-          <h3>Brand Starter Kit</h3>
-          <p>Logo, colors, fonts, tone, digital letterhead — everything you need to launch right.</p>
-        </div>
-        <div class="service-box">
-          <h3>Product & Launch Pages</h3>
-          <p>From mockups to launch graphics to landing pages that convert — let’s sell your thing.</p>
-        </div>
-        <div class="service-box">
-          <h3>Social & Promo Graphics</h3>
-          <p>Reel covers, banners, quote cards — everything for social that makes people stop scrolling.</p>
-        </div>
-        <div class="service-box">
-          <h3>The Digital One-Punch™</h3>
-          <p>Logo, site, brand sheet, and profile design — wrapped up clean and ready to deploy.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero">
-      <h2 class="section-title">Why MBG?</h2>
-      <p>I’m not an agency. I’m not outsourcing to someone cheaper.  
-      You get me. My hands, my eyes, my experience.  
-      And everything I build? It’s designed to keep your customers coming back — just like a boomerang.</p>
-    </div>
-
-    <div class="testimonial">
-      <p>"MBG made my brand look like a million bucks — without spending it." – J.M.</p>
-    </div>
-
-    <div class="contact-section">
-      <h2>Let’s Work Together</h2>
-      <p>Got a project? Reach out directly at <a href="mailto:info@curiositydrop.com">info@mbgdigital.com</a><br>or call/text 207.468.5509</p>
-      <button class="cta-button" onclick="window.location='mailto:info@curiositydrop.com'">Send an Email</button>
-    </div>
-
-    <div class="footer">
-      &copy; 2025 MBG Digital · Mike Bergeron · 207.468.5509 · info@curiositydrop.com<br>
-      <em>PS: If you're curious how I built this site — I built it myself. And I can build yours too.</em>
-      <span>Proudly built with caffeine, chaos, and curiosity.</span>
-    </div>
-
+  <div class="logo-bar">
+    <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" alt="Boomerang Logo" />
+    <span>MBG Digital</span>
   </div>
+
+  <div class="hero">
+    <video autoplay muted loop playsinline>
+      <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4" />
+    </video>
+    <div class="typed-line line1">Clean. Edgy.</div>
+    <div class="typed-line line2">Unforgettable.</div>
+    <p>Logos, websites, and digital visuals that actually work.</p>
+    <a href="#contact" class="cta">Let’s Talk</a>
+  </div>
+
+  <div class="section">
+    <h2>What I Do</h2>
+    <div class="services">
+      <div class="service-box" onclick="toggleService(0)">Logo Design</div>
+      <div class="service-description" id="desc0">We create bold, professional logos tailored to your brand’s soul.</div>
+
+      <div class="service-box" onclick="toggleService(1)">Website Development</div>
+      <div class="service-description" id="desc1">Custom-coded, mobile-ready sites that don’t just look good — they convert.</div>
+
+      <div class="service-box" onclick="toggleService(2)">Brand Identity</div>
+      <div class="service-description" id="desc2">Logos, colors, fonts, voice — we craft the full personality of your brand.</div>
+
+      <div class="service-box" onclick="toggleService(3)">Digital Marketing</div>
+      <div class="service-description" id="desc3">We build curiosity-driven campaigns that make people click, remember, and buy.</div>
+
+      <div class="service-box" onclick="toggleService(4)">AI Integration</div>
+      <div class="service-description" id="desc4">We bring AI to your business — from chatbots to automations that make you money.</div>
+    </div>
+  </div>
+
+  <div class="contact" id="contact">
+    <h2>Let’s Work Together</h2>
+    <form>
+      <input type="text" placeholder="Your Name" required /><br />
+      <input type="email" placeholder="Your Email" required /><br />
+      <textarea rows="5" placeholder="Tell me about your project..." required></textarea><br />
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <a href="#contact" class="sticky-cta">Let’s Talk</a>
+
+  <div class="footer">
+    &copy; 2025 MBG Digital. All rights reserved.
+  </div>
+
+  <script>
+    function toggleService(index) {
+      const el = document.getElementById("desc" + index);
+      el.style.display = el.style.display === "block" ? "none" : "block";
+    }
+  </script>
 
 </body>
 </html>
