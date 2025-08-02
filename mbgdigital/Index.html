@@ -268,11 +268,20 @@
   </div>
 
   <script>
-    function toggleService(index) {
-      const el = document.getElementById("desc" + index);
-      el.style.display = el.style.display === "block" ? "none" : "block";
-    }
-  </script>
+  function toggleService(index) {
+    const allDescriptions = document.querySelectorAll(".service-description");
+
+    allDescriptions.forEach((desc, i) => {
+      if (i === index) {
+        // Toggle current one
+        desc.style.display = desc.style.display === "block" ? "none" : "block";
+      } else {
+        // Hide all others
+        desc.style.display = "none";
+      }
+    });
+  }
+</script>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script><script>
   (function () {
