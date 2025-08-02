@@ -274,22 +274,50 @@
     }
   </script>
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
   (function () {
-    emailjs.init("9hiC18Xybyo97thaL"); // Your public key
+    emailjs.init("9hiC18Xybyo97thaL");
 
     document.getElementById("contact-form").addEventListener("submit", function (e) {
       e.preventDefault();
 
-      emailjs.sendForm("service_ud75mun", "template_gd8nsqe", this)
+      emailjs.sendForm("service_ud75mun", "template_zbc5o5a", this)
         .then(function () {
-          alert("✅ Message sent successfully!");
-          document.getElementById("contact-form").reset();
+          // Confetti
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+          // Toast
+          const toast = document.createElement("div");
+          toast.className = "toast";
+          toast.innerText = "Boom. Message sent. You're officially on our radar.";
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 4000);
+
+          // Thank You
+          document.getElementById("contact-form").style.display = "none";
+          document.getElementById("thank-you").style.display = "block";
         }, function (error) {
           alert("❌ Failed to send message:\n" + JSON.stringify(error));
         });
     });
   })();
 </script>
+  <div id="drop-toast" style="
+  display: none;
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: black;
+  color: #f0b132;
+  padding: 15px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-family: monospace;
+  box-shadow: 0 0 10px #f0b132;
+  z-index: 9999;
+">🔥 Boom. Message sent. You're officially on our radar.</div>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 </html>
