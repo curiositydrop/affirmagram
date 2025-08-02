@@ -253,12 +253,12 @@
 
   <div class="contact" id="contact">
     <h2>Let’s Work Together</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required /><br />
-      <input type="email" placeholder="Your Email" required /><br />
-      <textarea rows="5" placeholder="Tell me about your project..." required></textarea><br />
-      <button type="submit">Send Message</button>
-    </form>
+    <form id="contact-form">
+  <input type="text" name="name" placeholder="Your Name" required /><br />
+  <input type="email" name="email" placeholder="Your Email" required /><br />
+  <textarea name="message" rows="5" placeholder="Tell me about your project..." required></textarea><br />
+  <button type="submit">Send Message</button>
+</form>
   </div>
 
   <a href="#contact" class="sticky-cta">Let’s Talk</a>
@@ -273,6 +273,22 @@
       el.style.display = el.style.display === "block" ? "none" : "block";
     }
   </script>
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function () {
+    emailjs.init("9hiC18Xybyo97thaL"); // Your public key
 
+    document.getElementById("contact-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      emailjs.sendForm("service_qcqx7wi", "template_gd8nsqe", this)
+        .then(function () {
+          alert("✅ Message sent successfully!");
+        }, function (error) {
+          alert("❌ Failed to send message:\n" + JSON.stringify(error));
+        });
+    });
+  })();
+</script>
 </body>
 </html>
