@@ -6,57 +6,60 @@
   <title>Paradise Is Cancelled</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
       font-family: 'UnifrakturCook', cursive;
       background: black;
-      overflow: hidden;
-      color: white;
+      color: #f2f2f2;
+      overflow-x: hidden;
     }
 
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      position: relative;
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      z-index: -2;
     }
 
-    .glitch-wrapper {
-      position: relative;
-      display: inline-block;
-      max-width: 600px;
-      width: 90%;
-    }
-
-    .glitch-logo {
-      width: 100%;
-      display: block;
-      z-index: 1;
-      position: relative;
-    }
-
-    .static-noise {
-      position: absolute;
+    .overlay {
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://i.imgur.com/yaD5ZoV.gif'); /* ✅ Clean static */
-      background-size: cover;
-      opacity: 0.25;
-      pointer-events: none;
-      z-index: 2;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: -1;
     }
 
-    h1 {
-      margin-top: 30px;
-      font-size: 2.8rem;
-      text-shadow: 2px 2px red;
-      letter-spacing: 2px;
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .hero img {
+      max-width: 600px;
+      width: 90%;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      text-shadow: 2px 2px #990000;
+      letter-spacing: 3px;
     }
 
     .btn {
@@ -75,18 +78,26 @@
     }
 
     @media screen and (max-width: 600px) {
-      h1 { font-size: 2rem; }
+      .hero h1 {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
 <body>
+
+  <video autoplay loop muted playsinline class="video-bg">
+    <source src="background.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="overlay"></div>
+
   <div class="hero">
-    <div class="glitch-wrapper">
-      <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo" class="glitch-logo">
-      <div class="static-noise"></div>
-    </div>
+    <img src="band-logo.png" alt="Paradise Is Cancelled Logo">
     <h1>Welcome to the End</h1>
     <button class="btn" onclick="window.location.href='#'">Enter the Chaos</button>
   </div>
+
 </body>
 </html>
