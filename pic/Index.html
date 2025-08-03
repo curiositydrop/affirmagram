@@ -6,20 +6,16 @@
   <title>Paradise Is Cancelled</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
-    * {
+    html, body {
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
-      height: 100%;
       font-family: 'UnifrakturCook', cursive;
       background: black;
-      color: #f2f2f2;
-      overflow-x: hidden;
+      overflow: hidden;
+      color: white;
     }
 
+    /* Background Video */
     .video-bg {
       position: fixed;
       top: 0;
@@ -27,9 +23,10 @@
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      z-index: -2;
+      z-index: -3;
     }
 
+    /* Dark overlay to make text/logo stand out */
     .overlay {
       position: fixed;
       top: 0;
@@ -37,29 +34,67 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.7);
-      z-index: -1;
+      z-index: -2;
     }
 
+    /* Lightning flash animation */
+    .lightning {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      z-index: -1;
+      animation: flash 10s infinite;
+    }
+
+    @keyframes flash {
+      0%, 97%, 100% { opacity: 0; }
+      98% { opacity: 0.8; }
+      99% { opacity: 0; }
+    }
+
+    /* Main hero content */
     .hero {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
       text-align: center;
       padding: 20px;
+      z-index: 1;
+      position: relative;
     }
 
-    .hero img {
-      max-width: 600px;
+    .glitch-logo {
       width: 90%;
-      margin-bottom: 30px;
+      max-width: 600px;
+      filter: drop-shadow(-2px 0 red) drop-shadow(2px 0 cyan);
+      animation: glitch 2.5s infinite;
     }
 
-    .hero h1 {
-      font-size: 3rem;
-      text-shadow: 2px 2px #990000;
-      letter-spacing: 3px;
+    @keyframes glitch {
+      0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
+      10%  { clip-path: inset(10% 0 85% 0); transform: translate(-5px, -5px); }
+      20%  { clip-path: inset(30% 0 40% 0); transform: translate(5px, 5px); }
+      30%  { clip-path: inset(50% 0 20% 0); transform: translate(-3px, 3px); }
+      40%  { clip-path: inset(70% 0 10% 0); transform: translate(3px, -3px); }
+      50%  { clip-path: inset(0 0 0 0); transform: translate(0); }
+      60%  { clip-path: inset(5% 0 80% 0); transform: translate(6px, -6px); }
+      70%  { clip-path: inset(25% 0 50% 0); transform: translate(-6px, 6px); }
+      80%  { clip-path: inset(45% 0 25% 0); transform: translate(6px, 0); }
+      90%  { clip-path: inset(65% 0 5% 0); transform: translate(-6px, -3px); }
+      100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+    }
+
+    h1 {
+      margin-top: 30px;
+      font-size: 2.8rem;
+      text-shadow: 2px 2px red;
+      letter-spacing: 2px;
     }
 
     .btn {
@@ -78,57 +113,23 @@
     }
 
     @media screen and (max-width: 600px) {
-      .hero h1 {
-        font-size: 2rem;
-      }
+      h1 { font-size: 2rem; }
     }
   </style>
-  <style>
-  .glitch-img {
-    position: relative;
-    width: 90%;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .glitch-img img {
-    width: 100%;
-    animation: glitch 2.5s infinite;
-  }
-
-  @keyframes glitch {
-    0%   { clip-path: inset(0 0 0 0); transform: translate(0); }
-    10%  { clip-path: inset(10% 0 85% 0); transform: translate(-5px, -5px); }
-    20%  { clip-path: inset(30% 0 40% 0); transform: translate(5px, 5px); }
-    30%  { clip-path: inset(50% 0 20% 0); transform: translate(-3px, 3px); }
-    40%  { clip-path: inset(70% 0 10% 0); transform: translate(3px, -3px); }
-    50%  { clip-path: inset(0 0 0 0); transform: translate(0); }
-    60%  { clip-path: inset(5% 0 80% 0); transform: translate(6px, -6px); }
-    70%  { clip-path: inset(25% 0 50% 0); transform: translate(-6px, 6px); }
-    80%  { clip-path: inset(45% 0 25% 0); transform: translate(6px, 0); }
-    90%  { clip-path: inset(65% 0 5% 0); transform: translate(-6px, -3px); }
-    100% { clip-path: inset(0 0 0 0); transform: translate(0); }
-  }
-</style>
-
-<div class="glitch-img">
-  <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo">
-</div>
-
-<!-- Use this in your existing HTML -->
-<img src="curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo">
 </head>
 <body>
 
+  <!-- Optional: Drop your fire/smoke video here -->
   <video autoplay loop muted playsinline class="video-bg">
     <source src="background.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
 
   <div class="overlay"></div>
+  <div class="lightning"></div>
 
   <div class="hero">
-    <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo">
+    <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo" class="glitch-logo">
     <h1>Welcome to the End</h1>
     <button class="btn" onclick="window.location.href='#'">Enter the Chaos</button>
   </div>
