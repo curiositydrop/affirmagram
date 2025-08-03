@@ -6,62 +6,22 @@
   <title>Paradise Is Cancelled</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
       font-family: 'UnifrakturCook', cursive;
       background: black;
-      overflow: hidden;
       color: white;
-    }
-
-    .video-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-      z-index: -3;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: -2;
-    }
-
-    .lightning {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: white;
-      opacity: 0;
-      z-index: -1;
-      animation: flash 10s infinite;
-    }
-
-    @keyframes flash {
-      0%, 97%, 100% { opacity: 0; }
-      98% { opacity: 0.8; }
-      99% { opacity: 0; }
+      overflow: hidden;
     }
 
     .hero {
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      height: 100vh;
+      align-items: center;
       text-align: center;
-      padding: 20px;
-      z-index: 1;
       position: relative;
     }
 
@@ -75,6 +35,8 @@
     .glitch-logo {
       width: 100%;
       display: block;
+      background: white; /* TEMP visibility aid */
+      padding: 10px;
     }
 
     .static-noise {
@@ -94,7 +56,6 @@
       margin-top: 30px;
       font-size: 2.8rem;
       text-shadow: 2px 2px red;
-      letter-spacing: 2px;
     }
 
     .btn {
@@ -105,28 +66,21 @@
       color: white;
       font-size: 1.2rem;
       cursor: pointer;
-      transition: background 0.3s;
     }
 
     .btn:hover {
       background: #cc0000;
     }
-
-    @media screen and (max-width: 600px) {
-      h1 { font-size: 2rem; }
-    }
   </style>
 </head>
 <body>
-
-  <video autoplay loop muted playsinline class="video-bg">
-    <source src="background.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-
-  <div class="overlay"></div>
-  <div class="lightning"></div>
-
   <div class="hero">
     <div class="glitch-wrapper">
-      <img src="http://curiositydrop.com/p
+      <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Paradise Is Cancelled Logo" class="glitch-logo">
+      <div class="static-noise"></div>
+    </div>
+    <h1>Welcome to the End</h1>
+    <button class="btn">Enter the Chaos</button>
+  </div>
+</body>
+</html>
