@@ -8,106 +8,103 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Metal Mania', cursive;
-      background: #000;
-      color: #39ff14; /* Neon green */
-      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: limegreen;
     }
     header {
-      background: #000;
-      padding: 20px;
+      background: black;
+      padding: 10px 20px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      border-bottom: 2px solid #39ff14;
-      text-align: center;
+      justify-content: space-between;
+      border-bottom: 2px solid limegreen;
+      flex-wrap: wrap;
     }
-    header img {
-      height: 80px;
-      margin-bottom: 10px;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo img {
+      height: 60px;
     }
     nav {
       display: flex;
+      gap: 15px;
       flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
     }
     nav a {
       text-decoration: none;
-      color: #39ff14;
+      color: limegreen;
       font-size: 18px;
+      font-family: 'Metal Mania', cursive;
     }
     nav a:hover {
-      color: #ff4500; /* Fire orange */
+      color: white;
     }
     .hero {
-      background: url('http://curiositydrop.com/pic
-/IMG_7250.jpeg') no-repeat center center/cover;
+      background: url('krown.jpg') no-repeat center center/cover;
       text-align: center;
-      padding: 80px 20px;
+      padding: 100px 20px;
     }
     .hero h1 {
-      font-size: 36px;
-      color: #ff4500; /* Fire orange */
-      margin-bottom: 10px;
+      font-size: 48px;
+      color: gold;
+      font-family: 'Metal Mania', cursive;
     }
     .hero p {
-      font-size: 18px;
-      color: #fff;
+      font-size: 22px;
+      color: white;
+      font-family: 'Metal Mania', cursive;
     }
     .section {
-      padding: 50px 20px;
+      padding: 60px 20px;
       text-align: center;
     }
     .section h2 {
-      font-size: 28px;
+      font-size: 36px;
       margin-bottom: 20px;
-      color: #39ff14;
+      font-family: 'Metal Mania', cursive;
     }
     .video-placeholder {
-      width: 100%;
-      max-width: 500px;
-      height: 280px;
-      background: #222;
+      width: 80%;
+      height: 300px;
+      background: #333;
       margin: 0 auto 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      font-size: 18px;
-      border: 2px solid #39ff14;
+      color: white;
+      font-size: 20px;
     }
     .band-photo {
-      width: 100%;
-      max-width: 500px;
+      max-width: 100%;
       height: auto;
       margin: 30px auto;
       display: block;
-      border: 3px solid #39ff14;
+      border: 3px solid limegreen;
     }
     footer {
       padding: 20px;
       text-align: center;
-      background: #000;
-      border-top: 2px solid #39ff14;
+      background: black;
+      border-top: 2px solid limegreen;
     }
     footer a {
-      color: #39ff14;
+      color: limegreen;
       text-decoration: none;
     }
-    footer a:hover {
-      color: #ff4500;
-    }
-    @media (max-width: 480px) {
-      .hero h1 {
-        font-size: 28px;
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
       }
-      .hero p {
-        font-size: 16px;
-      }
-      .section h2 {
-        font-size: 24px;
+      nav {
+        justify-content: center;
+        width: 100%;
+        margin-top: 10px;
       }
     }
   </style>
@@ -115,7 +112,9 @@
 <body>
 
 <header>
-  <img src="IMG_7252.jpeg" alt="PIC Logo" />
+  <div class="logo">
+    <img src="pic_logo.jpg" alt="PIC Logo" />
+  </div>
   <nav>
     <a href="#">HOME</a>
     <a href="#">MUSIC</a>
@@ -143,8 +142,7 @@
 
 <section class="section">
   <h2>📸 Meet the Chaos Architects</h2>
-  <img src="http://curiositydrop.com/pic
-/pic/IMG_7251.jpeg" alt="Band" class="band-photo"/>
+  <img src="band.jpg" alt="Band" class="band-photo"/>
 </section>
 
 <section class="section">
