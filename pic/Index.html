@@ -6,13 +6,13 @@
   <title>Paradise Is Cancelled</title>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: 'UnifrakturCook', cursive;
       background: black;
-      color: white;
       overflow: hidden;
+      color: white;
     }
 
     .hero {
@@ -35,8 +35,8 @@
     .glitch-logo {
       width: 100%;
       display: block;
-      background: white; /* TEMP visibility aid */
-      padding: 10px;
+      z-index: 1;
+      position: relative;
     }
 
     .static-noise {
@@ -45,9 +45,9 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://i.imgur.com/o5B2YMe.gif');
+      background-image: url('https://i.imgur.com/BYVYrA1.gif'); /* heavier static */
       background-size: cover;
-      opacity: 0.15;
+      opacity: 0.3;
       pointer-events: none;
       z-index: 2;
     }
@@ -56,6 +56,7 @@
       margin-top: 30px;
       font-size: 2.8rem;
       text-shadow: 2px 2px red;
+      letter-spacing: 2px;
     }
 
     .btn {
@@ -70,6 +71,10 @@
 
     .btn:hover {
       background: #cc0000;
+    }
+
+    @media screen and (max-width: 600px) {
+      h1 { font-size: 2rem; }
     }
   </style>
 </head>
