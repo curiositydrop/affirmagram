@@ -4,85 +4,110 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Paradise is Cancelled</title>
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'UnifrakturCook', cursive;
-      background: #111;
-      color: limegreen;
+      font-family: 'Metal Mania', cursive;
+      background: #000;
+      color: #39ff14; /* Neon green */
+      overflow-x: hidden;
     }
     header {
-      background: black;
+      background: #000;
       padding: 20px;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid limegreen;
+      justify-content: center;
+      border-bottom: 2px solid #39ff14;
+      text-align: center;
     }
     header img {
-      height: 60px;
+      height: 80px;
+      margin-bottom: 10px;
     }
     nav {
       display: flex;
-      gap: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
     }
     nav a {
       text-decoration: none;
-      color: limegreen;
+      color: #39ff14;
       font-size: 18px;
     }
     nav a:hover {
-      color: white;
+      color: #ff4500; /* Fire orange */
     }
     .hero {
       background: url('krown.jpg') no-repeat center center/cover;
       text-align: center;
-      padding: 100px 20px;
+      padding: 80px 20px;
     }
     .hero h1 {
-      font-size: 48px;
-      color: gold;
+      font-size: 36px;
+      color: #ff4500; /* Fire orange */
+      margin-bottom: 10px;
     }
     .hero p {
-      font-size: 22px;
-      color: white;
+      font-size: 18px;
+      color: #fff;
     }
     .section {
-      padding: 60px 20px;
+      padding: 50px 20px;
       text-align: center;
     }
     .section h2 {
-      font-size: 36px;
+      font-size: 28px;
       margin-bottom: 20px;
+      color: #39ff14;
     }
     .video-placeholder {
-      width: 80%;
-      height: 300px;
-      background: #333;
+      width: 100%;
+      max-width: 500px;
+      height: 280px;
+      background: #222;
       margin: 0 auto 40px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-size: 20px;
+      color: #fff;
+      font-size: 18px;
+      border: 2px solid #39ff14;
     }
     .band-photo {
-      max-width: 100%;
+      width: 100%;
+      max-width: 500px;
       height: auto;
       margin: 30px auto;
       display: block;
-      border: 3px solid limegreen;
+      border: 3px solid #39ff14;
     }
     footer {
       padding: 20px;
       text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
+      background: #000;
+      border-top: 2px solid #39ff14;
     }
     footer a {
-      color: limegreen;
+      color: #39ff14;
       text-decoration: none;
+    }
+    footer a:hover {
+      color: #ff4500;
+    }
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+      .hero p {
+        font-size: 16px;
+      }
+      .section h2 {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
