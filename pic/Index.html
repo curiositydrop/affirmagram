@@ -70,35 +70,37 @@
     }
     .hero-flex {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 80px 20px;
-  background: url('krown.jpg') no-repeat center center/cover;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
   gap: 40px;
+  background: #111 url('krown.jpg') no-repeat center center / cover;
+  border-top: 2px solid limegreen;
+  border-bottom: 2px solid limegreen;
 }
 
 .hero-left img {
-  max-width: 250px;
-  height: auto;
+  width: 220px;
+  max-width: 90vw;
   border: 3px solid limegreen;
 }
 
 .hero-right {
   max-width: 500px;
+  text-align: left;
   color: white;
-  text-align: center;
   font-family: 'Metal Mania', cursive;
 }
 
 .hero-right h3 {
-  font-size: 36px;
+  font-size: 32px;
   color: gold;
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
 }
 
 .hero-right p {
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 
@@ -117,6 +119,17 @@
 .listen-btn:hover {
   background-color: gold;
   color: black;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .hero-flex {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-right {
+    text-align: center;
+  }
 }
 
     /* ========== UNIVERSAL IMAGE STYLE ========== */
