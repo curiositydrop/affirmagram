@@ -6,159 +6,244 @@
   <title>Paradise is Cancelled</title>
   <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
+    :root{
+      --bg:#111;
+      --ink:#d9ffd4;
+      --lime:#39ff14;
+      --red1:#9b0000;
+      --red2:#d10000;
+      --gold:gold;
+    }
+    /* base */
+    html,body{margin:0}
+    body{
       font-family: Arial, sans-serif;
-      background: #111;
-      color: limegreen;
+      background: var(--bg);
+      color: var(--lime);
+      overflow-x: hidden;
     }
-    header {
-      background: black;
-      padding: 10px 5px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 2px solid limegreen;
-      border-bottom: 2px solid limegreen;
-      flex-wrap: wrap;
+    a{color:var(--lime); text-decoration:none}
+
+    /* HEADER — logo left, nav right, neon lines */
+    header{
+      background:#000;
+      padding:10px 5px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      border-top:2px solid var(--lime);
+      border-bottom:2px solid var(--lime);
+      flex-wrap:wrap;
+      position:sticky; top:0; z-index:10;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .logo{
+      display:flex; align-items:center; gap:8px;
     }
-    .logo img {
-      height: 15px;
+    .logo img{
+      height:20px; /* small header logo */
+      border:0; /* no green border on header logo */
+      display:block;
     }
-    nav {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+    nav{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+      font-family:'Metal Mania', cursive;
     }
-    nav a {
-      text-decoration: none;
-      color: limegreen;
-      font-size: 18px;
-      font-family: 'Metal Mania', cursive;
-    }
-    nav a:hover {
-      color: white;
-    }
-    .hero {
+    nav a{ font-size:18px; }
+    /* Neon hover */
+    nav a{ text-shadow:0 0 0 transparent; transition:text-shadow .18s }
+    nav a:hover{ text-shadow:0 0 6px var(--lime), 0 0 14px var(--lime); color:#fff }
+
+    /* HERO — split layout */
+    .hero{
       background: url('krown.jpg') no-repeat center center/cover;
-      text-align: center;
       padding: 30px 20px;
     }
-    img {
-  max-width: 90%;
-  height: auto;
-  margin: 5px auto;
-  display: block;
-  border: 3px solid limegreen;
-}
-    .hero h1 {
-      font-size: 48px;
-      color: gold;
-      font-family: 'Metal Mania', cursive;
+    .hero-inner{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+      align-items:center;
+      max-width:1100px; margin:0 auto;
     }
-    .hero p {
-      font-size: 22px;
-      color: white;
-      font-family: 'Metal Mania', cursive;
+    @media(min-width: 820px){
+      .hero-inner{ grid-template-columns: 1fr 1fr; }
     }
-    .section {
-      padding: 10px 20px;
-      text-align: center;
+
+    /* Global image rule you set (kept), plus tweak for hero */
+    img{
+      max-width: 90%;
+      height: auto;
+      margin: 5px auto;
+      display: block;
+      border: 3px solid var(--lime);
     }
-    .section h2 {
-      font-size: 36px;
-      margin-bottom: 5px;
-      font-family: 'Metal Mania', cursive;
+    /* Left hero logo shimmer (no extra images needed) */
+    .logo-glitch{ position:relative; display:inline-block; }
+    .logo-glitch::after{
+      content:""; position:absolute; inset:0;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,.05), transparent 40%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 2px);
+      mix-blend-mode:screen; opacity:.10;
+      animation:noise 1.4s steps(2) infinite;
+      pointer-events:none;
     }
-    .video-placeholder {
-      width: 80%;
-      height: 300px;
+    @keyframes noise{
+      0%{transform:translate(0,0)} 50%{transform:translate(-2px,1px)} 100%{transform:translate(1px,-1px)}
+    }
+    .logo-glitch img{ filter: drop-shadow(0 0 8px var(--lime)); }
+
+    .hero-copy{ text-align:center; }
+    @media(min-width:820px){ .hero-copy{ text-align:left; } }
+
+    .hero h1, .hero h3{
+      font-family:'Metal Mania', cursive;
+      margin:8px 0;
+      color: var(--gold);
+    }
+    .hero h3{ font-size:32px } /* headline size */
+    .hero p{
+      font-family:'Metal Mania', cursive;
+      color:#fff; margin:6px 0 12px; font-size:18px;
+    }
+
+    /* Flame divider */
+    .flame-divider{ height:10px; margin:10px auto; max-width:1100px; position:relative; }
+    .flame-divider::before{
+      content:""; position:absolute; inset:0;
+      background: linear-gradient(90deg,transparent, var(--red1) 20%, var(--red2) 50%, var(--red1) 80%, transparent);
+      filter: drop-shadow(0 4px 0 #630000);
+      clip-path: polygon(0 60%,5% 50%,10% 65%,15% 55%,20% 70%,25% 60%,30% 75%,35% 60%,40% 70%,45% 55%,50% 65%,55% 55%,60% 70%,65% 60%,70% 75%,75% 60%,80% 70%,85% 55%,90% 65%,95% 50%,100% 60%);
+    }
+
+    /* Sections */
+    .section{ padding:10px 20px; text-align:center; }
+    .section h2{
+      font-size:36px; margin-bottom:5px; font-family:'Metal Mania', cursive;
+    }
+
+    /* Feature tiles (your video placeholders) */
+    .tiles{ display:grid; gap:14px; grid-template-columns:1fr; max-width:1100px; margin:0 auto; }
+    @media(min-width:820px){ .tiles{ grid-template-columns: repeat(3, 1fr); } }
+    .tile{
+      border:1px solid #2a2a2a; background:#0d0d0d; padding:10px; transition:.2s;
+    }
+    .tile:hover{
+      transform:translateY(-4px);
+      box-shadow:0 10px 22px rgba(0,0,0,.6);
+      border-color: var(--lime);
+    }
+    .video-placeholder{
+      width: 100%;
+      height: 220px;
       background: #333;
-      margin: 0 auto 40px;
+      margin: 8px auto 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 20px;
+      font-size: 18px;
+      border: 2px solid var(--lime);
     }
-    .band-photo {
+
+    .band-photo{
       max-width: 100%;
       height: auto;
       margin: 10px auto;
       display: block;
-      border: 3px solid limegreen;
-    }
-    footer {
-      padding: 5px;
-      text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
-    }
-    footer a {
-      color: limegreen;
-      text-decoration: none;
+      border: 3px solid var(--lime);
     }
 
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        justify-content: center;
-        width: 100%;
-        margin-top: 10px;
-      }
+    footer{
+      padding:5px; text-align:center; background:#000; border-top:2px solid var(--lime);
     }
+    footer a{ color:var(--lime) }
+
+    /* Reveal on scroll */
+    .reveal{ opacity:0; transform:translateY(16px); transition:.5s }
+    .reveal.visible{ opacity:1; transform:none }
   </style>
 </head>
 <body>
 
-<header>
-  <nav>
-    <a href="#">HOME</a>
-    <a href="#">VIDEOS</a>
-    <a href="#">SHOWS</a>
-    <a href="#">ABOUT</a>
-    <a href="#">MERCH</a>
-    <a href="#">CONTACT</a>
-  </nav>
-</header>
+  <!-- HEADER: logo left (small) + nav right -->
+  <header>
+    <div class="logo">
+      <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="PIC Logo small">
+    </div>
+    <nav class="nav">
+      <a href="#">HOME</a>
+      <a href="#">VIDEOS</a>
+      <a href="#">SHOWS</a>
+      <a href="#">ABOUT</a>
+      <a href="#">MERCH</a>
+      <a href="#">CONTACT</a>
+    </nav>
+  </header>
 
-<section class="hero">
-  <img src="http://curiositydrop.com/pic/IMG_7238.jpeg">
-  <h3>🔥 Krown the King — OUT NOW 🔥</h3>
-  <img src="http://curiositydrop.com/pic/IMG_7250.jpeg">
-</section>
+  <!-- HERO: split layout -->
+  <section class="hero">
+    <div class="hero-inner reveal">
+      <!-- Left: big logo with shimmer -->
+      <div class="logo-glitch">
+        <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="PIC Logo">
+      </div>
+      <!-- Right: headline + your second image -->
+      <div class="hero-copy">
+        <h3>🔥 Krown the King — OUT NOW 🔥</h3>
+        <p>Check out the latest single from Paradise is Cancelled.</p>
+        <img src="http://curiositydrop.com/pic/IMG_7250.jpeg" alt="Krown Artwork">
+      </div>
+    </div>
+  </section>
 
-<section class="section">
-  <h2>🎸 Coconut Ice Cream</h2>
-  <div class="video-placeholder">[Video Placeholder]</div>
-  <h2>💀 Dirt Nap</h2>
-  <div class="video-placeholder">[Video Placeholder]</div>
-  <h2>🔥 Fame</h2>
-  <div class="video-placeholder">[Video Placeholder]</div>
-</section>
+  <div class="flame-divider"></div>
 
-<section class="section">
-  <h2>📸 Meet the Chaos Architects</h2>
-  <img src="http://curiositydrop.com/pic/IMG_7251.jpeg" alt="Band" class="band-photo"/>
-</section>
+  <!-- FEATURE STRIP: your three songs as tiles (content untouched) -->
+  <section class="section reveal">
+    <div class="tiles">
+      <div class="tile">
+        <h2>🎸 Coconut Ice Cream</h2>
+        <div class="video-placeholder">[Video Placeholder]</div>
+      </div>
+      <div class="tile">
+        <h2>💀 Dirt Nap</h2>
+        <div class="video-placeholder">[Video Placeholder]</div>
+      </div>
+      <div class="tile">
+        <h2>🔥 Fame</h2>
+        <div class="video-placeholder">[Video Placeholder]</div>
+      </div>
+    </div>
+  </section>
 
-<section class="section">
-  <h2>🤝 THANK YOU TO OUR SPONSORS 🤘</h2>
-  <p>We see you. We hear you. We f***ing appreciate you.</p>
-  <a href="https://www.facebook.com/share/r/1CGpeaSrmz/?mibextid=wwXIfr" target="_blank">Watch the Sponsor Clip</a>
-</section>
+  <div class="flame-divider"></div>
 
-<footer>
-  &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a>
-</footer>
+  <!-- BAND -->
+  <section class="section reveal">
+    <h2>📸 Meet the Chaos Architects</h2>
+    <img src="http://curiositydrop.com/pic/IMG_7251.jpeg" alt="Band" class="band-photo"/>
+  </section>
 
+  <div class="flame-divider"></div>
+
+  <!-- SPONSORS (content untouched) -->
+  <section class="section reveal">
+    <h2>🤝 THANK YOU TO OUR SPONSORS 🤘</h2>
+    <p>We see you. We hear you. We f***ing appreciate you.</p>
+    <a href="https://www.facebook.com/share/r/1CGpeaSrmz/?mibextid=wwXIfr" target="_blank">Watch the Sponsor Clip</a>
+  </section>
+
+  <footer>
+    &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a>
+  </footer>
+
+  <!-- Scroll reveal (no library) -->
+  <script>
+    const obs=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting) e.target.classList.add('visible');
+    }),{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  </script>
 </body>
 </html>
