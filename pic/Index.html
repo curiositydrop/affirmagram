@@ -87,6 +87,10 @@
   color: white;
   font-family: 'Metal Mania', cursive;
 }
+  /* keep items side-by-side */
+.hero-left { flex: 0 0 auto; }     /* image keeps its natural width */
+.hero-right { flex: 1; min-width: 240px; }  /* text takes remaining space */
+}
 
 .hero-right h3 {
   font-size: 32px;
@@ -117,14 +121,11 @@
 }
 
 /* Mobile Responsive */
-@media (max-width: 768px) {
-  .hero-flex {
-    flex-direction: column;
-    text-align: center;
-  }
-  .hero-right {
-    text-align: center;
-  }
+    @media (max-width: 480px) {
+  .hero-left img { width: 130px; }        /* smaller logo on narrow screens */
+  .hero-flex { gap: 16px; padding: 32px 16px; }
+  .hero-right h3 { font-size: 24px; }
+  .hero-right p  { font-size: 16px; }
 }
 
     /* ========== UNIVERSAL IMAGE STYLE ========== */
