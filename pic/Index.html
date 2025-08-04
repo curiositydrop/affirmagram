@@ -68,6 +68,56 @@
       color: white;
       font-family: 'Metal Mania', cursive;
     }
+    .hero-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  background: url('krown.jpg') no-repeat center center/cover;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.hero-left img {
+  max-width: 250px;
+  height: auto;
+  border: 3px solid limegreen;
+}
+
+.hero-right {
+  max-width: 500px;
+  color: white;
+  text-align: center;
+  font-family: 'Metal Mania', cursive;
+}
+
+.hero-right h3 {
+  font-size: 36px;
+  color: gold;
+  margin-bottom: 10px;
+}
+
+.hero-right p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.listen-btn {
+  padding: 12px 24px;
+  font-size: 18px;
+  font-family: 'Metal Mania', cursive;
+  color: black;
+  background-color: limegreen;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.listen-btn:hover {
+  background-color: gold;
+  color: black;
+}
 
     /* ========== UNIVERSAL IMAGE STYLE ========== */
     img {
@@ -152,12 +202,16 @@
 </header>
 
   <!-- ====== HERO IMAGE / CALL TO ACTION SECTION ====== -->
-  <section class="hero">
-    <img src="http://curiositydrop.com/pic/IMG_7238.jpeg">
+  <section class="hero-flex">
+  <div class="hero-left">
+    <img src="http://curiositydrop.com/pic/IMG_7238.jpeg" alt="Band Logo">
+  </div>
+  <div class="hero-right">
     <h3>🔥 Krown the King — OUT NOW 🔥</h3>
     <p>Check out the latest single from Paradise is Cancelled.</p>
-    <img src="http://curiositydrop.com/pic/IMG_7250.jpeg">
-  </section>
+    <button class="listen-btn">[ LISTEN NOW ]</button>
+  </div>
+</section>
 
   <!-- ====== FEATURED SONGS / VIDEOS SECTION ====== -->
   <section class="section">
