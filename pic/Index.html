@@ -9,11 +9,16 @@
   color: limegreen;
   position: relative;
   overflow-x: hidden;
-  animation: fadeIn 1.5s ease-in-out;
+  animation: horrorFade 2s ease-in-out;
 }
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+}
+@keyframes horrorFade {
+  0% { opacity: 0; }
+  30% { opacity: 0.4; }
+  40% { opacity: 0.1; }
+  50% { opacity: 0.7; }
+  60% { opacity: 0.2; }
+  100% { opacity: 1; }
 }
   .skull-container {
     pointer-events: none;
@@ -253,8 +258,8 @@
 
   const icons = [
     { symbol: "💀", className: "spin" },
-    { symbol: "🎸", className: "spin" },
-    { symbol: "🔥", className: "flame" }
+    { symbol: "☠️", className: "spin" },
+    { symbol: "", className: "flame" }
   ];
 
   for (let i = 0; i < iconCount; i++) {
