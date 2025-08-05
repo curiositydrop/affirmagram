@@ -9,16 +9,13 @@
   color: limegreen;
   position: relative;
   overflow-x: hidden;
-  animation: horrorFade 5s ease-in-out;
+  animation: fadeIn 1.5s ease-in-out;
 }
 }
-@keyframes horrorFade {
-  0% { opacity: 0; }
-  30% { opacity: 0.4; }
-  40% { opacity: 0.1; }
-  50% { opacity: 0.7; }
-  60% { opacity: 0.2; }
-  100% { opacity: 1; }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 }
   .skull-container {
     pointer-events: none;
@@ -251,7 +248,6 @@
   </style>
 </head>
 <body>
-  <div class="skull-container" id="skullContainer"></div>
   <script>
   const skullContainer = document.getElementById("skullContainer");
   const iconCount = 30;
@@ -300,7 +296,8 @@
 /IMG_7250.jpeg" alt="Band Logo">
   </div>
   <div class="hero-right">
-    <h3>Krown the King!</h3>
+  </h3>OUT NOW!</h3>
+    <h2>Krown the King!</h2>
     <a href="#popup1" style="text-decoration:none;">
   <button style="padding: 10px 20px; background-color: #32CD32; color: black; font-weight: bold; border: none; cursor: pointer;">
     LISTEN NOW
@@ -400,7 +397,8 @@
 
   <!-- ====== FOOTER SECTION ====== -->
   <footer>
-    &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a>
+    &copy; 2025 Paradise is Cancelled. All rights reserved. | Web design by: MBG Digital<a href="mailto:picband@gmail.com">picband@gmail.com</a>
   </footer>
+  <div class="skull-container" id="skullContainer"></div>
 </body>
 </html>
