@@ -1,6 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <style>
+  body {
+    background-color: #000;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .skull-container {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .skull {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    opacity: 0.15;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-100px) rotate(0deg);
+      opacity: 0.2;
+    }
+    100% {
+      transform: translateY(110vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+</style>
   <!-- Meta & Title -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -208,6 +245,24 @@
   </style>
 </head>
 <body>
+  <div class="skull-container" id="skullContainer"></div>
+
+<script>
+  const skullContainer = document.getElementById("skullContainer");
+  const skullCount = 20; // Adjust for more/less skulls
+  const skullEmoji = "💀";
+
+  for (let i = 0; i < skullCount; i++) {
+    const skull = document.createElement("div");
+    skull.classList.add("skull");
+    skull.style.left = Math.random() * 100 + "vw";
+    skull.style.animationDuration = (6 + Math.random() * 6) + "s";
+    skull.style.fontSize = (16 + Math.random() * 20) + "px";
+    skull.style.top = -Math.random() * 100 + "px";
+    skull.textContent = skullEmoji;
+    skullContainer.appendChild(skull);
+  }
+</script>
 <!-- Inserted Banner -->
 <div class="banner-image">
   <img src="http://curiositydrop.com/pic
