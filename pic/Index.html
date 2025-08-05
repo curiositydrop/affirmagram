@@ -1,66 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <style>
-  #skullContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 0;
-  }
-
-  .skull {
-    position: absolute;
-    animation-name: fall;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    opacity: 0.8;
-    z-index: 0;
-  }
-
-  /* Falling */
-  @keyframes fall {
-    0% {
-      transform: translateY(-100px) rotate(0deg);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(100vh) rotate(360deg);
-      opacity: 0.2;
-    }
-  }
-
-  /* Flame flicker effect */
-  .flame {
-    animation: fall linear infinite, flicker 0.6s infinite alternate;
-  }
-
-  @keyframes flicker {
-    0% { opacity: 0.7; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.1); }
-    100% { opacity: 0.6; transform: scale(0.9); }
-  }
-
-  /* Skull and Guitar slow spin effect */
-  .spin {
-    animation: fall linear infinite, spin 10s linear infinite;
-  }
-
-  @keyframes spin {
-    from { transform: translateY(-100px) rotate(0deg); }
-    to { transform: translateY(100vh) rotate(360deg); }
-  }
-</style>
 <style>
   body {
-    background-color: #000;
-    position: relative;
-    overflow-x: hidden;
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: limegreen;
+  position: relative;
+  overflow-x: hidden;
+  animation: fadeIn 1.5s ease-in-out;
+}
 
   .skull-container {
     pointer-events: none;
@@ -103,12 +53,6 @@
   <!-- Styles -->
   <style>
     /* ========== BASE STYLES ========== */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: limegreen;
-    }
 
     /* ========== HEADER / NAVIGATION ========== */
     header {
@@ -300,23 +244,6 @@
 </head>
 <body>
   <div class="skull-container" id="skullContainer"></div>
-
-<script>
-  const skullContainer = document.getElementById("skullContainer");
-  const skullCount = 20; // Adjust for more/less skulls
-  const skullEmoji = "💀";
-
-  for (let i = 0; i < skullCount; i++) {
-    const skull = document.createElement("div");
-    skull.classList.add("skull");
-    skull.style.left = Math.random() * 100 + "vw";
-    skull.style.animationDuration = (6 + Math.random() * 6) + "s";
-    skull.style.fontSize = (16 + Math.random() * 20) + "px";
-    skull.style.top = -Math.random() * 100 + "px";
-    skull.textContent = skullEmoji;
-    skullContainer.appendChild(skull);
-  }
-</script>
   <script>
   const skullContainer = document.getElementById("skullContainer");
   const iconCount = 30;
@@ -467,6 +394,5 @@
   <footer>
     &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a>
   </footer>
-<div id="skullContainer"></div>
 </body>
 </html>
