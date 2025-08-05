@@ -253,6 +253,23 @@
 </section>
 
   <!-- 🔥 UPCOMING SHOWS 🔥 Section -->
+<style>
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 12px 2px red;
+  }
+  50% {
+    box-shadow: 0 0 20px 5px red;
+  }
+  100% {
+    box-shadow: 0 0 12px 2px red;
+  }
+}
+.pulse-card {
+  animation: pulseGlow 2s infinite;
+}
+</style>
+
 <hr style="border: 0; height: 0px; background: #00ff00; margin: 30px auto; width: 80%;">
 
 <div style="text-align: center; margin: 40px 0;">
@@ -260,9 +277,9 @@
   <p style="color: white; font-size: 14px; font-family: 'Your Font'; margin-bottom: 20px;">(Swipe left or right)</p>
 
   <div style="overflow-x: auto; white-space: nowrap; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 10px 0;">
-    
+
     <!-- Month 1 -->
-    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+    <div class="pulse-card" style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
       <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">September 2025</h3>
       <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
         🗓 Sept 14 — Portland, ME<br>
@@ -273,7 +290,7 @@
     </div>
 
     <!-- Month 2 -->
-    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+    <div class="pulse-card" style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
       <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">October 2025</h3>
       <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
         🗓 Oct 4 — Bangor, ME<br>
@@ -284,7 +301,7 @@
     </div>
 
     <!-- Month 3 -->
-    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+    <div class="pulse-card" style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
       <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">November 2025</h3>
       <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
         🗓 Nov 10 — Boston, MA<br>
