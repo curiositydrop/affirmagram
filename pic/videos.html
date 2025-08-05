@@ -94,6 +94,27 @@
     max-height: 100px;
   }
 }
+    /* Mobile fix for horizontal scroll */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .track {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  iframe {
+    max-width: 100%;
+  }
+
+  .banner-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+}
   </style>
 </head>
 <body>
