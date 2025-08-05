@@ -401,13 +401,13 @@
   </footer>
   <div class="skull-container" id="skullContainer"></div>
 <!-- Floating Booking Button -->
-<button onclick="document.getElementById('bookingModal').style.display='block'" 
+<button onclick="document.getElementById('bookingModal').style.display='flex'" 
         style="position: fixed; bottom: 20px; right: 20px; background-color: limegreen; color: black; font-weight: bold; padding: 12px 20px; border: none; border-radius: 30px; z-index: 10000; cursor: pointer;">
   BOOK US TODAY!
 </button>
 
 <!-- Booking Modal -->
-<div id="bookingModal" style="display:none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.85); z-index: 9999; display: flex; justify-content: center; align-items: center;">
+<div id="bookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;">
   <div style="background: black; padding: 30px; border: 2px solid limegreen; border-radius: 10px; width: 90%; max-width: 500px; color: limegreen; font-family: Arial, sans-serif; position: relative;">
     
     <span onclick="document.getElementById('bookingModal').style.display='none'" 
