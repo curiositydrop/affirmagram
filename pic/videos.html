@@ -83,6 +83,17 @@
       0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
+    .banner-image img {
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  object-fit: cover;
+}
+    @media (max-width: 480px) {
+  .banner-image img {
+    max-height: 100px;
+  }
+}
   </style>
 </head>
 <body>
