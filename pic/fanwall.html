@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fan Wall | Paradise is Cancelled</title>
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: limegreen;
+      overflow-x: hidden;
+      max-width: 100%;
+      animation: fadeIn 3.5s ease-in-out;
+    }
+
+    html {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    header {
+      background: black;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid limegreen;
+      flex-wrap: wrap;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: limegreen;
+      font-size: 18px;
+      font-family: 'Metal Mania', cursive;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    nav a.active {
+      color: white;
+      pointer-events: none;
+    }
+
+    .banner-image img {
+      width: 100%;
+      height: auto;
+      max-height: 150px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 480px) {
+      .banner-image img {
+        max-height: 100px;
+      }
+    }
+    @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-family: 'Metal Mania', cursive;
+      color: gold;
+      margin-bottom: 30px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .gallery img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid limegreen;
+      box-shadow: 0 0 10px limegreen;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: black;
+      border-top: 2px solid limegreen;
+    }
+
+    footer a {
+      color: limegreen;
+      text-decoration: none;
+    }
+
+    /* Falling skulls */
+    #skullContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .skull {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      opacity: 0.15;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Falling skulls -->
+  <div class="skull-container" id="skullContainer"></div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const skullContainer = document.getElementById("skullContainer");
+      const iconCount = 30;
+      const icons = ["💀", "☠️"];
+      for (let i = 0; i < iconCount; i++) {
+        const icon = document.createElement("div");
+        icon.classList.add("skull");
+        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+        icon.style.left = Math.random() * 100 + "vw";
+        icon.style.animationDuration = (6 + Math.random() * 6) + "s";
+        icon.style.fontSize = (20 + Math.random() * 30) + "px";
+        icon.style.top = -Math.random() * 100 + "px";
+        skullContainer.appendChild(icon);
+      }
+    });
+  </script>
+
+  <!-- Banner Image -->
+  <div class="banner-image">
+    <img src="http://curiositydrop.com/pic/IMG_7284.jpeg" alt="Promotional Banner">
+  </div>
+
+  <!-- Header/Nav -->
+  <header>
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="videos.html">VIDEOS</a>
+      <a href="photos.html">PHOTOS</a>
+      <a href="about.html" class="active">ABOUT</a>
+      <a href="merch.html">MERCH</a>
+      <a href="contact.html">CONTACT</a>
+    </nav>
+  </header>
+
+<!-- Fan Wall Section -->
+<section class="section" style="position: relative;">
+  <h2>THE WALL</h2>
+  <p>Choose your color. Say what you want. Leave your mark.</p>
+  <div id="graffitiBoard" style="min-height: 400px;"></div>
+</section>
+
+<!-- Fan Wall Form -->
+<form id="graffitiForm">
+  <input type="text" id="name" placeholder="Your Name (optional)">
+  <textarea id="message" placeholder="Type your message..." rows="2" cols="30" required></textarea>
+  <select id="font">
+    <option value="Arial, sans-serif">Standard</option>
+    <option value="'Metal Mania', cursive">Metal Mania</option>
+    <option value="'Courier New', monospace">Typewriter</option>
+  </select>
+  <select id="color">
+    <option value="#00FF00">Lime Green</option>
+    <option value="#FF0033">Blood Red</option>
+    <option value="#FFD700">Gold</option>
+    <option value="#FFFFFF">White</option>
+  </select>
+  <button type="submit">POST</button>
+</form>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Paradise is Cancelled. All rights reserved. |
+    <a href="mailto:picband@gmail.com">picband@gmail.com</a> |
+    Web Design by: MBG Digital
+  </footer>
+<script>
+  const form = document.getElementById('graffitiForm');
+  const board = document.getElementById('graffitiBoard');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const message = document.getElementById('message').value;
+    const font = document.getElementById('font').value;
+    const color = document.getElementById('color').value;
+
+    const graffiti = document.createElement('div');
+    graffiti.classList.add('graffiti');
+    graffiti.textContent = name ? name + ": " + message : message;
+    graffiti.style.fontFamily = font;
+    graffiti.style.color = color;
+    graffiti.style.left = Math.random() * 90 + '%';
+    graffiti.style.top = Math.random() * 90 + '%';
+    graffiti.style.position = 'absolute';
+    graffiti.style.whiteSpace = 'pre-wrap';
+    graffiti.style.pointerEvents = 'none';
+    graffiti.style.userSelect = 'none';
+    graffiti.style.fontSize = '20px';
+    graffiti.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+    graffiti.style.zIndex = '10';
+
+    board.appendChild(graffiti);
+    form.reset();
+  });
+</script>
+</body>
+</html>
