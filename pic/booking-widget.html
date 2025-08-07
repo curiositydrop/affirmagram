@@ -69,14 +69,40 @@
   <div id="bookingForm">
     <div id="bookingClose" onclick="document.getElementById('bookingOverlay').style.display='none'">✖</div>
     <h3 style="text-align:center; font-family: 'Metal Mania', cursive;">Book Paradise is Cancelled</h3>
-    <input type="text" placeholder="Your Name">
-    <input type="text" placeholder="Venue Name">
-    <input type="text" placeholder="Requested Date(s)">
-    <input type="text" placeholder="Contact Number">
-    <textarea placeholder="Any other info..."></textarea>
-    <button>Send Booking Request</button>
-  </div>
-</div>
+    <form id="bookingFormElement">
+  <input type="text" name="from_name" placeholder="Your Name" required>
+  <input type="text" name="venue_name" placeholder="Venue Name">
+  <input type="text" name="requested_dates" placeholder="Requested Date(s)">
+  <input type="text" name="contact_number" placeholder="Contact Number">
+  <textarea name="message" placeholder="Any other info..." rows="4"></textarea>
+  <button type="submit">Send Booking Request</button>
+</form>
+    <!-- EmailJS SDK -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("YOUR_USER_ID_HERE"); // ← Replace with your EmailJS Public Key
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("bookingFormElement");
+    const status = document.getElementById("bookingStatus");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      status.textContent = "Sending...";
+      emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", form)
+        .then(function () {
+          status.textContent = "Request sent successfully!";
+          form.reset();
+        }, function (error) {
+          status.textContent = "Failed to send. Try again later.";
+          console.error("EmailJS error:", error);
+        });
+    });
+  });
+</script>
+<p id="bookingStatus" style="text-align:center; font-size:14px; margin-top:10px;"></p>
 
 <a id="bookingButton" onclick="document.getElementById('bookingOverlay').style.display='flex'">
   BOOK US TODAY!
