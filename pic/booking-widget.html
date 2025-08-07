@@ -1,0 +1,83 @@
+<!-- booking-widget.html -->
+<style>
+  #bookingOverlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+  }
+  #bookingForm {
+    background: black;
+    border: 2px solid limegreen;
+    padding: 20px;
+    max-width: 400px;
+    width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px limegreen;
+    font-family: Arial, sans-serif;
+    color: limegreen;
+    position: relative;
+  }
+  #bookingForm input,
+  #bookingForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 5px;
+  }
+  #bookingForm button {
+    background: limegreen;
+    color: black;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+  }
+  #bookingClose {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: limegreen;
+    font-size: 20px;
+    cursor: pointer;
+  }
+
+  /* Floating Button */
+  #bookingButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: limegreen;
+    color: black;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-family: 'Metal Mania', cursive;
+    font-size: 18px;
+    text-decoration: none;
+    box-shadow: 0 0 10px limegreen;
+    z-index: 9999;
+  }
+</style>
+
+<div id="bookingOverlay">
+  <div id="bookingForm">
+    <div id="bookingClose" onclick="document.getElementById('bookingOverlay').style.display='none'">✖</div>
+    <h3 style="text-align:center; font-family: 'Metal Mania', cursive;">Book Paradise is Cancelled</h3>
+    <input type="text" placeholder="Your Name">
+    <input type="text" placeholder="Venue Name">
+    <input type="text" placeholder="Requested Date(s)">
+    <input type="text" placeholder="Contact Number">
+    <textarea placeholder="Any other info..."></textarea>
+    <button>Send Booking Request</button>
+  </div>
+</div>
+
+<a id="bookingButton" onclick="document.getElementById('bookingOverlay').style.display='flex'">
+  BOOK US TODAY!
+</a>
