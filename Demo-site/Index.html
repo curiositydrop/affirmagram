@@ -25,7 +25,6 @@
   overflow: hidden;
   z-index: 9999;
 }
-
   .skull {
     position: absolute;
     width: 30px;
@@ -33,22 +32,15 @@
     opacity: 0.15;
     animation: fall linear infinite;
   }
-
   @keyframes fall {
-    0% {
-      transform: translateY(-100px) rotate(0deg);
-      opacity: 0.2;
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 0;
-    }
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
   }
 </style>
   <!-- Meta & Title -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Demo Band — MBG Digital Showcase</title>
+  <title>Demo Band</title>
 
   <!-- Font: Metal Mania -->
   <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
@@ -72,44 +64,16 @@
       margin-bottom: 0;
       padding-bottom: 0;
     }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .logo img {
-      height: 60px;
-    }
-    nav {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    nav a.active {
-      color: white;
-      pointer-events: none; /* Optional: makes it unclickable to avoid reload */
-    }
-    nav a {
-      text-decoration: none;
-      color: limegreen;
-      font-size: 18px;
-      font-family: 'Metal Mania', cursive;
-    }
-    nav a:hover {
-      color: white;
-    }
+    .logo { display: flex; align-items: center; gap: 20px; }
+    .logo img { height: 60px; }
+    nav { display: flex; gap: 15px; flex-wrap: wrap; }
+    nav a.active { color: white; pointer-events: none; }
+    nav a { text-decoration: none; color: limegreen; font-size: 18px; font-family: 'Metal Mania', cursive; }
+    nav a:hover { color: white; }
 
     /* ========== HERO SECTION ========== */
-    .hero h1 {
-      font-size: 48px;
-      color: gold;
-      font-family: 'Metal Mania', cursive;
-    }
-    .hero p {
-      font-size: 22px;
-      color: white;
-      font-family: 'Metal Mania', cursive;
-    }
+    .hero h1 { font-size: 48px; color: gold; font-family: 'Metal Mania', cursive; }
+    .hero p { font-size: 22px; color: white; font-family: 'Metal Mania', cursive; }
     .hero-flex {
       display: flex;
       flex-wrap: wrap;
@@ -117,64 +81,28 @@
       justify-content: center;
       padding: 60px 20px;
       gap: 40px;
-      background: #111 url('https://source.unsplash.com/1600x900/?concert,lights') no-repeat center center / cover;
+      background: #111 url('https://placehold.co/1600x900?text=Demo+Background') no-repeat center center / cover;
       border-top: 2px solid limegreen;
       border-bottom: 2px solid limegreen;
     }
-
-    .hero-left img {
-      width: 220px;
-      max-width: 90vw;
-      border: 0px solid limegreen;
-    }
-
+    .hero-left img { width: 220px; max-width: 90vw; border: 0px solid limegreen; }
     .hero-right {
-      max-width: 500px;
-      text-align: center;
-      vertical-align: center;
-      color: white;
-      font-family: 'Metal Mania', cursive;
+      max-width: 500px; text-align: center; vertical-align: center; color: white; font-family: 'Metal Mania', cursive;
     }
-    /* keep items side-by-side */
-    .hero-left { flex: 0 0 auto; }     /* image keeps its natural width */
-    .hero-right { flex: 1; min-width: 240px; }  /* text takes remaining space */
-    }
-
-    .hero-right h3 {
-      font-size: 32px;
-      color: gold;
-      margin: 0 0 0px 0;
-    }
-
-    .hero-right p {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
+    .hero-left { flex: 0 0 auto; }
+    .hero-right { flex: 1; min-width: 240px; }
+    .hero-right h3 { font-size: 32px; color: gold; margin: 0 0 0px 0; }
+    .hero-right p { font-size: 18px; margin-bottom: 20px; }
     .listen-btn {
-      padding: 6px 14px;
-      font-size: 14px;
-      font-family: 'Metal Mania', cursive;
-      color: black;
-      background-color: limegreen;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: block;
-      margin: 10px auto 0 auto; /* top margin optional for spacing */
+      padding: 6px 14px; font-size: 14px; font-family: 'Metal Mania', cursive; color: black; background-color: limegreen;
+      border: none; border-radius: 4px; cursor: pointer; transition: 0.3s ease; display: block; margin: 10px auto 0 auto;
     }
+    .listen-btn:hover { background-color: gold; color: black; }
+    #popup1:target { display: block !important; }
 
-    .listen-btn:hover {
-      background-color: gold;
-      color: black;
-    }
-    #popup1:target {
-      display: block !important;
-    }
     /* Mobile Responsive */
     @media (max-width: 480px) {
-      .hero-left img { width: 130px; }        /* smaller logo on narrow screens */
+      .hero-left img { width: 130px; }
       .hero-flex { gap: 16px; padding: 32px 16px; }
       .hero-right h3 { font-size: 24px; }
       .hero-right p  { font-size: 16px; }
@@ -182,67 +110,31 @@
 
     /* ========== UNIVERSAL IMAGE STYLE ========== */
     img { max-width: 100%; height: auto; }
+    .hero-left img { display: inline-block; margin: 0; }
 
-    .hero-left img {
-      display: inline-block;
-      margin: 0;
-    }
     /* ========== CONTENT SECTIONS ========== */
-    .section {
-      padding: 20px 20px;
-      text-align: center;
-    }
-    .section h2 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      font-family: 'Metal Mania', cursive;
-    }
+    .section { padding: 20px 20px; text-align: center; }
+    .section h2 { font-size: 36px; margin-bottom: 20px; font-family: 'Metal Mania', cursive; }
 
     /* ========== VIDEO PLACEHOLDER ========== */
     .video-placeholder {
-      width: 80%;
-      height: 300px;
-      background: #333;
-      margin: 0 auto 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
+      width: 80%; height: 300px; background: #333; margin: 0 auto 40px;
+      display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
     }
 
     /* ========== BAND PHOTO STYLE ========== */
     .band-photo {
-      max-width: 100%;
-      height: auto;
-      margin: 30px auto;
-      display: block;
-      border: 2px solid limegreen;
+      max-width: 100%; height: auto; margin: 30px auto; display: block; border: 2px solid limegreen;
     }
 
     /* ========== FOOTER ========== */
-    footer {
-      padding: 20px;
-      text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
-    }
-    footer a {
-      color: limegreen;
-      text-decoration: none;
-    }
+    footer { padding: 20px; text-align: center; background: black; border-top: 2px solid limegreen; }
+    footer a { color: limegreen; text-decoration: none; }
 
     /* ========== MOBILE RESPONSIVE NAV ========== */
     @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        justify-content: center;
-        width: 100%;
-        margin-top: 10px;
-      }
+      header { flex-direction: column; align-items: flex-start; }
+      nav { justify-content: center; width: 100%; margin-top: 10px; }
     }
   </style>
 </head>
@@ -251,13 +143,11 @@
   document.addEventListener("DOMContentLoaded", function () {
     const skullContainer = document.getElementById("skullContainer");
     const iconCount = 30;
-
     const icons = [
       { symbol: "💀", className: "spin" },
       { symbol: "☠️", className: "spin" },
       { symbol: "", className: "flame" }
     ];
-
     for (let i = 0; i < iconCount; i++) {
       const iconObj = icons[Math.floor(Math.random() * icons.length)];
       const icon = document.createElement("div");
@@ -271,11 +161,11 @@
       skullContainer.appendChild(icon);
     }
   });
-</script>
+  </script>
 
 <!-- Inserted Banner -->
 <div class="banner-image">
-  <img src="https://source.unsplash.com/1600x600/?rock,concert" alt="Promotional Banner">
+  <img src="https://placehold.co/1600x600?text=Demo+Banner" alt="Promotional Banner">
 </div>
 
 <!-- ====== NAVIGATION MENU BAR ====== -->
@@ -293,11 +183,11 @@
 <!-- ====== HERO IMAGE / CALL TO ACTION SECTION ====== -->
 <section class="hero-flex">
   <div class="hero-left">
-    <img src="https://source.unsplash.com/400x400/?microphone,logo" alt="Demo Band Logo">
+    <img src="https://placehold.co/400x400?text=Demo+Band+Logo" alt="Demo Band Logo">
   </div>
   <div class="hero-right">
-    <h3>OUT NOW!</h3>
-    <h2>New Single from Demo Band</h2>
+    </h3>OUT NOW!</h3>
+    <h2>Krown the King!</h2>
     <a href="#popup1" style="text-decoration:none;">
       <button style="padding: 10px 20px; background-color: #32CD32; color: black; font-weight: bold; border: none; cursor: pointer;">
         LISTEN NOW
@@ -305,28 +195,25 @@
     </a>
   </div>
 
-  <!-- Demo Track Popup -->
+  <!-- Krown the King Popup (unchanged embed) -->
   <div id="popup1" style="display:none;">
     <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:1000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-      <h2 style="color:limegreen; font-family:'Metal Mania', cursive;">🎧 Now Playing: Demo Track</h2>
-      <!-- (Optional) Drop in a royalty-free YouTube or audio source here -->
-      <!-- <iframe width="300" height="170" src="YOUTUBE_EMBED_URL?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
+      <h2 style="color:limegreen; font-family:'Metal Mania', cursive;">🎧 Now Playing: Krown the King</h2>
+      <iframe width="300" height="170" src="https://www.youtube.com/embed/Pe7TL6Vk4iU?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
       <br>
       <a href="#" style="color:limegreen; font-size:18px; margin-top:10px;">Close</a>
     </div>
   </div>
 </section>
 
-<!-- 🔥 UPCOMING SHOWS 🔥 Section -->
+<!-- 🔥 UPCOMING SHOWS 🔥 Section (unchanged) -->
 <style>
 @keyframes pulseGlow {
   0% { box-shadow: 0 0 12px 2px red; }
   50% { box-shadow: 0 0 20px 5px red; }
   100% { box-shadow: 0 0 12px 2px red; }
 }
-.pulse-card {
-  animation: pulseGlow 2s infinite;
-}
+.pulse-card { animation: pulseGlow 2s infinite; }
 </style>
 
 <hr style="border: 0; height: 0px; background: #00ff00; margin: 30px auto; width: 80%;">
@@ -382,7 +269,7 @@
 <!-- ====== BAND BIO / PHOTO SECTION ====== -->
 <section class="section" style="margin-top: 10px; margin-bottom: 10px;">
   <h2>Meet the Chaos Architects</h2>
-  <img src="https://source.unsplash.com/1400x900/?band,backstage" alt="Demo Band" class="band-photo"/>
+  <img src="https://placehold.co/1400x900?text=Demo+Band+Photo" alt="Band" class="band-photo"/>
 </section>
 
 <!-- Lime Green Divider Line -->
@@ -392,14 +279,13 @@
 <section class="section">
   <h2>THANK YOU<br/>TO OUR SPONSORS</h2>
   <p>We see you. We hear you. We f***ing appreciate you.</p>
-  <a href="#" target="_blank">Watch the Sponsor Clip</a>
+  <a href="https://www.facebook.com/share/r/1CGpeaSrmz/?mibextid=wwXIfr" target="_blank">Watch the Sponsor Clip</a>
 </section>
 
 <!-- ====== FOOTER SECTION ====== -->
 <footer>
   &copy; 2025 Demo Band. All rights reserved. | 
-  <a href="mailto:info@mbgdigital.com">info@mbgdigital.com</a> | 
-  Demo site by MBG Digital — Content for example only.
+  <a href="mailto:info@mbgdigital.com">info@mbgdigital.com</a> | Web Design by: MBG Digital
 </footer>
 
 <div class="skull-container" id="skullContainer"></div>
