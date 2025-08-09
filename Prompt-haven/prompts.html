@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptJournal — Prompts</title>
+<style>
+  :root{--bg:#f6fafb;--fg:#0f172a;--card:#fff;--muted:#6b7280}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--fg)}
+  .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  .menu a{margin:0 8px;text-decoration:none;color:#111}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:20px}
+  .btn{background:#111;color:#fff;padding:10px 14px;border-radius:10px;border:0}
+</style>
+</head>
+<body>
+<div class="nav"><div class="wrap"><strong>PromptJournal</strong>
+  <span class="menu" style="float:right">
+    <a href="index.html">Home</a>
+    <a href="journal.html">Journal</a>
+    <a href="streaks.html">Streaks</a>
+    <a href="billing.html">Premium</a>
+  </span></div></div>
+
+<div class="wrap" style="margin-top:18px">
+  <div class="card">
+    <h2>Prompt library</h2>
+    <p style="color:var(--muted)">Shuffle a prompt. Premium unlocks packs & daily drops.</p>
+    <div id="prompt" style="font-size:1.2rem;margin:16px 0">What made you smile today?</div>
+    <button class="btn" id="spin">Shuffle Prompt</button>
+  </div>
+</div>
+
+<script>
+const PROMPTS = [
+  "What made you smile today?",
+  "Name one thing you handled better than last time.",
+  "Write a 2-sentence note to future you.",
+  "If today was a color, why that color?",
+  "What tiny kindness can you do tomorrow?",
+  "What would ‘1% better’ look like tonight?"
+];
+let timer=null;
+document.getElementById('spin').onclick=()=>{
+  let t=0;
+  if(timer) clearInterval(timer);
+  timer=setInterval(()=>{
+    const i=Math.floor(Math.random()*PROMPTS.length);
+    document.getElementById('prompt').textContent=PROMPTS[i];
+    if(++t>15){ clearInterval(timer); }
+  },70);
+};
+</script>
+</body>
+</html>
