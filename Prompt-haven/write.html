@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptHaven — Write</title>
+<style>
+  .muted{color:#6b7280}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  .row{display:grid;gap:12px;grid-template-columns:1fr}
+  @media(min-width:900px){.row{grid-template-columns:1.1fr 1fr}}
+  textarea{width:100%;min-height:200px;padding:12px;border:1px solid #e5e7eb;border-radius:10px}
+  .ghost{background:#eef6ff}
+</style>
+</head>
+<body>
+<div id="site-nav"></div><script src="nav.js"></script>
+
+<div class="wrap" style="margin-top:18px">
+  <div class="row">
+    <!-- Prompt card -->
+    <div class="card ghost">
+      <h2 style="margin:0 0 8px">Today’s prompt</h2>
+      <div id="prompt" style="font-size:1.1rem">What made you smile today?</div>
+      <div style="margin-top:12px">
+        <button class="btn" id="shuffle">Shuffle Prompt</button>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:.9rem">The prompt stays visible while you write.</p>
+    </div>
+
+    <!-- Write card -->
+    <div class="card">
+      <h2 style="margin:0 0 8px">Your entry</h2>
+      <textarea id="entry" placeholder="Let your thoughts wander…"></textarea>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+        <button class="btn" id="save">Save</button>
+      </div>
+      <p class="muted" style="font-size:.85rem">Saves to your device (local demo). Journal page lists everything.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROMPTS = [
+  "What made you smile today?",
+  "Name one thing you handled better than last time.",
+  "Write a 2-sentence note to future you.",
+  "If today was a color, why that color?",
+  "What tiny kindness can you do tomorrow?",
+  "What would ‘1% better’ look like tonight?"
+];
+
+const promptEl = document.getElementById('prompt');
+const entryEl = document.getElementById('entry');
+const key='pj_entries';
+
+function load(){ return JSON.parse(localStorage.getItem(key)||'[]'); }
+function saveAll(items){ localStorage.setItem(key, JSON.stringify(items)); }
+
+function shufflePrompt() {
+  // quick shuffle animation
+  let ticks = 0;
+  const id = setInterval(()=>{
+    promptEl.textContent = PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+    if (++ticks > 15) clearInterval(id);
+  }, 70);
+}
+
+document.getElementById('shuffle').onclick = shufflePrompt;
+
+document.getElementById('save').onclick = () => {
+  const content = entryEl.value.trim();
+  if(!content) return alert('Write a little something first 😊');
+  const items = load();
+  items.unshift({
+    id: crypto.randomUUID(),
+    prompt: promptEl.textContent,
+    content,
+    created_at: new Date().toISOString()
+  });
+  saveAll(items);
+  entryEl.value = "";
+  // streak: mark a "save today"
+  localStorage.setItem('pj_saved_today', new Date().toDateString());
+  alert('Saved!');
+};
+</script>
+</body>
+</html>
