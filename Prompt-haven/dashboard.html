@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptJournal — Dashboard</title>
+<style>
+  :root{--bg:#f6fafb;--fg:#0f172a;--card:#fff}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--fg)}
+  .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+  .wrap{max-width:1000px;margin:0 auto;padding:16px}
+  .menu a{margin:0 8px;text-decoration:none;color:#111}
+  .grid{display:grid;gap:12px;grid-template-columns:1fr; }
+  @media(min-width:900px){ .grid{grid-template-columns:2fr 1fr;} }
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:20px}
+</style></head>
+<body>
+<div class="nav"><div class="wrap"><strong>PromptJournal</strong>
+  <span class="menu" style="float:right">
+    <a href="index.html">Home</a><a href="journal.html">Journal</a><a href="prompts.html">Prompts</a>
+  </span></div></div>
+<div class="wrap" style="margin-top:18px">
+  <div class="grid">
+    <div class="card">
+      <h3>Today’s prompt</h3>
+      <p id="prompt" style="font-size:1.2rem"></p>
+      <a href="journal.html">Write your entry →</a>
+    </div>
+    <div class="card">
+      <h3>Quick stats</h3>
+      <ul id="stats"></ul>
+    </div>
+  </div>
+</div>
+<script>
+const PROMPTS=["What’s a tiny win from today?","Who helped you recently?","What felt lighter than last week?"];
+document.getElementById('prompt').textContent = PROMPTS[Math.floor(Math.random()*PROMPTS.length)];
+const entries=JSON.parse(localStorage.getItem('pj_entries')||'[]');
+const streak=Number(localStorage.getItem('pj_streak')||'0');
+document.getElementById('stats').innerHTML = `
+  <li>Streak: ${streak} day${streak===1?'':'s'}</li>
+  <li>Entries this week: ${entries.slice(0,7).length}</li>`;
+</script>
+</body>
+</html>
