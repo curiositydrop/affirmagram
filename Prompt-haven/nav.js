@@ -1,5 +1,4 @@
-<script>
-// Consistent nav for all pages in this folder.
+// nav.js  (no <script> tags in this file!)
 (function () {
   var style = `
   <style>
@@ -38,4 +37,3 @@
     if (a.getAttribute('href') === here) a.classList.add('active');
   });
 })();
-</script>
