@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptJournal — Journal</title>
+<style>
+  :root{--bg:#f6fafb;--fg:#0f172a;--card:#fff;--muted:#6b7280}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--fg)}
+  .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  .menu a{margin:0 8px;text-decoration:none;color:#111}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:20px;margin-bottom:12px}
+  textarea{width:100%;min-height:160px;padding:12px;border:1px solid #e5e7eb;border-radius:10px}
+  .btn{background:#111;color:#fff;padding:10px 14px;border-radius:10px;border:0}
+  .muted{color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="nav"><div class="wrap"><strong>PromptJournal</strong>
+  <span class="menu" style="float:right">
+    <a href="index.html">Home</a>
+    <a href="prompts.html">Prompts</a>
+    <a href="streaks.html">Streaks</a>
+  </span></div></div>
+
+<div class="wrap" style="margin-top:18px">
+  <div class="card">
+    <h2>New entry</h2>
+    <textarea id="entry" placeholder="Let your thoughts wander…"></textarea>
+    <div style="text-align:right;margin-top:8px">
+      <button class="btn" id="saveBtn">Save</button>
+    </div>
+    <p class="muted">Saves to your device (localStorage) for this demo.</p>
+  </div>
+
+  <div id="list"></div>
+</div>
+
+<script>
+const key='pj_entries';
+function load(){ return JSON.parse(localStorage.getItem(key)||'[]'); }
+function saveAll(items){ localStorage.setItem(key, JSON.stringify(items)); }
+function render(){
+  const list=document.getElementById('list'); list.innerHTML='';
+  const items=load();
+  if(!items.length){ list.innerHTML='<div class="card muted">No entries yet. Your future self will be glad you started.</div>'; return; }
+  items.forEach(e=>{
+    const div=document.createElement('div');
+    div.className='card';
+    div.innerHTML=`
+      <div style="font-size:.9rem;color:#6b7280">${new Date(e.created_at).toLocaleString()}</div>
+      <div style="white-space:pre-wrap;margin-top:6px">${e.content}</div>
+      <div style="text-align:right;margin-top:8px">
+        <button data-id="${e.id}" class="del" style="background:#fee2e2;color:#111;padding:8px 12px;border-radius:10px;border:0">Delete</button>
+      </div>`;
+    list.appendChild(div);
+  });
+  document.querySelectorAll('.del').forEach(b=>b.onclick=()=>{
+    const id=b.getAttribute('data-id');
+    const next=load().filter(x=>x.id!==id); saveAll(next); render();
+  });
+}
+document.getElementById('saveBtn').onclick=()=>{
+  const t=document.getElementById('entry');
+  const v=t.value.trim(); if(!v) return;
+  const items=load();
+  items.unshift({id:crypto.randomUUID(), content:v, created_at:new Date().toISOString()});
+  saveAll(items); t.value=''; render();
+  // bump streak “saved today”
+  localStorage.setItem('pj_saved_today', new Date().toDateString());
+};
+render();
+</script>
+</body>
+</html>
