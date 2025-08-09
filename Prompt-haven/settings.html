@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptJournal — Settings</title>
+<style>
+  :root{--bg:#f6fafb;--fg:#0f172a;--card:#fff;--muted:#6b7280}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--fg)}
+  .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  .menu a{margin:0 8px;text-decoration:none;color:#111}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:20px}
+  select,input{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:10px}
+  .muted{color:var(--muted)}
+</style></head>
+<body>
+<div class="nav"><div class="wrap"><strong>PromptJournal</strong>
+  <span class="menu" style="float:right">
+    <a href="index.html">Home</a><a href="billing.html">Billing</a><a href="login.html">Log in</a>
+  </span></div></div>
+<div class="wrap" style="margin-top:18px">
+  <div class="card">
+    <h2>Settings</h2>
+    <label class="muted">Theme</label>
+    <select>
+      <option>Calm (default)</option>
+      <option>Dim</option>
+      <option>Contrast</option>
+    </select>
+    <div style="height:10px"></div>
+    <label class="muted">Daily reminder (email)</label>
+    <input placeholder="e.g., 8:30 PM (placeholder)"/>
+  </div>
+</div>
+</body></html>
