@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>PromptJournal — Streaks</title>
+<style>
+  :root{--bg:#f6fafb;--fg:#0f172a;--card:#fff;--muted:#6b7280}
+  body{margin:0;font-family:system-ui;background:var(--bg);color:var(--fg)}
+  .nav{position:sticky;top:0;background:#fff;border-bottom:1px solid #e5e7eb}
+  .wrap{max-width:900px;margin:0 auto;padding:16px}
+  .menu a{margin:0 8px;text-decoration:none;color:#111}
+  .card{background:var(--card);border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,.06);padding:20px;text-align:center}
+  .muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="nav"><div class="wrap"><strong>PromptJournal</strong>
+  <span class="menu" style="float:right">
+    <a href="index.html">Home</a>
+    <a href="journal.html">Journal</a>
+    <a href="prompts.html">Prompts</a>
+  </span></div></div>
+
+<div class="wrap" style="margin-top:18px">
+  <div class="card">
+    <div style="font-size:56px">🔥</div>
+    <h2>Your streak</h2>
+    <p class="muted" id="txt">0 days in a row</p>
+    <p class="muted" style="font-size:.9rem">Missed a day? No shame here—just start again.</p>
+  </div>
+</div>
+
+<script>
+const last=localStorage.getItem('pj_last')||'';
+const today=new Date().toDateString();
+if(last!==today){
+  localStorage.setItem('pj_last', today);
+  const s= Number(localStorage.getItem('pj_streak')||'0') + 1;
+  localStorage.setItem('pj_streak', String(s));
+}
+const streak=Number(localStorage.getItem('pj_streak')||'1');
+document.getElementById('txt').textContent=`${streak} day${streak===1?'':'s'} in a row`;
+</script>
+</body>
+</html>
