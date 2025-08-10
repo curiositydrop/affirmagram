@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | Venomous Throrn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: limegreen;
+      overflow-x: hidden;
+      max-width: 100%;
+      animation: fadeIn 3.5s ease-in-out;
+    }
+
+    html {
+      overflow-x: hidden;
+      max-width: 100%;
+    }
+
+    header {
+      background: black;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid limegreen;
+      flex-wrap: wrap;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: limegreen;
+      font-size: 18px;
+      font-family: 'Metal Mania', cursive;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    nav a.active {
+      color: white;
+      pointer-events: none;
+    }
+
+    .banner-image img {
+      width: 100%;
+      height: auto;
+      max-height: 150px;
+      object-fit: cover;
+    }
+
+    @media (max-width: 480px) {
+      .banner-image img {
+        max-height: 100px;
+      }
+    }
+    @keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-family: 'Metal Mania', cursive;
+      color: gold;
+      margin-bottom: 30px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .gallery img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid limegreen;
+      box-shadow: 0 0 10px limegreen;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.03);
+    }
+
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: black;
+      border-top: 2px solid limegreen;
+    }
+
+    footer a {
+      color: limegreen;
+      text-decoration: none;
+    }
+
+    /* Falling skulls */
+    #skullContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .skull {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      opacity: 0.15;
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Falling skulls -->
+  <div class="skull-container" id="skullContainer"></div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const skullContainer = document.getElementById("skullContainer");
+      const iconCount = 30;
+      const icons = ["💀", "☠️"];
+      for (let i = 0; i < iconCount; i++) {
+        const icon = document.createElement("div");
+        icon.classList.add("skull");
+        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
+        icon.style.left = Math.random() * 100 + "vw";
+        icon.style.animationDuration = (6 + Math.random() * 6) + "s";
+        icon.style.fontSize = (20 + Math.random() * 30) + "px";
+        icon.style.top = -Math.random() * 100 + "px";
+        skullContainer.appendChild(icon);
+      }
+    });
+  </script>
+
+  <!-- Banner Image -->
+  <div class="banner-image">
+    <img src="http://curiositydrop.com/pic/IMG_7284.jpeg" alt="Promotional Banner">
+  </div>
+
+  <!-- Header/Nav -->
+  <header>
+    <nav>
+      <a href="index.html">HOME</a>
+      <a href="videos.html">VIDEOS</a>
+      <a href="photos.html">PHOTOS</a>
+      <a href="about.html" class="active">ABOUT</a>
+      <a href="merch.html">MERCH</a>
+      <a href="fanwall.html">FAN WALL</a>
+    </nav>
+  </header>
+
+<!-- Main About Section -->
+<section class="section">
+  <h2>About the Band</h2>
+  <p style="max-width: 800px; margin: 0 auto; font-size: 18px;">
+    [generic about me page example - updated however you wanted]<br/>
+     Venomous Thorn is a chaotic blend of metal, grunge, and unfiltered energy — formed in the depths of basements and backyards, forged in fire, beer, and distortion pedals. Known for their raw sound and unapologetic lyrics, Venomous Thorn isn't just a band — it's a movement against mediocrity.
+    <br><br>
+    With roots in [City/State], the band draws influence from the 90s underground scene, while adding a fresh wave of controlled chaos that’s entirely their own.
+    <br><br>
+    Stay loud. Stay pissed. Venomous Thorn.
+  </p>
+</section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Venomous Thorn. All rights reserved. |
+    <a href="mailto:Venomousthorn@gmail.com">email Venomous Thorn</a> |
+    Web Design by: MBG Digital
+  </footer>
+  <script>
+  fetch("booking-widget.html")
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+    });
+</script>
+</body>
+</html>
