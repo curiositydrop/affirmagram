@@ -3,28 +3,29 @@
 <head>
 <style>
   body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #000;
-    color: limegreen;
-    position: relative;
-    overflow-x: hidden;
-    animation: fadeIn 3.5s ease-in-out;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #000;
+  color: limegreen;
+  position: relative;
+  overflow-x: hidden;
+  animation: fadeIn 3.5s ease-in-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
   #skullContainer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-    z-index: 9999;
-  }
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
   .skull {
     position: absolute;
     width: 30px;
@@ -32,6 +33,7 @@
     opacity: 0.15;
     animation: fall linear infinite;
   }
+
   @keyframes fall {
     0% {
       transform: translateY(-100px) rotate(0deg);
@@ -43,104 +45,243 @@
     }
   }
 </style>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Paradise is Cancelled</title>
-<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+  <!-- Meta & Title -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paradise is Cancelled</title>
 
-<style>
-  header {
-    background: black;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid limegreen;
-    flex-wrap: wrap;
-  }
-  .banner-image img {
-    display: block;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-  nav {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-  }
-  nav a.active {
-    color: white;
-    pointer-events: none;
-  }
-  nav a {
-    text-decoration: none;
-    color: limegreen;
-    font-size: 18px;
-    font-family: 'Metal Mania', cursive;
-  }
-  nav a:hover { color: white; }
-  .hero-flex {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 20px;
-    gap: 40px;
-    background: #111 url('krown.jpg') no-repeat center center / cover;
-    border-top: 2px solid limegreen;
-    border-bottom: 2px solid limegreen;
-  }
-  .hero-left img {
-    width: 220px;
-    max-width: 90vw;
-  }
-  .hero-right {
-    max-width: 500px;
-    text-align: center;
-    color: white;
-    font-family: 'Metal Mania', cursive;
-  }
-  .hero-left { flex: 0 0 auto; }
-  .hero-right { flex: 1; min-width: 240px; }
-  .band-photo {
-    max-width: 100%;
-    height: auto;
-    margin: 30px auto;
-    display: block;
-    border: 2px solid limegreen;
-  }
-</style>
+  <!-- Font: Metal Mania -->
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <style>
+    /* ========== BASE STYLES ========== */
+
+    /* ========== HEADER / NAVIGATION ========== */
+    header {
+      background: black;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid limegreen;
+      flex-wrap: wrap;
+    }
+    .banner-image img {
+  display: block;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo img {
+      height: 60px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav a.active {
+  color: white;
+  pointer-events: none; /* Optional: makes it unclickable to avoid reload */
+}
+    nav a {
+      text-decoration: none;
+      color: limegreen;
+      font-size: 18px;
+      font-family: 'Metal Mania', cursive;
+    }
+    nav a:hover {
+      color: white;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero h1 {
+      font-size: 48px;
+      color: gold;
+      font-family: 'Metal Mania', cursive;
+    }
+    .hero p {
+      font-size: 22px;
+      color: white;
+      font-family: 'Metal Mania', cursive;
+    }
+    .hero-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+  background: #111 url('krown.jpg') no-repeat center center / cover;
+  border-top: 2px solid limegreen;
+  border-bottom: 2px solid limegreen;
+}
+
+.hero-left img {
+  width: 220px;
+  max-width: 90vw;
+  border: 0px solid limegreen;
+}
+
+.hero-right {
+  max-width: 500px;
+  text-align: center;
+  vertical-align: center;
+  color: white;
+  font-family: 'Metal Mania', cursive;
+}
+  /* keep items side-by-side */
+.hero-left { flex: 0 0 auto; }     /* image keeps its natural width */
+.hero-right { flex: 1; min-width: 240px; }  /* text takes remaining space */
+}
+
+.hero-right h3 {
+  font-size: 32px;
+  color: gold;
+  margin: 0 0 0px 0;
+}
+
+.hero-right p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.listen-btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  font-family: 'Metal Mania', cursive;
+  color: black;
+  background-color: limegreen;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 10px auto 0 auto; /* top margin optional for spacing */
+}
+
+.listen-btn:hover {
+  background-color: gold;
+  color: black;
+}
+#popup1:target {
+  display: block !important;
+}
+/* Mobile Responsive */
+    @media (max-width: 480px) {
+  .hero-left img { width: 130px; }        /* smaller logo on narrow screens */
+  .hero-flex { gap: 16px; padding: 32px 16px; }
+  .hero-right h3 { font-size: 24px; }
+  .hero-right p  { font-size: 16px; }
+}
+
+    /* ========== UNIVERSAL IMAGE STYLE ========== */
+     img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-left img {
+  display: inline-block;
+  margin: 0;
+}
+    /* ========== CONTENT SECTIONS ========== */
+    .section {
+      padding: 20px 20px;
+      text-align: center;
+    }
+    .section h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      font-family: 'Metal Mania', cursive;
+    }
+
+    /* ========== VIDEO PLACEHOLDER ========== */
+    .video-placeholder {
+      width: 80%;
+      height: 300px;
+      background: #333;
+      margin: 0 auto 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+
+    /* ========== BAND PHOTO STYLE ========== */
+    .band-photo {
+      max-width: 100%;
+      height: auto;
+      margin: 30px auto;
+      display: block;
+      border: 2px solid limegreen;
+    }
+
+    /* ========== FOOTER ========== */
+    footer {
+      padding: 20px;
+      text-align: center;
+      background: black;
+      border-top: 2px solid limegreen;
+    }
+    footer a {
+      color: limegreen;
+      text-decoration: none;
+    }
+
+    /* ========== MOBILE RESPONSIVE NAV ========== */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        justify-content: center;
+        width: 100%;
+        margin-top: 10px;
+      }
+    }
+  </style>
 </head>
-
 <body>
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const skullContainer = document.getElementById("skullContainer");
-  const iconCount = 30;
-  const icons = [
-    { symbol: "💀", className: "spin" },
-    { symbol: "☠️", className: "spin" },
-    { symbol: "", className: "flame" }
-  ];
-  for (let i = 0; i < iconCount; i++) {
-    const iconObj = icons[Math.floor(Math.random() * icons.length)];
-    const icon = document.createElement("div");
-    icon.classList.add("skull", iconObj.className);
-    icon.textContent = iconObj.symbol;
-    icon.style.left = Math.random() * 100 + "vw";
-    icon.style.animationDuration = (6 + Math.random() * 6) + "s";
-    icon.style.fontSize = (20 + Math.random() * 30) + "px";
-    icon.style.top = -Math.random() * 100 + "px";
-    skullContainer.appendChild(icon);
-  }
-});
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const skullContainer = document.getElementById("skullContainer");
+    const iconCount = 30;
+
+    const icons = [
+      { symbol: "💀", className: "spin" },
+      { symbol: "☠️", className: "spin" },
+      { symbol: "", className: "flame" }
+    ];
+
+    for (let i = 0; i < iconCount; i++) {
+      const iconObj = icons[Math.floor(Math.random() * icons.length)];
+      const icon = document.createElement("div");
+      icon.classList.add("skull");
+      icon.classList.add(iconObj.className);
+      icon.textContent = iconObj.symbol;
+      icon.style.left = Math.random() * 100 + "vw";
+      icon.style.animationDuration = (6 + Math.random() * 6) + "s";
+      icon.style.fontSize = (20 + Math.random() * 30) + "px";
+      icon.style.top = -Math.random() * 100 + "px";
+      skullContainer.appendChild(icon);
+    }
+  });
 </script>
-
-<!-- Banner -->
+<!-- Inserted Banner -->
 <div class="banner-image">
-  <img src="https://images.unsplash.com/photo-1601987077708-3b3a0f0d4b52?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600" alt="Heavy Metal Concert Banner">
+  <img src="http://curiositydrop.com/pic
+/IMG_7284.jpeg" alt="Promotional Banner">
 </div>
-
+  <!-- ====== NAVIGATION MENU BAR ====== -->
+  <!-- ====== NAVIGATION MENU WITH LOGO LEFT, LINKS RIGHT ====== -->
 <header>
   <nav>
     <a href="#" class="active">HOME</a>
@@ -151,31 +292,172 @@ document.addEventListener("DOMContentLoaded", function () {
     <a href="fanwall.html">FAN WALL</a>
   </nav>
 </header>
-
-<section class="hero-flex">
+  
+  <!-- ====== HERO IMAGE / CALL TO ACTION SECTION ====== -->
+  <section class="hero-flex">
   <div class="hero-left">
-    <img src="https://images.unsplash.com/photo-1603126857590-41da1408f3e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Heavy Metal Band Logo Placeholder">
+    <img src="http://curiositydrop.com/pic
+/IMG_7250.jpeg" alt="Band Logo">
   </div>
   <div class="hero-right">
-    <h3>OUT NOW!</h3>
+  </h3>OUT NOW!</h3>
     <h2>Krown the King!</h2>
     <a href="#popup1" style="text-decoration:none;">
-      <button style="padding: 10px 20px; background-color: #32CD32; color: black; font-weight: bold; border: none; cursor: pointer;">
-        LISTEN NOW
-      </button>
-    </a>
+  <button style="padding: 10px 20px; background-color: #32CD32; color: black; font-weight: bold; border: none; cursor: pointer;">
+    LISTEN NOW
+  </button>
+</a>
+</div>
+
+<!-- Krown the King Popup -->
+<div id="popup1" style="display:none;">
+  <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:1000; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+    <h2 style="color:limegreen; font-family:'Metal Mania', cursive;">🎧 Now Playing: Krown the King</h2>
+    <iframe width="300" height="170" src="https://www.youtube.com/embed/Pe7TL6Vk4iU?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <br>
+    <a href="#" style="color:limegreen; font-size:18px; margin-top:10px;">Close</a>
   </div>
+</div>
 </section>
 
+  <!-- 🔥 UPCOMING SHOWS 🔥 Section -->
+<style>
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 12px 2px red;
+  }
+  50% {
+    box-shadow: 0 0 20px 5px red;
+  }
+  100% {
+    box-shadow: 0 0 12px 2px red;
+  }
+}
+.pulse-card {
+  animation: pulseGlow 2s infinite;
+}
+</style>
+
+<hr style="border: 0; height: 0px; background: #00ff00; margin: 30px auto; width: 80%;">
+
+<div style="text-align: center; margin: 40px 0;">
+  <h2 style="color: #00ff00; font-family: 'Your Font'; font-size: 30px;">🔥 UPCOMING SHOWS 🔥</h2>
+  <p style="color: white; font-size: 14px; font-family: 'Your Font'; margin-bottom: 20px;">(Swipe left or right)</p>
+
+  <div style="overflow-x: auto; white-space: nowrap; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; padding: 10px 0;">
+    
+    <!-- Month 1 -->
+    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+      <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">September 2025</h3>
+      <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
+        🗓 Sept 14 — Portland, ME<br>
+        Geno's Rock Club — 8PM<br><br>
+        🗓 Sept 21 — Lewiston, ME<br>
+        The Warehouse — 9PM
+      </p>
+    </div>
+
+    <!-- Month 2 -->
+    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+      <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">October 2025</h3>
+      <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
+        🗓 Oct 4 — Bangor, ME<br>
+        The Goat — 9PM<br><br>
+        🗓 Oct 31 — Salem, MA<br>
+        Halloween Bash — TBA
+      </p>
+    </div>
+
+    <!-- Month 3 -->
+    <div style="display: inline-block; scroll-snap-align: center; background-color: rgba(0, 0, 0, 0.8); border: 2px solid #00ff00; border-radius: 10px; margin: 0 10px; width: 280px; padding: 20px; vertical-align: top;">
+      <h3 style="color: #00ff00; font-family: 'Your Font'; font-size: 22px;">November 2025</h3>
+      <p style="color: white; font-size: 16px; font-family: 'Your Font'; line-height: 1.5;">
+        🗓 Nov 10 — Boston, MA<br>
+        Club Inferno — 10PM<br><br>
+        🗓 Nov 22 — Manchester, NH<br>
+        The Boneyard — 9PM
+      </p>
+    </div>
+
+  </div>
+
+  <a href="/shows" style="display:inline-block; margin-top: 30px; padding: 14px 24px; background-color: #32CD32; color: black; font-weight: bold; text-decoration: none; border-radius: 5px;">
+    Full Tour Dates
+  </a>
+</div>
+  <hr style="border: none; height: 2px; background: limegreen; width: 100%; margin: 10px auto 10px auto;">
+<!-- ====== BAND BIO / PHOTO SECTION ====== -->
 <section class="section" style="margin-top: 10px; margin-bottom: 10px;">
   <h2>Meet the Chaos Architects</h2>
-  <img src="https://images.unsplash.com/photo-1589871519845-21c12b0b0e9a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600" alt="Heavy Metal Band Photo" class="band-photo"/>
+  <img src="http://curiositydrop.com/pic/IMG_7251.jpeg" alt="Band" class="band-photo"/>
 </section>
 
-<footer>
-  &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a> | Web Design by: MBG Digital
-</footer>
+<!-- Lime Green Divider Line -->
+<div style="height: 2px; background-color: limegreen; margin-bottom: 15px;"></div>
 
-<div class="skull-container" id="skullContainer"></div>
+<!-- ====== SPONSORS / THANK YOU SECTION ====== -->
+<section class="section">
+  <h2>THANK YOU<br/>TO OUR SPONSORS</h2>
+  <p>We see you. We hear you. We f***ing appreciate you.</p>
+  <a href="https://www.facebook.com/share/r/1CGpeaSrmz/?mibextid=wwXIfr" target="_blank">Watch the Sponsor Clip</a>
+</section>
+
+  <!-- ====== FOOTER SECTION ====== -->
+  <footer>
+    &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a> | Web Design by: MBG Digital
+  </footer>
+  <div class="skull-container" id="skullContainer"></div>
+<!-- Floating Booking Button -->
+<button onclick="document.getElementById('bookingModal').style.display='flex'" 
+        style="position: fixed; bottom: 20px; right: 20px; background-color: limegreen; color: black; font-weight: bold; padding: 12px 20px; border: none; border-radius: 30px; z-index: 10000; cursor: pointer;">
+  BOOK US TODAY!
+</button>
+
+<!-- Booking Modal -->
+<div id="bookingModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;">
+  <div style="background: black; padding: 30px; border: 2px solid limegreen; border-radius: 10px; width: 90%; max-width: 500px; color: limegreen; font-family: Arial, sans-serif; position: relative;">
+    
+    <span onclick="document.getElementById('bookingModal').style.display='none'" 
+          style="position: absolute; top: 10px; right: 20px; font-size: 24px; cursor: pointer; color: red;">&times;</span>
+    
+    <h2 style="margin-top: 0; font-family: 'Metal Mania', cursive;">Book Paradise is Cancelled</h2>
+
+    <form id="bookingForm">
+      <input type="text" name="user_name" placeholder="Your Name" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <input type="text" name="venue_name" placeholder="Venue Name" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <input type="text" name="dates" placeholder="Requested Date(s)" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <input type="tel" name="contact" placeholder="Contact Number" required style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+      <textarea name="message" placeholder="Any other info..." rows="4" style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea>
+      <button type="submit" style="background-color: limegreen; color: black; font-weight: bold; padding: 10px 20px; border: none; cursor: pointer; width: 100%;">Send Booking Request</button>
+    </form>
+
+    <p id="bookingStatus" style="margin-top: 10px;"></p>
+  </div>
+</div>
+  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+(function(){
+  emailjs.init("YOUR_USER_ID"); // replace with your actual EmailJS public key
+})();
+
+document.getElementById("bookingForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+    .then(function() {
+      document.getElementById("bookingStatus").innerText = "Booking request sent successfully!";
+      document.getElementById("bookingForm").reset();
+    }, function(error) {
+      document.getElementById("bookingStatus").innerText = "Failed to send. Please try again.";
+    });
+});
+</script>
+<script>
+  fetch("booking-widget.html")
+    .then(response => response.text())
+    .then(data => {
+      document.body.insertAdjacentHTML('beforeend', data);
+    });
+</script>
 </body>
 </html>
