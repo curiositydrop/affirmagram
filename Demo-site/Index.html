@@ -3,29 +3,28 @@
 <head>
 <style>
   body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #000;
-  color: limegreen;
-  position: relative;
-  overflow-x: hidden;
-  animation: fadeIn 3.5s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: limegreen;
+    position: relative;
+    overflow-x: hidden;
+    animation: fadeIn 3.5s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
   #skullContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 9999;
-}
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+  }
   .skull {
     position: absolute;
     width: 30px;
@@ -33,7 +32,6 @@
     opacity: 0.15;
     animation: fall linear infinite;
   }
-
   @keyframes fall {
     0% {
       transform: translateY(-100px) rotate(0deg);
@@ -45,189 +43,75 @@
     }
   }
 </style>
-  <!-- Meta & Title -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Paradise is Cancelled</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Paradise is Cancelled</title>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
 
-  <!-- Font: Metal Mania -->
-  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <style>
-    header {
-      background: black;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid limegreen;
-      flex-wrap: wrap;
-    }
-    .banner-image img {
-      display: block;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-    .logo img {
-      height: 60px;
-    }
-    nav {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    nav a.active {
-      color: white;
-      pointer-events: none;
-    }
-    nav a {
-      text-decoration: none;
-      color: limegreen;
-      font-size: 18px;
-      font-family: 'Metal Mania', cursive;
-    }
-    nav a:hover {
-      color: white;
-    }
-
-    .hero h1 {
-      font-size: 48px;
-      color: gold;
-      font-family: 'Metal Mania', cursive;
-    }
-    .hero p {
-      font-size: 22px;
-      color: white;
-      font-family: 'Metal Mania', cursive;
-    }
-    .hero-flex {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      gap: 40px;
-      background: #111 url('krown.jpg') no-repeat center center / cover;
-      border-top: 2px solid limegreen;
-      border-bottom: 2px solid limegreen;
-    }
-    .hero-left img {
-      width: 220px;
-      max-width: 90vw;
-    }
-    .hero-right {
-      max-width: 500px;
-      text-align: center;
-      vertical-align: center;
-      color: white;
-      font-family: 'Metal Mania', cursive;
-    }
-    .hero-left { flex: 0 0 auto; }
-    .hero-right { flex: 1; min-width: 240px; }
-
-    .hero-right h3 {
-      font-size: 32px;
-      color: gold;
-      margin: 0 0 0px 0;
-    }
-
-    .hero-right p {
-      font-size: 18px;
-      margin-bottom: 20px;
-    }
-
-    .listen-btn {
-      padding: 6px 14px;
-      font-size: 14px;
-      font-family: 'Metal Mania', cursive;
-      color: black;
-      background-color: limegreen;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: 0.3s ease;
-      display: block;
-      margin: 10px auto 0 auto;
-    }
-
-    .listen-btn:hover {
-      background-color: gold;
-      color: black;
-    }
-    #popup1:target {
-      display: block !important;
-    }
-    @media (max-width: 480px) {
-      .hero-left img { width: 130px; }
-      .hero-flex { gap: 16px; padding: 32px 16px; }
-      .hero-right h3 { font-size: 24px; }
-      .hero-right p  { font-size: 16px; }
-    }
-
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-    .hero-left img {
-      display: inline-block;
-      margin: 0;
-    }
-    .section {
-      padding: 20px 20px;
-      text-align: center;
-    }
-    .section h2 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      font-family: 'Metal Mania', cursive;
-    }
-    .video-placeholder {
-      width: 80%;
-      height: 300px;
-      background: #333;
-      margin: 0 auto 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 20px;
-    }
-    .band-photo {
-      max-width: 100%;
-      height: auto;
-      margin: 30px auto;
-      display: block;
-      border: 2px solid limegreen;
-    }
-    footer {
-      padding: 20px;
-      text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
-    }
-    footer a {
-      color: limegreen;
-      text-decoration: none;
-    }
-    @media (max-width: 768px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        justify-content: center;
-        width: 100%;
-        margin-top: 10px;
-      }
-    }
-  </style>
+<style>
+  header {
+    background: black;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid limegreen;
+    flex-wrap: wrap;
+  }
+  .banner-image img {
+    display: block;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  nav {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+  nav a.active {
+    color: white;
+    pointer-events: none;
+  }
+  nav a {
+    text-decoration: none;
+    color: limegreen;
+    font-size: 18px;
+    font-family: 'Metal Mania', cursive;
+  }
+  nav a:hover { color: white; }
+  .hero-flex {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    gap: 40px;
+    background: #111 url('krown.jpg') no-repeat center center / cover;
+    border-top: 2px solid limegreen;
+    border-bottom: 2px solid limegreen;
+  }
+  .hero-left img {
+    width: 220px;
+    max-width: 90vw;
+  }
+  .hero-right {
+    max-width: 500px;
+    text-align: center;
+    color: white;
+    font-family: 'Metal Mania', cursive;
+  }
+  .hero-left { flex: 0 0 auto; }
+  .hero-right { flex: 1; min-width: 240px; }
+  .band-photo {
+    max-width: 100%;
+    height: auto;
+    margin: 30px auto;
+    display: block;
+    border: 2px solid limegreen;
+  }
+</style>
 </head>
+
 <body>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -241,8 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let i = 0; i < iconCount; i++) {
     const iconObj = icons[Math.floor(Math.random() * icons.length)];
     const icon = document.createElement("div");
-    icon.classList.add("skull");
-    icon.classList.add(iconObj.className);
+    icon.classList.add("skull", iconObj.className);
     icon.textContent = iconObj.symbol;
     icon.style.left = Math.random() * 100 + "vw";
     icon.style.animationDuration = (6 + Math.random() * 6) + "s";
@@ -255,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <!-- Banner -->
 <div class="banner-image">
-  <img src="https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=1600&auto=format&fit=crop" alt="Generic Band Banner">
+  <img src="https://source.unsplash.com/1600x900/?heavy-metal,concert" alt="Heavy Metal Concert Banner">
 </div>
 
 <header>
@@ -271,10 +154,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <section class="hero-flex">
   <div class="hero-left">
-    <img src="https://images.unsplash.com/photo-1484779266408-55c02f6822f1?q=80&w=800&auto=format&fit=crop" alt="Generic Band Logo">
+    <img src="https://source.unsplash.com/800x800/?metal,guitar,stage" alt="Heavy Metal Band Logo Placeholder">
   </div>
   <div class="hero-right">
-    </h3>OUT NOW!</h3>
+    <h3>OUT NOW!</h3>
     <h2>Krown the King!</h2>
     <a href="#popup1" style="text-decoration:none;">
       <button style="padding: 10px 20px; background-color: #32CD32; color: black; font-weight: bold; border: none; cursor: pointer;">
@@ -284,16 +167,15 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </section>
 
-<!-- Shows section stays unchanged -->
-
 <section class="section" style="margin-top: 10px; margin-bottom: 10px;">
   <h2>Meet the Chaos Architects</h2>
-  <img src="https://images.unsplash.com/photo-1507874457470-272b3c8d8ee2?q=80&w=1600&auto=format&fit=crop" alt="Generic Band Photo" class="band-photo"/>
+  <img src="https://source.unsplash.com/1600x1000/?heavy-metal,band" alt="Heavy Metal Band Photo" class="band-photo"/>
 </section>
 
 <footer>
   &copy; 2025 Paradise is Cancelled. All rights reserved. | <a href="mailto:picband@gmail.com">picband@gmail.com</a> | Web Design by: MBG Digital
 </footer>
+
 <div class="skull-container" id="skullContainer"></div>
 </body>
 </html>
