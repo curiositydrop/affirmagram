@@ -224,3 +224,6 @@ header {
         margin-top: 10px;
       }
     }
+#popup1:target {
+  display: block !important;
+}
