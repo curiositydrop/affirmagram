@@ -1,50 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>
-  body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #000;
-  color: limegreen;
-  position: relative;
-  overflow-x: hidden;
-  animation: fadeIn 3.5s ease-in-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-  #skullContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 9999;
-}
-
-  .skull {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    opacity: 0.15;
-    animation: fall linear infinite;
-  }
-
-  @keyframes fall {
-    0% {
-      transform: translateY(-100px) rotate(0deg);
-      opacity: 0.2;
-    }
-    100% {
-      transform: translateY(110vh) rotate(360deg);
-      opacity: 0;
-    }
-  }
-</style>
   <!-- Meta & Title -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
