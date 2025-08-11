@@ -102,7 +102,7 @@
         message: censorMessage(form.message.value.trim()),
         image_url: (form.image_url.value || '').trim(),
         createdAt: serverTimestamp(),
-        approved: false
+        approved: true
       };
       try {
         await addDoc(collection(db, 'fanwall'), data);
