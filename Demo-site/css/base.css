@@ -1,4 +1,8 @@
-/* Reset & base styles */
+.banner-image img {
+  display: block;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -6,114 +10,246 @@ body {
   color: limegreen;
   position: relative;
   overflow-x: hidden;
-  animation: fadeIn 1.2s ease-in-out; /* ✅ keep fast fade */
+  animation: fadeIn 1.2s ease-in-out; /* fast fade */
 }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Fade-in keyframes */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Links */
-a { color: limegreen; text-decoration: none; }
-a:hover { color: #2ecc71; }
-
-/* Nav styles */
-nav {
-  background: #111;
-  padding: 10px;
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-nav a.active {
-  color: white;
+#skullContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+.skull {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  opacity: 0.15;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
+  100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
 }
 
-/* Hero section */
-.hero {
+header {
+  background: black;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid limegreen;
+  flex-wrap: wrap;
+}
+.logo { display: flex; align-items: center; gap: 20px; }
+.logo img { height: 60px; }
+nav { display: flex; gap: 15px; flex-wrap: wrap; }
+nav a.active { color: white; pointer-events: none; }
+nav a { text-decoration: none; color: limegreen; font-size: 18px; font-family: 'Metal Mania', cursive; }
+nav a:hover { color: white; }
+
+.hero h1 { font-size: 48px; color: gold; font-family: 'Metal Mania', cursive; }
+.hero p  { font-size: 22px; color: white; font-family: 'Metal Mania', cursive; }
+
+.hero-flex {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  padding: 40px 20px;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+  background: #111 url('') no-repeat center center / cover;
+  border-top: 2px solid limegreen;
+  border-bottom: 2px solid limegreen;
 }
-.hero-left { flex: 1; min-width: 240px; }
-.hero-right { flex: 1; min-width: 240px; }
-
-/* Sections */
-section {
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-/* Footer */
-footer {
-  background: #111;
-  color: #888;
+.hero-left img { width: 220px; max-width: 90vw; border: 0px solid limegreen; }
+.hero-right {
+  max-width: 500px;
   text-align: center;
-  padding: 15px;
+  vertical-align: center;
+  color: white;
+  font-family: 'Metal Mania', cursive;
+}
+/* keep items side-by-side */
+.hero-left { flex: 0 0 auto; }     /* image keeps its natural width */
+.hero-right { flex: 1; min-width: 240px; }  /* text takes remaining space */
+/* (removed stray extra brace here) */
+
+.hero-right h3 { font-size: 32px; color: gold; margin: 0 0 0px 0; }
+.hero-right p  { font-size: 18px; margin-bottom: 20px; }
+
+.listen-btn {
+  padding: 6px 14px;
   font-size: 14px;
-}
-
-/* Buttons */
-button, .btn {
-  background: limegreen;
-  color: #000;
+  font-family: 'Metal Mania', cursive;
+  color: black;
+  background-color: limegreen;
   border: none;
-  padding: 8px 16px;
-  cursor: pointer;
   border-radius: 4px;
-  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 10px auto 0 auto;
 }
-button:hover, .btn:hover {
-  background: #2ecc71;
+.listen-btn:hover { background-color: gold; color: black; }
+
+@media (max-width: 480px) {
+  .hero-left img { width: 130px; }
+  .hero-flex { gap: 16px; padding: 32px 16px; }
+  .hero-right h3 { font-size: 24px; }
+  .hero-right p  { font-size: 16px; }
 }
 
-/* Images grid (for photos page) */
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 15px;
-}
-.image-grid img {
-  width: 100%;
-  height: auto;
-  border: 3px solid limegreen;
-  border-radius: 6px;
+/* ========== UNIVERSAL IMAGE STYLE ========== */
+img { max-width: 100%; height: auto; }
+.hero-left img { display: inline-block; margin: 0; }
+
+/* ========== CONTENT SECTIONS ========== */
+.section { padding: 20px 20px; text-align: center; }
+.section h2 { font-size: 36px; margin-bottom: 20px; font-family: 'Metal Mania', cursive; }
+
+/* ========== VIDEO PLACEHOLDER ========== */
+.video-placeholder {
+  width: 80%; height: 300px; background: #333; margin: 0 auto 40px;
+  display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
 }
 
-/* Fan posts layout placeholder (not used with graffiti wall) */
+/* ========== BAND PHOTO STYLE ========== */
+.band-photo { max-width: 100%; height: auto; margin: 30px auto; display: block; border: 2px solid limegreen; }
+
+/* ========== FOOTER ========== */
+footer { padding: 20px; text-align: center; background: black; border-top: 2px solid limegreen; }
+footer a { color: limegreen; text-decoration: none; }
+
+/* ========== MOBILE RESPONSIVE NAV ========== */
+@media (max-width: 768px) {
+  header { flex-direction: column; align-items: flex-start; }
+  nav { justify-content: center; width: 100%; margin-top: 10px; }
+}
+
+#popup1:target { display: block !important; }
+
+/* ===== Audio page embeds ===== */
+.track { max-width: 500px; margin: 0 auto 50px auto; text-align: center; }
+.track iframe {
+  display: block; width: 100%; height: 166px; border: none; margin: 0; border: 2px solid limegreen;
+}
+.glow-frame {
+  display: inline-block; background-color: black; border: 2px solid limegreen; box-shadow: 0 0 20px limegreen;
+  padding: 0; border-radius: 8px;
+}
+.track .credit { display: none; }
+.track a { color: limegreen; text-decoration: none; pointer-events: none; cursor: default; }
+@media (max-width: 768px) { .track { margin-left: 10px; margin-right: 10px; } .track iframe { max-width: 100%; } }
+
+/* ===== include placeholders so page can paint immediately ===== */
+.include { display:block; background:#000; }
+.include-header { min-height: 360px; border-bottom: 2px solid limegreen; position: relative; overflow: hidden; }
+.include-footer { min-height: 140px; border-top: 2px solid limegreen; position: relative; overflow: hidden; }
+@keyframes shimmer { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
+.include-header::after, .include-footer::after {
+  content:""; position:absolute; inset:0;
+  background-image: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 100%);
+  background-size:200px 100%; animation: shimmer 1.2s linear infinite; pointer-events:none;
+}
+
+/* ===== Photos page grid ===== */
+.gallery { --gap: 14px; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--gap); padding: 10px 0; }
+.gallery-item {
+  display: block; position: relative; border: 2px solid limegreen; border-radius: 8px; overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.gallery-item:hover { transform: translateY(-2px); box-shadow: 0 0 16px rgba(50,205,50,.4); }
+.gallery img { display: block; width: 100%; height: auto; object-fit: cover; }
+@media (max-width: 480px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+
+/* ===== About page layout ===== */
+.about-wrap {
+  display: grid; grid-template-columns: 1.1fr 1.4fr; gap: 28px; align-items: start;
+  margin: 10px auto 30px auto; max-width: 1100px;
+}
+.about-left img { display:block; width:100%; height:auto; border:2px solid limegreen; border-radius:8px; }
+.about-right .lede { font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
+.about-right p { margin: 10px 0; }
+.about-facts { list-style:none; padding:0; margin:16px 0 0 0; text-align:left; }
+.about-facts li { margin:6px 0; border-left:3px solid limegreen; padding-left:10px; }
+.members { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:16px; margin-top:24px; }
+.member { text-align:center; border:2px solid limegreen; border-radius:8px; padding:14px; background: rgba(0,0,0,0.6); }
+.member img { width:100%; height:auto; border-radius:6px; margin-bottom:8px; }
+.member h3 { margin:6px 0 4px 0; font-family:'Metal Mania', cursive; color: gold; }
+.member p  { margin:0; }
+@media (max-width: 860px) { .about-wrap { grid-template-columns:1fr; } }
+
+/* Email button styling */
+.btn-email {
+  display:inline-block; padding:8px 14px; margin-left:6px; background: limegreen; color:black !important;
+  font-weight:bold; border-radius:6px; text-decoration:none; border:2px solid limegreen; transition: all .2s;
+}
+.btn-email:hover { background:black; color:limegreen !important; border-color:limegreen; }
+
+/* ===== Merch grid ===== */
+.merch-grid { --gap:16px; display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:var(--gap); max-width:1100px; margin:0 auto; }
+.merch-card {
+  border: 2px solid limegreen; border-radius:8px; background: rgba(0,0,0,0.6); padding:14px; text-align:center;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.merch-card:hover { transform: translateY(-2px); box-shadow:0 0 16px rgba(50,205,50,.4); }
+.merch-card img { width:100%; height:auto; border-radius:6px; margin-bottom:8px; }
+.merch-card h3 { margin:8px 0 4px 0; font-family:'Metal Mania', cursive; color: gold; }
+.price { margin:0 0 10px 0; font-weight:bold; color:#fff; }
+.actions { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.btn { display:inline-block; padding:8px 14px; background: limegreen; color:black; font-weight:bold; border-radius:6px; text-decoration:none; border:2px solid limegreen; transition: all .2s; }
+.btn:hover { background:black; color:limegreen; }
+.btn.ghost { background:transparent; color:limegreen; }
+
+/* ===== Fan wall form ===== */
+.fan-form {
+  max-width: 720px; margin: 0 auto; text-align: left;
+  border: 2px solid limegreen; border-radius: 8px; padding: 16px; background: rgba(0,0,0,.6);
+}
+.fan-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.fan-form input, .fan-form textarea {
+  width: 100%; padding: 10px; background: #000; color: #fff; border: 1px solid limegreen; border-radius: 6px;
+}
+.fan-form .btn { margin-top: 10px; }
+.fan-form .form-note { font-size: 12px; opacity: .8; margin-top: 6px; }
+.status { margin-top: 8px; }
+
 .fan-posts {
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+  gap: 14px;
 }
+.fan-posts .post { border: 2px solid limegreen; border-radius: 8px; padding: 12px; background: rgba(0,0,0,.6); }
+@media (max-width: 640px) { .fan-form .row { grid-template-columns: 1fr; } }
 
-/* Fan post style */
-.post {
-  background: #111;
-  border-radius: 6px;
-  padding: 10px;
-  border: 1px solid #2ecc71;
-}
-
-/* Graffiti wall */
+/* ===== Graffiti wall layout ===== */
 .graffiti-wall {
-  display: block; /* ✅ override grid */
+  display: block; /* important to override .fan-posts grid */
   position: relative;
-  min-height: 600px;
+  min-height: 600px;  /* space to throw messages around */
   border: 2px solid limegreen;
   border-radius: 8px;
   background: #000;
   overflow: hidden;
 }
-.graffiti-message {
+.graffiti-post {
   position: absolute;
-  font-size: 1rem;
-  font-weight: bold;
-  white-space: pre-wrap;
-  word-break: break-word;
-  transform: rotate(var(--rot, 0deg));
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(50,205,50,0.4);
+  box-shadow: 0 0 12px rgba(50,205,50,.2);
+}
+.graffiti-post strong { display:block; margin-bottom:4px; color: gold; }
+.graffiti-post img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 6px; }
+@media (max-width: 640px) {
+  .graffiti-wall { min-height: auto; }
+  .graffiti-post { position: static; transform: none !important; margin: 8px 0; }
 }
