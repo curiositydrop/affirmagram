@@ -45,26 +45,103 @@
           <input type="email" name="email" placeholder="Your Email (kept private)" required>
         </div>
         <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
-
-        <!-- Optional image link instead of upload (keeps it simple on static hosts) -->
         <input type="url" name="image_url" placeholder="Link to a photo (optional)">
-
         <button type="submit" class="btn">Post to Fan Wall</button>
         <p class="form-note">By submitting, you allow us to display your message (and linked photo) on this page.</p>
         <p id="fanStatus" class="status"></p>
       </form>
 
-      <!-- Where fan posts would appear (manual or later automated) -->
-      <div class="fan-posts">
-        <!-- You can paste approved submissions here as cards later -->
-      </div>
+      <div class="fan-posts"></div>
     </section>
   </main>
 
   <!-- Shared footer include -->
   <div data-include="partials/footer.html" class="include include-footer"></div>
 
-  <!-- Scripts -->
+  <!-- Config + SDK wiring -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Firebase + profanity masking (only change) -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot }
+      from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    // init
+    const app = initializeApp(window.FB_CONFIG);
+    const db  = getFirestore(app);
+
+    // elements
+    const form = document.getElementById('fanForm');
+    const statusEl = document.getElementById('fanStatus');
+    const postsEl  = document.querySelector('.fan-posts');
+
+    // --- profanity/derogatory masking ---
+    function censorMessage(text) {
+      const map = {
+        "fuck":"f*#k","fucking":"f*#king","shit":"sh!t","bitch":"b!tch","asshole":"a**hole",
+        "dick":"d*ck","pussy":"p*ssy","cunt":"c#+*","bastard":"b*stard","cock":"c*ck",
+        "cum":"c*m","twat":"tw*t","prick":"pr*ck","wanker":"w*nker","slut":"sl*t","whore":"wh*re",
+        "nigger":"n*****","nigga":"n****","fag":"f*g","faggot":"f*ggot","spic":"sp*c","chink":"ch*nk","kike":"k*ke",
+        "retard":"r*tard"
+      };
+      let s = String(text || '');
+      for (const w in map) {
+        const re = new RegExp(`\\b${w}\\b`, 'gi');
+        s = s.replace(re, map[w]);
+      }
+      return s;
+    }
+
+    // submit -> save (still moderated: approved:false)
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        name: censorMessage(form.name.value.trim()),
+        email: form.email.value.trim(),
+        message: censorMessage(form.message.value.trim()),
+        image_url: (form.image_url.value || '').trim(),
+        createdAt: serverTimestamp(),
+        approved: false
+      };
+      try {
+        await addDoc(collection(db, 'fanwall'), data);
+        if (statusEl) statusEl.textContent = "Thanks! Submitted for review.";
+        form.reset();
+      } catch (err) {
+        if (statusEl) statusEl.textContent = "Couldn’t send right now. Try again later.";
+        console.error(err);
+      }
+    });
+
+    // render helper (escapes HTML)
+    const esc = (t='') => String(t).replace(/</g,'&lt;');
+    function renderPost(doc) {
+      const d = doc.data();
+      const el = document.createElement('div');
+      el.className = 'post';
+      el.innerHTML = `
+        <strong>${esc(d.name || 'Fan')}</strong>
+        <p style="margin:6px 0 8px 0;">${esc(d.message || '')}</p>
+        ${d.image_url ? `<a href="${esc(d.image_url)}" target="_blank" rel="noopener">
+          <img src="${esc(d.image_url)}" alt="fan photo" style="max-width:100%;height:auto;border-radius:6px;border:1px solid #2ecc71;">
+        </a>` : ''}
+        <div style="opacity:.7;font-size:12px;margin-top:6px;">Posted</div>
+      `;
+      return el;
+    }
+
+    // live-load approved posts
+    const q = query(collection(db, 'fanwall'), orderBy('createdAt','desc'));
+    onSnapshot(q, (snap) => {
+      postsEl.innerHTML = '';
+      snap.forEach(doc => {
+        if (doc.data().approved === true) postsEl.appendChild(renderPost(doc));
+      });
+    });
+  </script>
+
+  <!-- includes + site logic -->
   <script src="js/includes.js"></script>
   <script src="js/site.js"></script>
 </body>
