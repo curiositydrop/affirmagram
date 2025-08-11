@@ -1,0 +1,96 @@
+<!-- Save as merch.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Merch | Venomous Thorn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body data-page="merch">
+  <!-- Falling skulls -->
+  <div id="skullContainer"></div>
+  <script>
+    (function () {
+      const skullContainer = document.getElementById("skullContainer");
+      if (!skullContainer) return;
+      const iconCount = 12;
+      const icons = [{symbol:"💀"},{symbol:"☠️"},{symbol:""}];
+      for (let i=0;i<iconCount;i++){
+        const el = document.createElement("div");
+        el.className = "skull";
+        el.textContent = icons[Math.floor(Math.random()*icons.length)].symbol;
+        el.style.left = Math.random()*100 + "vw";
+        el.style.animationDuration = (6 + Math.random()*6) + "s";
+        el.style.fontSize = (20 + Math.random()*30) + "px";
+        el.style.top = -Math.random()*100 + "px";
+        skullContainer.appendChild(el);
+      }
+    })();
+  </script>
+
+  <!-- Shared header include -->
+  <div data-include="partials/header.html" class="include include-header"></div>
+
+  <!-- Page content -->
+  <main class="page-shell">
+    <section class="section">
+      <h2>Official Merch</h2>
+
+      <div class="merch-grid">
+        <!-- Item 1 -->
+        <div class="merch-card">
+          <img src="images/merch-shirt1.jpg" alt="Logo Tee" loading="lazy" width="600" height="600">
+          <h3>Logo Tee</h3>
+          <p class="price">$25</p>
+          <div class="actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">Buy on Store</a>
+            <a class="btn ghost" href="mailto:Venomousthorn@gmail.com?subject=Merch%20Order%20-%20Logo%20Tee">Email to Order</a>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="merch-card">
+          <img src="images/merch-hoodie.jpg" alt="Forged in Fire Hoodie" loading="lazy" width="600" height="600">
+          <h3>“Forged in Fire” Hoodie</h3>
+          <p class="price">$45</p>
+          <div class="actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">Buy on Store</a>
+            <a class="btn ghost" href="mailto:Venomousthorn@gmail.com?subject=Merch%20Order%20-%20Hoodie">Email to Order</a>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="merch-card">
+          <img src="images/merch-hat.jpg" alt="Snapback" loading="lazy" width="600" height="600">
+          <h3>Snapback</h3>
+          <p class="price">$30</p>
+          <div class="actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">Buy on Store</a>
+            <a class="btn ghost" href="mailto:Venomousthorn@gmail.com?subject=Merch%20Order%20-%20Snapback">Email to Order</a>
+          </div>
+        </div>
+
+        <!-- Item 4 -->
+        <div class="merch-card">
+          <img src="images/merch-stickerpack.jpg" alt="Sticker Pack" loading="lazy" width="600" height="600">
+          <h3>Sticker Pack</h3>
+          <p class="price">$8</p>
+          <div class="actions">
+            <a class="btn" href="#" target="_blank" rel="noopener">Buy on Store</a>
+            <a class="btn ghost" href="mailto:Venomousthorn@gmail.com?subject=Merch%20Order%20-%20Sticker%20Pack">Email to Order</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared footer include -->
+  <div data-include="partials/footer.html" class="include include-footer"></div>
+
+  <!-- Scripts -->
+  <script src="js/includes.js"></script>
+  <script src="js/site.js"></script>
+</body>
+</html>
