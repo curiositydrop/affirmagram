@@ -1,3 +1,4 @@
+<!-- Save as fanwall.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,222 +6,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fan Wall | Venomous Thorn</title>
   <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
-
-  <!-- Firebase & FanWall Scripts -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyB0OomEFVzP4folbUyuBD-PKEoXKVnnEOg",
-      authDomain: "picfanwall.firebaseapp.com",
-      projectId: "picfanwall",
-      storageBucket: "picfanwall.appspot.com",
-      messagingSenderId: "619099317643",
-      appId: "1:619099317643:web:13fb140e51e01af5983b8e",
-      databaseURL: "https://picfanwall-default-rtdb.firebaseio.com"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const wall = document.getElementById("graffiti-wall");
-      const messagesRef = ref(database, "messages");
-
-      onValue(messagesRef, (snapshot) => {
-        wall.innerHTML = "";
-        snapshot.forEach((childSnapshot) => {
-          const data = childSnapshot.val();
-          const msg = document.createElement("div");
-          msg.innerText = data.name ? `${data.name}: ${data.text}` : data.text;
-          msg.style.position = "absolute";
-          msg.style.left = Math.floor(Math.random() * 80) + "%";
-          msg.style.top = Math.floor(Math.random() * 80) + "%";
-          msg.style.transform = `rotate(${Math.floor(Math.random() * 60 - 30)}deg)`;
-          msg.style.fontFamily = data.font;
-          msg.style.color = data.color;
-          msg.style.fontSize = "1.2em";
-          msg.style.zIndex = 10;
-          msg.style.pointerEvents = "none";
-          msg.style.userSelect = "none";
-          wall.appendChild(msg);
-        });
-      });
-    });
-
-    window.submitMessage = function () {
-      const text = document.getElementById("message").value;
-      const font = document.getElementById("font").value;
-      const color = document.getElementById("color").value;
-      const name = document.getElementById("name").value;
-
-      if (!text.trim()) return;
-
-      const messagesRef = ref(database, "messages");
-      push(messagesRef, { text, font, color, name });
-      document.getElementById("message").value = "";
-      document.getElementById("name").value = "";
-    };
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body data-page="fanwall">
+  <!-- Falling skulls -->
+  <div id="skullContainer"></div>
+  <script>
+    (function () {
+      const skullContainer = document.getElementById("skullContainer");
+      if (!skullContainer) return;
+      const iconCount = 12;
+      const icons = [{symbol:"💀"},{symbol:"☠️"},{symbol:""}];
+      for (let i=0;i<iconCount;i++){
+        const el = document.createElement("div");
+        el.className = "skull";
+        el.textContent = icons[Math.floor(Math.random()*icons.length)].symbol;
+        el.style.left = Math.random()*100 + "vw";
+        el.style.animationDuration = (6 + Math.random()*6) + "s";
+        el.style.fontSize = (20 + Math.random()*30) + "px";
+        el.style.top = -Math.random()*100 + "px";
+        skullContainer.appendChild(el);
+      }
+    })();
   </script>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: limegreen;
-      overflow-x: hidden;
-      animation: fadeIn 3.5s ease-in-out;
-    }
+  <!-- Shared header include -->
+  <div data-include="partials/header.html" class="include include-header"></div>
 
-    html {
-      overflow-x: hidden;
-    }
+  <!-- Page content -->
+  <main class="page-shell">
+    <section class="section">
+      <h2>Fan Wall</h2>
+      <p>Drop us a message or a show photo and we’ll feature our favorites here.</p>
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+      <form id="fanForm" class="fan-form">
+        <div class="row">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email (kept private)" required>
+        </div>
+        <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
 
-    header {
-      background: black;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid limegreen;
-      flex-wrap: wrap;
-    }
+        <!-- Optional image link instead of upload (keeps it simple on static hosts) -->
+        <input type="url" name="image_url" placeholder="Link to a photo (optional)">
 
-    nav {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
+        <button type="submit" class="btn">Post to Fan Wall</button>
+        <p class="form-note">By submitting, you allow us to display your message (and linked photo) on this page.</p>
+        <p id="fanStatus" class="status"></p>
+      </form>
 
-    nav a {
-      text-decoration: none;
-      color: limegreen;
-      font-size: 18px;
-      font-family: 'Metal Mania', cursive;
-    }
+      <!-- Where fan posts would appear (manual or later automated) -->
+      <div class="fan-posts">
+        <!-- You can paste approved submissions here as cards later -->
+      </div>
+    </section>
+  </main>
 
-    nav a:hover {
-      color: white;
-    }
+  <!-- Shared footer include -->
+  <div data-include="partials/footer.html" class="include include-footer"></div>
 
-    nav a.active {
-      color: white;
-      pointer-events: none;
-    }
-
-    .banner-image img {
-      width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: cover;
-    }
-
-    @media (max-width: 480px) {
-      .banner-image img {
-        max-height: 100px;
-      }
-    }
-
-    .section {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 36px;
-      font-family: 'Metal Mania', cursive;
-      color: gold;
-      margin-bottom: 30px;
-    }
-
-    footer {
-      padding: 20px;
-      text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
-    }
-
-    footer a {
-      color: limegreen;
-      text-decoration: none;
-    }
-
-    #graffiti-wall {
-      position: relative;
-      width: 100%;
-      height: 500px;
-      background: #111;
-      overflow: hidden;
-      border: 3px solid #ccc;
-      margin-top: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="banner-image">
-    <img src="http://curiositydrop.com/Demo-site/DC6B102F-4F56-4945-BE36-F355EA47A1C5.png" alt="Promotional Banner">
-  </div>
-
-  <header>
-    <nav>
-      <a href="index.html">HOME</a>
-      <a href="audio.html">AUDIO</a>
-      <a href="photos.html">PHOTOS</a>
-      <a href="about.html">ABOUT</a>
-      <a href="merch.html">MERCH</a>
-      <a href="fanwall.html" class="active">FAN WALL</a>
-    </nav>
-  </header>
-
-  <!-- Fan Wall Section -->
-  <section class="section" style="position: relative;">
-    <h2>THE WALL</h2>
-    <p>Choose your style. Say what you want. Leave your mark.</p>
-
-    <div style="margin-bottom: 15px;">
-      <input id="name" type="text" placeholder="Your Name (optional)" style="padding: 10px; width: 200px; max-width: 90%; margin-bottom: 10px;">
-      <br>
-      <input id="message" type="text" placeholder="Your Message" style="padding: 10px; width: 60%; max-width: 300px;">
-      
-      <select id="font" style="padding: 10px;">
-        <option value="Arial, sans-serif">Arial</option>
-        <option value="'Metal Mania', cursive">Metal Mania</option>
-        <option value="'Courier New', monospace">Courier</option>
-        <option value="'Comic Sans MS', cursive">Comic Sans</option>
-      </select>
-
-      <select id="color" style="padding: 10px;">
-        <option value="#ff0055">Hot Pink</option>
-        <option value="#00ffff">Cyan</option>
-        <option value="#00ff00">Lime</option>
-        <option value="#ffff00">Yellow</option>
-        <option value="#ffffff">White</option>
-      </select>
-
-      <button onclick="submitMessage()" style="padding: 10px 20px; margin-left: 5px;">Tag the Wall</button>
-    </div>
-
-    <div id="graffiti-wall"></div>
-  </section>
-
-  <footer>
-    &copy; 2025 Venomous Thorn. All rights reserved. |
-    <a href="mailto:venomousthorn@gmail.com">email Venomous Thorn</a> |
-    Web Design by: MBG Digital
-  </footer>
-  <script>
-  fetch("booking-widget.html")
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-    });
-</script>
+  <!-- Scripts -->
+  <script src="js/includes.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>
