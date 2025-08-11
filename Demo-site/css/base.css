@@ -482,3 +482,32 @@ body { animation: fadeIn 1.2s ease-in-out; }
 @media (max-width: 640px) {
   .fan-form .row { grid-template-columns: 1fr; }
 }
+/* ===== Graffiti wall layout ===== */
+.graffiti-wall {
+  position: relative;
+  min-height: 600px;         /* space to throw messages around */
+  border: 2px solid limegreen;
+  border-radius: 8px;
+  background: #000;
+  overflow: hidden;
+}
+
+/* Each post is absolutely positioned & tilted */
+.graffiti-post {
+  position: absolute;
+  max-width: 220px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.6);
+  border: 1px solid rgba(50,205,50,0.4); /* subtle frame to keep legible */
+  box-shadow: 0 0 12px rgba(50,205,50,.2);
+}
+
+.graffiti-post strong { display:block; margin-bottom:4px; color: gold; }
+.graffiti-post img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 6px; }
+
+/* Mobile fallback: stack neatly instead of absolute chaos */
+@media (max-width: 640px) {
+  .graffiti-wall { min-height: auto; }
+  .graffiti-post { position: static; transform: none !important; margin: 8px 0; }
+}
