@@ -298,3 +298,39 @@ header {
 /* keep site-wide fade */
 @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 body { animation: fadeIn 1.2s ease-in-out; }
+/* ===== Photos page grid ===== */
+.gallery {
+  --gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--gap);
+  padding: 10px 0;
+}
+
+.gallery-item {
+  display: block;
+  position: relative;
+  border: 2px solid limegreen;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.gallery-item:hover { 
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(50,205,50,.4);
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Optional: maintain thumbnail aspect ratio if your thumbs vary */
+.gallery img { object-fit: cover; }
+
+/* Small screens */
+@media (max-width: 480px) {
+  .gallery { grid-template-columns: repeat(2, 1fr); }
+}
