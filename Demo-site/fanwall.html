@@ -45,13 +45,14 @@
           <input type="email" name="email" placeholder="Your Email (kept private)" required>
         </div>
         <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
+        <input type="color" name="color" value="#32CD32" title="Choose text color">
         <input type="url" name="image_url" placeholder="Link to a photo (optional)">
         <button type="submit" class="btn">Post to Fan Wall</button>
         <p class="form-note">By submitting, you allow us to display your message (and linked photo) on this page.</p>
         <p id="fanStatus" class="status"></p>
       </form>
 
-      <div class="fan-posts"></div>
+      <div class="fan-posts graffiti-wall"></div>
     </section>
   </main>
 
@@ -140,6 +141,113 @@
       });
     });
   </script>
+  <!-- Firebase config object you created earlier -->
+<script src="js/firebase-config.js"></script>
+
+<!-- Firebase + Fan Wall (mask + instant-post + graffiti layout) -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+  import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot }
+    from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+  // init
+  const app = initializeApp(window.FB_CONFIG);
+  const db  = getFirestore(app);
+
+  // elements
+  const form = document.getElementById('fanForm');
+  const statusEl = document.getElementById('fanStatus');
+  const stage = document.querySelector('.graffiti-wall');
+
+  // --- profanity/derogatory masking ---
+  function censorMessage(text) {
+    const map = {
+      "fuck":"f*#k","fucking":"f*#king","shit":"sh!t","bitch":"b!tch","asshole":"a**hole",
+      "dick":"d*ck","pussy":"p*ssy","cunt":"c#+*","bastard":"b*stard","cock":"c*ck",
+      "cum":"c*m","twat":"tw*t","prick":"pr*ck","wanker":"w*nker","slut":"sl*t","whore":"wh*re",
+      "nigger":"n*****","nigga":"n****","fag":"f*g","faggot":"f*ggot","spic":"sp*c","chink":"ch*nk","kike":"k*ke",
+      "retard":"r*tard"
+    };
+    let s = String(text || '');
+    for (const w in map) {
+      const re = new RegExp(`\\b${w}\\b`, 'gi');
+      s = s.replace(re, map[w]);
+    }
+    return s;
+  }
+
+  // sanitize color hex
+  const validHex = hex => /^#([0-9A-F]{6})$/i.test(hex);
+
+  // submit -> save (instant post with mask)
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const pick = (form.color?.value || '#32CD32').trim();
+    const color = validHex(pick) ? pick : '#32CD32';
+
+    const data = {
+      name: censorMessage(form.name.value.trim()),
+      email: form.email.value.trim(),
+      message: censorMessage(form.message.value.trim()),
+      image_url: (form.image_url.value || '').trim(),
+      color,
+      createdAt: serverTimestamp(),
+      approved: true   // <-- instant posting
+    };
+
+    try {
+      await addDoc(collection(db, 'fanwall'), data);
+      if (statusEl) statusEl.textContent = "Thanks! Your post is live.";
+      form.reset();
+    } catch (err) {
+      if (statusEl) statusEl.textContent = "Couldn’t send right now. Try again later.";
+      console.error(err);
+    }
+  });
+
+  // helpers
+  const esc = (t='') => String(t).replace(/</g,'&lt;');
+
+  function renderPost(doc) {
+    const d = doc.data();
+    const el = document.createElement('div');
+    el.className = 'post graffiti-post';
+    el.style.color = d.color || '#32CD32';
+    el.innerHTML = `
+      <strong>${esc(d.name || 'Fan')}</strong>
+      <p style="margin:6px 0 8px 0;">${esc(d.message || '')}</p>
+      ${d.image_url ? `<a href="${esc(d.image_url)}" target="_blank" rel="noopener">
+        <img src="${esc(d.image_url)}" alt="fan photo">
+      </a>` : ''}
+    `;
+
+    // insert first to measure
+    stage.appendChild(el);
+
+    // random tilt
+    const angle = (Math.random() * 30 - 15).toFixed(1);
+    el.style.transform = `rotate(${angle}deg)`;
+
+    // random position within stage
+    const pad = 16;
+    const maxLeft = Math.max(0, stage.clientWidth - el.offsetWidth - pad);
+    const maxTop  = Math.max(0, stage.clientHeight - el.offsetHeight - pad);
+    el.style.left = `${Math.floor(Math.random() * (maxLeft + 1))}px`;
+    el.style.top  = `${Math.floor(Math.random() * (maxTop + 1))}px`;
+    el.style.zIndex = String(10 + Math.floor(Math.random() * 90));
+    return el;
+  }
+
+  // live-load approved posts (already masked & instant)
+  const q = query(collection(db, 'fanwall'), orderBy('createdAt','desc'));
+  onSnapshot(q, (snap) => {
+    stage.innerHTML = '';
+    snap.forEach(doc => {
+      if (doc.data().approved === true) stage.appendChild(renderPost(doc));
+    });
+  });
+</script>
 
   <!-- includes + site logic -->
   <script src="js/includes.js"></script>
