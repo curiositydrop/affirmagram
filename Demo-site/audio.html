@@ -12,27 +12,28 @@
   <!-- Falling skulls -->
   <div id="skullContainer"></div>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const skullContainer = document.getElementById("skullContainer");
-      const iconCount = 30;
-      const icons = [
-        { symbol: "💀", className: "spin" },
-        { symbol: "☠️", className: "spin" },
-        { symbol: "", className: "flame" }
-      ];
-      for (let i = 0; i < iconCount; i++) {
-        const iconObj = icons[Math.floor(Math.random() * icons.length)];
-        const icon = document.createElement("div");
-        icon.classList.add("skull");
-        icon.textContent = iconObj.symbol;
-        icon.style.left = Math.random() * 100 + "vw";
-        icon.style.animationDuration = (6 + Math.random() * 6) + "s";
-        icon.style.fontSize = (20 + Math.random() * 30) + "px";
-        icon.style.top = -Math.random() * 100 + "px";
-        skullContainer.appendChild(icon);
-      }
-    });
-  </script>
+(function() {
+  const skullContainer = document.getElementById("skullContainer");
+  if (!skullContainer) return;
+  const iconCount = 30;
+  const icons = [
+    { symbol: "💀", className: "spin" },
+    { symbol: "☠️", className: "spin" },
+    { symbol: "", className: "flame" }
+  ];
+  for (let i = 0; i < iconCount; i++) {
+    const iconObj = icons[Math.floor(Math.random() * icons.length)];
+    const icon = document.createElement("div");
+    icon.classList.add("skull");
+    icon.textContent = iconObj.symbol;
+    icon.style.left = Math.random() * 100 + "vw";
+    icon.style.animationDuration = (6 + Math.random() * 6) + "s";
+    icon.style.fontSize = (20 + Math.random() * 30) + "px";
+    icon.style.top = -Math.random() * 100 + "px";
+    skullContainer.appendChild(icon);
+  }
+})();
+</script>
 
   <!-- Shared header include -->
   <div data-include="partials/header.html"></div>
