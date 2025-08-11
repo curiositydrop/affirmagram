@@ -107,43 +107,90 @@
   const validHex = hex => /^#([0-9A-F]{6})$/i.test(hex);
 
   // submit -> save (instant post)
-  form?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const pick  = (form.color?.value || '#32CD32').trim();
-    const color = validHex(pick) ? pick : '#32CD32';
+form?.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-    const data = {
-      name:    censorMessage(form.name.value.trim()),
-      message: censorMessage(form.message.value.trim()),
-      image_url: (form.image_url.value || '').trim(),
-      color,
-      createdAt: serverTimestamp(),
-      approved: true
-    };
+  const pick  = (form.color?.value || '#32CD32').trim();
+  const color = /^#([0-9A-F]{6})$/i.test(pick) ? pick : '#32CD32';
 
-    try {
-      await addDoc(collection(db, 'fanwall'), data);
-      if (statusEl) statusEl.textContent = "Thanks! Your post is live.";
-      form.reset();
-    } catch (err) {
-      if (statusEl) statusEl.textContent = "Couldn’t send right now. Try again later.";
-      console.error(err);
-    }
-  });
+  // store stable % position + angle so it doesn't move on refresh
+  const xP = Math.random();              // 0..1 across wall width
+  const yP = Math.random();              // 0..1 down wall height
+  const angle = Math.random() * 30 - 15; // -15..15 degrees
+
+  const data = {
+    name:    censorMessage(form.name.value.trim()),
+    message: censorMessage(form.message.value.trim()),
+    image_url: (form.image_url.value || '').trim(),
+    color,
+    xP, yP, angle,                // <— NEW
+    createdAt: serverTimestamp(),
+    approved: true
+  };
+
+  try {
+    await addDoc(collection(db, 'fanwall'), data);
+    if (statusEl) statusEl.textContent = "Thanks! Your post is live.";
+    form.reset();
+  } catch (err) {
+    if (statusEl) statusEl.textContent = "Couldn’t send right now. Try again later.";
+    console.error(err);
+  }
+});
 
   // render one note on the wall
   function renderPost(doc) {
-    const d = doc.data();
-    const el = document.createElement('div');
-    el.className = 'post graffiti-post';
-    el.style.color = d.color || '#32CD32';
-    el.innerHTML = `
-      <strong>${esc(d.name || 'Fan')}</strong>
-      <p style="margin:6px 0 8px 0;">${esc(d.message || '')}</p>
-      ${d.image_url ? `<a href="${esc(d.image_url)}" target="_blank" rel="noopener">
-        <img src="${esc(d.image_url)}" alt="fan photo">
-      </a>` : ''}
-    `;
+  const d = doc.data();
+  const el = document.createElement('div');
+  el.className = 'post graffiti-post';
+  el.style.color = d.color || '#32CD32';
+  el.innerHTML = `
+    <strong>${esc(d.name || 'Fan')}</strong>
+    <p style="margin:6px 0 8px 0;">${esc(d.message || '')}</p>
+    ${d.image_url ? `<a href="${esc(d.image_url)}" target="_blank" rel="noopener">
+      <img src="${esc(d.image_url)}" alt="fan photo">
+    </a>` : ''}
+  `;
+
+  // append first so we can measure its size
+  stage.appendChild(el);
+
+  // use saved % position & angle; if missing, fall back to center-ish
+  const xP = typeof d.xP === 'number' ? d.xP : 0.5;
+  const yP = typeof d.yP === 'number' ? d.yP : 0.5;
+  const angle = typeof d.angle === 'number' ? d.angle : 0;
+
+  const pad = 16;
+  const maxLeft = Math.max(0, stage.clientWidth  - el.offsetWidth  - pad);
+  const maxTop  = Math.max(0, stage.clientHeight - el.offsetHeight - pad);
+
+  el.style.left = `${Math.round(maxLeft * xP)}px`;
+  el.style.top  = `${Math.round(maxTop  * yP)}px`;
+  el.style.transform = `rotate(${angle.toFixed(1)}deg)`;
+  el.style.zIndex = String(10 + Math.floor(Math.random() * 90));
+
+  return el;
+}
+
+  // append first so we can measure its size
+  stage.appendChild(el);
+
+  // use saved % position & angle; if missing, fall back to center-ish
+  const xP = typeof d.xP === 'number' ? d.xP : 0.5;
+  const yP = typeof d.yP === 'number' ? d.yP : 0.5;
+  const angle = typeof d.angle === 'number' ? d.angle : 0;
+
+  const pad = 16;
+  const maxLeft = Math.max(0, stage.clientWidth  - el.offsetWidth  - pad);
+  const maxTop  = Math.max(0, stage.clientHeight - el.offsetHeight - pad);
+
+  el.style.left = `${Math.round(maxLeft * xP)}px`;
+  el.style.top  = `${Math.round(maxTop  * yP)}px`;
+  el.style.transform = `rotate(${angle.toFixed(1)}deg)`;
+  el.style.zIndex = String(10 + Math.floor(Math.random() * 90));
+
+  return el;
+}
 
     // append first to measure size
     stage.appendChild(el);
