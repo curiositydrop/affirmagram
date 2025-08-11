@@ -45,3 +45,39 @@ body {
       opacity: 0;
     }
   }
+header {
+      background: black;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid limegreen;
+      flex-wrap: wrap;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo img {
+      height: 60px;
+    }
+    nav {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    nav a.active {
+  color: white;
+  pointer-events: none; /* Optional: makes it unclickable to avoid reload */
+}
+    nav a {
+      text-decoration: none;
+      color: limegreen;
+      font-size: 18px;
+      font-family: 'Metal Mania', cursive;
+    }
+    nav a:hover {
+      color: white;
+    }
