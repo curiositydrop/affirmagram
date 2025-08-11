@@ -81,3 +81,72 @@ header {
     nav a:hover {
       color: white;
     }
+.hero h1 {
+      font-size: 48px;
+      color: gold;
+      font-family: 'Metal Mania', cursive;
+    }
+    .hero p {
+      font-size: 22px;
+      color: white;
+      font-family: 'Metal Mania', cursive;
+    }
+    .hero-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 40px;
+  background: #111 url('') no-repeat center center / cover;
+  border-top: 2px solid limegreen;
+  border-bottom: 2px solid limegreen;
+}
+
+.hero-left img {
+  width: 220px;
+  max-width: 90vw;
+  border: 0px solid limegreen;
+}
+
+.hero-right {
+  max-width: 500px;
+  text-align: center;
+  vertical-align: center;
+  color: white;
+  font-family: 'Metal Mania', cursive;
+}
+  /* keep items side-by-side */
+.hero-left { flex: 0 0 auto; }     /* image keeps its natural width */
+.hero-right { flex: 1; min-width: 240px; }  /* text takes remaining space */
+}
+
+.hero-right h3 {
+  font-size: 32px;
+  color: gold;
+  margin: 0 0 0px 0;
+}
+
+.hero-right p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.listen-btn {
+  padding: 6px 14px;
+  font-size: 14px;
+  font-family: 'Metal Mania', cursive;
+  color: black;
+  background-color: limegreen;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  display: block;
+  margin: 10px auto 0 auto; /* top margin optional for spacing */
+}
+
+.listen-btn:hover {
+  background-color: gold;
+  color: black;
+}
