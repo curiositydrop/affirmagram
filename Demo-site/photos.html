@@ -1,3 +1,4 @@
+<!-- Save as photos.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,205 +6,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Photos | Venomous Thorn</title>
   <link href="https://fonts.googleapis.com/css2?family=Metal+Mania&display=swap" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #000;
-      color: limegreen;
-      overflow-x: hidden;
-      max-width: 100%;
-      animation: fadeIn 3.5s ease-in-out;
-    }
-
-    html {
-      overflow-x: hidden;
-      max-width: 100%;
-    }
-
-    header {
-      background: black;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 2px solid limegreen;
-      flex-wrap: wrap;
-    }
-
-    nav {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: limegreen;
-      font-size: 18px;
-      font-family: 'Metal Mania', cursive;
-    }
-
-    nav a:hover {
-      color: white;
-    }
-
-    nav a.active {
-      color: white;
-      pointer-events: none;
-    }
-
-    .banner-image img {
-      width: 100%;
-      height: auto;
-      max-height: 150px;
-      object-fit: cover;
-    }
-
-    @media (max-width: 480px) {
-      .banner-image img {
-        max-height: 100px;
-      }
-    }
-    @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-    .section {
-      padding: 40px 20px;
-      text-align: center;
-    }
-
-    h2 {
-      font-size: 36px;
-      font-family: 'Metal Mania', cursive;
-      color: gold;
-      margin-bottom: 30px;
-    }
-
-    .gallery {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    .gallery img {
-      width: 300px;
-      height: 200px;
-      object-fit: cover;
-      border: 2px solid limegreen;
-      box-shadow: 0 0 10px limegreen;
-      border-radius: 8px;
-      transition: transform 0.2s ease;
-    }
-
-    .gallery img:hover {
-      transform: scale(1.03);
-    }
-
-    footer {
-      padding: 20px;
-      text-align: center;
-      background: black;
-      border-top: 2px solid limegreen;
-    }
-
-    footer a {
-      color: limegreen;
-      text-decoration: none;
-    }
-
-    /* Falling skulls */
-    #skullContainer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      overflow: hidden;
-      z-index: 9999;
-    }
-
-    .skull {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      opacity: 0.15;
-      animation: fall linear infinite;
-    }
-
-    @keyframes fall {
-      0% { transform: translateY(-100px) rotate(0deg); opacity: 0.2; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/base.css">
 </head>
-<body>
+<body data-page="photos">
   <!-- Falling skulls -->
-  <div class="skull-container" id="skullContainer"></div>
+  <div id="skullContainer"></div>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    (function () {
       const skullContainer = document.getElementById("skullContainer");
-      const iconCount = 30;
-      const icons = ["💀", "☠️"];
-      for (let i = 0; i < iconCount; i++) {
+      if (!skullContainer) return;
+      const iconCount = 12; // lighter on non-home pages
+      const icons = [{symbol:"💀"},{symbol:"☠️"},{symbol:""}];
+      for (let i=0;i<iconCount;i++){
         const icon = document.createElement("div");
-        icon.classList.add("skull");
-        icon.textContent = icons[Math.floor(Math.random() * icons.length)];
-        icon.style.left = Math.random() * 100 + "vw";
-        icon.style.animationDuration = (6 + Math.random() * 6) + "s";
-        icon.style.fontSize = (20 + Math.random() * 30) + "px";
-        icon.style.top = -Math.random() * 100 + "px";
+        icon.className = "skull";
+        icon.textContent = icons[Math.floor(Math.random()*icons.length)].symbol;
+        icon.style.left = Math.random()*100 + "vw";
+        icon.style.animationDuration = (6 + Math.random()*6) + "s";
+        icon.style.fontSize = (20 + Math.random()*30) + "px";
+        icon.style.top = -Math.random()*100 + "px";
         skullContainer.appendChild(icon);
       }
-    });
+    })();
   </script>
 
-  <!-- Banner Image -->
-  <div class="banner-image">
-    <img src="http://curiositydrop.com/Demo-site/DC6B102F-4F56-4945-BE36-F355EA47A1C5.png" alt="Promotional Banner">
-  </div>
+  <!-- Shared header include -->
+  <div data-include="partials/header.html" class="include include-header"></div>
 
-  <!-- Header/Nav -->
-  <header>
-    <nav>
-      <a href="index.html">HOME</a>
-      <a href="audio.html">AUDIO</a>
-      <a href="photos.html" class="active">PHOTOS</a>
-      <a href="about.html">ABOUT</a>
-      <a href="merch.html">MERCH</a>
-      <a href="fanwall.html">FAN WALL</a>
-    </nav>
-  </header>
+  <!-- Page content -->
+  <main class="page-shell">
+    <section class="section">
+      <h2>Photo Gallery</h2>
 
-  <!-- Main Photo Gallery -->
-  <section class="section">
-    <h2>Band Photos</h2>
-    <div class="gallery">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+1" alt="Band Photo 1">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+2" alt="Band Photo 2">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+3" alt="Band Photo 3">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+4" alt="Band Photo 4">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+5" alt="Band Photo 5">
-      <img src="https://via.placeholder.com/600x400?text=Band+Photo+6" alt="Band Photo 6">
-    </div>
-  </section>
+      <!-- Responsive grid -->
+      <div class="gallery">
+        <!-- Example items — swap src with your images -->
+        <a href="images/photo1-large.jpg" class="gallery-item">
+          <img src="images/photo1-thumb.jpg" alt="Live at Geno's" loading="lazy" width="400" height="300">
+        </a>
 
-  <!-- Footer -->
-  <footer>
-    &copy; 2025 Venomous Thorn. All rights reserved. |
-    <a href="mailto:venomousthorn@gmail.com">email Venomous Thorn</a> |
-    Web Design by: MBG Digital
-  </footer>
-  <script>
-  fetch("booking-widget.html")
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('beforeend', data);
-    });
-</script>
+        <a href="images/photo2-large.jpg" class="gallery-item">
+          <img src="images/photo2-thumb.jpg" alt="Studio session" loading="lazy" width="400" height="300">
+        </a>
+
+        <a href="images/photo3-large.jpg" class="gallery-item">
+          <img src="images/photo3-thumb.jpg" alt="Backstage" loading="lazy" width="400" height="300">
+        </a>
+
+        <a href="images/photo4-large.jpg" class="gallery-item">
+          <img src="images/photo4-thumb.jpg" alt="Crowd shot" loading="lazy" width="400" height="300">
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Shared footer include -->
+  <div data-include="partials/footer.html" class="include include-footer"></div>
+
+  <!-- Scripts -->
+  <script src="js/includes.js"></script>
+  <script src="js/site.js"></script>
 </body>
 </html>
