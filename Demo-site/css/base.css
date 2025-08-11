@@ -247,10 +247,7 @@ footer a { color: limegreen; text-decoration: none; }
   border:1px solid rgba(50,205,50,.4);
   box-shadow:0 0 12px rgba(50,205,50,.2);
 }
-@media (max-width:640px){
-  .graffiti-wall{min-height:auto}
-  .graffiti-post{position:static;transform:none!important;margin:8px 0}
-}
+
 /* keep form fields inside the green frame, full width */
 .fan-form input,
 .fan-form textarea,
@@ -271,3 +268,22 @@ footer a { color: limegreen; text-decoration: none; }
 
 /* a little breathing room above the wall */
 .graffiti-wall { margin-top: 20px; }
+/* Graffiti notes: no card frame, keep tilt everywhere */
+.graffiti-post{
+  position: absolute;
+  max-width: 220px;
+  padding: 4px 6px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+.graffiti-post strong{
+  display:block;
+  margin-bottom:2px;
+  color: gold;
+  text-shadow: 0 0 6px rgba(0,0,0,.8);
+}
+.graffiti-post p{
+  margin:0;
+  text-shadow: 0 0 6px rgba(0,0,0,.8);
+}
