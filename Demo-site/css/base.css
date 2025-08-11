@@ -236,7 +236,7 @@ footer a { color: limegreen; text-decoration: none; }
   border:2px solid limegreen;  /* visible frame */
   border-radius:8px;
   background:#000;
-  overflow:hidden;
+  /* overflow:hidden; */
 }
 .graffiti-post{
   position:absolute;
