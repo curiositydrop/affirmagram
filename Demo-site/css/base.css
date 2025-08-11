@@ -251,3 +251,23 @@ footer a { color: limegreen; text-decoration: none; }
   .graffiti-wall{min-height:auto}
   .graffiti-post{position:static;transform:none!important;margin:8px 0}
 }
+/* keep form fields inside the green frame, full width */
+.fan-form input,
+.fan-form textarea,
+.fan-form .btn {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* make the color picker behave like a normal field */
+.fan-form input[type="color"] {
+  height: 40px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+/* your .row now has only one field, so make it single-column */
+.fan-form .row { display: block; }
+
+/* a little breathing room above the wall */
+.graffiti-wall { margin-top: 20px; }
