@@ -26,3 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const page = document.body.dataset.page;
+  document.querySelectorAll("nav a").forEach(link => {
+    if (
+      (page === "home" && link.getAttribute("href").includes("index.html")) ||
+      link.getAttribute("href").includes(page + ".html")
+    ) {
+      link.classList.add("active");
+    }
+  });
+});
