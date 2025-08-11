@@ -150,3 +150,10 @@ header {
   background-color: gold;
   color: black;
 }
+/* Mobile Responsive */
+    @media (max-width: 480px) {
+  .hero-left img { width: 130px; }        /* smaller logo on narrow screens */
+  .hero-flex { gap: 16px; padding: 32px 16px; }
+  .hero-right h3 { font-size: 24px; }
+  .hero-right p  { font-size: 16px; }
+}
