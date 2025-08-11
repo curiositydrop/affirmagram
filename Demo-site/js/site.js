@@ -26,14 +26,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-document.addEventListener("DOMContentLoaded", () => {
-  const page = document.body.dataset.page;
-  document.querySelectorAll("nav a").forEach(link => {
-    if (
-      (page === "home" && link.getAttribute("href").includes("index.html")) ||
-      link.getAttribute("href").includes(page + ".html")
-    ) {
-      link.classList.add("active");
-    }
+
+// ---- Active menu link highlighter (waits for header include) ----
+(function(){
+  function highlightActive() {
+    const page = document.body.dataset.page;
+    const links = document.querySelectorAll('nav a');
+    if (!links.length) return false;
+
+    links.forEach(link => {
+      const href = link.getAttribute('href') || '';
+      const isHome = page === 'home' && href.includes('index.html');
+      const isPage = href.includes(page + '.html');
+      if (isHome || isPage) link.classList.add('active');
+    });
+    return true;
+  }
+
+  // Try once after DOM ready (nav might already be present)
+  document.addEventListener('DOMContentLoaded', () => {
+    if (highlightActive()) return;
+
+    // If not present yet, watch for includes.js inserting the header
+    const obs = new MutationObserver(() => {
+      if (highlightActive()) obs.disconnect();
+    });
+    obs.observe(document.documentElement, { childList: true, subtree: true });
   });
-});
+})();
