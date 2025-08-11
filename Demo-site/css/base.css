@@ -334,3 +334,67 @@ body { animation: fadeIn 1.2s ease-in-out; }
 @media (max-width: 480px) {
   .gallery { grid-template-columns: repeat(2, 1fr); }
 }
+/* ===== About page layout ===== */
+.about-wrap {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr;
+  gap: 28px;
+  align-items: start;
+  margin: 10px auto 30px auto;
+  max-width: 1100px;
+}
+
+.about-left img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 2px solid limegreen;
+  border-radius: 8px;
+}
+
+.about-right .lede {
+  font-size: 1.1rem;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.about-right p { margin: 10px 0; }
+
+.about-facts {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0 0;
+  text-align: left;
+}
+.about-facts li {
+  margin: 6px 0;
+  border-left: 3px solid limegreen;
+  padding-left: 10px;
+}
+
+/* Member cards grid */
+.members {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.member {
+  text-align: center;
+  border: 2px solid limegreen;
+  border-radius: 8px;
+  padding: 14px;
+  background: rgba(0,0,0,0.6);
+}
+.member img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+.member h3 { margin: 6px 0 4px 0; font-family: 'Metal Mania', cursive; color: gold; }
+.member p  { margin: 0; }
+
+/* Responsive */
+@media (max-width: 860px) {
+  .about-wrap { grid-template-columns: 1fr; }
+}
