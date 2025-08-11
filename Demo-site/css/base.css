@@ -229,27 +229,25 @@ footer a { color: limegreen; text-decoration: none; }
 @media (max-width: 640px) { .fan-form .row { grid-template-columns: 1fr; } }
 
 /* ===== Graffiti wall layout ===== */
-.graffiti-wall {
-  display: block; /* important to override .fan-posts grid */
-  position: relative;
-  min-height: 600px;  /* space to throw messages around */
-  border: 2px solid limegreen;
-  border-radius: 8px;
-  background: #000;
-  overflow: hidden;
+.graffiti-wall{
+  display:block;               /* important */
+  position:relative;
+  min-height:600px;            /* big open area */
+  border:2px solid limegreen;  /* visible frame */
+  border-radius:8px;
+  background:#000;
+  overflow:hidden;
 }
-.graffiti-post {
-  position: absolute;
-  max-width: 220px;
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: rgba(0,0,0,0.6);
-  border: 1px solid rgba(50,205,50,0.4);
-  box-shadow: 0 0 12px rgba(50,205,50,.2);
+.graffiti-post{
+  position:absolute;
+  max-width:220px;
+  padding:8px 10px;
+  border-radius:6px;
+  background:rgba(0,0,0,.6);
+  border:1px solid rgba(50,205,50,.4);
+  box-shadow:0 0 12px rgba(50,205,50,.2);
 }
-.graffiti-post strong { display:block; margin-bottom:4px; color: gold; }
-.graffiti-post img { max-width: 100%; height: auto; border-radius: 6px; margin-top: 6px; }
-@media (max-width: 640px) {
-  .graffiti-wall { min-height: auto; }
-  .graffiti-post { position: static; transform: none !important; margin: 8px 0; }
+@media (max-width:640px){
+  .graffiti-wall{min-height:auto}
+  .graffiti-post{position:static;transform:none!important;margin:8px 0}
 }
