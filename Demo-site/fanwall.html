@@ -59,6 +59,18 @@
 
 <!-- Fan Wall Display Area -->
 <div class="graffiti-wall"></div>
+      <script>
+  // TEMP test: should show a tilted green “TEST” note on the wall
+  const stage = document.querySelector('.graffiti-wall');
+  const el = document.createElement('div');
+  el.className = 'graffiti-post';
+  el.style.color = '#32CD32';
+  el.style.transform = 'rotate(-7deg)';
+  el.style.left = '24px';
+  el.style.top = '20px';
+  el.innerHTML = '<strong>TEST</strong><p>If you see this, CSS/HTML is fine.</p>';
+  stage.appendChild(el);
+</script>
     </section>
   </main>
 
