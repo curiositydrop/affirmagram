@@ -398,3 +398,22 @@ body { animation: fadeIn 1.2s ease-in-out; }
 @media (max-width: 860px) {
   .about-wrap { grid-template-columns: 1fr; }
 }
+/* Email button styling */
+.btn-email {
+  display: inline-block;
+  padding: 8px 14px;
+  margin-left: 6px;
+  background: limegreen;
+  color: black !important;
+  font-weight: bold;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 2px solid limegreen;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-email:hover {
+  background: black;
+  color: limegreen !important;
+  border-color: limegreen;
+}
