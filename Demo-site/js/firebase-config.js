@@ -1,8 +1,9 @@
+// js/firebase-config.js
 window.FB_CONFIG = {
-  apiKey: "AIzaSyD3hHhNFCizXJMPF1JUykV3aZPQ6dXcSFI",
-  authDomain: "venomous-thorn-wall.firebaseapp.com",
-  projectId: "venomous-thorn-wall",
-  storageBucket: "venomous-thorn-wall.appspot.com",
-  messagingSenderId: "673303332710",
-  appId: "1:673303332710:web:9090614971aab7b4dc5b8d"
+  apiKey: "AIzaSyBAkwOyKJ2Y6_LtXZKUp5CauPvxC0dJr6A",
+  authDomain: "bandfanwall.firebaseapp.com",
+  projectId: "bandfanwall",
+  storageBucket: "bandfanwall.firebasestorage.app",
+  messagingSenderId: "619241154826",
+  appId: "1:619241154826:web:f52c0bb2a4a52c9f0732f3"
 };
