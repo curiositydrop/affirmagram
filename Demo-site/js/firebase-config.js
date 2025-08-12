@@ -1,4 +1,6 @@
-// js/firebase-config.js
+// firebase-config.js
+// This just holds your Firebase keys in a global variable.
+
 window.FB_CONFIG = {
   apiKey: "AIzaSyBAkwOyKJ2Y6_LtXZKUp5CauPvxC0dJr6A",
   authDomain: "bandfanwall.firebaseapp.com",
