@@ -40,25 +40,18 @@
       <p>Drop us a message or a show photo and we’ll feature our favorites here.</p>
 
       <form id="fanForm" class="fan-form">
-  <input type="text" name="name" placeholder="Your Name" required>
+      <input type="text" name="name" placeholder="Your Name" required>
 
-  <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
+      <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
 
-  <div class="color-picker-wrapper">
-  <label for="color" class="color-picker-label">Choose text color</label>
-  <input id="color" type="color" name="color" value="#32CD32" title="Choose text color">
-</div>
+      <input type="color" name="color" value="#32CD32" title="Choose text color">
 
-  <input type="file" id="imageFile" accept="image/*">
+      <input type="url" name="image_url" placeholder="Link to a photo (optional)">
 
-  <button type="submit" class="btn">Post to Fan Wall</button>
+      <button type="submit" class="btn">Post to Fan Wall</button>
 
-  <p class="form-note">
-    By submitting, you allow us to display your message (and linked photo) on this page.
-  </p>
-
-  <p id="fanStatus" class="status"></p>
-</form>
+      <p id="fanStatus" class="status"></p>
+    </form>
 
 <!-- Fan Wall Display Area -->
 <div class="graffiti-wall"></div>
