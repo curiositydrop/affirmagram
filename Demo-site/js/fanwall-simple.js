@@ -109,3 +109,23 @@ onValue(ref(db, 'fanwall'), snapshot => {
   say('');                 // clear any prior “Listening…” text
   renderWall(snapshot);
 });
+document.addEventListener("DOMContentLoaded", function () {
+  const colorInput = document.getElementById("color");
+  const colorLabel = document.querySelector(".color-picker-label");
+
+  if (colorInput && colorLabel) {
+    colorInput.addEventListener("input", function () {
+      const color = this.value;
+      const rgb = parseInt(color.slice(1), 16); // convert hex to integer
+      const r = (rgb >> 16) & 0xff;
+      const g = (rgb >> 8) & 0xff;
+      const b = rgb & 0xff;
+
+      // Calculate brightness
+      const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+
+      // Update label text color for contrast
+      colorLabel.style.color = brightness > 128 ? "black" : "white";
+    });
+  }
+});
