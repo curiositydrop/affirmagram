@@ -287,17 +287,27 @@ footer a { color: limegreen; text-decoration: none; }
   margin:0;
   text-shadow: 0 0 6px rgba(0,0,0,.8);
 }
-.color-picker-inline {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.color-picker-overlay {
+  position: relative;
+  display: inline-block;
 }
 
-.color-picker-inline input[type="color"] {
+.color-picker-overlay input[type="color"] {
   -webkit-appearance: none;
   appearance: none;
-  width: 40px;
-  height: 30px;
+  width: 140px;
+  height: 40px;
   border: none;
   cursor: pointer;
+}
+
+.color-picker-overlay span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  pointer-events: none;
 }
