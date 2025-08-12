@@ -44,12 +44,10 @@
 
   <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
 
-  <div class="color-picker-overlay">
-    <input id="colorPicker" type="color" name="color" value="#32CD32">
-    <span>Choose text color</span>
-  </div>
-        
-  <input type="color" name="color" value="#32CD32" title="Choose text color">
+  <div class="color-picker-wrapper">
+  <label for="color" class="color-picker-label">Choose text color</label>
+  <input id="color" type="color" name="color" value="#32CD32" title="Choose text color">
+</div>
 
   <input type="file" id="imageFile" accept="image/*">
 
