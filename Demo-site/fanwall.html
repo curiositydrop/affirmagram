@@ -44,9 +44,14 @@
 
   <textarea name="message" rows="5" placeholder="Your message to the band" required></textarea>
 
+  <div class="color-picker-inline">
+  <label for="colorPicker">Colors:</label>
+  <input id="colorPicker" type="color" name="color" value="#32CD32">
+</div>
+        
   <input type="color" name="color" value="#32CD32" title="Choose text color">
 
-  <input type="url" name="image_url" placeholder="Link to a photo (optional)">
+  <input type="file" id="imageFile" accept="image/*">
 
   <button type="submit" class="btn">Post to Fan Wall</button>
 
