@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const renderRes = await fetch('/.netlify/functions/render', {
           method: 'POST',
           headers: { 'Content-Type':'application/json' },
-          body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
+          body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 3 })
         });
 
         const raw = await renderRes.text();
