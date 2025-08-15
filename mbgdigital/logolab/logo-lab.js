@@ -1,7 +1,4 @@
-<!-- mbgdigital/logolab/logo-lab.js -->
-<script>
 document.addEventListener('DOMContentLoaded', () => {
-  // --- DOM refs ---
   const chat = document.getElementById('chat');
   const gallery = document.getElementById('gallery');
   const grid = document.getElementById('grid');
@@ -12,21 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnPRO = document.getElementById('buy-pro');
   const next1 = document.getElementById('next1');
 
-  // show JS errors in the UI so we see them
   window.addEventListener('error', (e) => {
     if (statusBox) statusBox.textContent = 'JS error: ' + (e?.message || 'unknown');
   });
 
   if (!next1) { statusBox.textContent = 'Setup error: missing #next1 button.'; return; }
 
-  // --- state ---
   let selectedPrompt = null;
-  let busy = false; // debounce
+  let busy = false;
 
-  // first button
   next1.onclick = () => proceed('brand');
 
-  // terms gate
   if (fineprint) {
     fineprint.addEventListener('change', () => {
       const ok = fineprint.checked;
@@ -35,7 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // helpers
   function addBot(text){
     const d = document.createElement('div');
     d.className = 'bot';
@@ -54,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     wrap.querySelector('input').focus();
   }
 
-  // main flow
   async function proceed(id){
     if (busy) return;
     busy = true;
@@ -82,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addBot('Cooking up a brief and prompts… 🍳');
         statusBox.textContent = 'Generating brief…';
 
-        // 1) brief + prompts
         const briefRes = await fetch('/.netlify/functions/brief', {
           method: 'POST',
           headers: { 'Content-Type':'application/json' },
@@ -95,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
           busy = false; return;
         }
 
-        // sanitize markdowny chars so it renders clean
         const briefText = (briefData.brief || "").replace(/[#*_`>]/g, "");
         if (!briefText) {
           statusBox.textContent = 'Brief came back empty. Please try again.';
@@ -103,7 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         addBot(`<b>Creative Brief</b><br>${briefText}`);
 
-        // 2) render first prompt
         const firstPrompt = (briefData.prompts && briefData.prompts[0]) || 'minimal geometric monogram';
         statusBox.textContent = 'Rendering logo concepts…';
 
@@ -113,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
           body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
         });
 
-        // read raw so we can show the *real* backend error
         const raw = await renderRes.text();
         let data; try { data = JSON.parse(raw); } catch { data = null; }
 
@@ -124,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
           busy = false; return;
         }
 
-        // 3) show grid
         const pngs = (data && data.pngs) || [];
         if (!pngs.length) {
           statusBox.textContent = 'No images returned. Try again in a minute.';
@@ -152,8 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // (placeholder) purchase buttons
   if (btnDIY) btnDIY.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
   if (btnPRO) btnPRO.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
 });
-</script>
