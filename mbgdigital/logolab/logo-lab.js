@@ -51,7 +51,7 @@ async function proceed(id){
   } else if(id==='colors'){
     addBot(`Want me to include a symbol or stay abstract? (e.g., drop, bolt, wolf)`);
     addInput('Symbol idea', 'symbol');
-  } } else if (id === 'symbol') {
+  } else if (id === 'symbol') {
   const brand  = document.getElementById('brand').value.trim();
   const vibe   = document.getElementById('vibe').value.trim();
   const colors = document.getElementById('colors').value.trim();
