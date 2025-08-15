@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>MBG Digital – Logo Lab</title>
+  <link rel="stylesheet" href="./logo-lab.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>MBG Digital Logo Lab</h1>
+      <p class="tag">Get a great logo in minutes — AI speed, human taste.</p>
+    </header>
+
+    <section class="chatbox" id="chat">
+      <div class="bot">
+        Welcome to the MBG Digital Logo Lab 👋<br />
+        I’m your design assistant. What’s your brand or business name?
+      </div>
+      <div class="input">
+        <input id="brand" placeholder="Brand name" />
+        <button id="next1">Next →</button>
+      </div>
+    </section>
+
+    <section class="gallery" id="gallery" hidden>
+      <h2>Concepts</h2>
+      <div id="grid" class="grid"></div>
+    </section>
+
+    <section id="actions" class="actions" hidden>
+      <div id="upsells" class="ups">
+        <label><input type="checkbox" class="up" value="Poster" /> Ad poster</label>
+        <label><input type="checkbox" class="up" value="Apparel/Promo" /> Branded apparel / promo items</label>
+        <label><input type="checkbox" class="up" value="Website" /> Website</label>
+        <label><input type="checkbox" class="up" value="Other" /> Something else</label>
+      </div>
+
+      <label class="fine">
+        <input type="checkbox" id="fineprint" />
+        <span>
+          I understand that all DIY project sales are final. By completing this purchase, I acknowledge that the designs are
+          fully AI-generated using OpenAI and that MBG Digital is not responsible for trademark conflicts, licensing issues,
+          or similarities to other works. I am responsible for reviewing and clearing any designs for commercial use.
+        </span>
+      </label>
+
+      <button id="buy-diy" disabled>Download Now – $29</button>
+      <button id="buy-pro" disabled>Pro Polish – $99</button>
+    </section>
+
+    <section id="status" class="status"></section>
+  </div>
+
+  <script src="./logo-lab.js"></script>
+</body>
+</html>
