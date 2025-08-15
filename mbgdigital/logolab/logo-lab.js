@@ -100,8 +100,11 @@ async function proceed(id){
       const renderData = await renderRes.json();
 
       if (!renderRes.ok || renderData.error) {
-        const msg = renderData?.message || renderData?.error || 'Unknown error';
-        statusBox.textContent = 'Error rendering concepts: ' + (typeof msg === 'string' ? msg : JSON.stringify(msg));
+        const msg =
+          renderData?.message ||
+          renderData?.details?.error?.message ||
+          'Unknown error';
+        statusBox.textContent = 'Error rendering concepts: ' + msg;
         console.error('Render error:', renderData);
         busy = false; return;
       }
@@ -128,13 +131,10 @@ async function proceed(id){
       });
     }
   } finally {
-    // allow the next step after current one completes
-    busy = false;
+    busy = false; // allow the next step
   }
 }
 
 // (placeholder) purchase buttons
 btnDIY.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
 btnPRO.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
-
-// Success URL handling will come with Stripe
