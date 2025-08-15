@@ -7,7 +7,7 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: JSON.stringify({ error: true, message: "Missing OPENAI_API_KEY" }) };
     }
 
-    // optional quick sanity check: /.netlify/functions/render?debug=1
+    // optional debug ping: /.netlify/functions/render?debug=1
     const qs = event.queryStringParameters || {};
     if (qs.debug) {
       return { statusCode: 200, body: JSON.stringify({ debug: true, usingKeyEndsWith: OPENAI_API_KEY.slice(-4) }) };
@@ -15,7 +15,7 @@ exports.handler = async (event) => {
 
     const body   = JSON.parse(event.body || "{}");
     const prompt = (body.prompt || "").trim();
-    const size   = body.size || "1024x1024"; // valid: 1024x1024, 1024x1536, 1536x1024, auto
+    const size   = body.size || "1024x1024";
     const n      = body.n || 4;
 
     if (!prompt) {
@@ -28,25 +28,14 @@ exports.handler = async (event) => {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
-      body: JSON.stringify({
-        model: "gpt-image-1",
-        prompt,
-        size,
-        n
-      })
+      body: JSON.stringify({ model: "gpt-image-1", prompt, size, n })
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      const message =
-        data?.error?.message ||
-        data?.message ||
-        "Image API error";
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: true, message, details: data })
-      };
+      const message = data?.error?.message || data?.message || "Image API error";
+      return { statusCode: 500, body: JSON.stringify({ error: true, message, details: data }) };
     }
 
     const pngs = (data.data || []).map(d => `data:image/png;base64,${d.b64_json}`);
