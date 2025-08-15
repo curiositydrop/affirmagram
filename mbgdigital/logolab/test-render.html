@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Render Test</title>
+<style>
+  body { font-family: system-ui, sans-serif; padding: 16px; background:#0b0f14; color:#e5e7eb }
+  input, button { font-size:16px; padding:10px; }
+  #out img { max-width: 240px; display:block; margin:10px 0; border-radius:8px; }
+  pre { white-space: pre-wrap; background:#111827; padding:10px; border-radius:8px; }
+</style>
+
+<h2>Logo Render Test</h2>
+<p>Enter a prompt and click Go — this calls <code>/.netlify/functions/render</code> from your domain.</p>
+
+<input id="p" size="60" value="minimal geometric monogram of RR in navy and leaf green">
+<button id="go">Go</button>
+
+<h3>Output</h3>
+<div id="out"></div>
+<pre id="log"></pre>
+
+<script>
+const go = document.getElementById('go');
+const p  = document.getElementById('p');
+const out = document.getElementById('out');
+const log = document.getElementById('log');
+
+go.onclick = async () => {
+  out.innerHTML = ''; log.textContent = 'Calling render…';
+  try {
+    const res = await fetch('/.netlify/functions/render', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt: p.value, n: 3, size: 512 })
+    });
+    const data = await res.json();
+    log.textContent = `HTTP ${res.status}\n` + JSON.stringify(data, null, 2);
+    if (res.ok && data.pngs?.length) {
+      data.pngs.forEach(src => {
+        const img = new Image();
+        img.src = src;
+        out.appendChild(img);
+      });
+    }
+  } catch (e) {
+    log.textContent = 'Network error: ' + e;
+  }
+};
+</script>
