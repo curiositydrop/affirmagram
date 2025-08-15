@@ -28,8 +28,7 @@ exports.handler = async (event) => {
         model: "gpt-image-1",   // use your enabled image model
         prompt,
         size: `${size}x${size}`,
-        n,
-        response_format: "b64_json"
+        n
       })
     });
 
