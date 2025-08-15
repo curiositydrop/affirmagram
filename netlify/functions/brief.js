@@ -4,80 +4,119 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 exports.handler = async (event) => {
   try {
     if (!OPENAI_API_KEY) {
-      return { statusCode: 500, body: JSON.stringify({ error: "Missing OPENAI_API_KEY" }) };
+      return json(500, { error: "Missing OPENAI_API_KEY" });
     }
 
-    const body = JSON.parse(event.body || "{}");
+    const body = safeJSON(event.body);
     const brand  = (body.brand  || "").trim();
     const vibe   = (body.vibe   || "").trim();
     const colors = (body.colors || "").trim();
     const symbol = (body.symbol || "").trim();
 
-    const system = `You are a senior brand designer.
-Create a concise creative brief and 3–5 short logo prompts.
-Rules:
-- Favor simple, geometric, vector-friendly marks (good for SVG).
-- Avoid trademarked imagery and generic stock-icon clichés.
-- Use 2–3 colors max. Prefer HEX if provided.
-- Each prompt under ~200 characters.`;
+    if (!brand) return json(400, { error: "Missing brand" });
 
-    const user = `Brand: ${brand}
-Vibe: ${vibe}
-Colors: ${colors}
-Symbol preference: ${symbol}
+    // Build a grounded system + user prompt
+    const sys = `You write concise creative briefs and logo prompts.
+Return clean JSON only with keys: brief (string), prompts (string[]).
+Don't include backticks or markdown fences.`;
 
-Deliver:
-1) One short creative brief paragraph (~3–5 sentences).
-2) Then 3–5 bullet prompts for image generation.`;
+    const user = `
+Brand: ${brand}
+Vibe words: ${vibe || "modern, clean"}
+Preferred colors: ${colors || "designer's choice"}
+Symbol idea: ${symbol || "abstract mark"}
 
-    // Call OpenAI Chat Completions
-    const res = await fetch("https://api.openai.com/v1/chat/completions", {
+Task:
+1) Write a short (120–180 words) creative brief in plain text (no markdown headings).
+2) Produce 3 distinct, high-quality text prompts for an image model to generate logo concepts.
+   - Each prompt should be a single sentence.
+   - Include style words from the brief (e.g., minimal, geometric, negative space).
+   - Respect the colors and symbol direction.
+   - Avoid text-in-image like slogans. Focus on a mark/symbol/monogram.
+`;
+
+    // Call Responses API (JSON mode)
+    const resp = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",        // use your preferred chat model
-        temperature: 0.7,
-        messages: [
-          { role: "system", content: system },
-          { role: "user", content: user }
-        ]
+        model: "gpt-4.1-mini",
+        reasoning: { effort: "medium" },
+        input: [{ role: "system", content: sys }, { role: "user", content: user }],
+        response_format: { type: "json_schema", json_schema: {
+          name: "logo_brief",
+          schema: {
+            type: "object",
+            properties: {
+              brief: { type: "string" },
+              prompts: { type: "array", items: { type: "string" }, minItems: 3, maxItems: 5 }
+            },
+            required: ["brief", "prompts"],
+            additionalProperties: false
+          }
+        }} 
       })
     });
 
-    const data = await res.json();
-    if (!res.ok) {
-      return { statusCode: 500, body: JSON.stringify({ error: data }) };
-    }
+    const data = await resp.json();
 
-    const text = data.choices?.[0]?.message?.content || "";
-    const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
-
-    // Grab brief as first paragraph-ish block
     let brief = "";
-    let i = 0;
-    while (i < lines.length && !lines[i].match(/^[-•]|\d+\)/)) {
-      brief += (brief ? " " : "") + lines[i];
-      i++;
+    let prompts = [];
+    if (resp.ok) {
+      // Responses API packs text into output_text too; but we asked for JSON schema
+      const content = safeJSON(data.output && data.output[0] && data.output[0].content && data.output[0].content[0] && data.output[0].content[0].text) 
+                   || safeJSON(data.output_text) 
+                   || {};
+      brief   = sanitize(content.brief || "");
+      prompts = Array.isArray(content.prompts) ? content.prompts.map(sanitize) : [];
+    } else {
+      // Fallback from error: still return something useful
+      console.error("brief error:", data);
     }
 
-    // Collect 3–5 prompts (bullet lines)
-    const prompts = lines
-      .slice(i)
-      .filter(l => /^[-•]|\d+\)/.test(l))
-      .map(l => l.replace(/^[-•]\s*/, "").replace(/^\d+\)\s*/, ""))
-      .slice(0, 5);
+    // Strong fallback if the model didn’t cooperate
+    if (!brief) {
+      brief = fallbackBrief({ brand, vibe, colors, symbol });
+    }
+    if (!prompts.length) {
+      prompts = fallbackPrompts({ brand, vibe, colors, symbol });
+    }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        brief: brief || "Clean, versatile logo direction.",
-        prompts: prompts.length ? prompts : ["Minimal monogram in geometric style, high contrast, brand initials only."]
-      })
-    };
+    return json(200, { brief, prompts });
   } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
+    console.error(err);
+    // Final safety fallback
+    return json(200, { 
+      brief: fallbackBrief(safeJSON(event.body)),
+      prompts: fallbackPrompts(safeJSON(event.body))
+    });
   }
 };
+
+// ---------------- helpers ----------------
+function json(status, obj) {
+  return { statusCode: status, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) };
+}
+function safeJSON(raw){ try { return JSON.parse(raw || "{}"); } catch { return {}; } }
+function sanitize(s){ return String(s || "").replace(/[#*_`>]/g, "").trim(); }
+
+function fallbackBrief({ brand="", vibe="", colors="", symbol="" } = {}) {
+  const v = vibe || "modern, minimal";
+  const c = colors || "designer's choice";
+  const s = symbol || "abstract geometric mark";
+  return `${brand} is positioned with a ${v} personality. The logo should be simple, versatile and highly legible at small sizes. Use a restrained palette (${c}) and emphasize clarity, balanced proportions and strong negative space. Explore a ${s} that feels distinctive yet timeless; avoid detailed illustration or literal scenes. The mark should work alone or paired with logotype and export cleanly for social icons, packaging and apparel.`;
+}
+
+function fallbackPrompts({ brand="", vibe="", colors="", symbol="" } = {}) {
+  const v = (vibe || "modern, minimal").toLowerCase();
+  const c = (colors || "navy and leaf green").toLowerCase();
+  const sym = symbol ? symbol.toLowerCase() : "abstract geometric mark";
+  return [
+    `minimal ${sym} for ${brand}, clean geometric shapes, strong negative space, ${v} style, flat vector look, centered composition, ${c}, studio lighting, no text, plain background`,
+    `iconic monogram inspired by ${sym} for ${brand}, sharp angles and rounded balance, grid-aligned, high contrast, ${v}, flat logo rendering, ${c}, no words, no gradients`,
+    `simple emblem evoking ${sym} for ${brand}, modular geometry, balanced symmetry, generous whitespace, ${v} aesthetic, brand-ready, ${c}, crisp edges, no lettering`
+  ];
+}
