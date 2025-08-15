@@ -9,24 +9,13 @@ exports.handler = async (event) => {
 
     const body = JSON.parse(event.body || "{}");
     const prompt = (body.prompt || "").trim();
-
-    // --- size handling (API now requires specific strings) ---
-    // Accept "1024", 1024, or full strings like "1024x1024"
-    let requested = body.size ?? "1024x1024";
-    requested = String(requested);
-    if (/^\d+$/.test(requested)) requested = `${requested}x${requested}`;
-
-    const allowed = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
-    const size = allowed.has(requested) ? requested : "1024x1024";
-
-    // # of images (keep between 3–4)
-    const n = Math.min(Math.max(body.n || 4, 3), 4);
+    const n = body.n || 4;  // keep at 4 previews
+    const size = "1024x1024"; // lock size to 1024x1024
 
     if (!prompt) {
       return { statusCode: 400, body: JSON.stringify({ error: "Missing prompt" }) };
     }
 
-    // Call OpenAI images API
     const imgRes = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -36,7 +25,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         model: "gpt-image-1",
         prompt,
-        size,   // must be one of: 1024x1024, 1024x1536, 1536x1024, auto
+        size,
         n
       })
     });
@@ -47,6 +36,7 @@ exports.handler = async (event) => {
     }
 
     const pngs = (imgData.data || []).map(d => `data:image/png;base64,${d.b64_json}`);
+
     return { statusCode: 200, body: JSON.stringify({ pngs }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
