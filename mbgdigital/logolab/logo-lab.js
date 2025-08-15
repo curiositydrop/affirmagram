@@ -1,3 +1,5 @@
+<!-- logo-lab.js -->
+<script>
 // --- DOM refs ---
 const chat = document.getElementById('chat');
 const gallery = document.getElementById('gallery');
@@ -92,19 +94,27 @@ async function proceed(id){
       const firstPrompt = (briefData.prompts && briefData.prompts[0]) || 'minimal geometric monogram';
       statusBox.textContent = 'Rendering logo concepts…';
 
-      const renderRes = await fetch('/.netlify/functions/render', {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
-      });
-      const renderData = await renderRes.json();
-
-      if (!renderRes.ok || renderData.error) {
-        const msg = renderData?.message || renderData?.error || 'Unknown error';
-        statusBox.textContent = 'Error rendering concepts: ' + (typeof msg === 'string' ? msg : JSON.stringify(msg));
-        console.error('Render error:', renderData);
+      // --- updated render call with robust error reporting ---
+      let renderData;
+      try {
+        const renderRes = await fetch('/.netlify/functions/render', {
+          method: 'POST',
+          headers: { 'Content-Type':'application/json' },
+          body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
+        });
+        renderData = await renderRes.json();
+        if (!renderRes.ok || renderData.error) {
+          const msg = renderData?.message || renderData?.error || 'Unknown error';
+          statusBox.textContent = 'Error rendering concepts: ' + (typeof msg === 'string' ? msg : JSON.stringify(msg));
+          console.error('Render error:', renderData);
+          busy = false; return;
+        }
+      } catch (e) {
+        statusBox.textContent = 'Network error talking to /render.';
+        console.error('Fetch to /render failed:', e);
         busy = false; return;
       }
+
       if (!renderData.pngs || !renderData.pngs.length) {
         statusBox.textContent = 'No images returned. Try again in a minute.';
         busy = false; return;
@@ -138,3 +148,4 @@ btnDIY.onclick = () => alert('Checkout will be enabled after we add serverless f
 btnPRO.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
 
 // Success URL handling will come with Stripe
+</script>
