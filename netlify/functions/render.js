@@ -4,43 +4,58 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 exports.handler = async (event) => {
   try {
     if (!OPENAI_API_KEY) {
-      return { statusCode: 500, body: JSON.stringify({ error: true, message: "Missing OPENAI_API_KEY" }) };
+      return resp(500, { error: "Missing OPENAI_API_KEY" });
     }
 
-    // optional debug ping: /.netlify/functions/render?debug=1
-    const qs = event.queryStringParameters || {};
-    if (qs.debug) {
-      return { statusCode: 200, body: JSON.stringify({ debug: true, usingKeyEndsWith: OPENAI_API_KEY.slice(-4) }) };
-    }
+    // Parse body (POST) or query (GET test)
+    let body = {};
+    try { body = JSON.parse(event.body || "{}"); } catch { body = {}; }
 
-    const body   = JSON.parse(event.body || "{}");
-    const prompt = (body.prompt || "").trim();
-    const size   = body.size || "1024x1024";
-    const n      = body.n || 4;
+    const prompt = String(body.prompt || "").trim();
+    if (!prompt) return resp(400, { error: "Missing prompt" });
 
-    if (!prompt) {
-      return { statusCode: 400, body: JSON.stringify({ error: true, message: "Missing prompt" }) };
-    }
+    // Accept only allowed sizes and default to 1024x1024
+    const allowed = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
+    const size = allowed.has(String(body.size)) ? String(body.size) : "1024x1024";
 
-    const res = await fetch("https://api.openai.com/v1/images/generations", {
+    // HARD CAP to 3 images to avoid Netlify response-size limits
+    const n = Math.min(Number(body.n || 3), 3);
+
+    // Call OpenAI Images
+    const imgRes = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+        "Content-Type": "application/json"
       },
-      body: JSON.stringify({ model: "gpt-image-1", prompt, size, n })
+      body: JSON.stringify({
+        model: "gpt-image-1",
+        prompt,
+        size,
+        n,
+        response_format: "b64_json"
+      })
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-      const message = data?.error?.message || data?.message || "Image API error";
-      return { statusCode: 500, body: JSON.stringify({ error: true, message, details: data }) };
+    const imgData = await imgRes.json();
+    if (!imgRes.ok) {
+      // Bubble up the real error to the UI
+      return resp(500, { error: imgData });
     }
 
-    const pngs = (data.data || []).map(d => `data:image/png;base64,${d.b64_json}`);
-    return { statusCode: 200, body: JSON.stringify({ pngs }) };
-  } catch (err) {
-    return { statusCode: 500, body: JSON.stringify({ error: true, message: String(err) }) };
+    const pngs = (imgData.data || []).map(d => `data:image/png;base64,${d.b64_json}`);
+    return resp(200, { pngs });
+
+  } catch (e) {
+    return resp(500, { error: String(e) });
   }
 };
+
+// helper
+function resp(status, obj) {
+  return {
+    statusCode: status,
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  };
+}
