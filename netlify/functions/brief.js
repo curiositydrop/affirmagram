@@ -34,7 +34,6 @@ Task:
    - Avoid text-in-image like slogans. Focus on a mark/symbol/monogram.
 `;
 
-    // Responses API (JSON mode)
     const resp = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
@@ -94,7 +93,7 @@ Task:
   }
 };
 
-// -------- helpers --------
+// helpers
 function json(status, obj) {
   return { statusCode: status, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) };
 }
@@ -107,7 +106,6 @@ function fallbackBrief({ brand="", vibe="", colors="", symbol="" } = {}) {
   const s = symbol || "abstract geometric mark";
   return `${brand} is positioned with a ${v} personality. The logo should be simple, versatile and highly legible at small sizes. Use a restrained palette (${c}) and emphasize clarity, balanced proportions and strong negative space. Explore a ${s} that feels distinctive yet timeless; avoid detailed illustration or literal scenes. The mark should work alone or paired with logotype and export cleanly for social icons, packaging and apparel.`;
 }
-
 function fallbackPrompts({ brand="", vibe="", colors="", symbol="" } = {}) {
   const v   = (vibe   || "modern, minimal").toLowerCase();
   const c   = (colors || "navy and leaf green").toLowerCase();
