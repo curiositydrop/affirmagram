@@ -100,7 +100,7 @@ async function proceed(id){
         body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
       });
 
-      // ---- Only change: read raw, show real error text ----
+      // ---- read raw so we can show the *real* backend error ----
       const raw = await renderRes.text();
       let data;
       try { data = JSON.parse(raw); } catch { data = null; }
@@ -111,7 +111,6 @@ async function proceed(id){
         console.error('Render error (raw):', raw);
         busy = false; return;
       }
-      // ------------------------------------------------------
 
       // 3) show grid
       const pngs = (data && data.pngs) || [];
@@ -137,7 +136,6 @@ async function proceed(id){
       });
     }
   } finally {
-    // allow the next step after current one completes
     busy = false;
   }
 }
