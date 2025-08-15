@@ -1,3 +1,5 @@
+<!-- mbgdigital/logolab/logo-lab.js -->
+<script>
 // --- DOM refs ---
 const chat = document.getElementById('chat');
 const gallery = document.getElementById('gallery');
@@ -97,26 +99,30 @@ async function proceed(id){
         headers: { 'Content-Type':'application/json' },
         body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
       });
-      const renderData = await renderRes.json();
 
-      if (!renderRes.ok || renderData.error) {
-        const msg =
-          renderData?.message ||
-          renderData?.details?.error?.message ||
-          'Unknown error';
-        statusBox.textContent = 'Error rendering concepts: ' + msg;
-        console.error('Render error:', renderData);
+      // ---- Only change: read raw, show real error text ----
+      const raw = await renderRes.text();
+      let data;
+      try { data = JSON.parse(raw); } catch { data = null; }
+
+      if (!renderRes.ok || (data && data.error)) {
+        const snippet = raw.slice(0, 600);
+        statusBox.textContent = 'Error rendering concepts: ' + snippet;
+        console.error('Render error (raw):', raw);
         busy = false; return;
       }
-      if (!renderData.pngs || !renderData.pngs.length) {
+      // ------------------------------------------------------
+
+      // 3) show grid
+      const pngs = (data && data.pngs) || [];
+      if (!pngs.length) {
         statusBox.textContent = 'No images returned. Try again in a minute.';
         busy = false; return;
       }
 
-      // 3) show grid
       gallery.hidden = false;
       grid.innerHTML = '';
-      (renderData.pngs || []).forEach((src) => {
+      pngs.forEach((src) => {
         const card = document.createElement('div');
         card.className = 'card watermark';
         card.innerHTML = `<img src="${src}"><button class="choose">Select</button>`;
@@ -131,10 +137,14 @@ async function proceed(id){
       });
     }
   } finally {
-    busy = false; // allow the next step
+    // allow the next step after current one completes
+    busy = false;
   }
 }
 
 // (placeholder) purchase buttons
 btnDIY.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
 btnPRO.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 3.');
+
+// Success URL handling will come with Stripe
+</script>
