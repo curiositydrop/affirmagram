@@ -9,15 +9,24 @@ exports.handler = async (event) => {
 
     const body = JSON.parse(event.body || "{}");
     const prompt = (body.prompt || "").trim();
-    const size = body.size || 1024;       // PNG size
-    const n = body.n || 4;                 // 3–4 previews (we’ll keep 4)
-    const preview = body.preview !== false; // default true
+
+    // --- size handling (API now requires specific strings) ---
+    // Accept "1024", 1024, or full strings like "1024x1024"
+    let requested = body.size ?? "1024x1024";
+    requested = String(requested);
+    if (/^\d+$/.test(requested)) requested = `${requested}x${requested}`;
+
+    const allowed = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
+    const size = allowed.has(requested) ? requested : "1024x1024";
+
+    // # of images (keep between 3–4)
+    const n = Math.min(Math.max(body.n || 4, 3), 4);
 
     if (!prompt) {
       return { statusCode: 400, body: JSON.stringify({ error: "Missing prompt" }) };
     }
 
-    // PNG previews via OpenAI image generation
+    // Call OpenAI images API
     const imgRes = await fetch("https://api.openai.com/v1/images/generations", {
       method: "POST",
       headers: {
@@ -25,9 +34,9 @@ exports.handler = async (event) => {
         "Authorization": `Bearer ${OPENAI_API_KEY}`
       },
       body: JSON.stringify({
-        model: "gpt-image-1",   // use your enabled image model
+        model: "gpt-image-1",
         prompt,
-        size: `${size}x${size}`,
+        size,   // must be one of: 1024x1024, 1024x1536, 1536x1024, auto
         n
       })
     });
@@ -38,8 +47,6 @@ exports.handler = async (event) => {
     }
 
     const pngs = (imgData.data || []).map(d => `data:image/png;base64,${d.b64_json}`);
-
-    // No SVG for previews per your spec
     return { statusCode: 200, body: JSON.stringify({ pngs }) };
   } catch (err) {
     return { statusCode: 500, body: JSON.stringify({ error: String(err) }) };
