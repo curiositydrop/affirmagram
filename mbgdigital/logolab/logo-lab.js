@@ -79,10 +79,10 @@ async function proceed(id){
   statusBox.textContent = 'Rendering logo concepts…';
 
   const renderRes = await fetch('/.netlify/functions/render', {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    body: JSON.stringify({ prompt: firstPrompt, size: 1024, n: 4, preview: true })
-  });
+  method: 'POST',
+  headers: { 'Content-Type':'application/json' },
+  body: JSON.stringify({ prompt: firstPrompt, size: "1024x1024", n: 4 })
+});
   const renderData = await renderRes.json();
   if (renderData.error) {
     statusBox.textContent = 'Error rendering concepts.';
