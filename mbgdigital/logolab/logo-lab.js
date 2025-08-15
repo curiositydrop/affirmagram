@@ -51,27 +51,61 @@ async function proceed(id){
   } else if(id==='colors'){
     addBot(`Want me to include a symbol or stay abstract? (e.g., drop, bolt, wolf)`);
     addInput('Symbol idea', 'symbol');
-  } else if(id==='symbol'){
-    // STEP 1: Placeholder preview (no backend yet)
-    addBot('Cooking up a brief and prompts… 🍳');
-    statusBox.textContent = 'Demo mode: previews are placeholders until we wire the backend in Step 2.';
-    // Make 3 placeholder cards so layout looks right
-    gallery.hidden = false;
-    grid.innerHTML = '';
-    for (let i=1;i<=3;i++){
-      const card = document.createElement('div');
-      card.className = 'card watermark';
-      card.innerHTML = `<img src="https://placehold.co/512x512/png?text=Logo+${i}"><button class="choose">Select</button>`;
-      grid.appendChild(card);
-      card.querySelector('.choose').onclick = () => {
-        selectedPrompt = `placeholder-${i}`;
-        Array.from(document.querySelectorAll('.card')).forEach(c => c.style.outline = '');
-        card.style.outline = '3px solid #22c55e';
-        actions.hidden = false;
-        statusBox.textContent = 'Great choice. Accept the terms, then pick DIY or Pro Polish.';
-      };
-    }
+  } } else if (id === 'symbol') {
+  const brand  = document.getElementById('brand').value.trim();
+  const vibe   = document.getElementById('vibe').value.trim();
+  const colors = document.getElementById('colors').value.trim();
+  const symbol = document.getElementById('symbol').value.trim();
+
+  addBot('Cooking up a brief and prompts… 🍳');
+  statusBox.textContent = 'Generating brief…';
+
+  // 1) Ask our function for a brief + prompts
+  const briefRes = await fetch('/.netlify/functions/brief', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({ brand, vibe, colors, symbol })
+  });
+  const briefData = await briefRes.json();
+  if (briefData.error) {
+    statusBox.textContent = 'Error generating brief.';
+    console.error(briefData.error);
+    return;
   }
+  addBot(`<b>Creative Brief</b><br>${briefData.brief}`);
+
+  // 2) Use the first prompt to render previews (you can add “try another” later)
+  const firstPrompt = (briefData.prompts && briefData.prompts[0]) || 'minimal geometric monogram';
+  statusBox.textContent = 'Rendering logo concepts…';
+
+  const renderRes = await fetch('/.netlify/functions/render', {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    body: JSON.stringify({ prompt: firstPrompt, size: 1024, n: 4, preview: true })
+  });
+  const renderData = await renderRes.json();
+  if (renderData.error) {
+    statusBox.textContent = 'Error rendering concepts.';
+    console.error(renderData.error);
+    return;
+  }
+
+  // 3) Show grid
+  gallery.hidden = false;
+  grid.innerHTML = '';
+  (renderData.pngs || []).forEach((src, i) => {
+    const card = document.createElement('div');
+    card.className = 'card watermark';
+    card.innerHTML = `<img src="${src}"><button class="choose">Select</button>`;
+    grid.appendChild(card);
+    card.querySelector('.choose').onclick = () => {
+      selectedPrompt = firstPrompt;
+      Array.from(document.querySelectorAll('.card')).forEach(c => c.style.outline = '');
+      card.style.outline = '3px solid #22c55e';
+      actions.hidden = false;
+      statusBox.textContent = 'Great choice. Accept the terms, then pick DIY or Pro Polish.';
+    };
+  });
 }
 
 // Buttons won’t do anything yet — we wire Stripe in Step 3
