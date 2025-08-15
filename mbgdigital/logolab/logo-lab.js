@@ -74,7 +74,7 @@ async function proceed(id){
   }
   addBot(`<b>Creative Brief</b><br>${briefData.brief}`);
 
-  // 2) Use the first prompt to render previews (you can add “try another” later)
+  // 2) Use the first prompt to render previews
   const firstPrompt = (briefData.prompts && briefData.prompts[0]) || 'minimal geometric monogram';
   statusBox.textContent = 'Rendering logo concepts…';
 
@@ -93,7 +93,7 @@ async function proceed(id){
   // 3) Show grid
   gallery.hidden = false;
   grid.innerHTML = '';
-  (renderData.pngs || []).forEach((src, i) => {
+  (renderData.pngs || []).forEach((src) => {
     const card = document.createElement('div');
     card.className = 'card watermark';
     card.innerHTML = `<img src="${src}"><button class="choose">Select</button>`;
@@ -106,7 +106,8 @@ async function proceed(id){
       statusBox.textContent = 'Great choice. Accept the terms, then pick DIY or Pro Polish.';
     };
   });
-}
+} // <-- closes else-if (id === 'symbol')
+} // <-- closes async function proceed
 
 // Buttons won’t do anything yet — we wire Stripe in Step 3
 btnDIY.onclick = () => alert('Checkout will be enabled after we add serverless functions in Step 2 & 3.');
