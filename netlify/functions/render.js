@@ -14,6 +14,10 @@ exports.handler = async (event) => {
     const prompt = String(body.prompt || "").trim();
     if (!prompt) return resp(400, { error: "Missing prompt" });
 
+    // Add premium style clamp to improve logo quality
+    const styleClamp = "award-winning branding, clean vector logo, minimal geometric shapes, strong negative space, timeless design, professional polish, brand-ready, dribbble trending, no text, no slogans";
+    const finalPrompt = `${prompt}, ${styleClamp}`;
+    
     const allowed = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
     const size = allowed.has(String(body.size)) ? String(body.size) : "1024x1024";
 
@@ -28,11 +32,11 @@ exports.handler = async (event) => {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-image-1",
-        prompt,
-        size,
-        n
-      })
+  model: "gpt-image-1",
+  prompt: finalPrompt,
+  size,
+  n
+})
     });
 
     const imgData = await imgRes.json();
