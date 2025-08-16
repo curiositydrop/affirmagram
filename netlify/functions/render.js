@@ -35,31 +35,44 @@ const finalPrompt = `${prompt}, ${styleClamp}`;
     const n = Math.min(Number(body.n || 3), 3);
 
     // Call OpenAI Images — removed invalid response_format
-    const imgRes = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-  model: "gpt-image-1",
-  prompt: finalPrompt,
-  size,
-  n
-})
-    });
+    // ---- OpenAI Images call ----
+console.log("Final prompt:", finalPrompt);
 
-    const imgData = await imgRes.json();
-    if (!imgRes.ok) {
-      return resp(500, { error: imgData });
-    }
+const imgRes = await fetch("https://api.openai.com/v1/images/generations", {
+  method: "POST",
+  headers: {
+    "Authorization": `Bearer ${OPENAI_API_KEY}`,
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    model: "gpt-image-1",
+    prompt: finalPrompt,
+    size,   // e.g. "1024x1024"
+    n       // 1–3
+  })
+});
 
-    const pngs = (imgData.data || [])
-  .map(d => d.url || (d.b64_json ? `data:image/png;base64,${d.b64_json}` : null))
+let imgData;
+try {
+  imgData = await imgRes.json();
+} catch (e) {
+  console.error("Image JSON parse error:", e);
+  return resp(500, { error: "Could not parse image response" });
+}
+
+if (!imgRes.ok) {
+  const msg = imgData?.error?.message || JSON.stringify(imgData).slice(0, 800);
+  console.error("OpenAI image error:", msg);
+  return resp(500, { error: msg });
+}
+
+// Prefer URLs; fall back to base64 if provided
+const pngs = (imgData?.data || [])
+  .map(d => d?.url || (d?.b64_json ? `data:image/png;base64,${d.b64_json}` : null))
   .filter(Boolean);
 
 if (!pngs.length) {
-  console.error("Image API returned no data:", imgData);
+  console.error("No image URLs/base64 returned:", imgData);
   return resp(500, { error: "No images returned by OpenAI" });
 }
 
