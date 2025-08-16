@@ -323,15 +323,35 @@ async function loadPart(id, url){
   const res = await fetch(url, {cache:'no-store'});
   el.innerHTML = await res.text();
 
-  // Highlight based on path prefix
-  const path = location.pathname.toLowerCase(); // e.g., /mbgdigital/logolab/
-  el.querySelectorAll('.nav-links a').forEach(a=>{
-    const href = (a.getAttribute('href')||'').toLowerCase();
-    if (href && (path === href || path.startsWith(href.replace(/index\.html$/, '')))) {
+  // After header loads, highlight the active nav item
+  if (id === 'site-header') highlightActive(el);
+}
+
+// Normalize a path: lowercase, strip trailing "index.html" and trailing "/"
+function normPath(p){
+  p = (p || '').toLowerCase();
+  p = p.replace(/index\.html$/, '');
+  if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+  return p;
+}
+
+function highlightActive(container){
+  const current = normPath(location.pathname);
+  const links = container.querySelectorAll('.nav-links a');
+
+  links.forEach(a => {
+    const raw = a.getAttribute('href') || '';
+    // Resolve relative or root-relative hrefs to an absolute URL, then compare pathnames
+    const abs = new URL(raw, location.href);
+    const target = normPath(abs.pathname);
+
+    if (current === target) {
       a.classList.add('active');
     }
   });
 }
+
+// Load partials
 loadPart('site-header','/mbgdigital/partials/header.html');
 loadPart('site-footer','/mbgdigital/partials/footer.html');
 </script>
