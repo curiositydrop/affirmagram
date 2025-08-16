@@ -5,6 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>MBG Digital</title>
   <style>
+    /* existing CSS … */
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      background: #000; /* matches top bar */
+      padding: 10px 0;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 24px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease-in-out;
+    }
+
+    .nav-links li a:hover {
+      color: var(--accent, #FF6B00);
+    }
+  </style>
+  <style>
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
@@ -220,7 +250,16 @@
     <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" class="boomerang-logo" alt="Boomerang Logo" />
     <span>MBG Digital</span>
   </div>
-
+<!-- Navigation Bar (below logo-bar) -->
+<nav class="navbar">
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="logo-lab.html">Logo Lab</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="portfolio.html">Portfolio</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
   <div class="hero">
     <video autoplay muted loop playsinline>
       <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4" />
