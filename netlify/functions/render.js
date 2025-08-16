@@ -12,11 +12,21 @@ exports.handler = async (event) => {
     try { body = JSON.parse(event.body || "{}"); } catch { body = {}; }
 
     const prompt = String(body.prompt || "").trim();
-    if (!prompt) return resp(400, { error: "Missing prompt" });
+if (!prompt) return resp(400, { error: "Missing prompt" });
 
-    // Add premium style clamp to improve logo quality
-    const styleClamp = "award-winning branding, clean vector logo, minimal geometric shapes, strong negative space, timeless design, professional polish, brand-ready, dribbble trending, no text, no slogans";
-    const finalPrompt = `${prompt}, ${styleClamp}`;
+// Detect wordmark (if the upstream prompt says it)
+const isWordmark = /wordmark|text[-\s]*only/i.test(prompt);
+
+// Two premium clamps
+const symbolClamp =
+  "award-winning branding, clean vector logo, iconic silhouette, minimal geometric forms, grid-aligned, balanced symmetry, strong negative space, timeless design, professional polish, brand-ready, high contrast, flat color, no gradients, no text, no slogans, no mockups, no 3D, no bevel, no drop shadow, no circle-slash/prohibition, no emoji, centered composition on plain background";
+
+const wordmarkClamp =
+  "award-winning branding, typography-first text-only wordmark, refined custom lettering, optical kerning, consistent stroke weight, timeless design, professional polish, brand-ready, high contrast, flat color, no gradients, no icons, no shapes or enclosures, no mockups, no 3D, no bevel, no drop shadow, centered composition on plain background";
+
+// Use the right clamp
+const styleClamp  = isWordmark ? wordmarkClamp : symbolClamp;
+const finalPrompt = `${prompt}, ${styleClamp}`;
     
     const allowed = new Set(["1024x1024", "1024x1536", "1536x1024", "auto"]);
     const size = allowed.has(String(body.size)) ? String(body.size) : "1024x1024";
