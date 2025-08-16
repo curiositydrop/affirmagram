@@ -81,11 +81,7 @@
 </head>
 <body>
 
-  <!-- top bar (same as home) -->
-  <div class="logo-bar">
-    <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" alt="Boomerang Logo"/>
-    <span>MBG Digital</span>
-  </div>
+ <div id="site-header"></div>
 
   <div class="wrap">
     <div class="grid">
@@ -130,8 +126,32 @@
       </section>
     </div>
   </div>
-
+<div id="site-footer"></div>
   <!-- Keep your working JS exactly as-is; just bump cb when you change it -->
   <script src="logo-lab.js?cb=12" defer></script>
+  <div id="site-footer"></div>
+
+  <!-- Loader script for header/footer -->
+  <script>
+  async function loadPart(id, url){
+    const el = document.getElementById(id);
+    if(!el) return;
+    const res = await fetch(url, {cache: 'no-store'});
+    el.innerHTML = await res.text();
+
+    // Auto-highlight current nav item based on filename
+    const path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+    el.querySelectorAll?.('.nav-links a').forEach(a=>{
+      if ((a.getAttribute('href')||'').toLowerCase() === path) {
+        a.classList.add('active');
+      }
+    });
+  }
+
+  loadPart('site-header', '/mbgdigital/partials/header.html');
+  loadPart('site-footer', '/mbgdigital/partials/footer.html');
+  </script>
+</body>
+</html>
 </body>
 </html>
