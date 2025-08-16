@@ -55,8 +55,13 @@ const finalPrompt = `${prompt}, ${styleClamp}`;
     }
 
     const pngs = (imgData.data || [])
-  .map(d => d.url) // only keep the URL
+  .map(d => d.url || (d.b64_json ? `data:image/png;base64,${d.b64_json}` : null))
   .filter(Boolean);
+
+if (!pngs.length) {
+  console.error("Image API returned no data:", imgData);
+  return resp(500, { error: "No images returned by OpenAI" });
+}
 
 return resp(200, { pngs });
 
