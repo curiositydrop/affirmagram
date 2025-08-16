@@ -33,6 +33,12 @@
     .nav-links li a:hover {
       color: var(--accent, #FF6B00);
     }
+    .nav-links li a.active {
+  color: var(--accent, #FF6B00);
+  /* or add glow:
+  text-shadow: 0 0 6px #FF6B00, 0 0 12px #FF6B00;
+  */
+}
   </style>
   <style>
     body {
@@ -245,6 +251,7 @@
   </style>
 </head>
 <body>
+  <div id="site-header"></div>
   <div class="hero">
     <video autoplay muted loop playsinline>
       <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4" />
@@ -287,6 +294,8 @@
 
   <a href="#contact" class="sticky-cta">Let’s Talk</a>
 
+  <div id="site-footer"></div>
+  
   <script>
   function toggleService(index) {
     const allDescriptions = document.querySelectorAll(".service-description");
@@ -367,5 +376,24 @@
   z-index: 9999;
 ">🔥 Boom. Message sent. You're officially on our radar.</div>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+async function loadPart(id, url){
+  const el = document.getElementById(id);
+  if(!el) return;
+  const res = await fetch(url, {cache: 'no-store'});
+  el.innerHTML = await res.text();
+
+  // Auto-highlight current nav item based on filename
+  const path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  el.querySelectorAll?.('.nav-links a').forEach(a=>{
+    if ((a.getAttribute('href')||'').toLowerCase() === path) {
+      a.classList.add('active');
+    }
+  });
+}
+
+loadPart('site-header', '/mbgdigital/partials/header.html');
+loadPart('site-footer', '/mbgdigital/partials/footer.html');
+</script>
 </body>
 </html>
