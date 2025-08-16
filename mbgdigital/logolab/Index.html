@@ -1,63 +1,136 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Logo Lab</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MBG Digital — Logo Lab</title>
+
+  <!-- MBG style: dark theme + orange accent -->
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; background:#0b0b0b; color:#eaeaea; }
-    h1 { margin: 0 0 16px; font-size: 20px; }
-    .stack { max-width: 820px; margin: 0 auto; }
-    .row { display:flex; gap:8px; align-items:center; margin: 8px 0; }
-    input { flex:1; padding: 10px 12px; border-radius: 8px; border: 1px solid #333; background:#141414; color:#eaeaea; }
-    button { padding: 10px 14px; border:0; border-radius: 8px; background:#22c55e; color:#0b0b0b; font-weight:600; cursor:pointer; }
-    button[disabled] { opacity:.5; cursor:not-allowed; }
-    #status { margin: 10px 0 16px; color:#aaa; font-size: 14px; }
-    #chat .bot { background:#161616; border:1px solid #2a2a2a; padding:12px; border-radius:10px; margin:10px 0; }
-    #gallery { margin-top: 16px; }
-    #grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
-    .card { background:#111; border:1px solid #252525; padding:10px; border-radius:10px; text-align:center; }
-    .card img { width:100%; height:auto; display:block; border-radius:6px; }
-    .card .choose { margin-top:8px; }
-    #actions { margin-top: 18px; display:flex; gap:10px; align-items:center; }
-    label small { color:#9aa; }
+    :root{
+      --bg:#0d0d0d; --panel:#111; --ink:#f2f2f2; --muted:#bdbdbd;
+      --border:#222; --accent:#ff6f00; --accent-2:#ffa733;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:'Segoe UI',system-ui,Arial,sans-serif;
+      background:var(--bg); color:var(--ink);
+    }
+
+    /* top bar (matches mbgdigital) */
+    .logo-bar{
+      display:flex; align-items:center; gap:10px; padding:16px 20px;
+      background:#000; border-bottom:2px solid var(--accent);
+    }
+    .logo-bar img{height:48px; filter: drop-shadow(0 0 4px white) drop-shadow(0 0 12px #FF6B00)}
+    .logo-bar span{font-size:1.6rem; font-weight:700}
+
+    /* shell */
+    .wrap{max-width:1200px; margin:0 auto; padding:20px}
+    .grid{
+      display:grid; gap:24px; grid-template-columns: 1.05fr 1.35fr;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px;
+    }
+
+    /* inputs + chat (left) */
+    .row{display:grid; grid-template-columns: 1fr auto; gap:8px; margin-bottom:10px}
+    input#brand, .input input{
+      background:#0f0f0f; color:var(--ink); border:1px solid var(--border);
+      padding:12px 14px; border-radius:10px; width:100%;
+    }
+    button{
+      background:var(--accent); color:#000; border:0; padding:12px 16px;
+      border-radius:10px; font-weight:700; cursor:pointer;
+    }
+    button:hover{background:var(--accent-2)}
+    button[disabled]{opacity:.6; cursor:not-allowed}
+
+    #status{margin:8px 0 2px; color:#bbb; font-size:.95rem}
+    #chat{display:grid; gap:10px; margin-top:10px}
+    #chat .bot{
+      background:#0f0f0f; border:1px solid var(--border); padding:14px 16px; border-radius:12px; line-height:1.5;
+    }
+
+    /* right: concepts + actions */
+    h2{margin:0 0 12px; font-size:1.25rem}
+    #grid{
+      display:grid; gap:14px; grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+    @media (max-width:1120px){ #grid{grid-template-columns: repeat(2,1fr)} }
+    @media (max-width:560px){ #grid{grid-template-columns: 1fr} }
+
+    .card{
+      background:#0f0f0f; border:1px solid var(--border); border-radius:14px; padding:10px; text-align:center;
+    }
+    .card img{width:100%; height:auto; border-radius:10px; display:block}
+    .card .choose{width:100%; margin-top:8px}
+
+    #actions{display:grid; gap:12px; margin-top:16px}
+    #actions label{display:grid; gap:8px; color:#d1d1d1; font-size:.95rem}
+    #actions .btns{display:grid; grid-auto-flow:column; gap:10px}
+    @media (max-width:560px){ #actions .btns{grid-auto-flow:row} }
+
+    /* subtle divider */
+    .bar{height:2px; background:linear-gradient(90deg, transparent, var(--accent), transparent); margin:14px 0}
   </style>
 </head>
 <body>
-  <div class="stack">
-    <h1>MBG Digital — Logo Lab</h1>
 
-    <!-- Step 0: first question and Next -->
-    <div class="row">
-      <input id="brand" placeholder="Your brand name" />
-      <button id="next1">Next →</button>
-    </div>
+  <!-- top bar (same as home) -->
+  <div class="logo-bar">
+    <img src="/mbgdigital/BD5B6F21-C9C4-4BAE-9411-BEBF67B848CE.png" alt="Boomerang Logo"/>
+    <span>MBG Digital</span>
+  </div>
 
-    <div id="status">Ready.</div>
+  <div class="wrap">
+    <div class="grid">
+      <!-- LEFT: conversation / inputs -->
+      <section class="panel">
+        <h2>Logo Lab</h2>
+        <div class="row">
+          <input id="brand" placeholder="Your brand name"/>
+          <button id="next1">Next →</button>
+        </div>
 
-    <!-- Chat stream -->
-    <div id="chat"></div>
+        <div id="status">Ready.</div>
+        <div class="bar"></div>
 
-    <!-- Concepts -->
-    <section id="gallery" hidden>
-      <h2 style="font-size:16px;margin:16px 0 8px;">Concepts</h2>
-      <div id="grid"></div>
-    </section>
+        <!-- chat stream (do not rename id) -->
+        <div id="chat"></div>
+      </section>
 
-    <!-- Terms + Actions -->
-    <div id="actions" hidden>
-      <label style="display:flex; gap:8px; align-items:flex-start;">
-        <input id="fineprint" type="checkbox" />
-        <small>All DIY project sales are final. Preview concepts are AI-generated. MBG Digital is not responsible for trademark clearance, uniqueness, or legal suitability.</small>
-      </label>
-      <div style="display:flex; gap:8px;">
-        <button id="buy-diy" disabled>DIY Pack ($29)</button>
-        <button id="buy-pro" disabled>Pro Polish ($149)</button>
-      </div>
+      <!-- RIGHT: concepts + actions -->
+      <section class="panel">
+        <h2>Concepts</h2>
+
+        <!-- concepts grid (do not rename ids) -->
+        <section id="gallery" hidden>
+          <div id="grid"></div>
+        </section>
+
+        <!-- actions (do not rename ids) -->
+        <div id="actions" hidden>
+          <label>
+            <input type="checkbox" id="fineprint"/>
+            <small>
+              All DIY project sales are final. Preview concepts are AI-generated. 
+              MBG Digital is not responsible for trademark clearance, uniqueness, or legal suitability.
+            </small>
+          </label>
+          <div class="btns">
+            <button id="buy-diy" disabled>DIY Pack ($29)</button>
+            <button id="buy-pro" disabled>Pro Polish ($149)</button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
-  <!-- load the latest script; bump cb when you update -->
-  <script src="logo-lab.js?cb=8" defer></script>
+  <!-- Keep your working JS exactly as-is; just bump cb when you change it -->
+  <script src="logo-lab.js?cb=12" defer></script>
 </body>
 </html>
