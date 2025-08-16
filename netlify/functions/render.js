@@ -54,8 +54,11 @@ const finalPrompt = `${prompt}, ${styleClamp}`;
       return resp(500, { error: imgData });
     }
 
-    const pngs = (imgData.data || []).map(d => d.url || `data:image/png;base64,${d.b64_json}`);
-    return resp(200, { pngs });
+    const pngs = (imgData.data || [])
+  .map(d => d.url) // only keep the URL
+  .filter(Boolean);
+
+return resp(200, { pngs });
 
   } catch (e) {
     return resp(500, { error: String(e) });
