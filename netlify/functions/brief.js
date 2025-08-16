@@ -13,11 +13,12 @@ exports.handler = async (event) => {
     const colors = (body.colors || "").trim();
     const symbol = (body.symbol || "").trim();
 
+    // Wordmark detection for clearer instructions
     const wantsWordmark = /no\s*symbol|wordmark|text[-\s]*only/i.test(symbol);
-const symbolLine = wantsWordmark
-  ? "Design a typography-first, text-only wordmark. Exclude icons, pictograms, mascots, shapes, enclosures, and prohibition signs."
-  : `Symbol direction: ${symbol || "abstract geometric mark"}. Avoid circle-slash/prohibition sign and literal clip-art.`;
-    
+    const symbolLine = wantsWordmark
+      ? "Design a typography-first, text-only wordmark. Exclude icons, pictograms, mascots, shapes, enclosures, and prohibition signs."
+      : `Symbol direction: ${symbol || "abstract geometric mark"}. Avoid circle-slash/prohibition sign and literal clip-art.`;
+
     if (!brand) return json(400, { error: "Missing brand" });
 
     const sys = `You are a senior brand designer at an award-winning studio.
@@ -87,10 +88,12 @@ Return JSON only.`;
       console.error("brief error:", data);
     }
 
+    // 🔒 Final safeguard — never return empty
     if (!brief)   brief   = fallbackBrief({ brand, vibe, colors, symbol });
-    if (!prompts.length) prompts = fallbackPrompts({ brand, vibe, colors, symbol });
+    if (!prompts || !prompts.length) prompts = fallbackPrompts({ brand, vibe, colors, symbol });
 
     return json(200, { brief, prompts });
+
   } catch (err) {
     console.error(err);
     return json(200, {
@@ -100,7 +103,7 @@ Return JSON only.`;
   }
 };
 
-// helpers
+// ---------------- helpers ----------------
 function json(status, obj) {
   return { statusCode: status, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) };
 }
@@ -113,9 +116,14 @@ function fallbackBrief({ brand="", vibe="", colors="", symbol="" } = {}) {
   const s = symbol || "abstract geometric mark";
   return `${brand} is positioned with a ${v} personality. The logo should be simple, versatile and highly legible at small sizes. Use a restrained palette (${c}) and emphasize clarity, balanced proportions and strong negative space. Explore a ${s} that feels distinctive yet timeless; avoid detailed illustration or literal scenes. The mark should work alone or paired with logotype and export cleanly for social icons, packaging and apparel.`;
 }
-return [
-  `award-winning ${sym} logo for ${brand}, clean vector lines, minimal geometric shapes, strong negative space, timeless ${v} style, ${c}, professional polish, no text, dribbble trending`,
-  `luxury monogram inspired by ${sym} for ${brand}, bold and elegant proportions, grid-aligned, iconic silhouette, ${v} branding aesthetic, ${c}, flat vector logo, professional design, no slogans`,
-  `modern emblem evoking ${sym} for ${brand}, modular geometry, balanced symmetry, brand-ready identity, ${v} design, ${c}, premium finish, minimal flat vector style, no lettering`
-];
+
+function fallbackPrompts({ brand="", vibe="", colors="", symbol="" } = {}) {
+  const v   = (vibe   || "modern, minimal").toLowerCase();
+  const c   = (colors || "navy and leaf green").toLowerCase();
+  const sym = symbol ? symbol.toLowerCase() : "abstract geometric mark";
+  return [
+    `award-winning ${sym} logo for ${brand}, clean vector lines, minimal geometric shapes, strong negative space, timeless ${v} style, ${c}, professional polish, flat vector on dark background, brand-ready, no text, no slogans`,
+    `luxury monogram inspired by ${sym} for ${brand}, bold and elegant grid-aligned proportions, iconic silhouette, ${v} branding aesthetic, ${c}, flat vector logo, professional design, brand-ready, no text`,
+    `modern emblem evoking ${sym} for ${brand}, modular geometry, balanced symmetry, generous whitespace, premium finish, ${v} design, ${c}, minimal flat vector style, no lettering`
+  ];
 }
