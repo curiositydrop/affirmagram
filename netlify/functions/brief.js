@@ -41,7 +41,7 @@ Task:
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        model: "gpt-4.1-mini",
+        model: "gpt-4.1",
         reasoning: { effort: "medium" },
         input: [
           { role: "system", content: sys },
