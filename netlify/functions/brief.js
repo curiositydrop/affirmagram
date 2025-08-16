@@ -13,26 +13,32 @@ exports.handler = async (event) => {
     const colors = (body.colors || "").trim();
     const symbol = (body.symbol || "").trim();
 
+    const wantsWordmark = /no\s*symbol|wordmark|text[-\s]*only/i.test(symbol);
+const symbolLine = wantsWordmark
+  ? "Design a typography-first, text-only wordmark. Exclude icons, pictograms, mascots, shapes, enclosures, and prohibition signs."
+  : `Symbol direction: ${symbol || "abstract geometric mark"}. Avoid circle-slash/prohibition sign and literal clip-art.`;
+    
     if (!brand) return json(400, { error: "Missing brand" });
 
-    const sys = `You write concise creative briefs and logo prompts.
+    const sys = `You are a senior brand designer at an award-winning studio.
+Write concise, client-facing creative briefs and production-ready logo prompts.
 Return clean JSON only with keys: brief (string), prompts (string[]).
-Don't include backticks or markdown fences.`;
+Do not include markdown or code fences.`;
 
     const user = `
 Brand: ${brand}
 Vibe words: ${vibe || "modern, clean"}
 Preferred colors: ${colors || "designer's choice"}
-Symbol idea: ${symbol || "abstract mark"}
+${symbolLine}
 
 Task:
-1) Write a short (120–180 words) creative brief in plain text (no markdown headings).
-2) Produce 3 distinct, high-quality text prompts for an image model to generate logo concepts.
-   - Each prompt should be a single sentence.
-   - Include style words from the brief (e.g., minimal, geometric, negative space).
+1) Write a 120–180 word creative brief in plain language (no markdown headings). Tone: confident and professional, like a branding agency. Emphasize: scalability, simplicity, balanced geometry, negative space, timelessness, and brand-readiness (social icons, packaging, apparel).
+2) Produce 3 distinct, high-quality one-sentence prompts for an image model to generate logo concepts.
+   - Each prompt must be usable as-is by an image model (production-ready).
+   - Include relevant style cues (e.g., minimal, geometric, negative space, iconic silhouette).
    - Respect the colors and symbol direction.
-   - Avoid text-in-image like slogans. Focus on a mark/symbol/monogram.
-`;
+   - Assume flat vector look on dark background; exclude text-in-image, slogans, mockups, 3D, bevel, drop shadow, circle-slash/prohibition marks, emojis, and clip-art.
+Return JSON only.`;
 
     const resp = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
@@ -43,6 +49,7 @@ Task:
       body: JSON.stringify({
         model: "gpt-4.1",
         reasoning: { effort: "medium" },
+        temperature: 0.8,
         input: [
           { role: "system", content: sys },
           { role: "user",   content: user }
@@ -106,13 +113,9 @@ function fallbackBrief({ brand="", vibe="", colors="", symbol="" } = {}) {
   const s = symbol || "abstract geometric mark";
   return `${brand} is positioned with a ${v} personality. The logo should be simple, versatile and highly legible at small sizes. Use a restrained palette (${c}) and emphasize clarity, balanced proportions and strong negative space. Explore a ${s} that feels distinctive yet timeless; avoid detailed illustration or literal scenes. The mark should work alone or paired with logotype and export cleanly for social icons, packaging and apparel.`;
 }
-function fallbackPrompts({ brand="", vibe="", colors="", symbol="" } = {}) {
-  const v   = (vibe   || "modern, minimal").toLowerCase();
-  const c   = (colors || "navy and leaf green").toLowerCase();
-  const sym = symbol ? symbol.toLowerCase() : "abstract geometric mark";
-  return [
-    `minimal ${sym} for ${brand}, clean geometric shapes, strong negative space, ${v} style, flat vector look, centered composition, ${c}, studio lighting, no text, plain background`,
-    `iconic monogram inspired by ${sym} for ${brand}, sharp angles and rounded balance, grid-aligned, high contrast, ${v}, flat logo rendering, ${c}, no words, no gradients`,
-    `simple emblem evoking ${sym} for ${brand}, modular geometry, balanced symmetry, generous whitespace, ${v} aesthetic, brand-ready, ${c}, crisp edges, no lettering`
-  ];
+return [
+  `award-winning ${sym} logo for ${brand}, clean vector lines, minimal geometric shapes, strong negative space, timeless ${v} style, ${c}, professional polish, no text, dribbble trending`,
+  `luxury monogram inspired by ${sym} for ${brand}, bold and elegant proportions, grid-aligned, iconic silhouette, ${v} branding aesthetic, ${c}, flat vector logo, professional design, no slogans`,
+  `modern emblem evoking ${sym} for ${brand}, modular geometry, balanced symmetry, brand-ready identity, ${v} design, ${c}, premium finish, minimal flat vector style, no lettering`
+];
 }
