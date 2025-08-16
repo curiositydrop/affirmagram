@@ -1,3 +1,14 @@
+window.addEventListener('error', e => {
+  console.error('JS error:', e.message);
+  const s = document.getElementById('status');
+  if (s) s.textContent = 'Error: ' + e.message;
+});
+window.addEventListener('unhandledrejection', e => {
+  console.error('Promise error:', e.reason);
+  const s = document.getElementById('status');
+  s && (s.textContent = 'Error: ' + (e.reason?.message || e.reason));
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const chat = document.getElementById('chat');
   const gallery = document.getElementById('gallery');
