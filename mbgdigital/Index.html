@@ -320,20 +320,20 @@
 async function loadPart(id, url){
   const el = document.getElementById(id);
   if(!el) return;
-  const res = await fetch(url, {cache: 'no-store'});
+  const res = await fetch(url, {cache:'no-store'});
   el.innerHTML = await res.text();
 
-  // Auto-highlight current nav item based on filename
-  const path = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-  el.querySelectorAll?.('.nav-links a').forEach(a=>{
-    if ((a.getAttribute('href')||'').toLowerCase() === path) {
+  // Highlight based on path prefix
+  const path = location.pathname.toLowerCase(); // e.g., /mbgdigital/logolab/
+  el.querySelectorAll('.nav-links a').forEach(a=>{
+    const href = (a.getAttribute('href')||'').toLowerCase();
+    if (href && (path === href || path.startsWith(href.replace(/index\.html$/, '')))) {
       a.classList.add('active');
     }
   });
 }
-
-loadPart('site-header', '/mbgdigital/partials/header.html');
-loadPart('site-footer', '/mbgdigital/partials/footer.html');
+loadPart('site-header','/mbgdigital/partials/header.html');
+loadPart('site-footer','/mbgdigital/partials/footer.html');
 </script>
 </body>
 </html>
