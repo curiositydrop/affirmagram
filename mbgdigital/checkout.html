@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Checkout — MBG Digital</title>
+  <link rel="stylesheet" href="/mbgdigital/styles/site.css">
+
+  <style>
+    :root{ --bg:#0d0d0d; --panel:#111; --ink:#f2f2f2; --muted:#bdbdbd; --border:#222; --accent:#ff6f00; }
+    body{ background:var(--bg); color:var(--ink); margin:0; font-family:'Segoe UI',system-ui,Arial,sans-serif; }
+    .wrap{ max-width:960px; margin:0 auto; padding:20px }
+    .panel{ background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:16px; }
+    .row{ display:grid; grid-template-columns: 1fr 320px; gap:18px; align-items:start; }
+    @media (max-width:960px){ .row{ grid-template-columns:1fr } }
+    h1{ margin:0 0 10px; }
+    .muted{ color:var(--muted) }
+    .thumb{ width:100%; border-radius:12px; border:1px solid var(--border); background:#0f0f0f }
+    .callout{ padding:12px; background:#141414; border:1px dashed #444; border-radius:10px; margin:10px 0 }
+    .btn{ background:var(--accent); color:#000; border:0; padding:14px 18px; border-radius:10px; font-weight:700; cursor:pointer; width:100% }
+    .btn[disabled]{ opacity:.6; cursor:not-allowed }
+    a.back{ color:var(--muted); text-decoration:none }
+    .kv{ display:grid; grid-template-columns: 140px 1fr; gap:10px; margin:10px 0 }
+    .kv div{ padding:8px 0; border-bottom:1px solid var(--border) }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="/mbgdigital/logolab/">&larr; Back to Logo Lab</a>
+    <div class="panel">
+      <div id="error" class="callout" hidden></div>
+
+      <div class="row">
+        <section>
+          <h1>Checkout</h1>
+          <div class="muted">Confirm your selection and complete payment.</div>
+
+          <div class="kv">
+            <div>Package</div><div id="pkg">—</div>
+            <div>Brand</div>  <div id="brand">—</div>
+            <div>Concept</div><div id="concept">—</div>
+          </div>
+
+          <div class="callout muted" id="legal">
+            All DIY project sales are final. Preview concepts are AI-generated. MBG Digital is not responsible for trademark clearance, uniqueness, or legal suitability.
+          </div>
+
+          <!-- Replace these with your actual payment buttons later -->
+          <button id="pay" class="btn">Pay & Download</button>
+        </section>
+
+        <aside>
+          <img id="preview" class="thumb" alt="Selected logo preview" src="">
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Read and decode the token
+    function getParam(name){ return new URLSearchParams(location.search).get(name) || ''; }
+    function decodeToken(t){
+      try{
+        return JSON.parse(decodeURIComponent(escape(atob(t))));
+      }catch(_){ return null; }
+    }
+
+    const type  = getParam('type') || 'diy';
+    const token = getParam('token');
+    const data  = decodeToken(token);
+
+    const $ = (id)=>document.getElementById(id);
+    const ERR = $('error');
+
+    if(!token || !data || !data.url){
+      ERR.hidden = false;
+      ERR.textContent = 'Missing or invalid selection. Please go back and choose a logo.';
+      $('pay').disabled = true;
+    } else {
+      $('pkg').textContent    = (type === 'pro') ? 'Pro Polish ($149)' : 'DIY Pack ($29)';
+      $('brand').textContent  = data.brand || '—';
+      $('concept').textContent= data.itemId ? `#${data.itemId}` : '—';
+      $('preview').src        = data.url;
+    }
+
+    // Temporary: simulate payment + download link
+    $('pay').addEventListener('click', ()=>{
+      if ($('pay').disabled) return;
+
+      // You can POST `token` to your backend here and return a real download URL.
+      alert('Payment flow would start here. Token attached.\n\n' + token);
+
+      // Example redirect after payment success:
+      // location.href = `/mbgdigital/thank-you.html?token=${encodeURIComponent(token)}`
+    });
+  </script>
+</body>
+</html>
