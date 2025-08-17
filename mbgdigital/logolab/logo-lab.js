@@ -84,14 +84,17 @@ async function callLogoAPI(payload){
   const list = apiOverride ? [apiOverride] : ENDPOINTS;
   for (const ep of list){
     try{
-      setStatus(`Calling ${ep}…`);
-      const res = await robustFetch(ep, {
-        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
-      });
-      const data = await res.json().catch(()=> ({}));
-      const urls = normalizeImages(data);
-      if (urls.length){ setStatus(`Concepts ready from ${ep}.`); return urls; }
-    }catch(_){ /* try next */ }
+      setStatus("Optimizing your concept...");
+const res = await robustFetch(ep, {
+  method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
+});
+const data = await res.json().catch(()=> ({}));
+const urls = normalizeImages(data);
+if (urls.length){ 
+  setStatus("");  // clear the status once logos are ready
+  return urls; 
+}
+} catch (_) { /* try next */ }
   }
   // DEMO FALLBACK (always if API fails):
   setStatus('Demo mode: showing placeholder concepts.');
