@@ -210,11 +210,12 @@ async function generate(){
       grid.appendChild(card);
     });
     gallery.hidden = false; actions.hidden = false; updatePurchaseState();
-  }catch(e){
-    console.warn('Generation failed:', e);
-    showSoftError(()=>{ renderForm(); generate(); });
-    setStatus('Could not get images. Tap Retry.');
-  }finally{
+  } catch(e){
+  console.warn('Generation failed:', e);
+  const msg = (e && e.message) ? e.message : 'Could not get images';
+  setStatus(msg);
+  showSoftError(()=>{ renderForm(); generate(); });
+} finally {
     if (prog?.cleanup) prog.cleanup(); prog?.remove();
   }
 }
