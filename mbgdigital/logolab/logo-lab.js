@@ -59,8 +59,14 @@ function progressNode(){
   return n;
 }
 
-function showSoftError(onRetry){
-  const box = el(`<div class="soft-error"><div>Something hiccuped. Try again.</div><button class="retry-btn">Retry</button></div>`);
+function showSoftError(message, onRetry){
+  const box = el(`
+    <div class="soft-error">
+      <div class="msg"></div>
+      <button class="retry-btn">Retry</button>
+    </div>
+  `);
+  box.querySelector('.msg').textContent = message || 'Something hiccuped. Try again.';
   box.querySelector('.retry-btn').addEventListener('click', onRetry);
   chat.appendChild(box);
 }
@@ -215,12 +221,13 @@ async function generate(){
       grid.appendChild(card);
     });
     gallery.hidden = false; actions.hidden = false; updatePurchaseState();
-  } catch(e){
-  console.warn('Generation failed:', e);
-  const msg = (e && e.message) ? e.message : 'Could not get images';
-  setStatus(msg);
-  showSoftError(()=>{ renderForm(); generate(); });
-} finally {
+    } catch (e) {
+    console.warn('Generation failed:', e);
+    const msg = e && e.message ? e.message : 'Could not get images';
+    showSoftError(msg, ()=>{ renderForm(); generate(); });
+  } finally {
+    if (prog?.cleanup) prog.cleanup(); prog?.remove();
+  }
     if (prog?.cleanup) prog.cleanup(); prog?.remove();
   }
 }
