@@ -115,7 +115,15 @@ function buildPrompt({brand, vibe, colors, symbol, extras}){
     `${notesLine}Output: ${IMG_COUNT} concept images, each a flat, presentation-ready logo on a neutral background.`
   ].join('\n');
 }
-
+function makeCheckoutToken(){
+  const payload = {
+    brand: state.brand,
+    itemId: state.selectedItemId,
+    url: state.selectedUrl
+  };
+  // base64-encode safely
+  return btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+}
 /* ---------- API (no demo fallback) ---------- */
 async function callLogoAPI(payload){
   const list = apiOverride ? [apiOverride] : ENDPOINTS;
@@ -220,18 +228,24 @@ async function generate(){
     grid.innerHTML = '';
 
     urls.forEach(u => {
+      const id = uid(); // generate unique ID
       const card = el(`
-        <div class="card">
+        <div class="card" data-id="${id}">
           <img loading="lazy" src="${u}" alt="Logo concept"
                onerror="this.onerror=null; this.src='https://placehold.co/1024x1024?text=Logo';" />
           <button class="choose">Use this one</button>
         </div>
       `);
       card.querySelector('.choose').addEventListener('click', () => {
-        grid.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        updatePurchaseState();
-      });
+  grid.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+
+  // NEW: remember the exact pick
+  state.selectedItemId = id;   // the uid() you added in Step 2
+  state.selectedUrl    = u;    // the exact image URL to deliver later
+
+  updatePurchaseState();
+});
       grid.appendChild(card);
     });
 
@@ -258,14 +272,20 @@ function updatePurchaseState(){
 function attachPurchaseHandlers(){
   fineprint.addEventListener('change', updatePurchaseState);
   buyDIY.addEventListener('click', ()=>{
-    const idx = [...grid.children].findIndex(c=>c.classList.contains('selected')); if(idx<0) return;
-    alert(`DIY Pack selected for "${state.brand}" (concept #${idx+1}).`);
-  });
-  buyPRO.addEventListener('click', ()=>{
-    const idx = [...grid.children].findIndex(c=>c.classList.contains('selected')); if(idx<0) return;
-    alert(`Pro Polish selected for "${state.brand}" (concept #${idx+1}).`);
-  });
-}
+  if (!state.selectedItemId || !state.selectedUrl) return;
+  const token = makeCheckoutToken();
+  // TODO: send token to your checkout page / API
+  alert(`DIY Pack for "${state.brand}"\nToken: ${token}`);
+  // example next step later:
+  // location.href = `/checkout?token=${encodeURIComponent(token)}`;
+});
+
+buyPRO.addEventListener('click', ()=>{
+  if (!state.selectedItemId || !state.selectedUrl) return;
+  const token = makeCheckoutToken();
+  alert(`Pro Polish for "${state.brand}"\nToken: ${token}`);
+  // location.href = `/checkout?token=${encodeURIComponent(token)}`;
+});
 
 /* ---------- Init ---------- */
 function init(){
