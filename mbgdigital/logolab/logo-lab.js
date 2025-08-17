@@ -118,6 +118,11 @@ async function callLogoAPI(payload){
         body: JSON.stringify(payload)
       });
       const data = await res.json().catch(()=> ({}));
+      // If server returned an error payload, throw it so UI can show it
+if (data && data.error) {
+  const detail = (data.detail || data.error) + (data.status ? ` (${data.status})` : '');
+  throw new Error(detail);
+}
       const urls = normalizeImages(data);
       if (urls.length){
         setStatus('');
