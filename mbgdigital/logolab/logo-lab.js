@@ -6,6 +6,10 @@ const apiOverride = new URLSearchParams(location.search).get('api'); // optional
 const IMG_COUNT = 4;
 const IMG_SIZE  = '1024x1024';
 
+function uid(n=8){
+  return Math.random().toString(36).slice(2, 2+n) + Date.now().toString(36).slice(-n);
+}
+
 /* ---------- DOM ---------- */
 const brandInput = document.getElementById('brand');
 const nextBtn    = document.getElementById('next1');
