@@ -95,23 +95,33 @@ function buildPrompt({brand, vibe, colors, symbol, extras}){
   ].join('\n');
 }
 
-// --- API call with auto endpoint + ALWAYS demo fallback if API fails ---
+// --- API call with auto endpoint; NO demo fallback (debugging) ---
 async function callLogoAPI(payload){
   const list = apiOverride ? [apiOverride] : ENDPOINTS;
-  for (const ep of list){
-    try{
+
+  for (const ep of list) {
+    try {
       setStatus("Optimizing your concept...");
-const res = await robustFetch(ep, {
-  method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload)
-});
-const data = await res.json().catch(()=> ({}));
-const urls = normalizeImages(data);
-if (urls.length){ 
-  setStatus("");  // clear the status once logos are ready
-  return urls; 
-}
-} catch (_) { /* try next */ }
+      const res = await robustFetch(ep, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      const urls = normalizeImages(data);
+      if (urls.length) {
+        setStatus(""); // clear status once logos are ready
+        return urls;
+      }
+      // if empty, try the next endpoint
+    } catch (e) {
+      // try next endpoint
+    }
   }
+
+  // If we got here, nothing worked — throw so UI shows a clear error
+  throw new Error('Logo API failed — no fallback');
+}
   // DEMO FALLBACK disabled (debugging):
 throw new Error('Logo API failed — no fallback');
 
