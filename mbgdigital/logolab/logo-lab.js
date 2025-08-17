@@ -1,27 +1,26 @@
-/* MBG Digital — Logo Lab v15 (simple inputs + auto demo fallback) */
+/* MBG Digital — Logo Lab v17 (clean, no-fallback, vector-focused) */
 
-const ENDPOINTS = [
-  '/.netlify/functions/logo'  // Netlify serverless function
-];
+/* ---------- Config ---------- */
+const ENDPOINTS = ['/.netlify/functions/logo']; // Netlify function
 const apiOverride = new URLSearchParams(location.search).get('api'); // optional ?api=/path
 const IMG_COUNT = 4;
 const IMG_SIZE  = '1024x1024';
 
-// DOM
+/* ---------- DOM ---------- */
 const brandInput = document.getElementById('brand');
-const nextBtn = document.getElementById('next1');
-const chat = document.getElementById('chat');
-const statusEl = document.getElementById('status');
-const gallery = document.getElementById('gallery');
-const grid = document.getElementById('grid');
-const actions = document.getElementById('actions');
-const fineprint = document.getElementById('fineprint');
-const buyDIY = document.getElementById('buy-diy');
-const buyPRO = document.getElementById('buy-pro');
+const nextBtn    = document.getElementById('next1');
+const chat       = document.getElementById('chat');
+const statusEl   = document.getElementById('status');
+const gallery    = document.getElementById('gallery');
+const grid       = document.getElementById('grid');
+const actions    = document.getElementById('actions');
+const fineprint  = document.getElementById('fineprint');
+const buyDIY     = document.getElementById('buy-diy');
+const buyPRO     = document.getElementById('buy-pro');
 
 let state = { brand:'', vibe:'', colors:'', symbol:'', extras:'' };
 
-// helpers
+/* ---------- Helpers ---------- */
 async function robustFetch(url, options={}, {retries=2, baseDelay=800, timeoutMs=30000}={}) {
   for (let i=0; i<=retries; i++) {
     const controller = new AbortController();
@@ -38,20 +37,30 @@ async function robustFetch(url, options={}, {retries=2, baseDelay=800, timeoutMs
     }
   }
 }
+
 function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
+
+/* Hide techy status text from users; still log to console */
 function setStatus(t){
-  console.log('[LogoLab]', t);   // still logs for you
-  // statusEl.textContent = t;   // comment out so users don’t see it
+  console.log('[LogoLab]', t);
+  // statusEl.textContent = t; // keep hidden in UI
 }
+
 function progressNode(){
-  const n = el(`<div class="progress-line" aria-live="polite"><div class="bar-inner"></div><small>Optimizing your concept…</small></div>`);
+  const n = el(`
+    <div class="progress-line" aria-live="polite">
+      <div class="bar-inner"></div>
+      <small>Optimizing your concept…</small>
+    </div>
+  `);
   const inner = n.querySelector('.bar-inner'); let pct=30, dir=1;
   n._int = setInterval(()=>{ pct += dir*(3+Math.random()*2); if(pct>85)dir=-1; if(pct<30)dir=1; inner.style.width=pct+'%'; }, 300);
   n.cleanup = ()=> clearInterval(n._int);
   return n;
 }
+
 function showSoftError(onRetry){
-  const box = el(`<div class="soft-error"><div>Generator is cooling down. Retrying usually fixes it.</div><button class="retry-btn">Retry</button></div>`);
+  const box = el(`<div class="soft-error"><div>Something hiccuped. Try again.</div><button class="retry-btn">Retry</button></div>`);
   box.querySelector('.retry-btn').addEventListener('click', onRetry);
   chat.appendChild(box);
 }
@@ -73,6 +82,8 @@ function normalizeImages(apiResp){
   });
   return out;
 }
+
+/* Strong, vector-focused brief */
 function buildPrompt({brand, vibe, colors, symbol, extras}){
   const vibeLine   = vibe || 'modern, minimal, premium';
   const colorLine  = colors || 'limited palette; strong contrast';
@@ -95,37 +106,31 @@ function buildPrompt({brand, vibe, colors, symbol, extras}){
   ].join('\n');
 }
 
-// --- API call with auto endpoint; NO demo fallback (debugging) ---
+/* ---------- API (no demo fallback) ---------- */
 async function callLogoAPI(payload){
   const list = apiOverride ? [apiOverride] : ENDPOINTS;
-
-  for (const ep of list) {
-    try {
-      setStatus("Optimizing your concept...");
+  for (const ep of list){
+    try{
+      setStatus('Optimizing your concept...');
       const res = await robustFetch(ep, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
         body: JSON.stringify(payload)
       });
-      const data = await res.json().catch(() => ({}));
+      const data = await res.json().catch(()=> ({}));
       const urls = normalizeImages(data);
-      if (urls.length) {
-        setStatus(""); // clear status once logos are ready
+      if (urls.length){
+        setStatus('');
         return urls;
       }
-      // if empty, try the next endpoint
-    } catch (e) {
+    } catch (e){
       // try next endpoint
     }
   }
-
-  // If we got here, nothing worked — throw so UI shows a clear error
   throw new Error('Logo API failed — no fallback');
 }
-  // DEMO FALLBACK disabled (debugging):
-throw new Error('Logo API failed — no fallback');
 
-// UI: simple inputs + examples
+/* ---------- UI: simple inputs + examples ---------- */
 function renderForm(){
   chat.innerHTML='';
   chat.appendChild(el(`
@@ -138,7 +143,7 @@ function renderForm(){
       </ul>
       <ul>
         <li><em>Vibe:</em> Futuristic, sleek, innovative</li>
-        <li><em>Colors:</em> Teal & navy (#0fb, #001f3f)</li>
+        <li><em>Colors:</em> Teal & navy (#00B3B3, #001F3F)</li>
         <li><em>Symbol:</em> Digital wave morphing into neural nodes</li>
       </ul>
     </div>
@@ -163,10 +168,12 @@ function renderForm(){
     </div>
   `);
   chat.appendChild(form);
-  form.querySelector('#vibe').value = state.vibe || '';
+
+  form.querySelector('#vibe').value   = state.vibe || '';
   form.querySelector('#colors').value = state.colors || '';
   form.querySelector('#symbol').value = state.symbol || '';
   form.querySelector('#extras').value = state.extras || '';
+
   form.querySelector('#gen').addEventListener('click', ()=>{
     state.vibe   = form.querySelector('#vibe').value.trim();
     state.colors = form.querySelector('#colors').value.trim();
@@ -176,7 +183,7 @@ function renderForm(){
   });
 }
 
-// generation
+/* ---------- Generation ---------- */
 async function generate(){
   clearSoftErrors();
   state.brand = (brandInput.value || '').trim();
@@ -190,12 +197,12 @@ async function generate(){
     grid.innerHTML='';
     urls.forEach(u=>{
       const card = el(`
-  <div class="card">
-    <img loading="lazy" src="${u}" alt="Logo concept"
-         onerror="this.onerror=null; this.src='https://placehold.co/1024x1024?text=Logo';" />
-    <button class="choose">Use this one</button>
-  </div>
-`);
+        <div class="card">
+          <img loading="lazy" src="${u}" alt="Logo concept"
+               onerror="this.onerror=null; this.src='https://placehold.co/1024x1024?text=Logo';" />
+          <button class="choose">Use this one</button>
+        </div>
+      `);
       card.querySelector('.choose').addEventListener('click', ()=>{
         grid.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
         card.classList.add('selected'); updatePurchaseState();
@@ -212,7 +219,7 @@ async function generate(){
   }
 }
 
-// purchase
+/* ---------- Purchase ---------- */
 function updatePurchaseState(){
   const hasSelection = !!grid.querySelector('.card.selected');
   const agreed = !!fineprint.checked;
@@ -231,7 +238,7 @@ function attachPurchaseHandlers(){
   });
 }
 
-// init
+/* ---------- Init ---------- */
 function init(){
   attachPurchaseHandlers();
   nextBtn.addEventListener('click', ()=>{
