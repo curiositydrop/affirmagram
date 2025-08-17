@@ -112,10 +112,8 @@ if (urls.length){
 }
 } catch (_) { /* try next */ }
   }
-  // DEMO FALLBACK (always if API fails):
-  setStatus('Demo mode: showing placeholder concepts.');
-  return Array.from({length: IMG_COUNT}).map((_,i)=> `https://picsum.photos/seed/mbg${i}/1024/1024`);
-}
+  // DEMO FALLBACK disabled (debugging):
+throw new Error('Logo API failed — no fallback');
 
 // UI: simple inputs + examples
 function renderForm(){
