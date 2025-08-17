@@ -228,9 +228,6 @@ async function generate(){
   } finally {
     if (prog?.cleanup) prog.cleanup(); prog?.remove();
   }
-    if (prog?.cleanup) prog.cleanup(); prog?.remove();
-  }
-}
 
 /* ---------- Purchase ---------- */
 function updatePurchaseState(){
