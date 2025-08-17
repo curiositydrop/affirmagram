@@ -194,19 +194,28 @@ function renderForm(){
   });
 }
 
-/* ---------- Generation ---------- */
+// ---------- Generation ----------
 async function generate(){
   clearSoftErrors();
+
   state.brand = (brandInput.value || '').trim();
-  if (!state.brand){ brandInput.focus(); setStatus('Please enter a brand name first.'); return; }
+  if (!state.brand){
+    brandInput.focus();
+    setStatus('Please enter a brand name first.');
+    return;
+  }
 
   const payload = { prompt: buildPrompt(state), size: IMG_SIZE, count: IMG_COUNT };
-  const prog = progressNode(); chat.appendChild(prog); setStatus('Generating…');
 
-  try{
+  const prog = progressNode();
+  chat.appendChild(prog);
+  setStatus('Generating…');
+
+  try {
     const urls = await callLogoAPI(payload);
-    grid.innerHTML='';
-    urls.forEach(u=>{
+    grid.innerHTML = '';
+
+    urls.forEach(u => {
       const card = el(`
         <div class="card">
           <img loading="lazy" src="${u}" alt="Logo concept"
@@ -214,20 +223,26 @@ async function generate(){
           <button class="choose">Use this one</button>
         </div>
       `);
-      card.querySelector('.choose').addEventListener('click', ()=>{
-        grid.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
-        card.classList.add('selected'); updatePurchaseState();
+      card.querySelector('.choose').addEventListener('click', () => {
+        grid.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        updatePurchaseState();
       });
       grid.appendChild(card);
     });
-    gallery.hidden = false; actions.hidden = false; updatePurchaseState();
-    } catch (e) {
+
+    gallery.hidden = false;
+    actions.hidden = false;
+    updatePurchaseState();
+  } catch (e) {
     console.warn('Generation failed:', e);
     const msg = e && e.message ? e.message : 'Could not get images';
-    showSoftError(msg, ()=>{ renderForm(); generate(); });
+    showSoftError(msg, () => { renderForm(); generate(); });
   } finally {
-    if (prog?.cleanup) prog.cleanup(); prog?.remove();
+    if (prog?.cleanup) prog.cleanup();
+    prog?.remove();
   }
+}
 
 /* ---------- Purchase ---------- */
 function updatePurchaseState(){
