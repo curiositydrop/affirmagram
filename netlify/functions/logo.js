@@ -10,7 +10,8 @@ export default async (req) => {
   try { body = await req.json(); } catch {
     return Response.json({ error: 'Bad JSON' }, { status: 400 });
   }
-
+  console.log('LogoLab prompt:', body?.prompt);
+  
   const prompt = body?.prompt || '';
   const size   = body?.size || '1024x1024';
   const count  = Math.min(Number(body?.count || 4), 6);
