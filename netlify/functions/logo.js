@@ -7,9 +7,12 @@ export default async (req) => {
   }
 
   let body = {};
-  try { body = await req.json(); } catch {
+  try { 
+    body = await req.json(); 
+  } catch {
     return Response.json({ error: 'Bad JSON' }, { status: 400 });
   }
+
   console.log('LogoLab prompt:', body?.prompt);
   
   const prompt = body?.prompt || '';
@@ -26,18 +29,17 @@ export default async (req) => {
     const timeout = setTimeout(() => controller.abort(), 60000); // 60s server timeout
 
     const r = await fetch('https://api.openai.com/v1/images/generations', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-  },
-  body: JSON.stringify({
-    model: 'gpt-image-1',   // use the newest image model
-    prompt,
-    n: count,
-    size
-  })
-});
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'gpt-image-1',   // use the newest image model
+        prompt,
+        n: count,
+        size
+      }),
       signal: controller.signal
     }).catch((e) => {
       // network/timeout
