@@ -1,8 +1,7 @@
 /* MBG Digital — Logo Lab v15 (simple inputs + auto demo fallback) */
 
 const ENDPOINTS = [
-  '/mbgdigital/api/logo',  // most likely for your site
-  '/api/logo'              // root fallback
+  '/.netlify/functions/logo'  // Netlify serverless function
 ];
 const apiOverride = new URLSearchParams(location.search).get('api'); // optional ?api=/path
 const IMG_COUNT = 4;
