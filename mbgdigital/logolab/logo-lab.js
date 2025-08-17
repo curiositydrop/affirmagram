@@ -271,21 +271,19 @@ function updatePurchaseState(){
 }
 function attachPurchaseHandlers(){
   fineprint.addEventListener('change', updatePurchaseState);
-  buyDIY.addEventListener('click', ()=>{
-  if (!state.selectedItemId || !state.selectedUrl) return;
-  const token = makeCheckoutToken();
-  // TODO: send token to your checkout page / API
-  alert(`DIY Pack for "${state.brand}"\nToken: ${token}`);
-  // example next step later:
-  // location.href = `/checkout?token=${encodeURIComponent(token)}`;
-});
 
-buyPRO.addEventListener('click', ()=>{
-  if (!state.selectedItemId || !state.selectedUrl) return;
-  const token = makeCheckoutToken();
-  alert(`Pro Polish for "${state.brand}"\nToken: ${token}`);
-  // location.href = `/checkout?token=${encodeURIComponent(token)}`;
-});
+  function go(type){
+    const idx = [...grid.children].findIndex(c => c.classList.contains('selected'));
+    if (idx < 0) return;
+
+    const token = makeCheckoutToken();
+    const dest = `/mbgdigital/checkout.html?type=${encodeURIComponent(type)}&token=${encodeURIComponent(token)}`;
+    location.href = dest;
+  }
+
+  buyDIY.onclick = () => go('diy');
+  buyPRO.onclick = () => go('pro');
+}
 
 /* ---------- Init ---------- */
 function init(){
