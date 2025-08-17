@@ -88,6 +88,34 @@
 .card.selected{ outline:2px solid var(--accent); outline-offset:2px; }
   /* force simple text-input mode */
 .chips{ display:none !important; }
+  /* Make primary action pop (Generate Concepts) */
+.primary{
+  background: linear-gradient(180deg, var(--accent), #ff8a1a);
+  color:#000; border:0;
+  padding:14px 18px; border-radius:12px; font-weight:800;
+  box-shadow: 0 10px 26px rgba(255,111,0,.28);
+  transform: translateY(0);
+  transition: box-shadow .2s ease, transform .04s ease, filter .2s ease;
+}
+.primary:hover{ filter:brightness(1.03); box-shadow:0 14px 32px rgba(255,111,0,.35); }
+.primary:active{ transform: translateY(1px); }
+
+/* Calm down other in-flow buttons (e.g., Next, Add note) */
+.bot button:not(.primary){
+  background:#151515; color:var(--ink);
+  border:1px solid var(--border); border-radius:10px;
+  padding:12px 14px; font-weight:600;
+}
+.bot button:not(.primary):hover{ border-color:var(--accent); }
+
+/* Mobile: make the main action full-width for tap confidence */
+@media (max-width:560px){
+  .primary{ width:100%; font-size:1.05rem; }
+}
+
+/* Subtle polish */
+.bot.examples{ border:1px solid var(--border); border-radius:12px; }
+.card:hover{ border-color:var(--accent); }
   </style>
 </head>
 <body>
