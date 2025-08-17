@@ -5,7 +5,14 @@ export default async (req) => {
   if (req.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 });
   }
-
+  // TEMP: quick GET probe to confirm env var is available on the server
+  if (req.method === 'GET') {
+    return Response.json({
+      ok: true,
+      hasKey: !!process.env.OPENAI_API_KEY,
+      keyPrefix: process.env.OPENAI_API_KEY ? process.env.OPENAI_API_KEY.slice(0, 7) : null
+    });
+  }
   let body = {};
   try { 
     body = await req.json(); 
