@@ -71,12 +71,25 @@ function normalizeImages(apiResp){
   return out;
 }
 function buildPrompt({brand, vibe, colors, symbol, extras}){
-  return `${brand} — logo concept.
-Style: ${vibe || 'modern, balanced, premium'}.
-Colors: ${colors || 'designer’s choice with strong contrast'}.
-Symbol/Abstract: ${symbol || 'abstract mark that fits the name'}.
-Typography: clean, legible, custom-feel (no stock-font look).
-Output: ${IMG_COUNT} presentation-ready logo concepts; strong silhouette, clear negative space; suitable for app icon, business card, and signage.${extras ? '\nNotes: '+extras : ''}`;
+  const vibeLine   = vibe || 'modern, minimal, premium';
+  const colorLine  = colors || 'limited palette; strong contrast';
+  const symbolLine = symbol || 'abstract geometric mark that fits the name';
+  const notesLine  = extras ? `Notes: ${extras}\n` : '';
+
+  return [
+    `${brand} — professional logo design (brand mark + wordmark).`,
+    `Style: ${vibeLine}; corporate identity; timeless; brandable; grid-aligned; balanced spacing.`,
+    `Colors: ${colorLine}.`,
+    `Symbol: ${symbolLine}.`,
+    `Requirements:`,
+    `• Vector aesthetic (flat shapes, clean edges, solid fills; no photo, no sketch).`,
+    `• No 3D, no bevels, no shadows, no faux gold, no metallic, no lens flare.`,
+    `• No mockups (no storefronts, papers, stamps, business cards).`,
+    `• Strong silhouette, readable at 24px; good negative space.`,
+    `• Neutral background only (white or very light gray).`,
+    `• Typography: clean, kerning-aware, custom-feel; avoid default font look.`,
+    `${notesLine}Output: ${IMG_COUNT} concept images, each a flat, presentation-ready logo on a neutral background.`
+  ].join('\n');
 }
 
 // --- API call with auto endpoint + ALWAYS demo fallback if API fails ---
