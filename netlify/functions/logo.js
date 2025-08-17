@@ -49,9 +49,11 @@ export default async (req) => {
     clearTimeout(timeout);
 
     if (!r || !r.ok) {
-      const code = r?.status || 502;
-      return Response.json({ error: `provider ${code}` }, { status: 502 });
-    }
+  const code = r?.status || 502;
+  const detail = r ? await r.text() : 'no response';
+  console.log('OpenAI error:', code, detail);
+  return Response.json({ error: 'provider_error', status: code, detail }, { status: 502 });
+}
 
     const data = await r.json();
 
