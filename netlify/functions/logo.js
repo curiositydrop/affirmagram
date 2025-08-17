@@ -1,5 +1,5 @@
 // Netlify Function: /.netlify/functions/logo
-// Mock version: always returns placeholder images so your UI never breaks.
+// Real generator using OpenAI Images. Requires env var: OPENAI_API_KEY
 
 export default async (req) => {
   if (req.method !== 'POST') {
@@ -7,16 +7,69 @@ export default async (req) => {
   }
 
   let body = {};
-  try { body = await req.json(); } catch {}
+  try { body = await req.json(); } catch {
+    return Response.json({ error: 'Bad JSON' }, { status: 400 });
+  }
 
-  const count = Math.min(Number(body?.count || 4), 6);
+  const prompt = body?.prompt || '';
+  const size   = body?.size || '1024x1024';
+  const count  = Math.min(Number(body?.count || 4), 6);
 
-  const images = Array.from({ length: count }).map((_, i) => ({
-    url: `https://picsum.photos/seed/mbg${i}/1024/1024`
-  }));
+  if (!prompt) {
+    return Response.json({ error: 'Missing prompt' }, { status: 400 });
+  }
 
-  return Response.json(
-    { images },
-    { headers: { 'Cache-Control': 'no-store' } }
-  );
+  try {
+    // 1) Call OpenAI Images
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 60000); // 60s server timeout
+
+    const r = await fetch('https://api.openai.com/v1/images/generations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+      },
+      body: JSON.stringify({
+        prompt,
+        n: count,
+        size
+      }),
+      signal: controller.signal
+    }).catch((e) => {
+      // network/timeout
+      throw new Error('network');
+    });
+
+    clearTimeout(timeout);
+
+    if (!r || !r.ok) {
+      const code = r?.status || 502;
+      return Response.json({ error: `provider ${code}` }, { status: 502 });
+    }
+
+    const data = await r.json();
+
+    // 2) Normalize to { images: [{url}] }
+    const images = (data?.data || []).map(x =>
+      x?.url
+        ? { url: x.url }
+        : x?.b64_json
+          ? { url: `data:image/png;base64,${x.b64_json}` }
+          : null
+    ).filter(Boolean);
+
+    if (!images.length) {
+      return Response.json({ error: 'No images returned' }, { status: 502 });
+    }
+
+    return Response.json(
+      { images },
+      { headers: { 'Cache-Control': 'no-store' } }
+    );
+
+  } catch (e) {
+    // Safety net: translate any thrown error to a 502
+    return Response.json({ error: 'Provider failed' }, { status: 502 });
+  }
 };
