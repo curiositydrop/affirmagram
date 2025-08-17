@@ -39,7 +39,10 @@ async function robustFetch(url, options={}, {retries=2, baseDelay=800, timeoutMs
   }
 }
 function el(html){ const d=document.createElement('div'); d.innerHTML=html.trim(); return d.firstElementChild; }
-function setStatus(t){ statusEl.textContent = t; }
+function setStatus(t){
+  console.log('[LogoLab]', t);   // still logs for you
+  // statusEl.textContent = t;   // comment out so users don’t see it
+}
 function progressNode(){
   const n = el(`<div class="progress-line" aria-live="polite"><div class="bar-inner"></div><small>Optimizing your concept…</small></div>`);
   const inner = n.querySelector('.bar-inner'); let pct=30, dir=1;
