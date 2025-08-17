@@ -162,7 +162,13 @@ async function generate(){
     const urls = await callLogoAPI(payload);
     grid.innerHTML='';
     urls.forEach(u=>{
-      const card = el(`<div class="card"><img loading="lazy" src="${u}" alt="Logo concept"/><button class="choose">Use this one</button></div>`);
+      const card = el(`
+  <div class="card">
+    <img loading="lazy" src="${u}" alt="Logo concept"
+         onerror="this.onerror=null; this.src='https://placehold.co/1024x1024?text=Logo';" />
+    <button class="choose">Use this one</button>
+  </div>
+`);
       card.querySelector('.choose').addEventListener('click', ()=>{
         grid.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
         card.classList.add('selected'); updatePurchaseState();
