@@ -1,0 +1,331 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Curiosity Drop — Find the Drop</title>
+<style>
+  :root{
+    --bg:#071020;
+    --card:#0e1b26;
+    --accent:#f25c54;
+    --muted:#9fb0bd;
+    --glass: rgba(255,255,255,0.03);
+    --button-bg:#ffffff10;
+    --maxw:1050px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg) 0%, #04101a 100%);color:#eaf6fb;}
+  .wrap{max-width:var(--maxw);margin:28px auto;padding:24px;}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:54px;height:54px;background:linear-gradient(135deg,#123 60%, #024 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff}
+  .sitename{font-size:18px;letter-spacing:0.6px}
+  nav a{color:var(--muted);text-decoration:none;margin-left:16px;font-size:14px}
+  .hero{display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start;margin-bottom:28px}
+  .hero-left{padding:22px;background:linear-gradient(180deg,var(--card),var(--glass));border-radius:12px}
+  .intro{font-size:28px;line-height:1.05;margin:0 0 12px}
+  .sub{color:var(--muted);margin:0 0 18px}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    background:var(--button-bg);border:1px solid rgba(255,255,255,0.06);padding:10px 18px;border-radius:9px;color:inherit;text-decoration:none;cursor:pointer;
+    font-weight:600;letter-spacing:0.6px;
+  }
+  /* hyphen-button style (user asked for all words between hyphens to be actual styled buttons) */
+  .hyphen-btn{display:inline-block;padding:8px 16px;border-radius:8px;border:2px solid rgba(255,255,255,0.06);background:transparent;font-weight:700}
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+  .card{background:rgba(255,255,255,0.02);padding:14px;border-radius:10px}
+  .muted{color:var(--muted)}
+  /* consumer drop area */
+  .drop-area{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:16px;border-radius:10px}
+  label{display:block;margin:10px 0 6px;color:var(--muted)}
+  input[type="text"], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+  .rotator{padding:12px;border-radius:8px;background:linear-gradient(180deg,#071f28,#03202a);min-height:64px;display:flex;align-items:center;justify-content:center;font-weight:600}
+  footer{margin-top:28px;padding:18px;border-radius:10px;background:transparent;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .tour{display:block;margin-top:8px}
+  /* simple responsive */
+  @media (max-width:900px){
+    .hero{grid-template-columns:1fr; }
+    nav a{display:none}
+  }
+  /* riddle & result */
+  .riddle-box{padding:12px;border-radius:8px;background:rgba(255,255,255,0.02);margin-top:12px}
+  .hint{color:#ffd;display:block;margin-top:8px;font-size:14px}
+  .success{color:#b7ffb2}
+  .danger{color:#ffa8a8}
+  /* small util */
+  .sponsor-line{font-size:13px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap" role="main">
+  <header class="topbar" role="banner" aria-label="Curiosity Drop topbar">
+    <div class="brand">
+      <div class="logo">CD</div>
+      <div>
+        <div class="sitename">Curiosity Drop</div>
+        <div class="muted" style="font-size:12px">Find the unexpected. Scan. Smile. Repeat.</div>
+      </div>
+    </div>
+    <nav aria-label="Primary">
+      <a href="#home">Home</a>
+      <a href="#business">For Businesses</a>
+      <a href="#drop">Drop Page</a>
+      <a href="#tour">Tour de Curiosity</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-left">
+      <h1 class="intro">Tiny cards. Big mysteries. Real-life rewards coming soon.</h1>
+      <p class="sub">Curiosity Drop places QR-coded cards at cool local spots. Scan to unlock a mini surprise — a riddle, a quote, or a badge. Businesses host. Curious people discover.</p>
+
+      <div class="cta-row" role="group" aria-label="Quick actions">
+        <button class="hyphen-btn" id="moreBtn">-MORE-</button>
+        <button class="hyphen-btn" id="beBizBtn">-BE A BUSINESS-</button>
+        <button class="hyphen-btn" id="scanDropBtn">-SCAN A DROP-</button>
+        <a class="btn" href="#tour" id="tourLink">Go to Tour de Curiosity</a>
+      </div>
+
+      <div class="cards" aria-hidden="false">
+        <div class="card">
+          <div style="font-weight:700">Why partner?</div>
+          <p class="muted" style="margin:6px 0 0">Bring a gentle, low-cost foot-traffic boost to your counter or waiting area. Put your business on the map for curious locals.</p>
+        </div>
+        <div class="card">
+          <div style="font-weight:700">I’m just curious</div>
+          <p class="muted" style="margin:6px 0 0">Great — scan a card or start with the Drop Page. Temporary rewards are uplifting messages. Real rewards are coming soon.</p>
+        </div>
+      </div>
+
+      <div class="sponsor-line">Sponsored by: <span id="sponsorName" style="color:var(--accent)">Your Business Here</span></div>
+    </div>
+
+    <aside style="padding:10px">
+      <div style="border-radius:10px;overflow:hidden" aria-label="Rotator">
+        <div class="rotator" id="rotatorText" role="status">"You are exactly where you need to be." — Real Life Rewards coming soon!</div>
+      </div>
+
+      <div style="margin-top:12px" class="drop-area" id="businessBlock">
+        <h3 style="margin:0 0 8px">For Businesses</h3>
+        <p class="muted" style="margin:0 0 8px">Place a Drop card. Staff training sheet and quick setup guide available in the Business Welcome Kit.</p>
+        <button class="hyphen-btn" id="reqKitBtn">-REQUEST WELCOME KIT-</button>
+        <div style="font-size:12px;color:var(--muted);margin-top:10px">Contact: <strong>207.468.5509</strong> — <a href="mailto:info@curiositydrop.com" style="color:inherit">info@curiositydrop.com</a></div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- Consumer Drop page -->
+  <section id="drop" style="margin-top:18px">
+    <div class="drop-area">
+      <h2 style="margin:0 0 6px">Drop — CD001</h2>
+      <div class="muted" style="font-size:13px">Scan found card or enter Drop code below to unlock.</div>
+
+      <div style="margin-top:12px">
+        <label for="dropCode">Drop code (or leave blank to try public riddle)</label>
+        <input id="dropCode" type="text" placeholder="e.g., CD001 or scan result" />
+      </div>
+
+      <div class="riddle-box" id="riddleBox" aria-live="polite">
+        <div style="font-weight:700">Riddle:</div>
+        <p id="riddleText" style="margin:6px 0 6px">I'm tall when I'm young, and short when I'm old. What am I?</p>
+
+        <label for="riddleAnswer" class="muted">Your answer</label>
+        <input id="riddleAnswer" type="text" placeholder="Type your answer and press -SUBMIT-" aria-describedby="riddleHelp" />
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <button class="hyphen-btn" id="submitRiddle">-SUBMIT-</button>
+          <button class="hyphen-btn" id="hintRiddle">-HINT-</button>
+          <button class="hyphen-btn" id="giveupRiddle">-I GIVE UP-</button>
+        </div>
+        <div id="riddleHelp" style="margin-top:10px" class="muted">Temporary reward for solving: an uplifting message. <strong>Real Life Rewards coming soon!</strong></div>
+        <div id="riddleResponse" style="margin-top:12px"></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <button class="btn" id="moreDrops">See more Drops</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Business landing quick preview -->
+  <section id="business" style="margin-top:18px">
+    <div class="drop-area">
+      <h2 style="margin:0 0 6px">Business Landing — Place a Drop</h2>
+      <p class="muted">Quick preview of the business-facing copy and the card placement guide.</p>
+
+      <ol style="margin:12px 0 6px;color:var(--muted)">
+        <li><strong>Place:</strong> high-visibility, low-obstruction (near register, waiting area, host stand)</li>
+        <li><strong>Signage:</strong> Keep the scanned message friendly — "Scan me for a tiny surprise!"</li>
+        <li><strong>Staff note:</strong> "Say Hi if customer asks about Drop — it’s free and fun."</li>
+      </ol>
+
+      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+        <button class="hyphen-btn" id="availabilityBtn">-CHECK AVAILABILITY-</button>
+        <button class="hyphen-btn" id="pricingBtn">-SEE PRICING-</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tour teaser -->
+  <section id="tour" style="margin-top:18px">
+    <div class="drop-area">
+      <h2 style="margin:0 0 6px">Tour de Curiosity (preview)</h2>
+      <p class="muted">A chaptered interactive experience. Click to launch the in-page flow.</p>
+      <button class="hyphen-btn" id="launchTour">-MORE-</button>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div>Curiosity Drop — Contact: <strong>207.468.5509</strong> • <a href="mailto:info@curiositydrop.com">info@curiositydrop.com</a></div>
+    <div class="muted">© Curiosity Drop — Built with curiosity</div>
+  </footer>
+</div>
+
+<!-- Minimal JS for functionality -->
+<script>
+(function(){
+  // Rotating uplifting messages (temporary rewards)
+  const rotator = document.getElementById('rotatorText');
+  const messages = [
+    "You are exactly where you need to be. — Real Life Rewards coming soon!",
+    "Small joys matter. Smile at someone today! — Real Life Rewards coming soon!",
+    "Curiosity is a superpower. Keep using it. — Real Life Rewards coming soon!",
+    "Tiny detours lead to bright discoveries. — Real Life Rewards coming soon!"
+  ];
+  let ri = 0;
+  setInterval(()=> {
+    ri = (ri+1) % messages.length;
+    rotator.textContent = messages[ri];
+  }, 5000);
+
+  // Hyphen button hooks (they are real buttons)
+  document.getElementById('moreBtn').addEventListener('click', ()=> {
+    document.querySelector('#home .hero-left').scrollIntoView({behavior:'smooth'});
+    // show a short toast or expand - for now: change sponsor to demo
+    document.getElementById('sponsorName').textContent = 'Demo Sponsor';
+  });
+
+  // Tour flow (simple modal-like in-page flow)
+  document.getElementById('launchTour').addEventListener('click', ()=> {
+    startTour();
+  });
+  document.getElementById('tourLink').addEventListener('click', (e)=>{
+    e.preventDefault(); startTour();
+  });
+
+  function startTour(){
+    // Minimal in-page Tour de Curiosity flow (intro -> riddles)
+    // No external libs; simple prompt-driven implementation
+    const intro = `And now the DropBot is loose...\\n\\nWelcome to Tour de Curiosity`;
+    // show confirm-style flow to replicate the "More" click transition
+    if(!confirm("Welcome to Tour de Curiosity — click OK to proceed to the riddle challenge.")) return;
+    runRiddleChallenge();
+  }
+
+  // Riddle challenge (simplified): 5 riddles, must solve 4/5 to pass
+  function runRiddleChallenge(){
+    const riddles = [
+      {q:"I'm tall when I'm young, and short when I'm old. What am I?", a:"candle"},
+      {q:"I speak without a mouth and hear without ears. I have nobody, but I come alive with wind. What am I?", a:"echo"},
+      {q:"What has keys but can't open locks?", a:"piano"},
+      {q:"The more you take, the more you leave behind. What are they?", a:"footsteps"},
+      {q:"What runs, but never walks; has a mouth, but never talks?", a:"river"}
+    ];
+    let correct = 0;
+    for(let i=0;i<riddles.length;i++){
+      const ans = prompt(`Riddle ${i+1} of ${riddles.length}:\\n\\n${riddles[i].q}`);
+      if(ans === null){ alert("Tour cancelled."); return; }
+      if(ans.trim().toLowerCase() === riddles[i].a) { correct++; alert("Nice — correct!"); }
+      else { alert(`Not quite. Answer was: ${riddles[i].a}`); }
+    }
+    if(correct >= 4){
+      const party = confirm("Congratulations! You solved enough riddles. Click OK to attempt the cypher.");
+      if(party) runCypher();
+    } else {
+      alert("You solved " + correct + " riddles. You needed 4/5 to continue. Try again later!");
+    }
+  }
+
+  function runCypher(){
+    const hint = "vowels shown: o e o e a o";
+    const answer = prompt("Cypher unlocked. Hint available? Type 'hint' or press OK to input your guess.");
+    if(answer && answer.toLowerCase() === 'hint') {
+      const guess = prompt("Hint: " + hint + "\\n\\nEnter the phrase:");
+      if(guess && guess.trim().toLowerCase() === 'follow the drop') {
+        alert("Final interactive section unlocked — congratulations! You’ve just been invited to [Your Business Info Here].");
+      } else {
+        alert("Not correct. The expected phrase was 'follow the drop'.");
+      }
+    } else {
+      if(answer && answer.trim().toLowerCase() === 'follow the drop') {
+        alert("Final interactive section unlocked — congratulations! You’ve just been invited to [Your Business Info Here].");
+      } else {
+        alert("Not correct. The expected phrase was 'follow the drop'.");
+      }
+    }
+  }
+
+  // Drop riddle handlers (CD001)
+  const submit = document.getElementById('submitRiddle');
+  const hintBtn = document.getElementById('hintRiddle');
+  const giveUp = document.getElementById('giveupRiddle');
+  const riddleText = document.getElementById('riddleText');
+  const ansInput = document.getElementById('riddleAnswer');
+  const resp = document.getElementById('riddleResponse');
+
+  function showResponse(message, cls){
+    resp.textContent = message;
+    resp.className = cls || '';
+  }
+
+  submit.addEventListener('click', ()=> {
+    const val = ansInput.value.trim().toLowerCase();
+    if(!val) { showResponse('Please type an answer before submitting.', 'danger'); return; }
+    // Accept a couple variants
+    const valid = ['candle','a candle','the candle'];
+    if(valid.includes(val)){
+      showResponse('Correct! Here’s your temporary reward: “You brighten the world — keep going!” — Real Life Rewards coming soon!', 'success');
+    } else {
+      showResponse('That’s not right. Try again or use -HINT-.', 'danger');
+    }
+  });
+
+  hintBtn.addEventListener('click', ()=> {
+    showResponse('Hint: Think of something that melts as it gets older.', 'hint');
+  });
+
+  giveUp.addEventListener('click', ()=> {
+    showResponse('Answer: candle. Thanks for playing — Real Life Rewards coming soon!', 'muted');
+  });
+
+  // Other quick UI hooks
+  document.getElementById('beBizBtn').addEventListener('click', ()=> {
+    location.hash = '#business';
+    document.getElementById('business').scrollIntoView({behavior:'smooth'});
+  });
+  document.getElementById('scanDropBtn').addEventListener('click', ()=> {
+    location.hash = '#drop';
+    document.getElementById('drop').scrollIntoView({behavior:'smooth'});
+  });
+
+  // Placeholder for "Request Welcome Kit" (would call API or open email)
+  document.getElementById('reqKitBtn').addEventListener('click', ()=> {
+    // fallback: open mailto with template
+    const subject = encodeURIComponent('Request: Curiosity Drop Business Welcome Kit');
+    const body = encodeURIComponent('Hi Curiosity Drop team,%0D%0A%0D%0AI would like to request the Business Welcome Kit. Please send details about availability and pricing.%0D%0A%0D%0AThanks,%0D%0A[Your name]');
+    window.location.href = 'mailto:info@curiositydrop.com?subject=' + subject + '&body=' + body;
+  });
+
+  // Pricing & availability quick placeholders
+  document.getElementById('availabilityBtn').addEventListener('click', ()=> {
+    alert('Thanks — we are accepting new business hosts. Email info@curiositydrop.com or call 207.468.5509 to join the waitlist or check immediate availability.');
+  });
+  document.getElementById('pricingBtn').addEventListener('click', ()=> {
+    alert('Tiered pricing available. Example tiers: Starter (3 Drops), Local (6 Drops), Full Boss Mode (10 Drops). Email for full sheet.');
+  });
+
+})();
+</script>
+</body>
+</html>
