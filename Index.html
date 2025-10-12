@@ -60,6 +60,7 @@
 
   <h1>Welcome to Curiosity Drop!</h1>
 <p>Where real rewards are hidden in riddles and revealed by your own curiosity.</p>
+
 <div class="riddle-box">
   <p>What gives your home a new beginning without moving a single wall?</p>
   <div>
@@ -70,63 +71,48 @@
   <div class="result" id="result"></div>
 </div>
 
-  <div style="margin-top:20px;">
+<div style="margin-top:20px; text-align:center;">
   <a href="/for-business">
     <button style="background:#0077b6; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
       Business Owners Click Here
     </button>
   </a>
 </div>
-  
-  <script>
-  // Add this right below your riddle-box div
-  // Reward box (hidden initially)
-  const rewardBox = document.createElement('div');
-  rewardBox.id = 'rewardBox';
-  rewardBox.style.display = 'none';
-  rewardBox.style.background = '#ffffff';
-  rewardBox.style.border = '2px solid #0077b6';
-  rewardBox.style.borderRadius = '12px';
-  rewardBox.style.padding = '30px 20px';
-  rewardBox.style.maxWidth = '500px';
-  rewardBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
-  rewardBox.style.marginTop = '20px';
-  rewardBox.innerHTML = `
-    <!-- Reward box -->
+
+<!-- Reward box (hidden initially) -->
 <div id="rewardBox" style="display:none; text-align:center; margin-top:20px;">
   <p>🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off</strong>! (Must be redeemed within 14 days.)</p>
   <p class="countdown">Redirecting in <span id="timer">12</span> seconds to show you where...</p>
 </div>
 
 <script>
-  // Modified checkAnswer function
-  function checkAnswer(button, isCorrect) {
-    const resultDiv = document.getElementById('result');
-    const riddleBox = document.querySelector('.riddle-box');
-    const rewardBox = document.getElementById('rewardBox');
+function checkAnswer(button, isCorrect) {
+  const resultDiv = document.getElementById('result');
+  const riddleBox = document.querySelector('.riddle-box');
+  const rewardBox = document.getElementById('rewardBox');
 
-    if (isCorrect) {
-      // Hide riddle, show reward
-      riddleBox.style.display = 'none';
-      rewardBox.style.display = 'block';
+  if (isCorrect) {
+    // Hide riddle, show reward
+    riddleBox.style.display = 'none';
+    rewardBox.style.display = 'block';
 
-      // Start countdown (mobile-first 12 seconds)
-      let timeLeft = 12;
-      const timerSpan = document.getElementById('timer');
-      const countdown = setInterval(() => {
-        timeLeft--;
-        timerSpan.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(countdown);
-          // Redirect after countdown – replace URL below
-          window.location.href = 'https://curiositydrop.com/newleafpaintingco'; // <-- replace with your actual reward page
-        }
-      }, 1000);
-    } else {
-      resultDiv.textContent = "Oops! Try again.";
-      resultDiv.style.color = "#d62828";
-    }
+    // Start countdown (12 seconds)
+    let timeLeft = 12;
+    const timerSpan = document.getElementById('timer');
+    const countdown = setInterval(() => {
+      timeLeft--;
+      timerSpan.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(countdown);
+        // Redirect to your reward page
+        window.location.href = 'https://curiositydrop.com/newleafpaintingco';
+      }
+    }, 1000);
+  } else {
+    resultDiv.textContent = "Oops! Try again.";
+    resultDiv.style.color = "#d62828";
   }
+}
 </script>
 
 </body>
