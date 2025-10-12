@@ -58,16 +58,17 @@
 
   <img src="cd-logo.png" alt="Curiosity Drop Logo" class="logo">
 
-  <h1>Riddle Time!</h1>
-  <div class="riddle-box">
-    <p>Which tool would a painter never use to eat spaghetti?</p>
-    <div>
-      <button onclick="checkAnswer(this, false)">A paintbrush fork</button>
-      <button onclick="checkAnswer(this, false)">A roller spoon</button>
-      <button onclick="checkAnswer(this, true)">A palette knife</button>
-    </div>
-    <div class="result" id="result"></div>
+  <h1>Welcome to Curiosity Drop!</h1>
+<p>Where real rewards are hidden in riddles and revealed by your own curiosity.</p>
+<div class="riddle-box">
+  <p>What gives your home a new beginning without moving a single wall?</p>
+  <div>
+    <button onclick="checkAnswer(this, false)">A Goldfish</button>
+    <button onclick="checkAnswer(this, false)">A dancing cactus</button>
+    <button onclick="checkAnswer(this, true)">Interior Painting</button>
   </div>
+  <div class="result" id="result"></div>
+</div>
 
   <script>
     function checkAnswer(button, isCorrect) {
@@ -76,7 +77,7 @@
         resultDiv.textContent = "🎉 Correct! Nice thinking!";
         resultDiv.style.color = "#0077b6";
         // Optional: redirect to painting site
-        // setTimeout(() => { window.location.href = 'https://newleafpaintingco.com'; }, 1500);
+        // setTimeout(() => { window.location.href = 'https://curiositydrop.com/newleafpaintingco'; }, 1500);
       } else {
         resultDiv.textContent = "Oops! Try again.";
         resultDiv.style.color = "#d62828"; // red for wrong
