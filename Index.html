@@ -79,20 +79,29 @@
   </a>
 </div>
 
-<!-- Reward box (hidden initially) -->
-rewardBox.innerHTML = `
-  <div style="
-    background:#ffffff;
-    border:2px solid #0077b6;
-    border-radius:12px;
-    padding:25px 15px;
-    margin-top:20px;
-    max-width:500px;
-    text-align:center;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-  ">
-    <p style="font-size:1.1em; color:#023047; margin-bottom:10px;">
-      🎉 Congratulations! You
+<script>
+  // Reward box (hidden initially)
+  rewardBox.innerHTML = `
+    <div style="
+      background:#ffffff;
+      border:2px solid #0077b6;
+      border-radius:12px;
+      padding:25px 15px;
+      margin-top:20px;
+      max-width:500px;
+      text-align:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    ">
+      <p style="font-size:1.1em; color:#023047; margin-bottom:10px;">
+        🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off!</strong> 
+        (Must be redeemed within 14 days.)
+      </p>
+      <p class="countdown" style="color:#555;">
+        Redirecting in <span id="timer">12</span> seconds to show you where...
+      </p>
+    </div>
+  `;
+</script>
 
 <script>
 function checkAnswer(button, isCorrect) {
