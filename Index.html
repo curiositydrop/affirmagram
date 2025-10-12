@@ -7,8 +7,8 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: #fdf6e3;
-      color: #333;
+      background: #e0f7fa; /* light Curiosity Drop blue */
+      color: #003049; /* deep blue accent */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -27,15 +27,15 @@
       margin-bottom: 10px;
     }
     .riddle-box {
-      background: #fff3e0;
-      border: 2px solid #f4a261;
+      background: #ffffff;
+      border: 2px solid #0077b6; /* Curiosity Drop blue border */
       border-radius: 12px;
       padding: 30px 20px;
       max-width: 500px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
     button {
-      background: #2a9d8f;
+      background: #0077b6; /* Curiosity Drop blue */
       color: white;
       border: none;
       padding: 10px 20px;
@@ -46,7 +46,7 @@
       transition: background 0.3s;
     }
     button:hover {
-      background: #21867a;
+      background: #005f86;
     }
     .result {
       margin-top: 20px;
@@ -60,11 +60,11 @@
 
   <h1>Riddle Time!</h1>
   <div class="riddle-box">
-    <p>What has hands but cannot clap?</p>
+    <p>Which tool would a painter never use to eat spaghetti?</p>
     <div>
-      <button onclick="checkAnswer(this, false)">A sleepy octopus</button>
-      <button onclick="checkAnswer(this, false)">A dancing pineapple</button>
-      <button onclick="checkAnswer(this, true)">A clock</button>
+      <button onclick="checkAnswer(this, false)">A paintbrush fork</button>
+      <button onclick="checkAnswer(this, false)">A roller spoon</button>
+      <button onclick="checkAnswer(this, true)">A palette knife</button>
     </div>
     <div class="result" id="result"></div>
   </div>
@@ -73,13 +73,13 @@
     function checkAnswer(button, isCorrect) {
       const resultDiv = document.getElementById('result');
       if (isCorrect) {
-        resultDiv.textContent = "🎉 Correct! You found the answer.";
-        resultDiv.style.color = "#2a9d8f";
-        // Optional: redirect to painting site after delay
+        resultDiv.textContent = "🎉 Correct! Nice thinking!";
+        resultDiv.style.color = "#0077b6";
+        // Optional: redirect to painting site
         // setTimeout(() => { window.location.href = 'https://newleafpaintingco.com'; }, 1500);
       } else {
         resultDiv.textContent = "Oops! Try again.";
-        resultDiv.style.color = "#e76f51";
+        resultDiv.style.color = "#d62828"; // red for wrong
       }
     }
   </script>
