@@ -92,22 +92,26 @@
   rewardBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
   rewardBox.style.marginTop = '20px';
   rewardBox.innerHTML = `
-    <p>🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off interior painting</strong> (must be redeemed within 14 days).</p>
-    <p class="countdown">Redirecting in <span id="timer">20</span> seconds...</p>
-  `;
-  document.body.appendChild(rewardBox);
+    <!-- Reward box -->
+<div id="rewardBox" style="display:none; text-align:center; margin-top:20px;">
+  <p>🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off</strong>! (Must be redeemed within 14 days.)</p>
+  <p class="countdown">Redirecting in <span id="timer">12</span> seconds to show you where...</p>
+</div>
 
+<script>
   // Modified checkAnswer function
   function checkAnswer(button, isCorrect) {
     const resultDiv = document.getElementById('result');
     const riddleBox = document.querySelector('.riddle-box');
+    const rewardBox = document.getElementById('rewardBox');
+
     if (isCorrect) {
       // Hide riddle, show reward
       riddleBox.style.display = 'none';
       rewardBox.style.display = 'block';
 
-      // Start 20-second countdown
-      let timeLeft = 20;
+      // Start countdown (mobile-first 12 seconds)
+      let timeLeft = 12;
       const timerSpan = document.getElementById('timer');
       const countdown = setInterval(() => {
         timeLeft--;
@@ -115,7 +119,7 @@
         if (timeLeft <= 0) {
           clearInterval(countdown);
           // Redirect after countdown – replace URL below
-          window.location.href = 'https://curiositydrop.com/newleafpaintingco';
+          window.location.href = 'https://curiositydrop.com/newleafpaintingco'; // <-- replace with your actual reward page
         }
       }, 1000);
     } else {
