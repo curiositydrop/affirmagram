@@ -71,19 +71,51 @@
 </div>
 
   <script>
-    function checkAnswer(button, isCorrect) {
-      const resultDiv = document.getElementById('result');
-      if (isCorrect) {
-        resultDiv.textContent = "🎉 Correct! Nice thinking!";
-        resultDiv.style.color = "#0077b6";
-        // Optional: redirect to painting site
-        // setTimeout(() => { window.location.href = 'https://curiositydrop.com/newleafpaintingco'; }, 1500);
-      } else {
-        resultDiv.textContent = "Oops! Try again.";
-        resultDiv.style.color = "#d62828"; // red for wrong
-      }
+  // Add this right below your riddle-box div
+  // Reward box (hidden initially)
+  const rewardBox = document.createElement('div');
+  rewardBox.id = 'rewardBox';
+  rewardBox.style.display = 'none';
+  rewardBox.style.background = '#ffffff';
+  rewardBox.style.border = '2px solid #0077b6';
+  rewardBox.style.borderRadius = '12px';
+  rewardBox.style.padding = '30px 20px';
+  rewardBox.style.maxWidth = '500px';
+  rewardBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+  rewardBox.style.marginTop = '20px';
+  rewardBox.innerHTML = `
+    <p>🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off interior painting</strong> (must be redeemed within 14 days).</p>
+    <p class="countdown">Redirecting in <span id="timer">20</span> seconds...</p>
+  `;
+  document.body.appendChild(rewardBox);
+
+  // Modified checkAnswer function
+  function checkAnswer(button, isCorrect) {
+    const resultDiv = document.getElementById('result');
+    const riddleBox = document.querySelector('.riddle-box');
+    if (isCorrect) {
+      // Hide riddle, show reward
+      riddleBox.style.display = 'none';
+      rewardBox.style.display = 'block';
+
+      // Start 20-second countdown
+      let timeLeft = 20;
+      const timerSpan = document.getElementById('timer');
+      const countdown = setInterval(() => {
+        timeLeft--;
+        timerSpan.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          // Redirect after countdown – replace URL below
+          window.location.href = 'https://curiositydrop.com/newleafpaintingco';
+        }
+      }, 1000);
+    } else {
+      resultDiv.textContent = "Oops! Try again.";
+      resultDiv.style.color = "#d62828";
     }
-  </script>
+  }
+</script>
 
 </body>
 </html>
