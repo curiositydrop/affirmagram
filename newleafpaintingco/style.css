@@ -6,10 +6,10 @@ body {
   color: #1c1c1c;
 }
 
-/* Header */header {
+header {
   text-align: center;
   padding: 20px 0;
-  background-color: #ffffff; /* Make header pure white */
+  background-color: #FAF9F6; /* match logo background */
 }
 
 .logo {
