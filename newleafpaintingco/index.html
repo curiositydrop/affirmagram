@@ -119,40 +119,62 @@
 
   <!-- JS SCRIPTS -->
   <script>
-    // Popup functionality
-    const popup = document.getElementById("contact-popup");
-    const btn = document.getElementById("contact-btn");
-    const close = document.querySelector(".close");
+  // Popup functionality
+  const popup = document.getElementById("contact-popup");
+  const btn = document.getElementById("contact-btn");
+  const close = document.querySelector(".close");
 
-    btn.onclick = () => popup.style.display = "flex";
-    close.onclick = () => popup.style.display = "none";
-    window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+  btn.onclick = () => popup.style.display = "flex";
+  close.onclick = () => popup.style.display = "none";
+  window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-    // Curiosity Drop detection
-    const urlParams = new URLSearchParams(window.location.search);
-    const isDropVisitor = urlParams.get('drop') === '1';
+  // Curiosity Drop detection
+  const urlParams = new URLSearchParams(window.location.search);
+  const isDropVisitor = urlParams.get('drop') === '1';
 
-    if (isDropVisitor) {
-      // Create banner
-      const banner = document.createElement('div');
-      banner.id = "drop-banner";
-      banner.textContent = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
-      document.body.prepend(banner);
+  if (isDropVisitor) {
+    // Hide normal free estimate button
+    if (btn) btn.style.display = 'none';
 
-      // Show redeem button
-      const redeemBtn = document.createElement('button');
-      redeemBtn.id = "redeem-reward";
-      redeemBtn.textContent = "Redeem Your 10% Drop Reward";
-      redeemBtn.style.display = "block";
-      document.body.appendChild(redeemBtn);
+    // Create banner
+    const banner = document.createElement('div');
+    banner.id = "drop-banner";
+    banner.textContent = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
+    banner.style.backgroundColor = "#4CAF50";
+    banner.style.color = "#fff";
+    banner.style.textAlign = "center";
+    banner.style.padding = "10px";
+    banner.style.fontWeight = "bold";
+    banner.style.position = "fixed";
+    banner.style.top = "0";
+    banner.style.left = "0";
+    banner.style.width = "100%";
+    banner.style.zIndex = "200";
+    document.body.prepend(banner);
 
-      redeemBtn.addEventListener('click', () => {
-        popup.style.display = "flex"; // open contact popup
-        const discountField = document.getElementById('discount-code');
-        if (discountField) discountField.value = 'DROP10';
-      });
-    }
-  </script>
+    // Show redeem button
+    const redeemBtn = document.createElement('button');
+    redeemBtn.id = "redeem-reward";
+    redeemBtn.textContent = "Redeem Your 10% Drop Reward";
+    redeemBtn.style.position = "fixed";
+    redeemBtn.style.bottom = "20px";
+    redeemBtn.style.right = "20px";
+    redeemBtn.style.zIndex = "200";
+    redeemBtn.style.padding = "10px 20px";
+    redeemBtn.style.borderRadius = "8px";
+    redeemBtn.style.backgroundColor = "#4CAF50";
+    redeemBtn.style.color = "#fff";
+    redeemBtn.style.border = "none";
+    redeemBtn.style.cursor = "pointer";
+    document.body.appendChild(redeemBtn);
+
+    redeemBtn.addEventListener('click', () => {
+      popup.style.display = "flex"; // open contact popup
+      const discountField = document.getElementById('discount-code');
+      if (discountField) discountField.value = 'DROP10';
+    });
+  }
+</script>
 
 </body>
 </html>
