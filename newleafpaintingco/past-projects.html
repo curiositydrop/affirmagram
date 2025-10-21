@@ -30,36 +30,72 @@
   </section>
 
   <!-- PROJECTS GALLERY -->
-  <section class="projects">
-    <div class="project-card">
-      <img src="IMG_8110.jpeg" alt="livingroom paint">
-      <img src="IMG_8111.jpeg" alt="livingroom paint">
-      <h3>Living Room Transformation</h3>
-      <p>A light brown paint, paired with crisp white trim gives this living room a fresh, calming feel.</p>
-    </div>
+  <<section class="projects">
+  <div class="project-card">
+    <img src="IMG_8110.jpeg" alt="livingroom paint" class="clickable-img">
+    <img src="IMG_8111.jpeg" alt="livingroom paint" class="clickable-img">
+    <h3>Living Room Transformation</h3>
+    <p>A light brown paint, paired with crisp white trim gives this living room a fresh, calming feel.</p>
+  </div>
+</section>
 
+<!-- IMAGE POPUP MODAL -->
+<div id="imgModal" class="img-modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modalImage">
+</div>
+
+    <section class="projects">
     <div class="project-card">
-      <img src="IMG_8114.jpeg" alt="Kitchen paint">
-      <img src="IMG_8117.jpeg" alt="kitchen paint">
-      <img src="IMG_8125.jpeg" alt="kitchen paint">
+      <img src="IMG_8114.jpeg" alt="Kitchen paint" class="clickable-img">
+      <img src="IMG_8117.jpeg" alt="kitchen paint" class="clickable-img">
+      <img src="IMG_8125.jpeg" alt="kitchen paint" class="clickable-img">
       <h3>Kitchen Refresh</h3>
       <p>Tile backsplash and new coat of paint gave this kitchen a nice new look.</p>
     </div>
+  </section>
 
+    <!-- IMAGE POPUP MODAL -->
+<div id="imgModal" class="img-modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modalImage">
+</div>
+
+    <section class="projects">
     <div class="project-card">
-      <img src="IMG_8118.jpeg" alt="Master Bedroom paint">
-      <img src="IMG_8119.jpeg" alt="Master Bedroom paint">
-      <img src="IMG_8120.jpeg" alt="Master Bedroom paint">
+      <img src="IMG_8118.jpeg" alt="Master Bedroom paint" class="clickable-img">
+      <img src="IMG_8119.jpeg" alt="Master Bedroom paint" class="clickable-img">
+      <img src="IMG_8120.jpeg" alt="Master Bedroom paint" class="clickable-img">
       <h3>Bedroom Makeover</h3>
       <p>freshly painted walls and contrasting trim create a serene and elegant fresh master bedroom space.</p>
     </div>
   </section>
+
+    <!-- IMAGE POPUP MODAL -->
+<div id="imgModal" class="img-modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="modalImage">
+</div>
 
   <!-- FOOTER (same as index.html) -->
   <footer>
     <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co." class="footer-logo" />
     <p>&copy; 2025 New Leaf Painting Co. | All Rights Reserved</p>
   </footer>
+<script>
+  const modal = document.getElementById("imgModal");
+  const modalImg = document.getElementById("modalImage");
+  const closeBtn = document.querySelector(".img-modal .close");
 
+  document.querySelectorAll(".clickable-img").forEach(img => {
+    img.addEventListener("click", () => {
+      modal.style.display = "block";
+      modalImg.src = img.src;
+    });
+  });
+
+  closeBtn.onclick = () => modal.style.display = "none";
+  modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+</script>
 </body>
 </html>
