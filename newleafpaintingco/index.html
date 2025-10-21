@@ -128,18 +128,21 @@
   close.onclick = () => popup.style.display = "none";
   window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-  // Curiosity Drop detection
+  // Curiosity Drop / Sample detection
   const urlParams = new URLSearchParams(window.location.search);
   const isDropVisitor = urlParams.get('drop') === '1';
+  const isSampleVisitor = urlParams.get('sample') === '1';
 
-  if (isDropVisitor) {
+  if (isDropVisitor || isSampleVisitor) {
     // Hide normal free estimate button
     if (btn) btn.style.display = 'none';
 
     // Create banner
     const banner = document.createElement('div');
     banner.id = "drop-banner";
-    banner.textContent = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
+    banner.textContent = isDropVisitor 
+      ? "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!" 
+      : "🎉 Welcome! You were referred via a Sample Card — enjoy 5% off!";
     banner.style.backgroundColor = "#4CAF50";
     banner.style.color = "#fff";
     banner.style.textAlign = "center";
@@ -155,7 +158,9 @@
     // Show redeem button
     const redeemBtn = document.createElement('button');
     redeemBtn.id = "redeem-reward";
-    redeemBtn.textContent = "Redeem Your 10% Drop Reward";
+    redeemBtn.textContent = isDropVisitor 
+      ? "Redeem Your 10% Drop Reward" 
+      : "Redeem Your 5% Sample Reward";
     redeemBtn.style.position = "fixed";
     redeemBtn.style.bottom = "20px";
     redeemBtn.style.right = "20px";
@@ -171,7 +176,7 @@
     redeemBtn.addEventListener('click', () => {
       popup.style.display = "flex"; // open contact popup
       const discountField = document.getElementById('discount-code');
-      if (discountField) discountField.value = 'DROP10';
+      if (discountField) discountField.value = isDropVisitor ? 'DROP10' : 'SAMPLE5';
     });
   }
 </script>
