@@ -85,6 +85,7 @@
         <textarea id="message" rows="4"></textarea>
 
         <button type="submit">Send</button>
+      <input type="hidden" name="discount_code" id="discount-code" value="">
       </form>
     </div>
   </div>
@@ -122,5 +123,40 @@
     close.onclick = () => popup.style.display = "none";
     window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
   </script>
+  <!-- CURIOUSITY DROP REDEEM BUTTON (hidden by default) -->
+<button id="redeem-reward" style="display:none;">
+  Redeem Your 10% Drop Reward
+</button>
+<script>
+  // Detect if the visitor came from Curiosity Drop via URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const isDropVisitor = urlParams.get('drop') === '1';
+
+  if (isDropVisitor) {
+    // Show a banner
+    const banner = document.createElement('div');
+    banner.innerHTML = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
+    banner.style.backgroundColor = "#4CAF50"; // green
+    banner.style.color = "#fff";
+    banner.style.textAlign = "center";
+    banner.style.padding = "10px";
+    banner.style.fontWeight = "bold";
+    document.body.prepend(banner);
+
+    // Show the redeem reward button
+    const redeemBtn = document.getElementById('redeem-reward');
+    if (redeemBtn) redeemBtn.style.display = 'block';
+
+    // Make redeem button scroll to contact form and pre-fill discount
+    redeemBtn.addEventListener('click', () => {
+      const form = document.querySelector("#contact-popup form");
+      if (form) {
+        popup.style.display = "flex"; // open the popup
+        const discountField = document.getElementById('discount-code');
+        if (discountField) discountField.value = 'DROP10';
+      }
+    });
+  }
+</script>
 </body>
 </html>
