@@ -95,5 +95,41 @@
   closeBtn.onclick = () => modal.style.display = "none";
   modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 </script>
+  <!-- CURIOUSITY DROP REDEEM BUTTON (hidden by default) -->
+<button id="redeem-reward" style="display:none;">
+  Redeem Your 10% Drop Reward
+</button>
+<script>
+  // Detect if the visitor came from Curiosity Drop via URL parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const isDropVisitor = urlParams.get('drop') === '1';
+
+  if (isDropVisitor) {
+    // Show a banner
+    const banner = document.createElement('div');
+    banner.innerHTML = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
+    banner.style.backgroundColor = "#4CAF50"; // green
+    banner.style.color = "#fff";
+    banner.style.textAlign = "center";
+    banner.style.padding = "10px";
+    banner.style.fontWeight = "bold";
+    banner.style.position = "fixed";
+    banner.style.top = "0";
+    banner.style.left = "0";
+    banner.style.width = "100%";
+    banner.style.zIndex = "200";
+    document.body.prepend(banner);
+
+    // Show the redeem reward button
+    const redeemBtn = document.getElementById('redeem-reward');
+    if (redeemBtn) redeemBtn.style.display = 'block';
+
+    // Make redeem button scroll to contact form on index and pre-fill discount
+    redeemBtn.addEventListener('click', () => {
+      // On past-projects.html, redirect to index.html with discount param
+      window.location.href = 'index.html?drop=1';
+    });
+  }
+</script>
 </body>
 </html>
