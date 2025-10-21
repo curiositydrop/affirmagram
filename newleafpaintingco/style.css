@@ -257,6 +257,36 @@ nav a.active {
   cursor: pointer;
 }
 
+.about-owner {
+  background-color: #f9f9f9;
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
+
+.about-owner h2 {
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+.about-owner p {
+  max-width: 700px;
+  margin: 0 auto;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+.service-area {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.service-area h2 {
+  color: #2e7d32;
+  margin-bottom: 10px;
+}
+
+
 /* Footer */
 footer {
   text-align: center;
