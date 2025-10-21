@@ -59,25 +59,25 @@
   <img src="cd-logo.png" alt="Curiosity Drop Logo" class="logo">
 
   <h1>Welcome to Curiosity Drop!</h1>
-<p>Where real rewards are hidden in riddles and revealed by your own curiosity.</p>
+  <p>Where real rewards are hidden in riddles and revealed by your own curiosity.</p>
 
-<div class="riddle-box">
-  <p>What gives your home a new beginning without moving a single wall?</p>
-  <div>
-    <button onclick="checkAnswer(this, false)">A Goldfish</button>
-    <button onclick="checkAnswer(this, false)">A dancing cactus</button>
-    <button onclick="checkAnswer(this, true)">Interior Painting</button>
+  <div class="riddle-box">
+    <p>What gives your home a new beginning without moving a single wall?</p>
+    <div>
+      <button onclick="checkAnswer(this, false)">A Goldfish</button>
+      <button onclick="checkAnswer(this, false)">A dancing cactus</button>
+      <button onclick="checkAnswer(this, true)">Interior Painting</button>
+    </div>
+    <div class="result" id="result"></div>
   </div>
-  <div class="result" id="result"></div>
-</div>
 
-<div style="margin-top:20px; text-align:center;">
-  <a href="/for-business">
-    <button style="background:#0077b6; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
-      Business Owners Click Here
-    </button>
-  </a>
-</div>
+  <div style="margin-top:20px; text-align:center;">
+    <a href="/for-business">
+      <button style="background:#0077b6; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
+        Business Owners Click Here
+      </button>
+    </a>
+  </div>
 
 <script>
   // Create reward box (hidden initially)
@@ -126,8 +126,8 @@
         timerSpan.textContent = timeLeft;
         if (timeLeft <= 0) {
           clearInterval(countdown);
-          // Redirect
-          window.location.href = 'https://curiositydrop.com/newleafpaintingco';
+          // Redirect to index with ?drop=1
+          window.location.href = 'https://curiositydrop.com/newleafpaintingco?drop=1';
         }
       }, 1000);
     } else {
