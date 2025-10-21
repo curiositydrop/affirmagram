@@ -50,6 +50,12 @@ header {
   width: 100%;
 }
 
+nav a.active {
+  color: #6fcf97; /* lighter green for the active link text */
+  border-bottom: 2px solid #6fcf97; /* underline highlight */
+  padding-bottom: 3px; /* space between text and underline */
+}
+
 /* Hero Section */
 .hero {
   text-align: center;
