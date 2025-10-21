@@ -84,37 +84,42 @@
         <label for="message">Message:</label>
         <textarea id="message" rows="4"></textarea>
 
+        <input type="hidden" name="discount_code" id="discount-code" value="">
+
         <button type="submit">Send</button>
-      <input type="hidden" name="discount_code" id="discount-code" value="">
       </form>
     </div>
   </div>
 
+  <!-- ABOUT OWNER -->
   <section class="about-owner">
-  <h2>About the Owner</h2>
-  <p>
-    With over <strong>15 years of professional painting experience</strong>, 
-    New Leaf Painting Co. was built on a foundation of craftsmanship, reliability, 
-    and pride in every project. From family homes to full interior makeovers, 
-    we believe every wall deserves a fresh start — one coat and one room at a time.
-  </p>
-</section>
+    <h2>About the Owner</h2>
+    <p>
+      With over <strong>15 years of professional painting experience</strong>, 
+      New Leaf Painting Co. was built on a foundation of craftsmanship, reliability, 
+      and pride in every project. From family homes to full interior makeovers, 
+      we believe every wall deserves a fresh start — one coat and one room at a time.
+    </p>
+  </section>
 
+  <!-- SERVICE AREA -->
   <section class="service-area">
-  <h2>Service Area</h2>
-  <p>
-    Proudly serving <strong>Southern Maine</strong> and the surrounding areas, 
-    including towns within a <strong>50-mile radius of Dayton, ME</strong>.
-  </p>
-</section>
-  
+    <h2>Service Area</h2>
+    <p>
+      Proudly serving <strong>Southern Maine</strong> and the surrounding areas, 
+      including towns within a <strong>50-mile radius of Dayton, ME</strong>.
+    </p>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co." class="footer-logo" />
     <p>&copy; 2025 New Leaf Painting Co. | All Rights Reserved</p>
   </footer>
 
+  <!-- JS SCRIPTS -->
   <script>
+    // Popup functionality
     const popup = document.getElementById("contact-popup");
     const btn = document.getElementById("contact-btn");
     const close = document.querySelector(".close");
@@ -122,41 +127,32 @@
     btn.onclick = () => popup.style.display = "flex";
     close.onclick = () => popup.style.display = "none";
     window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
-  </script>
-  <!-- CURIOUSITY DROP REDEEM BUTTON (hidden by default) -->
-<button id="redeem-reward" style="display:none;">
-  Redeem Your 10% Drop Reward
-</button>
-<script>
-  // Detect if the visitor came from Curiosity Drop via URL parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const isDropVisitor = urlParams.get('drop') === '1';
 
-  if (isDropVisitor) {
-    // Show a banner
-    const banner = document.createElement('div');
-    banner.innerHTML = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
-    banner.style.backgroundColor = "#4CAF50"; // green
-    banner.style.color = "#fff";
-    banner.style.textAlign = "center";
-    banner.style.padding = "10px";
-    banner.style.fontWeight = "bold";
-    document.body.prepend(banner);
+    // Curiosity Drop detection
+    const urlParams = new URLSearchParams(window.location.search);
+    const isDropVisitor = urlParams.get('drop') === '1';
 
-    // Show the redeem reward button
-    const redeemBtn = document.getElementById('redeem-reward');
-    if (redeemBtn) redeemBtn.style.display = 'block';
+    if (isDropVisitor) {
+      // Create banner
+      const banner = document.createElement('div');
+      banner.id = "drop-banner";
+      banner.textContent = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
+      document.body.prepend(banner);
 
-    // Make redeem button scroll to contact form and pre-fill discount
-    redeemBtn.addEventListener('click', () => {
-      const form = document.querySelector("#contact-popup form");
-      if (form) {
-        popup.style.display = "flex"; // open the popup
+      // Show redeem button
+      const redeemBtn = document.createElement('button');
+      redeemBtn.id = "redeem-reward";
+      redeemBtn.textContent = "Redeem Your 10% Drop Reward";
+      redeemBtn.style.display = "block";
+      document.body.appendChild(redeemBtn);
+
+      redeemBtn.addEventListener('click', () => {
+        popup.style.display = "flex"; // open contact popup
         const discountField = document.getElementById('discount-code');
         if (discountField) discountField.value = 'DROP10';
-      }
-    });
-  }
-</script>
+      });
+    }
+  </script>
+
 </body>
 </html>
