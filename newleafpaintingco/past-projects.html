@@ -88,7 +88,8 @@
   const closeBtn = document.querySelector(".img-modal .close");
 
   document.querySelectorAll(".clickable-img").forEach(img => {
-    img.addEventListener("click", () => {
+    img.addEventListener("click", e => {
+      e.preventDefault(); // stops browser from opening the image
       modal.style.display = "block";
       modalImg.src = img.src;
     });
