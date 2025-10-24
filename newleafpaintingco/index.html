@@ -120,67 +120,117 @@
 
   <!-- JS SCRIPTS -->
   <script>
-  // Popup functionality
-  const popup = document.getElementById("contact-popup");
-  const btn = document.getElementById("contact-btn");
-  const close = document.querySelector(".close");
+// Popup functionality
+const popup = document.getElementById("contact-popup");
+const btn = document.getElementById("contact-btn");
+const close = document.querySelector(".close");
 
-  btn.onclick = () => popup.style.display = "flex";
-  close.onclick = () => popup.style.display = "none";
-  window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+btn.onclick = () => popup.style.display = "flex";
+close.onclick = () => popup.style.display = "none";
+window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-  // Curiosity Drop / Sample detection
-  const urlParams = new URLSearchParams(window.location.search);
-  const isDropVisitor = urlParams.get('drop') === '1';
-  const isSampleVisitor = urlParams.get('sample') === '1';
+// URL parameter parsing
+const urlParams = new URLSearchParams(window.location.search);
+const isDropVisitor = urlParams.get('drop') === '1';
+const isSampleVisitor = urlParams.get('sample') === '1';
+const referrer = urlParams.get('ref'); // optional referral info
 
-  if (isDropVisitor || isSampleVisitor) {
-    // Hide normal free estimate button
-    if (btn) btn.style.display = 'none';
+// Function to create banner
+function createBanner(message) {
+  const banner = document.createElement('div');
+  banner.id = "drop-banner";
+  banner.textContent = message;
+  banner.style.backgroundColor = "#4CAF50";
+  banner.style.color = "#fff";
+  banner.style.textAlign = "center";
+  banner.style.padding = "10px";
+  banner.style.fontWeight = "bold";
+  banner.style.position = "fixed";
+  banner.style.top = "0";
+  banner.style.left = "0";
+  banner.style.width = "100%";
+  banner.style.zIndex = "200";
+  document.body.prepend(banner);
+}
 
-    // Create banner
-    const banner = document.createElement('div');
-    banner.id = "drop-banner";
-    banner.textContent = isDropVisitor 
-      ? "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!" 
-      : "🎉 Welcome! You were referred via a Sample Card — enjoy 5% off!";
-    banner.style.backgroundColor = "#4CAF50";
-    banner.style.color = "#fff";
-    banner.style.textAlign = "center";
-    banner.style.padding = "10px";
-    banner.style.fontWeight = "bold";
-    banner.style.position = "fixed";
-    banner.style.top = "0";
-    banner.style.left = "0";
-    banner.style.width = "100%";
-    banner.style.zIndex = "200";
-    document.body.prepend(banner);
+// Function to create floating redeem button
+function createRedeemButton(text) {
+  const redeemBtn = document.createElement('button');
+  redeemBtn.id = "redeem-reward";
+  redeemBtn.textContent = text;
+  redeemBtn.style.position = "fixed";
+  redeemBtn.style.bottom = "20px";
+  redeemBtn.style.right = "20px";
+  redeemBtn.style.zIndex = "200";
+  redeemBtn.style.padding = "10px 20px";
+  redeemBtn.style.borderRadius = "8px";
+  redeemBtn.style.backgroundColor = "#4CAF50";
+  redeemBtn.style.color = "#fff";
+  redeemBtn.style.border = "none";
+  redeemBtn.style.cursor = "pointer";
+  document.body.appendChild(redeemBtn);
 
-    // Show redeem button
-    const redeemBtn = document.createElement('button');
-    redeemBtn.id = "redeem-reward";
-    redeemBtn.textContent = isDropVisitor 
-      ? "Redeem Your 10% Drop Reward" 
-      : "Redeem Your 5% Sample Reward";
-    redeemBtn.style.position = "fixed";
-    redeemBtn.style.bottom = "20px";
-    redeemBtn.style.right = "20px";
-    redeemBtn.style.zIndex = "200";
-    redeemBtn.style.padding = "10px 20px";
-    redeemBtn.style.borderRadius = "8px";
-    redeemBtn.style.backgroundColor = "#4CAF50";
-    redeemBtn.style.color = "#fff";
-    redeemBtn.style.border = "none";
-    redeemBtn.style.cursor = "pointer";
-    document.body.appendChild(redeemBtn);
+  redeemBtn.addEventListener('click', () => {
+    popup.style.display = "flex"; // open contact popup
+    const discountField = document.getElementById('discount-code');
+    if (discountField) discountField.value = isDropVisitor ? 'DROP10' : 'SAMPLE5';
+    
+    // Add referrer hidden field
+    if (referrer) {
+      let refField = document.getElementById('referrer');
+      if (!refField) {
+        refField = document.createElement('input');
+        refField.type = 'hidden';
+        refField.name = 'referrer';
+        refField.id = 'referrer';
+        document.querySelector('#contact-popup form').appendChild(refField);
+      }
+      refField.value = referrer;
+    }
+  });
+}
 
-    redeemBtn.addEventListener('click', () => {
-      popup.style.display = "flex"; // open contact popup
-      const discountField = document.getElementById('discount-code');
-      if (discountField) discountField.value = isDropVisitor ? 'DROP10' : 'SAMPLE5';
-    });
-  }
+// Update popup heading dynamically
+const popupHeading = document.querySelector('#contact-popup h2');
+if (popupHeading) {
+  if (isDropVisitor) popupHeading.textContent = "Redeem 10% Drop Reward";
+  else if (isSampleVisitor) popupHeading.textContent = "Redeem 5% Sample Discount";
+}
+
+// If visitor came via drop or sample, show banner and redeem button
+if (isDropVisitor || isSampleVisitor) {
+  // Hide normal floating button
+  if (btn) btn.style.display = 'none';
+
+  // Banner
+  createBanner(isDropVisitor 
+    ? "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!" 
+    : "🎉 Welcome! You were referred via a Sample Card — enjoy 5% off!");
+
+  // Floating redeem button
+  createRedeemButton(isDropVisitor 
+    ? "Redeem Your 10% Drop Reward" 
+    : "Redeem Your 5% Sample Reward");
+}
+
+// Optional: mailto-based form submission
+const form = document.querySelector('#contact-popup form');
+form.addEventListener('submit', e => {
+  e.preventDefault(); // prevent default submit
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const message = document.getElementById('message').value;
+  const discount = document.getElementById('discount-code').value;
+  const ref = referrer || '';
+
+  // Build mailto
+  const subject = encodeURIComponent("New Leaf Painting Inquiry");
+  const body = encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}\nDiscount Code: ${discount}\nReferrer: ${ref}`
+  );
+  window.location.href = `mailto:your-email@domain.com?subject=${subject}&body=${body}`;
+});
 </script>
-
 </body>
 </html>
