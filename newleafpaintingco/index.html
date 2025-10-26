@@ -120,7 +120,7 @@
 
   <!-- JS SCRIPTS -->
   <script>
-// Popup functionality
+// --- Popup functionality ---
 const popup = document.getElementById("contact-popup");
 const btn = document.getElementById("contact-btn");
 const close = document.querySelector(".close");
@@ -129,106 +129,152 @@ btn.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// URL parameter parsing
+// --- URL parameters ---
 const urlParams = new URLSearchParams(window.location.search);
-const isDropVisitor = urlParams.get('drop') === '1';
-const isSampleVisitor = urlParams.get('sample') === '1';
-const referrer = urlParams.get('ref'); // optional referral info
+let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// Function to create banner
+// --- Google Sheet setup ---
+const sheetURL = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:json";
+let refData = {
+  ReferrerName: "",
+  ReferrerBusiness: "",
+  DiscountCode: "",
+  BannerText: "",
+  ButtonText: "",
+  EmailSubject: ""
+};
+
+// --- Fetch referrer info from sheet ---
+async function loadReferrerData() {
+  if (!refParam) return;
+
+  try {
+    const res = await fetch(sheetURL);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+
+    // Find the row matching refParam (ID)
+    const match = rows.find(r => r.c[0]?.v == refParam);
+    if (match) {
+      refData.ReferrerName = match.c[1]?.v || "";
+      refData.ReferrerBusiness = match.c[2]?.v || "";
+      refData.DiscountCode = match.c[3]?.v || "";
+      refData.BannerText = match.c[4]?.v || "";
+      refData.ButtonText = match.c[5]?.v || "";
+      refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
+    }
+  } catch (err) {
+    console.error("Error loading referrer data:", err);
+  }
+}
+
+// --- Banner ---
 function createBanner(message) {
+  if (!message) return;
   const banner = document.createElement('div');
   banner.id = "drop-banner";
   banner.textContent = message;
-  banner.style.backgroundColor = "#4CAF50";
-  banner.style.color = "#fff";
-  banner.style.textAlign = "center";
-  banner.style.padding = "10px";
-  banner.style.fontWeight = "bold";
-  banner.style.position = "fixed";
-  banner.style.top = "0";
-  banner.style.left = "0";
-  banner.style.width = "100%";
-  banner.style.zIndex = "200";
+  Object.assign(banner.style, {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    textAlign: "center",
+    padding: "10px",
+    fontWeight: "bold",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    zIndex: "200"
+  });
   document.body.prepend(banner);
 }
 
-// Function to create floating redeem button
+// --- Floating redeem button ---
 function createRedeemButton(text) {
+  if (!text) return;
   const redeemBtn = document.createElement('button');
   redeemBtn.id = "redeem-reward";
   redeemBtn.textContent = text;
-  redeemBtn.style.position = "fixed";
-  redeemBtn.style.bottom = "20px";
-  redeemBtn.style.right = "20px";
-  redeemBtn.style.zIndex = "200";
-  redeemBtn.style.padding = "10px 20px";
-  redeemBtn.style.borderRadius = "8px";
-  redeemBtn.style.backgroundColor = "#4CAF50";
-  redeemBtn.style.color = "#fff";
-  redeemBtn.style.border = "none";
-  redeemBtn.style.cursor = "pointer";
+  Object.assign(redeemBtn.style, {
+    position: "fixed",
+    bottom: "20px",
+    right: "20px",
+    zIndex: "200",
+    padding: "10px 20px",
+    borderRadius: "8px",
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    border: "none",
+    cursor: "pointer"
+  });
   document.body.appendChild(redeemBtn);
 
   redeemBtn.addEventListener('click', () => {
-    popup.style.display = "flex"; // open contact popup
+    popup.style.display = "flex";
+
+    // Set discount code
     const discountField = document.getElementById('discount-code');
-    if (discountField) discountField.value = isDropVisitor ? 'DROP10' : 'SAMPLE5';
-    
-    // Add referrer hidden field
-    if (referrer) {
-      let refField = document.getElementById('referrer');
-      if (!refField) {
-        refField = document.createElement('input');
-        refField.type = 'hidden';
-        refField.name = 'referrer';
-        refField.id = 'referrer';
-        document.querySelector('#contact-popup form').appendChild(refField);
-      }
-      refField.value = referrer;
+    if (discountField) discountField.value = refData.DiscountCode || "";
+
+    // Set hidden referrer field
+    let refField = document.getElementById('referrer');
+    if (!refField) {
+      refField = document.createElement('input');
+      refField.type = 'hidden';
+      refField.name = 'referrer';
+      refField.id = 'referrer';
+      document.querySelector('#contact-popup form').appendChild(refField);
     }
+    refField.value = `${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}`;
   });
 }
 
-// Update popup heading dynamically
-const popupHeading = document.querySelector('#contact-popup h2');
-if (popupHeading) {
-  if (isDropVisitor) popupHeading.textContent = "Redeem 10% Drop Reward";
-  else if (isSampleVisitor) popupHeading.textContent = "Redeem 5% Sample Discount";
+// --- Popup heading ---
+function updatePopupHeading() {
+  const popupHeading = document.querySelector('#contact-popup h2');
+  if (!popupHeading) return;
+
+  if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
+  else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
 }
 
-// If visitor came via drop or sample, show banner and redeem button
-if (isDropVisitor || isSampleVisitor) {
-  // Hide normal floating button
-  if (btn) btn.style.display = 'none';
+// --- Initialize ---
+async function init() {
+  await loadReferrerData();
 
-  // Banner
-  createBanner(isDropVisitor 
-    ? "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!" 
-    : "🎉 Welcome! You were referred via a Sample Card — enjoy 5% off!");
+  // Hide normal button if a referrer is detected
+  if (refParam) btn.style.display = 'none';
 
-  // Floating redeem button
-  createRedeemButton(isDropVisitor 
-    ? "Redeem Your 10% Drop Reward" 
-    : "Redeem Your 5% Sample Reward");
+  createBanner(refData.BannerText);
+  createRedeemButton(refData.ButtonText);
+  updatePopupHeading();
 }
 
-// Optional: mailto-based form submission
+init();
+
+// --- Form submission ---
 const form = document.querySelector('#contact-popup form');
 form.addEventListener('submit', e => {
-  e.preventDefault(); // prevent default submit
+  e.preventDefault();
+
   const name = document.getElementById('name').value;
   const email = document.getElementById('email').value;
   const phone = document.getElementById('phone').value;
   const message = document.getElementById('message').value;
   const discount = document.getElementById('discount-code').value;
-  const ref = referrer || '';
 
-  // Build mailto
-  const subject = encodeURIComponent("New Leaf Painting Inquiry");
-  const body = encodeURIComponent(
-    `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nMessage: ${message}\nDiscount Code: ${discount}\nReferrer: ${ref}`
-  );
+  const subject = encodeURIComponent(refData.EmailSubject || "New Leaf Painting Inquiry");
+  const bodyLines = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Phone: ${phone}`,
+    `Message: ${message}`,
+    `Discount Code: ${discount}`,
+    refData.ReferrerName ? `Referrer: ${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}` : ""
+  ];
+  const body = encodeURIComponent(bodyLines.join("\n"));
+
   window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
 });
 </script>
