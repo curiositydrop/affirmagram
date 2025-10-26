@@ -129,12 +129,12 @@ btn.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// --- URL parameters ---
+// --- URL parameters (case-insensitive) ---
 const urlParams = new URLSearchParams(window.location.search);
-let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
-if (refParam) refParam = refParam.toUpperCase(); // make comparison case-insensitive
+let refParam = urlParams.get('ref') ? urlParams.get('ref').toUpperCase() : null;
+console.log("Ref Param Detected:", refParam);
 
-// --- Google Sheet JSON setup ---
+// --- Google Sheet JSON ---
 const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
 
 let refData = {
@@ -146,19 +146,18 @@ let refData = {
   EmailSubject: ""
 };
 
-// --- Fetch referrer info from JSON ---
+// --- Load referrer data ---
 async function loadReferrerData() {
   if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2)); // strip Google wrapper
+    const json = JSON.parse(text.substr(47).slice(0, -2)); // strip gviz wrapper
     const rows = json.table.rows;
 
-    console.log("Spreadsheet rows:", rows); // DEBUG: see all rows
+    const match = rows.find(r => r.c[0]?.v?.toUpperCase() === refParam);
 
-    const match = rows.find(r => (r.c[0]?.v || "").toUpperCase() === refParam);
     if (match) {
       refData.ReferrerName = match.c[1]?.v || "";
       refData.ReferrerBusiness = match.c[2]?.v || "";
@@ -166,9 +165,10 @@ async function loadReferrerData() {
       refData.BannerText = match.c[4]?.v || "";
       refData.ButtonText = match.c[5]?.v || "";
       refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
-      console.log("Matched refData:", refData); // DEBUG: confirm match
+
+      console.log("Referrer Data Loaded:", refData);
     } else {
-      console.log("No matching refParam found in spreadsheet.");
+      console.log("No matching ref found in spreadsheet for:", refParam);
     }
   } catch (err) {
     console.error("Error loading referrer data:", err);
@@ -196,7 +196,7 @@ function createBanner(message) {
   document.body.prepend(banner);
 }
 
-// --- Update existing button ---
+// --- Floating redeem button ---
 function updateFloatingButton(text) {
   if (!text) return;
   btn.textContent = text;
@@ -206,7 +206,6 @@ function updateFloatingButton(text) {
 function updatePopupHeading() {
   const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
-
   if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
   else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
 }
@@ -217,7 +216,7 @@ async function init() {
 
   if (refData.BannerText) createBanner(refData.BannerText);
   if (refData.ButtonText) updateFloatingButton(refData.ButtonText);
-  if (refParam) updatePopupHeading(); // only update popup heading for referred users
+  updatePopupHeading();
 }
 
 init();
@@ -231,7 +230,7 @@ form.addEventListener('submit', e => {
   const email = document.getElementById('email').value;
   const phone = document.getElementById('phone').value;
   const message = document.getElementById('message').value;
-  const discount = document.getElementById('discount-code').value;
+  const discount = document.getElementById('discount-code').value || refData.DiscountCode || "";
 
   const subject = encodeURIComponent(refData.EmailSubject || "New Leaf Painting Inquiry");
   const bodyLines = [
