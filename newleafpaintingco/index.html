@@ -120,7 +120,7 @@
 
   <!-- JS SCRIPTS -->
  <script>
-// --- Popup functionality ---
+// --- Popup ---
 const popup = document.getElementById("contact-popup");
 const btn = document.getElementById("contact-btn");
 const close = document.querySelector(".close");
@@ -129,13 +129,14 @@ btn.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// --- URL parameters ---
+// --- URL parameter ---
 const urlParams = new URLSearchParams(window.location.search);
-let refParam = (urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample') || "").trim().toUpperCase();
+let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// --- Google Sheet JSON setup ---
+// --- Spreadsheet JSON URL ---
 const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
 
+// --- Default ref data ---
 let refData = {
   ReferrerName: "",
   ReferrerBusiness: "",
@@ -145,102 +146,79 @@ let refData = {
   EmailSubject: ""
 };
 
-// --- Fetch referrer info from JSON ---
+// --- Fetch referrer data from spreadsheet ---
 async function loadReferrerData() {
   if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const json = JSON.parse(text.substr(47).slice(0, -2)); // remove gviz wrapper
     const rows = json.table.rows;
 
-    const match = rows.find(r => {
-      const id = r.c[0]?.v?.trim().toUpperCase();
-      return id === refParam;
-    });
+    // Case-insensitive match
+    const match = rows.find(r => r.c[0]?.v.toString().toUpperCase() === refParam.toUpperCase());
 
     if (match) {
-      refData.ReferrerName = match.c[1]?.v?.trim() || "";
-      refData.ReferrerBusiness = match.c[2]?.v?.trim() || "";
-      refData.DiscountCode = match.c[3]?.v?.trim() || "";
-      refData.BannerText = match.c[4]?.v?.trim() || "";
-      refData.ButtonText = match.c[5]?.v?.trim() || "";
-      refData.EmailSubject = match.c[6]?.v?.trim() || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
-      console.log("Matched refData:", refData);
-    } else {
-      console.warn("No matching refParam found in sheet.");
+      refData.ReferrerName = match.c[1]?.v || "";
+      refData.ReferrerBusiness = match.c[2]?.v || "";
+      refData.DiscountCode = match.c[3]?.v || "";
+      refData.BannerText = match.c[4]?.v || "";
+      refData.ButtonText = match.c[5]?.v || "";
+      refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
     }
   } catch (err) {
     console.error("Error loading referrer data:", err);
   }
 }
 
-// --- Banner ---
+// --- Banner creation ---
 function createBanner(message) {
   if (!message) return;
   let banner = document.getElementById("drop-banner");
   if (!banner) {
-    banner = document.createElement('div');
+    banner = document.createElement("div");
     banner.id = "drop-banner";
-    Object.assign(banner.style, {
-      backgroundColor: "#4CAF50",
-      color: "#fff",
-      textAlign: "center",
-      padding: "10px",
-      fontWeight: "bold",
-      position: "fixed",
-      top: "0",
-      left: "0",
-      width: "100%",
-      zIndex: "200"
-    });
     document.body.prepend(banner);
   }
   banner.textContent = message;
+  Object.assign(banner.style, {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    textAlign: "center",
+    padding: "10px",
+    fontWeight: "bold",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    zIndex: "200"
+  });
 }
 
-// --- Update existing button ---
+// --- Update floating button ---
 function updateFloatingButton(text) {
-  if (!btn) return;
-  btn.textContent = text || "Get free estimate";
+  if (!text) return;
+  btn.textContent = text;
   btn.style.display = "block";
-
-  // Update click for ref reward
-  btn.onclick = () => {
-    popup.style.display = "flex";
-
-    const discountField = document.getElementById('discount-code');
-    if (discountField) discountField.value = refData.DiscountCode || "";
-
-    let refField = document.getElementById('referrer');
-    if (!refField) {
-      refField = document.createElement('input');
-      refField.type = 'hidden';
-      refField.name = 'referrer';
-      refField.id = 'referrer';
-      document.querySelector('#contact-popup form').appendChild(refField);
-    }
-    refField.value = `${refData.ReferrerName}${refData.ReferrerBusiness ? " at " + refData.ReferrerBusiness : ""}`;
-  };
 }
 
-// --- Popup heading ---
+// --- Update popup heading ---
 function updatePopupHeading() {
   const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
 
   if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
   else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
-  else popupHeading.textContent = "Get free estimate";
 }
 
 // --- Initialize ---
 async function init() {
   await loadReferrerData();
 
-  if (refData.BannerText) createBanner(refData.BannerText);
-  updateFloatingButton(refData.ButtonText);
+  if (refParam && refData.BannerText) createBanner(refData.BannerText);
+  if (refParam && refData.ButtonText) updateFloatingButton(refData.ButtonText);
+
   updatePopupHeading();
 }
 
@@ -264,7 +242,7 @@ form.addEventListener('submit', e => {
     `Phone: ${phone}`,
     `Message: ${message}`,
     `Discount Code: ${discount}`,
-    refData.ReferrerName ? `Referrer: ${refData.ReferrerName}${refData.ReferrerBusiness ? " at " + refData.ReferrerBusiness : ""}` : ""
+    refData.ReferrerName ? `Referrer: ${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}` : ""
   ];
   const body = encodeURIComponent(bodyLines.join("\n"));
 
