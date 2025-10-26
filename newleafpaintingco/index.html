@@ -122,20 +122,21 @@
  <script>
 // --- Popup functionality ---
 const popup = document.getElementById("contact-popup");
-const btn = document.getElementById("contact-btn");
+const btnDefault = document.getElementById("contact-btn");
 const close = document.querySelector(".close");
 
-btn.onclick = () => popup.style.display = "flex";
+btnDefault.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// --- URL parameters ---
+// --- URL parameter ---
 const urlParams = new URLSearchParams(window.location.search);
-let refParam = (urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample') || "").toUpperCase();
+const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// --- Google Sheet JSON setup ---
+// --- Spreadsheet JSON URL ---
 const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
 
+// --- Default refData ---
 let refData = {
   ReferrerName: "",
   ReferrerBusiness: "",
@@ -145,45 +146,32 @@ let refData = {
   EmailSubject: ""
 };
 
-// --- Fetch referrer info from JSON ---
+// --- Load spreadsheet safely ---
 async function loadReferrerData() {
   if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2)); // remove gviz wrapper
+    const json = JSON.parse(text.replace(/^.*?({\"version)/, '{$1').slice(0, -2));
     const rows = json.table.rows;
 
-    // --- Find header indexes dynamically ---
-    const headers = json.table.cols.map(c => c.label.toUpperCase());
-    const idIndex = headers.indexOf("ID");
-    const nameIndex = headers.indexOf("REFERRERNAME");
-    const businessIndex = headers.indexOf("REFERRERBUSINESS");
-    const codeIndex = headers.indexOf("DISCOUNTCODE");
-    const bannerIndex = headers.indexOf("BANNERTEXT");
-    const buttonIndex = headers.indexOf("BUTTONTEXT");
-    const subjectIndex = headers.indexOf("EMAILSUBJECT");
-
-    const match = rows.find(r => r.c[idIndex]?.v?.toUpperCase() === refParam);
-
+    // Case-insensitive match in first column (ID)
+    const match = rows.find(r => r.c[0]?.v?.toString().toLowerCase() === refParam.toLowerCase());
     if (match) {
-      refData.ReferrerName = match.c[nameIndex]?.v || "";
-      refData.ReferrerBusiness = match.c[businessIndex]?.v || "";
-      refData.DiscountCode = match.c[codeIndex]?.v || "";
-      refData.BannerText = match.c[bannerIndex]?.v || "";
-      refData.ButtonText = match.c[buttonIndex]?.v || "";
-      refData.EmailSubject = match.c[subjectIndex]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
-      console.log("Referrer Data Loaded:", refData);
-    } else {
-      console.log("No matching ref found in spreadsheet for:", refParam);
+      refData.ReferrerName = match.c[1]?.v || "";
+      refData.ReferrerBusiness = match.c[2]?.v || "";
+      refData.DiscountCode = match.c[3]?.v || "";
+      refData.BannerText = match.c[4]?.v || "";
+      refData.ButtonText = match.c[5]?.v || "";
+      refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
     }
   } catch (err) {
-    console.error("Error loading referrer data:", err);
+    console.error("Spreadsheet load error:", err);
   }
 }
 
-// --- Banner ---
+// --- Create banner ---
 function createBanner(message) {
   if (!message) return;
   const banner = document.createElement('div');
@@ -204,48 +192,31 @@ function createBanner(message) {
   document.body.prepend(banner);
 }
 
-// --- Floating redeem button ---
-function createRedeemButton(text) {
-  const btnText = text || "Get free estimate"; // default text if no ref
-  btn.textContent = btnText;
-
-  // Only add click handler if there's a ref
-  if (!refParam) return;
-
-  btn.onclick = () => {
-    popup.style.display = "flex";
-
-    const discountField = document.getElementById('discount-code');
-    if (discountField) discountField.value = refData.DiscountCode || "";
-
-    let refField = document.getElementById('referrer');
-    if (!refField) {
-      refField = document.createElement('input');
-      refField.type = 'hidden';
-      refField.name = 'referrer';
-      refField.id = 'referrer';
-      document.querySelector('#contact-popup form').appendChild(refField);
-    }
-    refField.value = `${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}`;
-  };
+// --- Update button to use spreadsheet text ---
+function updateButtonText(text) {
+  if (!text) return;
+  btnDefault.textContent = text;
 }
 
-// --- Popup heading ---
+// --- Update popup heading ---
 function updatePopupHeading() {
   const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
 
   if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
   else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
-  else popupHeading.textContent = "Get free estimate";
 }
 
 // --- Initialize ---
 async function init() {
   await loadReferrerData();
 
-  if (refParam && refData.BannerText) createBanner(refData.BannerText);
-  createRedeemButton(refData.ButtonText);
+  // Only show banner if we have one
+  if (refData.BannerText) createBanner(refData.BannerText);
+
+  // Always keep one button, update its text if provided
+  if (refData.ButtonText) updateButtonText(refData.ButtonText);
+
   updatePopupHeading();
 }
 
@@ -274,6 +245,22 @@ form.addEventListener('submit', e => {
   const body = encodeURIComponent(bodyLines.join("\n"));
 
   window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
+});
+
+// --- When button clicked, set discount/ref hidden fields ---
+btnDefault.addEventListener('click', () => {
+  const discountField = document.getElementById('discount-code');
+  if (discountField) discountField.value = refData.DiscountCode || "";
+
+  let refField = document.getElementById('referrer');
+  if (!refField) {
+    refField = document.createElement('input');
+    refField.type = 'hidden';
+    refField.name = 'referrer';
+    refField.id = 'referrer';
+    document.querySelector('#contact-popup form').appendChild(refField);
+  }
+  refField.value = `${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}`;
 });
 </script>
 
