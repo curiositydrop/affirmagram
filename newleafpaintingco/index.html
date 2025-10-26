@@ -120,7 +120,7 @@
 
   <!-- JS SCRIPTS -->
  <script>
-// --- Popup ---
+// --- Popup functionality ---
 const popup = document.getElementById("contact-popup");
 const btn = document.getElementById("contact-btn");
 const close = document.querySelector(".close");
@@ -129,14 +129,14 @@ btn.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// --- URL parameter ---
+// --- URL parameters ---
 const urlParams = new URLSearchParams(window.location.search);
 let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+if (refParam) refParam = refParam.toUpperCase(); // make comparison case-insensitive
 
-// --- Spreadsheet JSON URL ---
+// --- Google Sheet JSON setup ---
 const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
 
-// --- Default ref data ---
 let refData = {
   ReferrerName: "",
   ReferrerBusiness: "",
@@ -146,19 +146,19 @@ let refData = {
   EmailSubject: ""
 };
 
-// --- Fetch referrer data from spreadsheet ---
+// --- Fetch referrer info from JSON ---
 async function loadReferrerData() {
   if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2)); // remove gviz wrapper
+    const json = JSON.parse(text.substr(47).slice(0, -2)); // strip Google wrapper
     const rows = json.table.rows;
 
-    // Case-insensitive match
-    const match = rows.find(r => r.c[0]?.v.toString().toUpperCase() === refParam.toUpperCase());
+    console.log("Spreadsheet rows:", rows); // DEBUG: see all rows
 
+    const match = rows.find(r => (r.c[0]?.v || "").toUpperCase() === refParam);
     if (match) {
       refData.ReferrerName = match.c[1]?.v || "";
       refData.ReferrerBusiness = match.c[2]?.v || "";
@@ -166,21 +166,20 @@ async function loadReferrerData() {
       refData.BannerText = match.c[4]?.v || "";
       refData.ButtonText = match.c[5]?.v || "";
       refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
+      console.log("Matched refData:", refData); // DEBUG: confirm match
+    } else {
+      console.log("No matching refParam found in spreadsheet.");
     }
   } catch (err) {
     console.error("Error loading referrer data:", err);
   }
 }
 
-// --- Banner creation ---
+// --- Banner ---
 function createBanner(message) {
   if (!message) return;
-  let banner = document.getElementById("drop-banner");
-  if (!banner) {
-    banner = document.createElement("div");
-    banner.id = "drop-banner";
-    document.body.prepend(banner);
-  }
+  const banner = document.createElement('div');
+  banner.id = "drop-banner";
   banner.textContent = message;
   Object.assign(banner.style, {
     backgroundColor: "#4CAF50",
@@ -194,16 +193,16 @@ function createBanner(message) {
     width: "100%",
     zIndex: "200"
   });
+  document.body.prepend(banner);
 }
 
-// --- Update floating button ---
+// --- Update existing button ---
 function updateFloatingButton(text) {
   if (!text) return;
   btn.textContent = text;
-  btn.style.display = "block";
 }
 
-// --- Update popup heading ---
+// --- Popup heading ---
 function updatePopupHeading() {
   const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
@@ -216,10 +215,9 @@ function updatePopupHeading() {
 async function init() {
   await loadReferrerData();
 
-  if (refParam && refData.BannerText) createBanner(refData.BannerText);
-  if (refParam && refData.ButtonText) updateFloatingButton(refData.ButtonText);
-
-  updatePopupHeading();
+  if (refData.BannerText) createBanner(refData.BannerText);
+  if (refData.ButtonText) updateFloatingButton(refData.ButtonText);
+  if (refParam) updatePopupHeading(); // only update popup heading for referred users
 }
 
 init();
