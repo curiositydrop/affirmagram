@@ -152,13 +152,11 @@ async function loadReferrerData() {
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-
-    // Remove Google JSON wrapper
     const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows;
 
     const match = rows.find(r => {
-      const id = r.c[0]?.v?.trim().toUpperCase(); // trim + uppercase
+      const id = r.c[0]?.v?.trim().toUpperCase();
       return id === refParam;
     });
 
@@ -181,44 +179,35 @@ async function loadReferrerData() {
 // --- Banner ---
 function createBanner(message) {
   if (!message) return;
-  const banner = document.createElement('div');
-  banner.id = "drop-banner";
+  let banner = document.getElementById("drop-banner");
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = "drop-banner";
+    Object.assign(banner.style, {
+      backgroundColor: "#4CAF50",
+      color: "#fff",
+      textAlign: "center",
+      padding: "10px",
+      fontWeight: "bold",
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100%",
+      zIndex: "200"
+    });
+    document.body.prepend(banner);
+  }
   banner.textContent = message;
-  Object.assign(banner.style, {
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    textAlign: "center",
-    padding: "10px",
-    fontWeight: "bold",
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    zIndex: "200"
-  });
-  document.body.prepend(banner);
 }
 
-// --- Floating redeem button ---
-function createRedeemButton(text) {
-  const redeemBtn = document.getElementById("redeem-reward") || document.createElement('button');
-  redeemBtn.id = "redeem-reward";
-  redeemBtn.textContent = text || "Redeem Reward";
-  Object.assign(redeemBtn.style, {
-    position: "fixed",
-    bottom: "20px",
-    right: "20px",
-    zIndex: "200",
-    padding: "10px 20px",
-    borderRadius: "8px",
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer"
-  });
-  if (!redeemBtn.parentNode) document.body.appendChild(redeemBtn);
+// --- Update existing button ---
+function updateFloatingButton(text) {
+  if (!btn) return;
+  btn.textContent = text || "Get free estimate";
+  btn.style.display = "block";
 
-  redeemBtn.onclick = () => {
+  // Update click for ref reward
+  btn.onclick = () => {
     popup.style.display = "flex";
 
     const discountField = document.getElementById('discount-code');
@@ -243,18 +232,15 @@ function updatePopupHeading() {
 
   if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
   else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
+  else popupHeading.textContent = "Get free estimate";
 }
 
 // --- Initialize ---
 async function init() {
   await loadReferrerData();
 
-  // Always show button
-  btn.style.display = 'block';
-
-  // Use sheet data if available
   if (refData.BannerText) createBanner(refData.BannerText);
-  createRedeemButton(refData.ButtonText);
+  updateFloatingButton(refData.ButtonText);
   updatePopupHeading();
 }
 
