@@ -133,8 +133,7 @@ window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 const urlParams = new URLSearchParams(window.location.search);
 let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// --- Google Sheet JSON setup ---
-const sheetURL = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:json";
+// --- Google Sheet JSON setup ---const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
 
 let refData = {
   ReferrerName: "",
