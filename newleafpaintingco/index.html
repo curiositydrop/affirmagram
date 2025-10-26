@@ -131,8 +131,8 @@ window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
 // --- URL parameters ---
 const urlParams = new URLSearchParams(window.location.search);
-let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
-console.log("refParam detected:", refParam);
+const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+console.log("Ref param:", refParam);
 
 // --- Google Sheet JSON setup ---
 const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
@@ -148,20 +148,18 @@ let refData = {
 
 // --- Fetch referrer info from JSON ---
 async function loadReferrerData() {
-  if (!refParam) {
-    console.log("No ref param, skipping referrer data load.");
-    return;
-  }
+  if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2)); // remove gviz wrapper
+
+    // Remove Google JSON wrapper
+    const json = JSON.parse(text.substr(47).slice(0, -2));
     const rows = json.table.rows;
+    console.log("JSON rows:", rows);
 
-    console.log("JSON rows fetched:", rows);
-
-    const match = rows.find(r => r.c[0]?.v == refParam);
+    const match = rows.find(r => r.c[0]?.v === refParam);
     if (match) {
       refData.ReferrerName = match.c[1]?.v || "";
       refData.ReferrerBusiness = match.c[2]?.v || "";
@@ -169,9 +167,9 @@ async function loadReferrerData() {
       refData.BannerText = match.c[4]?.v || "";
       refData.ButtonText = match.c[5]?.v || "";
       refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
-      console.log("Ref data loaded:", refData);
+      console.log("Matched refData:", refData);
     } else {
-      console.warn("No matching ref found in sheet for ID:", refParam);
+      console.log("No match found for refParam in sheet.");
     }
   } catch (err) {
     console.error("Error loading referrer data:", err);
@@ -221,9 +219,12 @@ function createRedeemButton(text) {
 
   redeemBtn.addEventListener('click', () => {
     popup.style.display = "flex";
+
+    // Set discount code
     const discountField = document.getElementById('discount-code');
     if (discountField) discountField.value = refData.DiscountCode || "";
 
+    // Set hidden referrer field
     let refField = document.getElementById('referrer');
     if (!refField) {
       refField = document.createElement('input');
@@ -249,10 +250,11 @@ function updatePopupHeading() {
 async function init() {
   await loadReferrerData();
 
-  if (refParam) btn.style.display = 'none';
+  // Only hide the normal button if we actually have a refParam
+  if (refParam && (refData.BannerText || refData.ButtonText)) btn.style.display = 'none';
 
-  createBanner(refData.BannerText);
-  createRedeemButton(refData.ButtonText);
+  if (refData.BannerText) createBanner(refData.BannerText);
+  if (refData.ButtonText) createRedeemButton(refData.ButtonText);
   updatePopupHeading();
 }
 
