@@ -119,7 +119,7 @@
   </footer>
 
   <!-- JS SCRIPTS -->
-  <script>
+ <script>
 // --- Popup functionality ---
 const popup = document.getElementById("contact-popup");
 const btn = document.getElementById("contact-btn");
@@ -133,8 +133,9 @@ window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 const urlParams = new URLSearchParams(window.location.search);
 let refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// --- Google Sheet setup ---
-const sheetURL = "https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/gviz/tq?tqx=out:json";
+// --- Google Sheet CSV setup ---
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/pub?output=csv";
+
 let refData = {
   ReferrerName: "",
   ReferrerBusiness: "",
@@ -144,25 +145,28 @@ let refData = {
   EmailSubject: ""
 };
 
-// --- Fetch referrer info from sheet ---
+// --- Fetch referrer info from CSV ---
 async function loadReferrerData() {
   if (!refParam) return;
 
   try {
     const res = await fetch(sheetURL);
-    const text = await res.text();
-    const json = JSON.parse(text.substr(47).slice(0, -2));
-    const rows = json.table.rows;
+    const csvText = await res.text();
+    const rows = csvText.trim().split('\n').map(r => r.split(','));
 
-    // Find the row matching refParam (ID)
-    const match = rows.find(r => r.c[0]?.v == refParam);
+    // Columns assumed: 0=ID, 1=ReferrerName, 2=ReferrerBusiness, 3=DiscountCode, 4=BannerText, 5=ButtonText, 6=EmailSubject
+    const header = rows[0]; // optional, first row is header
+    const dataRows = rows.slice(1); // actual data
+
+    const match = dataRows.find(r => r[0] === refParam);
+
     if (match) {
-      refData.ReferrerName = match.c[1]?.v || "";
-      refData.ReferrerBusiness = match.c[2]?.v || "";
-      refData.DiscountCode = match.c[3]?.v || "";
-      refData.BannerText = match.c[4]?.v || "";
-      refData.ButtonText = match.c[5]?.v || "";
-      refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
+      refData.ReferrerName = match[1] || "";
+      refData.ReferrerBusiness = match[2] || "";
+      refData.DiscountCode = match[3] || "";
+      refData.BannerText = match[4] || "";
+      refData.ButtonText = match[5] || "";
+      refData.EmailSubject = match[6] || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
     }
   } catch (err) {
     console.error("Error loading referrer data:", err);
@@ -278,5 +282,6 @@ form.addEventListener('submit', e => {
   window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
 });
 </script>
+
 </body>
 </html>
