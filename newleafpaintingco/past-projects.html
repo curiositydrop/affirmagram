@@ -80,57 +80,226 @@
     <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co." class="footer-logo" />
     <p>&copy; 2025 New Leaf Painting Co. | All Rights Reserved</p>
   </footer>
-<script>
-  const modal = document.getElementById("imgModal");
-  const modalImg = document.getElementById("modalImage");
-  const closeBtn = document.querySelector(".img-modal .close");
+<!-- CONTACT FLOATING BUTTON -->
+  <button id="contact-btn">Get free estimate</button>
 
-  document.querySelectorAll(".clickable-img").forEach(img => {
-    img.addEventListener("click", e => {
-      e.preventDefault(); // stops browser from opening the image
-      modal.style.display = "block";
-      modalImg.src = img.src;
-    });
+  <!-- CONTACT POPUP -->
+  <div id="contact-popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <h2>Get free estimate</h2>
+      <form>
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone">
+
+        <label for="message">Message:</label>
+        <textarea id="message" rows="4"></textarea>
+
+        <input type="hidden" name="discount_code" id="discount-code" value="">
+
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JS SCRIPTS -->
+ <script>
+/* --------------------
+   POPUP FUNCTIONALITY
+---------------------*/
+const popup = document.getElementById("contact-popup");
+const btnDefault = document.getElementById("contact-btn");
+const close = document.querySelector(".close");
+
+btnDefault.onclick = () => popup.style.display = "flex";
+close.onclick = () => popup.style.display = "none";
+window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+
+/* --------------------
+   URL PARAMETER
+---------------------*/
+const urlParams = new URLSearchParams(window.location.search);
+const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+
+/* --------------------
+   GOOGLE SHEET (CSV)
+---------------------*/
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/pub?output=csv";
+
+/* --------------------
+   DEFAULT REF DATA
+   (Used for main site if no ?ref)
+---------------------*/
+let refData = {
+  id: "",
+  referrername: "",
+  businessname: "",
+  discountcode: "",
+  bannertext: "",
+  buttontext: "Get free estimate", // Default button text for main site
+  emailsubject: "New Leaf Painting Inquiry",
+  activeinactive: ""
+};
+
+/* --------------------
+   CLEAN VALUE
+---------------------*/
+function cleanValue(value) {
+  return value ? value.replace(/^"|"$/g, '').trim() : '';
+}
+
+/* --------------------
+   CREATE BANNER
+---------------------*/
+function createBanner(message) {
+  if (!message) return;
+  const banner = document.createElement('div');
+  banner.id = "drop-banner";
+  banner.textContent = message;
+  Object.assign(banner.style, {
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+    textAlign: "center",
+    padding: "10px",
+    fontWeight: "bold",
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    zIndex: "200"
   });
+  document.body.prepend(banner);
+}
 
-  closeBtn.onclick = () => modal.style.display = "none";
-  modal.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
-</script>
-  <!-- CURIOUSITY DROP REDEEM BUTTON (hidden by default) -->
-<button id="redeem-reward" style="display:none;">
-  Redeem Your 10% Drop Reward
-</button>
-<script>
-  // Detect if the visitor came from Curiosity Drop via URL parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const isDropVisitor = urlParams.get('drop') === '1';
+/* --------------------
+   UPDATE BUTTON TEXT
+---------------------*/
+function updateButtonText(text) {
+  if (text) btnDefault.textContent = text;
+}
 
-  if (isDropVisitor) {
-    // Show a banner
-    const banner = document.createElement('div');
-    banner.innerHTML = "🎉 Welcome, Curiosity Drop visitor! Click 'Redeem Reward' for 10% off!";
-    banner.style.backgroundColor = "#4CAF50"; // green
-    banner.style.color = "#fff";
-    banner.style.textAlign = "center";
-    banner.style.padding = "10px";
-    banner.style.fontWeight = "bold";
-    banner.style.position = "fixed";
-    banner.style.top = "0";
-    banner.style.left = "0";
-    banner.style.width = "100%";
-    banner.style.zIndex = "200";
-    document.body.prepend(banner);
+/* --------------------
+   UPDATE POPUP HEADING
+---------------------*/
+function updatePopupHeading() {
+  const popupHeading = document.querySelector('#contact-popup h2');
+  if (!popupHeading) return;
 
-    // Show the redeem reward button
-    const redeemBtn = document.getElementById('redeem-reward');
-    if (redeemBtn) redeemBtn.style.display = 'block';
+  if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
+  else if (refData.discountcode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
+  else popupHeading.textContent = "Get free estimate";
+}
 
-    // Make redeem button scroll to contact form on index and pre-fill discount
-    redeemBtn.addEventListener('click', () => {
-      // On past-projects.html, redirect to index.html with discount param
-      window.location.href = 'index.html?drop=1';
+/* --------------------
+   LOAD REFERRER DATA FROM CSV
+---------------------*/
+async function loadReferrerData() {
+  if (!refParam) return; // Main site fallback uses defaults
+
+  try {
+    const res = await fetch(sheetURL);
+    const text = await res.text();
+
+    // Split CSV into rows & columns
+    const rows = text.trim().split('\n').map(r => r.split(','));
+    const headers = rows.shift().map(h => h.trim().toLowerCase());
+
+    // Find row where ID column matches refParam (case-insensitive)
+    const match = rows.find(row =>
+      row[0]?.trim().toLowerCase() === refParam.toLowerCase()
+    );
+
+    if (!match) {
+      console.log("No matching ref found:", refParam);
+      return;
+    }
+
+    // Map row values into refData
+    headers.forEach((h, i) => {
+      refData[h] = cleanValue(match[i]);
     });
+
+    console.log("Loaded referral data:", refData);
+
+  } catch (err) {
+    console.error("Error loading spreadsheet:", err);
   }
+}
+
+/* --------------------
+   INITIALIZE PAGE
+---------------------*/
+async function init() {
+  await loadReferrerData();
+
+  // Handle inactive referral
+  if (refData.activeinactive && refData.activeinactive.toLowerCase() === 'inactive') {
+    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+    return;
+  }
+
+  // Show banner if present
+  if (refData.bannertext) createBanner(refData.bannertext);
+
+  // Update button text
+  if (refData.buttontext) updateButtonText(refData.buttontext);
+
+  // Update popup heading
+  updatePopupHeading();
+}
+
+init();
+
+/* --------------------
+   FORM SUBMISSION
+---------------------*/
+const form = document.querySelector('#contact-popup form');
+form.addEventListener('submit', e => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const phone = document.getElementById('phone').value;
+  const message = document.getElementById('message').value;
+  const discount = document.getElementById('discount-code').value;
+
+  const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
+  const bodyLines = [
+    `Name: ${name}`,
+    `Email: ${email}`,
+    `Phone: ${phone}`,
+    `Message: ${message}`,
+    `Discount Code: ${discount}`,
+    refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
+  ];
+  const body = encodeURIComponent(bodyLines.join("\n"));
+
+  window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
+});
+
+/* --------------------
+   BUTTON CLICK SET HIDDEN FIELDS
+---------------------*/
+btnDefault.addEventListener('click', () => {
+  const discountField = document.getElementById('discount-code');
+  if (discountField) discountField.value = refData.discountcode || "";
+
+  let refField = document.getElementById('referrer');
+  if (!refField) {
+    refField = document.createElement('input');
+    refField.type = 'hidden';
+    refField.name = 'referrer';
+    refField.id = 'referrer';
+    document.querySelector('#contact-popup form').appendChild(refField);
+  }
+  refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
+});
 </script>
 </body>
 </html>
