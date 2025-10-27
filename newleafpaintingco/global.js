@@ -1,33 +1,35 @@
 /* --------------------
-   LOAD GLOBAL HTML (header, footer, popup)
+   LOAD GLOBAL HTML (header, footer, popup, button)
 ---------------------*/
 async function loadGlobalHTML() {
   try {
     const res = await fetch("global.html");
     const html = await res.text();
-    document.body.insertAdjacentHTML("afterbegin", html);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
 
-    // Move header and footer into placeholders
-    const header = document.querySelector("header");
-    const footer = document.querySelector("footer");
-
+    // Insert header/footer into placeholders if placeholders exist
     const headerTarget = document.getElementById("global-header");
     const footerTarget = document.getElementById("global-footer");
 
-    if (headerTarget && header) {
-      headerTarget.replaceWith(header);
+    if (headerTarget) headerTarget.innerHTML = doc.querySelector("header")?.outerHTML || "";
+    if (footerTarget) footerTarget.innerHTML = doc.querySelector("footer")?.outerHTML || "";
+
+    // Insert popup and contact button once if not already on page
+    if (!document.getElementById("contact-popup") && doc.querySelector("#contact-popup")) {
+      document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-popup").outerHTML);
     }
-    if (footerTarget && footer) {
-      footerTarget.replaceWith(footer);
+    if (!document.getElementById("contact-btn") && doc.querySelector("#contact-btn")) {
+      document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-btn").outerHTML);
     }
 
-    // Reinitialize popup elements
+    // Setup popup
     setupPopup();
 
-    // Add ref to all links
+    // Preserve ref across links
     preserveRefAcrossLinks();
 
-    // Highlight active page link
+    // Highlight active link
     highlightActiveLink();
 
   } catch (err) {
@@ -45,10 +47,10 @@ function setupPopup() {
 
   if (!popup || !btnDefault || !popupClose) return;
 
-  btnDefault.addEventListener('click', () => popup.style.display = "flex");
-  popupClose.addEventListener('click', () => popup.style.display = "none");
+  btnDefault.addEventListener("click", () => popup.style.display = "flex");
+  popupClose.addEventListener("click", () => popup.style.display = "none");
 
-  window.addEventListener('click', e => {
+  window.addEventListener("click", e => {
     if (e.target === popup) popup.style.display = "none";
   });
 }
@@ -58,17 +60,12 @@ function setupPopup() {
 ---------------------*/
 function preserveRefAcrossLinks() {
   const urlParams = new URLSearchParams(window.location.search);
-  const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+  const refParam = urlParams.get("ref") || urlParams.get("drop") || urlParams.get("sample");
   if (!refParam) return;
 
   document.querySelectorAll("a[href]").forEach(link => {
     const href = link.getAttribute("href");
-    if (
-      href &&
-      !href.startsWith("#") &&
-      !href.startsWith("mailto:") &&
-      !href.includes("javascript:")
-    ) {
+    if (href && !href.startsWith("#") && !href.startsWith("mailto:") && !href.includes("javascript:")) {
       const url = new URL(href, window.location.origin);
       if (!url.searchParams.has("ref") && !url.searchParams.has("drop") && !url.searchParams.has("sample")) {
         url.searchParams.set("ref", refParam);
@@ -83,9 +80,7 @@ function preserveRefAcrossLinks() {
 ---------------------*/
 function highlightActiveLink() {
   const currentPage = window.location.pathname.split("/").pop();
-  const links = document.querySelectorAll("nav a");
-
-  links.forEach(link => {
+  document.querySelectorAll("nav a").forEach(link => {
     const linkPage = link.getAttribute("href").split("?")[0];
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
@@ -96,7 +91,7 @@ function highlightActiveLink() {
    URL PARAMETER
 ---------------------*/
 const urlParams = new URLSearchParams(window.location.search);
-const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+const refParam = urlParams.get("ref") || urlParams.get("drop") || urlParams.get("sample");
 
 /* --------------------
    GOOGLE SHEET (CSV)
@@ -121,15 +116,15 @@ let refData = {
    CLEAN VALUE
 ---------------------*/
 function cleanValue(value) {
-  return value ? value.replace(/^"|"$/g, '').trim() : '';
+  return value ? value.replace(/^"|"$/g, "").trim() : "";
 }
 
 /* --------------------
    CREATE BANNER
 ---------------------*/
 function createBanner(message) {
-  if (!message) return;
-  const banner = document.createElement('div');
+  if (!message || document.getElementById("drop-banner")) return;
+  const banner = document.createElement("div");
   banner.id = "drop-banner";
   banner.textContent = message;
   Object.assign(banner.style, {
@@ -159,7 +154,7 @@ function updateButtonText(text) {
    UPDATE POPUP HEADING
 ---------------------*/
 function updatePopupHeading() {
-  const popupHeading = document.querySelector('#contact-popup h2');
+  const popupHeading = document.querySelector("#contact-popup h2");
   if (!popupHeading) return;
 
   if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
@@ -176,23 +171,16 @@ async function loadReferrerData() {
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-
-    const rows = text.trim().split('\n').map(r => r.split(','));
+    const rows = text.trim().split("\n").map(r => r.split(","));
     const headers = rows.shift().map(h => h.trim().toLowerCase());
 
     const match = rows.find(row => row[0]?.trim().toLowerCase() === refParam.toLowerCase());
-
-    if (!match) {
-      console.log("No matching ref found:", refParam);
-      return;
-    }
+    if (!match) return;
 
     headers.forEach((h, i) => {
       refData[h] = cleanValue(match[i]);
     });
-
     console.log("Loaded referral data:", refData);
-
   } catch (err) {
     console.error("Error loading spreadsheet:", err);
   }
@@ -202,65 +190,12 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  await loadGlobalHTML(); // ✅ Load global header/footer first
+  await loadGlobalHTML();
   await loadReferrerData();
 
-  if (refData.activeinactive?.toLowerCase() === 'inactive') {
-    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+  if (refData.activeinactive?.toLowerCase() === "inactive") {
+    document.body.innerHTML = "<h2>This referral is no longer active.</h2>";
     return;
   }
 
-  if (refData.bannertext) createBanner(refData.bannertext);
-  if (refData.buttontext) updateButtonText(refData.buttontext);
-  updatePopupHeading();
-}
-
-init();
-
-/* --------------------
-   FORM SUBMISSION
----------------------*/
-document.addEventListener("submit", e => {
-  if (e.target.closest("#contact-popup form")) {
-    e.preventDefault();
-
-    const name = document.getElementById('name')?.value;
-    const email = document.getElementById('email')?.value;
-    const phone = document.getElementById('phone')?.value;
-    const message = document.getElementById('message')?.value;
-    const discount = document.getElementById('discount-code')?.value;
-
-    const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
-    const bodyLines = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Phone: ${phone}`,
-      `Message: ${message}`,
-      `Discount Code: ${discount}`,
-      refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
-    ];
-    const body = encodeURIComponent(bodyLines.join("\n"));
-
-    window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
-  }
-});
-
-/* --------------------
-   SET HIDDEN FIELDS ON CLICK
----------------------*/
-document.addEventListener("click", e => {
-  if (e.target.id === "contact-btn") {
-    const discountField = document.getElementById('discount-code');
-    if (discountField) discountField.value = refData.discountcode || "";
-
-    let refField = document.getElementById('referrer');
-    if (!refField) {
-      refField = document.createElement('input');
-      refField.type = 'hidden';
-      refField.name = 'referrer';
-      refField.id = 'referrer';
-      document.querySelector('#contact-popup form').appendChild(refField);
-    }
-    refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
-  }
-});
+ 
