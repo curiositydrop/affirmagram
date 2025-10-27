@@ -1,18 +1,96 @@
-<script>
 /* --------------------
-   POPUP FUNCTIONALITY
+   LOAD GLOBAL HTML (header, footer, popup)
 ---------------------*/
-const popup = document.getElementById("contact-popup");
-const btnDefault = document.getElementById("contact-btn");
-const popupClose = document.querySelector("#contact-popup .close");
+async function loadGlobalHTML() {
+  try {
+    const res = await fetch("global.html");
+    const html = await res.text();
+    document.body.insertAdjacentHTML("afterbegin", html);
 
-btnDefault.addEventListener('click', () => popup.style.display = "flex");
-popupClose.addEventListener('click', () => popup.style.display = "none");
+    // Move header and footer into placeholders
+    const header = document.querySelector("header");
+    const footer = document.querySelector("footer");
 
-// Use addEventListener instead of window.onclick
-window.addEventListener('click', e => {
-  if (e.target === popup) popup.style.display = "none";
-});
+    const headerTarget = document.getElementById("global-header");
+    const footerTarget = document.getElementById("global-footer");
+
+    if (headerTarget && header) {
+      headerTarget.replaceWith(header);
+    }
+    if (footerTarget && footer) {
+      footerTarget.replaceWith(footer);
+    }
+
+    // Reinitialize popup elements
+    setupPopup();
+
+    // Add ref to all links
+    preserveRefAcrossLinks();
+
+    // Highlight active page link
+    highlightActiveLink();
+
+  } catch (err) {
+    console.error("Error loading global.html:", err);
+  }
+}
+
+/* --------------------
+   SETUP POPUP FUNCTIONALITY
+---------------------*/
+function setupPopup() {
+  const popup = document.getElementById("contact-popup");
+  const btnDefault = document.getElementById("contact-btn");
+  const popupClose = document.querySelector("#contact-popup .close");
+
+  if (!popup || !btnDefault || !popupClose) return;
+
+  btnDefault.addEventListener('click', () => popup.style.display = "flex");
+  popupClose.addEventListener('click', () => popup.style.display = "none");
+
+  window.addEventListener('click', e => {
+    if (e.target === popup) popup.style.display = "none";
+  });
+}
+
+/* --------------------
+   PRESERVE REF PARAM ACROSS LINKS
+---------------------*/
+function preserveRefAcrossLinks() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
+  if (!refParam) return;
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    const href = link.getAttribute("href");
+    if (
+      href &&
+      !href.startsWith("#") &&
+      !href.startsWith("mailto:") &&
+      !href.includes("javascript:")
+    ) {
+      const url = new URL(href, window.location.origin);
+      if (!url.searchParams.has("ref") && !url.searchParams.has("drop") && !url.searchParams.has("sample")) {
+        url.searchParams.set("ref", refParam);
+      }
+      link.setAttribute("href", url.pathname + url.search);
+    }
+  });
+}
+
+/* --------------------
+   HIGHLIGHT ACTIVE LINK
+---------------------*/
+function highlightActiveLink() {
+  const currentPage = window.location.pathname.split("/").pop();
+  const links = document.querySelectorAll("nav a");
+
+  links.forEach(link => {
+    const linkPage = link.getAttribute("href").split("?")[0];
+    if (linkPage === currentPage) link.classList.add("active");
+    else link.classList.remove("active");
+  });
+}
 
 /* --------------------
    URL PARAMETER
@@ -73,7 +151,8 @@ function createBanner(message) {
    UPDATE BUTTON TEXT
 ---------------------*/
 function updateButtonText(text) {
-  if (text) btnDefault.textContent = text;
+  const btnDefault = document.getElementById("contact-btn");
+  if (text && btnDefault) btnDefault.textContent = text;
 }
 
 /* --------------------
@@ -123,6 +202,7 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
+  await loadGlobalHTML(); // ✅ Load global header/footer first
   await loadReferrerData();
 
   if (refData.activeinactive?.toLowerCase() === 'inactive') {
@@ -140,45 +220,47 @@ init();
 /* --------------------
    FORM SUBMISSION
 ---------------------*/
-const form = document.querySelector('#contact-popup form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
+document.addEventListener("submit", e => {
+  if (e.target.closest("#contact-popup form")) {
+    e.preventDefault();
 
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const message = document.getElementById('message').value;
-  const discount = document.getElementById('discount-code').value;
+    const name = document.getElementById('name')?.value;
+    const email = document.getElementById('email')?.value;
+    const phone = document.getElementById('phone')?.value;
+    const message = document.getElementById('message')?.value;
+    const discount = document.getElementById('discount-code')?.value;
 
-  const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
-  const bodyLines = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Phone: ${phone}`,
-    `Message: ${message}`,
-    `Discount Code: ${discount}`,
-    refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
-  ];
-  const body = encodeURIComponent(bodyLines.join("\n"));
+    const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
+    const bodyLines = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      `Message: ${message}`,
+      `Discount Code: ${discount}`,
+      refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
+    ];
+    const body = encodeURIComponent(bodyLines.join("\n"));
 
-  window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
+  }
 });
 
 /* --------------------
    SET HIDDEN FIELDS ON CLICK
 ---------------------*/
-btnDefault.addEventListener('click', () => {
-  const discountField = document.getElementById('discount-code');
-  if (discountField) discountField.value = refData.discountcode || "";
+document.addEventListener("click", e => {
+  if (e.target.id === "contact-btn") {
+    const discountField = document.getElementById('discount-code');
+    if (discountField) discountField.value = refData.discountcode || "";
 
-  let refField = document.getElementById('referrer');
-  if (!refField) {
-    refField = document.createElement('input');
-    refField.type = 'hidden';
-    refField.name = 'referrer';
-    refField.id = 'referrer';
-    document.querySelector('#contact-popup form').appendChild(refField);
+    let refField = document.getElementById('referrer');
+    if (!refField) {
+      refField = document.createElement('input');
+      refField.type = 'hidden';
+      refField.name = 'referrer';
+      refField.id = 'referrer';
+      document.querySelector('#contact-popup form').appendChild(refField);
+    }
+    refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
   }
-  refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
 });
-</script>
