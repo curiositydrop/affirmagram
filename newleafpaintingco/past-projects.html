@@ -8,21 +8,8 @@
 </head>
 <body>
 
-  <!-- HEADER (same as index.html) -->
-  <header>
-    <div class="logo-container">
-      <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co. logo" class="logo" />
-    </div>
-
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="past-projects.html" class="active">Past Projects</a></li>
-        <li><a href="local-partners.html">Local Partners</a></li>
-        <li><a href="schedule-estimate.html">Schedule Estimate</a></li>
-      </ul>
-    </nav>
-  </header>
+  <!-- GLOBAL HEADER -->
+  <div id="global-header"></div>
 
   <!-- HERO -->
   <section class="hero">
@@ -32,20 +19,15 @@
 
   <!-- PROJECTS GALLERY -->
   <section class="projects">
-  <div class="project-card">
-    <img src="IMG_8110.jpeg" alt="livingroom paint" class="clickable-img">
-    <img src="IMG_8111.jpeg" alt="livingroom paint" class="clickable-img">
-    <h3>Living Room Transformation</h3>
-    <p>A light brown paint, paired with crisp white trim gives this living room a fresh, calming feel.</p>
-  </div>
-</section>
+    <div class="project-card">
+      <img src="IMG_8110.jpeg" alt="livingroom paint" class="clickable-img">
+      <img src="IMG_8111.jpeg" alt="livingroom paint" class="clickable-img">
+      <h3>Living Room Transformation</h3>
+      <p>A light brown paint, paired with crisp white trim gives this living room a fresh, calming feel.</p>
+    </div>
+  </section>
 
-<div id="imgModal" class="img-modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modalImage">
-</div>
-
-    <section class="projects">
+  <section class="projects">
     <div class="project-card">
       <img src="IMG_8114.jpeg" alt="Kitchen paint" class="clickable-img">
       <img src="IMG_8117.jpeg" alt="kitchen paint" class="clickable-img">
@@ -55,251 +37,44 @@
     </div>
   </section>
 
-    <div id="imgModal" class="img-modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modalImage">
-</div>
-
-    <section class="projects">
+  <section class="projects">
     <div class="project-card">
       <img src="IMG_8118.jpeg" alt="Master Bedroom paint" class="clickable-img">
       <img src="IMG_8119.jpeg" alt="Master Bedroom paint" class="clickable-img">
       <img src="IMG_8120.jpeg" alt="Master Bedroom paint" class="clickable-img">
       <h3>Bedroom Makeover</h3>
-      <p>freshly painted walls and contrasting trim create a serene and elegant fresh master bedroom space.</p>
+      <p>Freshly painted walls and contrasting trim create a serene and elegant master bedroom space.</p>
     </div>
   </section>
 
-    <div id="imgModal" class="img-modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="modalImage">
-</div>
-
-  <!-- FOOTER (same as index.html) -->
-  <footer>
-    <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co." class="footer-logo" />
-    <p>&copy; 2025 New Leaf Painting Co. | All Rights Reserved</p>
-  </footer>
-<!-- CONTACT FLOATING BUTTON -->
-  <button id="contact-btn">Get free estimate</button>
-
-  <!-- CONTACT POPUP -->
-  <div id="contact-popup" class="popup">
-    <div class="popup-content">
-      <span class="close">&times;</span>
-      <h2>Get free estimate</h2>
-      <form>
-        <label for="name">Name:</label>
-        <input type="text" id="name" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone">
-
-        <label for="message">Message:</label>
-        <textarea id="message" rows="4"></textarea>
-
-        <input type="hidden" name="discount_code" id="discount-code" value="">
-
-        <button type="submit">Send</button>
-      </form>
-    </div>
+  <!-- IMAGE MODAL -->
+  <div id="imgModal" class="img-modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="modalImage">
   </div>
 
-  <!-- JS SCRIPTS -->
- <script>
-/* --------------------
-   POPUP FUNCTIONALITY
----------------------*/
-const popup = document.getElementById("contact-popup");
-const btnDefault = document.getElementById("contact-btn");
-const close = document.querySelector(".close");
+  <!-- GLOBAL FOOTER -->
+  <div id="global-footer"></div>
 
-btnDefault.onclick = () => popup.style.display = "flex";
-close.onclick = () => popup.style.display = "none";
-window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
+  <!-- LOCAL PROJECTS JS -->
+  <script>
+    const modal = document.getElementById("imgModal");
+    const modalImg = document.getElementById("modalImage");
+    const closeBtn = modal.querySelector(".close");
 
-/* --------------------
-   URL PARAMETER
----------------------*/
-const urlParams = new URLSearchParams(window.location.search);
-const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
-
-/* --------------------
-   GOOGLE SHEET (CSV)
----------------------*/
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/pub?output=csv";
-
-/* --------------------
-   DEFAULT REF DATA
-   (Used for main site if no ?ref)
----------------------*/
-let refData = {
-  id: "",
-  referrername: "",
-  businessname: "",
-  discountcode: "",
-  bannertext: "",
-  buttontext: "Get free estimate", // Default button text for main site
-  emailsubject: "New Leaf Painting Inquiry",
-  activeinactive: ""
-};
-
-/* --------------------
-   CLEAN VALUE
----------------------*/
-function cleanValue(value) {
-  return value ? value.replace(/^"|"$/g, '').trim() : '';
-}
-
-/* --------------------
-   CREATE BANNER
----------------------*/
-function createBanner(message) {
-  if (!message) return;
-  const banner = document.createElement('div');
-  banner.id = "drop-banner";
-  banner.textContent = message;
-  Object.assign(banner.style, {
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    textAlign: "center",
-    padding: "10px",
-    fontWeight: "bold",
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    zIndex: "200"
-  });
-  document.body.prepend(banner);
-}
-
-/* --------------------
-   UPDATE BUTTON TEXT
----------------------*/
-function updateButtonText(text) {
-  if (text) btnDefault.textContent = text;
-}
-
-/* --------------------
-   UPDATE POPUP HEADING
----------------------*/
-function updatePopupHeading() {
-  const popupHeading = document.querySelector('#contact-popup h2');
-  if (!popupHeading) return;
-
-  if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
-  else if (refData.discountcode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
-  else popupHeading.textContent = "Get free estimate";
-}
-
-/* --------------------
-   LOAD REFERRER DATA FROM CSV
----------------------*/
-async function loadReferrerData() {
-  if (!refParam) return; // Main site fallback uses defaults
-
-  try {
-    const res = await fetch(sheetURL);
-    const text = await res.text();
-
-    // Split CSV into rows & columns
-    const rows = text.trim().split('\n').map(r => r.split(','));
-    const headers = rows.shift().map(h => h.trim().toLowerCase());
-
-    // Find row where ID column matches refParam (case-insensitive)
-    const match = rows.find(row =>
-      row[0]?.trim().toLowerCase() === refParam.toLowerCase()
-    );
-
-    if (!match) {
-      console.log("No matching ref found:", refParam);
-      return;
-    }
-
-    // Map row values into refData
-    headers.forEach((h, i) => {
-      refData[h] = cleanValue(match[i]);
+    document.querySelectorAll(".clickable-img").forEach(img => {
+      img.onclick = () => {
+        modal.style.display = "flex";
+        modalImg.src = img.src;
+      };
     });
 
-    console.log("Loaded referral data:", refData);
+    closeBtn.onclick = () => modal.style.display = "none";
+    window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+  </script>
 
-  } catch (err) {
-    console.error("Error loading spreadsheet:", err);
-  }
-}
+  <!-- GLOBAL JS -->
+  <script src="global.js"></script>
 
-/* --------------------
-   INITIALIZE PAGE
----------------------*/
-async function init() {
-  await loadReferrerData();
-
-  // Handle inactive referral
-  if (refData.activeinactive && refData.activeinactive.toLowerCase() === 'inactive') {
-    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
-    return;
-  }
-
-  // Show banner if present
-  if (refData.bannertext) createBanner(refData.bannertext);
-
-  // Update button text
-  if (refData.buttontext) updateButtonText(refData.buttontext);
-
-  // Update popup heading
-  updatePopupHeading();
-}
-
-init();
-
-/* --------------------
-   FORM SUBMISSION
----------------------*/
-const form = document.querySelector('#contact-popup form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const message = document.getElementById('message').value;
-  const discount = document.getElementById('discount-code').value;
-
-  const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
-  const bodyLines = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Phone: ${phone}`,
-    `Message: ${message}`,
-    `Discount Code: ${discount}`,
-    refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
-  ];
-  const body = encodeURIComponent(bodyLines.join("\n"));
-
-  window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
-});
-
-/* --------------------
-   BUTTON CLICK SET HIDDEN FIELDS
----------------------*/
-btnDefault.addEventListener('click', () => {
-  const discountField = document.getElementById('discount-code');
-  if (discountField) discountField.value = refData.discountcode || "";
-
-  let refField = document.getElementById('referrer');
-  if (!refField) {
-    refField = document.createElement('input');
-    refField.type = 'hidden';
-    refField.name = 'referrer';
-    refField.id = 'referrer';
-    document.querySelector('#contact-popup form').appendChild(refField);
-  }
-  refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
-});
-</script>
 </body>
 </html>
