@@ -8,57 +8,36 @@
 </head>
 <body>
 
-  <!-- GLOBAL CONTENT PLACEHOLDER -->
+  <!-- GLOBAL HEADER -->
   <div id="global-header"></div>
-  <div id="global-footer"></div>
 
-  <!-- HERO -->
+  <!-- PAGE CONTENT -->
   <section class="hero">
     <h1>Local Partners</h1>
-    <p>We’re proud to collaborate with trusted local professionals who share our commitment to quality and service. Join our network and showcase your business while earning referral rewards.</p>
+    <p>We proudly work with trusted local businesses to provide the best service for our clients.</p>
   </section>
 
-  <!-- PARTNER GRID -->
   <section class="partners">
     <div class="partner-grid">
       <div class="partner-card">
-        <img src="silhouette.png" alt="Partner Placeholder">
-        <h3>Your Business Name</h3>
-        <p>Contact: Your Name</p>
-        <button onclick="openPartnerPopup('Sample Business 1','John Smith','207-555-1234')">View Contact</button>
+        <img src="partner1.png" alt="Partner 1">
+        <h3>Partner 1</h3>
+        <p>Specializes in flooring and tile work.</p>
+        <button>Learn More</button>
       </div>
-      <!-- Repeat partner cards as needed -->
+      <div class="partner-card">
+        <img src="partner2.png" alt="Partner 2">
+        <h3>Partner 2</h3>
+        <p>High-quality cabinetry and custom woodwork.</p>
+        <button>Learn More</button>
+      </div>
     </div>
   </section>
 
-  <!-- PARTNER POPUP -->
-  <div id="partner-popup" class="partner-popup">
-    <div class="partner-popup-content">
-      <span class="close" onclick="closePartnerPopup()">&times;</span>
-      <h3 id="popup-business"></h3>
-      <p><strong>Contact:</strong> <span id="popup-contact"></span></p>
-      <p><strong>Phone:</strong> <span id="popup-phone"></span></p>
-    </div>
-  </div>
+  <!-- GLOBAL FOOTER -->
+  <div id="global-footer"></div>
 
-  <!-- LOCAL PARTNER JS -->
-  <script>
-    function openPartnerPopup(business, contact, phone) {
-      document.getElementById('popup-business').textContent = business;
-      document.getElementById('popup-contact').textContent = contact;
-      document.getElementById('popup-phone').textContent = phone;
-      document.getElementById('partner-popup').style.display = 'flex';
-    }
-    function closePartnerPopup() {
-      document.getElementById('partner-popup').style.display = 'none';
-    }
-    window.onclick = e => {
-      const popup = document.getElementById('partner-popup');
-      if (e.target === popup) popup.style.display = 'none';
-    };
-  </script>
-
-  <!-- LOAD GLOBAL CONTENT -->
+  <!-- GLOBAL LOGIC -->
   <script src="global.js"></script>
 
 </body>
