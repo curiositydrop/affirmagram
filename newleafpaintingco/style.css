@@ -366,3 +366,16 @@ footer {
 #contact-btn {
   visibility: hidden;
 }
+function highlightActiveLink() {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const links = document.querySelectorAll("nav a");
+
+  links.forEach(link => {
+    const linkPage = link.getAttribute("href").split("?")[0];
+    if (linkPage === currentPage) link.classList.add("active");
+    else link.classList.remove("active");
+
+    // Show the link after setting active
+    link.style.visibility = "visible";
+  });
+}
