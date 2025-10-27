@@ -58,6 +58,7 @@
 
   <!-- LOCAL PROJECTS JS -->
   <script>
+    // Modal functionality for gallery
     const modal = document.getElementById("imgModal");
     const modalImg = document.getElementById("modalImage");
     const closeBtn = modal.querySelector(".close");
@@ -73,7 +74,29 @@
     window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
   </script>
 
-  <!-- GLOBAL JS -->
+  <!-- LOAD GLOBAL CONTENT -->
+  <script>
+    async function loadGlobalContent() {
+      try {
+        const res = await fetch("global.html");
+        const text = await res.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, "text/html");
+
+        // Load header, footer, popup, and button
+        document.getElementById("global-header").innerHTML = doc.querySelector("header").outerHTML;
+        document.getElementById("global-footer").innerHTML = doc.querySelector("footer").outerHTML;
+        document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-popup").outerHTML);
+        document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-btn").outerHTML);
+
+      } catch (err) {
+        console.error("Error loading global.html:", err);
+      }
+    }
+    loadGlobalContent();
+  </script>
+
+  <!-- GLOBAL LOGIC (referral, popup, etc.) -->
   <script src="global.js"></script>
 
 </body>
