@@ -5,104 +5,61 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local Partners | New Leaf Painting Co.</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* HERO */
-    .hero {
-      text-align: center;
-      padding: 60px 20px;
-    }
-    .hero h1 {
-      color: #4CAF50;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      max-width: 700px;
-      margin: 0 auto;
-      font-size: 1.1rem;
-      color: #333;
-    }
+</head>
+<body>
 
-    /* PARTNER GRID */
-    .partners {
-      padding: 40px 20px;
-    }
-    .partner-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 30px;
-      margin-top: 40px;
-      justify-items: center;
-    }
-    .partner-card {
-      background: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s;
-    }
-    .partner-card:hover {
-      transform: translateY(-5px);
-    }
-    .partner-card img {
-      width: 100%;
-      max-width: 150px;
-      height: auto;
-      border-radius: 50%;
-      margin-bottom: 15px;
-      opacity: 0.8;
-    }
-    .partner-card h3 {
-      margin: 10px 0 5px 0;
-      color: #333;
-    }
-    .partner-card p {
-      color: #555;
-      margin-bottom: 10px;
-    }
-    .partner-card button {
-      background-color: #4CAF50;
-      color: #fff;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .partner-card button:hover {
-      background-color: #45a049;
-    }
+  <!-- GLOBAL CONTENT PLACEHOLDER -->
+  <div id="global-header"></div>
+  <div id="global-footer"></div>
 
-    /* POPUP */
-    .partner-popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 500;
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Local Partners</h1>
+    <p>We’re proud to collaborate with trusted local professionals who share our commitment to quality and service. Join our network and showcase your business while earning referral rewards.</p>
+  </section>
+
+  <!-- PARTNER GRID -->
+  <section class="partners">
+    <div class="partner-grid">
+      <div class="partner-card">
+        <img src="silhouette.png" alt="Partner Placeholder">
+        <h3>Your Business Name</h3>
+        <p>Contact: Your Name</p>
+        <button onclick="openPartnerPopup('Sample Business 1','John Smith','207-555-1234')">View Contact</button>
+      </div>
+      <!-- Repeat partner cards as needed -->
+    </div>
+  </section>
+
+  <!-- PARTNER POPUP -->
+  <div id="partner-popup" class="partner-popup">
+    <div class="partner-popup-content">
+      <span class="close" onclick="closePartnerPopup()">&times;</span>
+      <h3 id="popup-business"></h3>
+      <p><strong>Contact:</strong> <span id="popup-contact"></span></p>
+      <p><strong>Phone:</strong> <span id="popup-phone"></span></p>
+    </div>
+  </div>
+
+  <!-- LOCAL PARTNER JS -->
+  <script>
+    function openPartnerPopup(business, contact, phone) {
+      document.getElementById('popup-business').textContent = business;
+      document.getElementById('popup-contact').textContent = contact;
+      document.getElementById('popup-phone').textContent = phone;
+      document.getElementById('partner-popup').style.display = 'flex';
     }
-    .partner-popup-content {
-      background: #fff;
-      padding: 30px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      position: relative;
-      text-align: left;
+    function closePartnerPopup() {
+      document.getElementById('partner-popup').style.display = 'none';
     }
-    .partner-popup-content h3 {
-      color: #4CAF50;
-      margin-bottom: 10px;
-    }
-    .partner-popup-content span.close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 22px;
-      cursor: pointer;
-    }
-    .partner-popup-content
+    window.onclick = e => {
+      const popup = document.getElementById('partner-popup');
+      if (e.target === popup) popup.style.display = 'none';
+    };
+  </script>
+
+  <!-- LOAD GLOBAL CONTENT -->
+  <script src="global.js"></script>
+
+</body>
+</html>
