@@ -91,14 +91,19 @@ function preserveRefAcrossLinks() {
 }
 
 /* --------------------
-   HIGHLIGHT ACTIVE LINK
+   HIGHLIGHT ACTIVE LINK & PREVENT FLICKER
 ---------------------*/
 function highlightActiveLink() {
-  const currentPage = window.location.pathname.split("/").pop();
-  document.querySelectorAll("nav a").forEach(link => {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const links = document.querySelectorAll("nav a");
+
+  links.forEach(link => {
     const linkPage = link.getAttribute("href").split("?")[0];
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
+
+    // Ensure links are visible to prevent flicker
+    link.style.visibility = "visible";
   });
 }
 
@@ -259,9 +264,4 @@ document.addEventListener("click", e => {
       refField = document.createElement('input');
       refField.type = 'hidden';
       refField.name = 'referrer';
-      refField.id = 'referrer';
-      document.querySelector('#contact-popup form').appendChild(refField);
-    }
-    refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
-  }
-});
+     
