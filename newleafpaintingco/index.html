@@ -8,30 +8,16 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo-container">
-      <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co. logo" class="logo" />
-    </div>
+  <!-- GLOBAL CONTENT (header, footer, floating button, popup) -->
+  <div id="global-container"></div>
 
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Home</a></li>
-        <li><a href="past-projects.html">Past Projects</a></li>
-        <li><a href="local-partners.html">Local Partners</a></li>
-        <li><a href="#">Schedule Estimate</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- HERO SECTION -->
+  <!-- PAGE-SPECIFIC CONTENT -->
   <section class="hero">
     <h1>Turn over a New Leaf — With a fresh new coat, one room at a time.</h1>
     <p>Professional interior painting built on trust, quality, and care.</p>
     <a href="#" class="cta-button">Schedule a Free Estimate</a>
   </section>
 
-  <!-- ABOUT SECTION -->
   <section class="about">
     <h2>Why Choose New Leaf Painting Co.</h2>
     <p>New Leaf Painting Co. isn’t just another painting service — we’re dedicated to giving your home the attention and renewal it deserves. Every brush stroke matters because your space deserves more than a quick coat; it deserves craftsmanship, precision, and pride.</p>
@@ -44,7 +30,6 @@
     </ul>
   </section>
 
-  <!-- SERVICES -->
   <section class="services">
     <h2>Our Services</h2>
     <ul>
@@ -56,7 +41,6 @@
     </ul>
   </section>
 
-  <!-- TESTIMONIAL -->
   <section class="testimonial">
     <blockquote>
       “They made the process easy from start to finish. The rooms look incredible!”
@@ -64,253 +48,22 @@
     <p>— Scott L., Buxton, ME</p>
   </section>
 
-  <!-- CONTACT FLOATING BUTTON -->
-  <button id="contact-btn">Get free estimate</button>
-
-  <!-- CONTACT POPUP -->
-  <div id="contact-popup" class="popup">
-    <div class="popup-content">
-      <span class="close">&times;</span>
-      <h2>Get free estimate</h2>
-      <form>
-        <label for="name">Name:</label>
-        <input type="text" id="name" required>
-
-        <label for="email">Email:</label>
-        <input type="email" id="email" required>
-
-        <label for="phone">Phone:</label>
-        <input type="tel" id="phone">
-
-        <label for="message">Message:</label>
-        <textarea id="message" rows="4"></textarea>
-
-        <input type="hidden" name="discount_code" id="discount-code" value="">
-
-        <button type="submit">Send</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ABOUT OWNER -->
-  <section class="about-owner">
-    <h2>About the Owner</h2>
-    <p>
-      With over <strong>15 years of professional painting experience</strong>, 
-      New Leaf Painting Co. was built on a foundation of craftsmanship, reliability, 
-      and pride in every project. From family homes to full interior makeovers, 
-      we believe every wall deserves a fresh start — one coat and one room at a time.
-    </p>
-  </section>
-
-  <!-- SERVICE AREA -->
-  <section class="service-area">
-    <h2>Service Area</h2>
-    <p>
-      Proudly serving <strong>Southern Maine</strong> and the surrounding areas, 
-      including towns within a <strong>50-mile radius of Dayton, ME</strong>.
-    </p>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <img src="7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png" alt="New Leaf Painting Co." class="footer-logo" />
-    <p>&copy; 2025 New Leaf Painting Co. | All Rights Reserved</p>
-  </footer>
-
-  <!-- JS SCRIPTS -->
- <script>
-/* --------------------
-   POPUP FUNCTIONALITY
----------------------*/
-const popup = document.getElementById("contact-popup");
-const btnDefault = document.getElementById("contact-btn");
-const close = document.querySelector(".close");
-
-btnDefault.onclick = () => popup.style.display = "flex";
-close.onclick = () => popup.style.display = "none";
-window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
-
-/* --------------------
-   URL PARAMETER
----------------------*/
-const urlParams = new URLSearchParams(window.location.search);
-const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
-
-/* --------------------
-   GOOGLE SHEET (CSV)
----------------------*/
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/pub?output=csv";
-
-/* --------------------
-   DEFAULT REF DATA
-   (Used for main site if no ?ref)
----------------------*/
-let refData = {
-  id: "",
-  referrername: "",
-  businessname: "",
-  discountcode: "",
-  bannertext: "",
-  buttontext: "Get free estimate", // Default button text for main site
-  emailsubject: "New Leaf Painting Inquiry",
-  activeinactive: ""
-};
-
-/* --------------------
-   CLEAN VALUE
----------------------*/
-function cleanValue(value) {
-  return value ? value.replace(/^"|"$/g, '').trim() : '';
-}
-
-/* --------------------
-   CREATE BANNER
----------------------*/
-function createBanner(message) {
-  if (!message) return;
-  const banner = document.createElement('div');
-  banner.id = "drop-banner";
-  banner.textContent = message;
-  Object.assign(banner.style, {
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-    textAlign: "center",
-    padding: "10px",
-    fontWeight: "bold",
-    position: "fixed",
-    top: "0",
-    left: "0",
-    width: "100%",
-    zIndex: "200"
-  });
-  document.body.prepend(banner);
-}
-
-/* --------------------
-   UPDATE BUTTON TEXT
----------------------*/
-function updateButtonText(text) {
-  if (text) btnDefault.textContent = text;
-}
-
-/* --------------------
-   UPDATE POPUP HEADING
----------------------*/
-function updatePopupHeading() {
-  const popupHeading = document.querySelector('#contact-popup h2');
-  if (!popupHeading) return;
-
-  if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
-  else if (refData.discountcode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
-  else popupHeading.textContent = "Get free estimate";
-}
-
-/* --------------------
-   LOAD REFERRER DATA FROM CSV
----------------------*/
-async function loadReferrerData() {
-  if (!refParam) return; // Main site fallback uses defaults
-
-  try {
-    const res = await fetch(sheetURL);
-    const text = await res.text();
-
-    // Split CSV into rows & columns
-    const rows = text.trim().split('\n').map(r => r.split(','));
-    const headers = rows.shift().map(h => h.trim().toLowerCase());
-
-    // Find row where ID column matches refParam (case-insensitive)
-    const match = rows.find(row =>
-      row[0]?.trim().toLowerCase() === refParam.toLowerCase()
-    );
-
-    if (!match) {
-      console.log("No matching ref found:", refParam);
-      return;
+  <!-- LOAD GLOBAL HTML -->
+  <script>
+    async function loadGlobal() {
+      try {
+        const res = await fetch('global.html');
+        const html = await res.text();
+        document.getElementById('global-container').innerHTML = html;
+      } catch (err) {
+        console.error("Error loading global HTML:", err);
+      }
     }
+    loadGlobal();
+  </script>
 
-    // Map row values into refData
-    headers.forEach((h, i) => {
-      refData[h] = cleanValue(match[i]);
-    });
-
-    console.log("Loaded referral data:", refData);
-
-  } catch (err) {
-    console.error("Error loading spreadsheet:", err);
-  }
-}
-
-/* --------------------
-   INITIALIZE PAGE
----------------------*/
-async function init() {
-  await loadReferrerData();
-
-  // Handle inactive referral
-  if (refData.activeinactive && refData.activeinactive.toLowerCase() === 'inactive') {
-    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
-    return;
-  }
-
-  // Show banner if present
-  if (refData.bannertext) createBanner(refData.bannertext);
-
-  // Update button text
-  if (refData.buttontext) updateButtonText(refData.buttontext);
-
-  // Update popup heading
-  updatePopupHeading();
-}
-
-init();
-
-/* --------------------
-   FORM SUBMISSION
----------------------*/
-const form = document.querySelector('#contact-popup form');
-form.addEventListener('submit', e => {
-  e.preventDefault();
-
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const phone = document.getElementById('phone').value;
-  const message = document.getElementById('message').value;
-  const discount = document.getElementById('discount-code').value;
-
-  const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
-  const bodyLines = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Phone: ${phone}`,
-    `Message: ${message}`,
-    `Discount Code: ${discount}`,
-    refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
-  ];
-  const body = encodeURIComponent(bodyLines.join("\n"));
-
-  window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
-});
-
-/* --------------------
-   BUTTON CLICK SET HIDDEN FIELDS
----------------------*/
-btnDefault.addEventListener('click', () => {
-  const discountField = document.getElementById('discount-code');
-  if (discountField) discountField.value = refData.discountcode || "";
-
-  let refField = document.getElementById('referrer');
-  if (!refField) {
-    refField = document.createElement('input');
-    refField.type = 'hidden';
-    refField.name = 'referrer';
-    refField.id = 'referrer';
-    document.querySelector('#contact-popup form').appendChild(refField);
-  }
-  refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
-});
-</script>
+  <!-- LOAD GLOBAL JS -->
+  <script src="global.js"></script>
 
 </body>
 </html>
