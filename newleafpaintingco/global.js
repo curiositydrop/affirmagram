@@ -6,7 +6,6 @@ async function loadGlobalHTML() {
     const res = await fetch("global.html");
     const html = await res.text();
 
-    // Parse HTML so we can pick header, footer, popup, button
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
 
@@ -19,12 +18,14 @@ async function loadGlobalHTML() {
     const headerTarget = document.getElementById("global-header");
     if (headerTarget && header) {
       headerTarget.replaceChildren(header);
+      headerTarget.style.visibility = "visible"; // show after load
     }
 
     // Insert footer
     const footerTarget = document.getElementById("global-footer");
     if (footerTarget && footer) {
       footerTarget.replaceChildren(footer);
+      footerTarget.style.visibility = "visible"; // show after load
     }
 
     // Insert popup & button at end of body (once)
@@ -33,15 +34,10 @@ async function loadGlobalHTML() {
     }
     if (btn && !document.querySelector("#contact-btn")) {
       document.body.insertAdjacentElement("beforeend", btn);
+      btn.style.visibility = "visible"; // show after load
     }
 
-    // Show header, footer, and contact button after content loads
-    if (headerTarget) headerTarget.style.visibility = "visible";
-    if (footerTarget) footerTarget.style.visibility = "visible";
-    const contactBtn = document.getElementById("contact-btn");
-    if (contactBtn) contactBtn.style.visibility = "visible";
-
-    // Reinitialize popup, referral, active link
+    // Initialize functions
     setupPopup();
     preserveRefAcrossLinks();
     highlightActiveLink();
@@ -75,12 +71,7 @@ function preserveRefAcrossLinks() {
 
   document.querySelectorAll("a[href]").forEach(link => {
     const href = link.getAttribute("href");
-    if (
-      href &&
-      !href.startsWith("#") &&
-      !href.startsWith("mailto:") &&
-      !href.includes("javascript:")
-    ) {
+    if (href && !href.startsWith("#") && !href.startsWith("mailto:") && !href.includes("javascript:")) {
       const url = new URL(href, window.location.origin);
       if (!url.searchParams.has("ref") && !url.searchParams.has("drop") && !url.searchParams.has("sample")) {
         url.searchParams.set("ref", refParam);
@@ -102,8 +93,7 @@ function highlightActiveLink() {
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
 
-    // Ensure links are visible to prevent flicker
-    link.style.visibility = "visible";
+    link.style.visibility = "visible"; // prevent flicker
   });
 }
 
@@ -264,4 +254,9 @@ document.addEventListener("click", e => {
       refField = document.createElement('input');
       refField.type = 'hidden';
       refField.name = 'referrer';
-     
+      refField.id = 'referrer';
+      document.querySelector('#contact-popup form').appendChild(refField);
+    }
+    refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
+  }
+});
