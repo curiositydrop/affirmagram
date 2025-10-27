@@ -1,35 +1,39 @@
 /* --------------------
-   LOAD GLOBAL HTML (header, footer, popup, button)
+   LOAD GLOBAL HTML (header, footer, popup)
 ---------------------*/
 async function loadGlobalHTML() {
   try {
     const res = await fetch("global.html");
     const html = await res.text();
+
+    // Parse HTML so we can pick header, footer, popup, button
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
 
-    // Insert header/footer into placeholders if placeholders exist
-    const headerTarget = document.getElementById("global-header");
-    const footerTarget = document.getElementById("global-footer");
+    const header = doc.querySelector("header");
+    const footer = doc.querySelector("footer");
+    const popup = doc.querySelector("#contact-popup");
+    const btn = doc.querySelector("#contact-btn");
 
-    if (headerTarget) headerTarget.innerHTML = doc.querySelector("header")?.outerHTML || "";
-    if (footerTarget) footerTarget.innerHTML = doc.querySelector("footer")?.outerHTML || "";
+    // Insert header
+    const headerTarget = document.getElementById("global-header") || document.getElementById("global-container");
+    if (headerTarget && header) headerTarget.replaceWith(header);
 
-    // Insert popup and contact button once if not already on page
-    if (!document.getElementById("contact-popup") && doc.querySelector("#contact-popup")) {
-      document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-popup").outerHTML);
+    // Insert footer
+    const footerTarget = document.getElementById("global-footer") || document.getElementById("global-container");
+    if (footerTarget && footer) footerTarget.replaceWith(footer);
+
+    // Insert popup & button at end of body (once)
+    if (popup && !document.querySelector("#contact-popup")) {
+      document.body.insertAdjacentElement("beforeend", popup);
     }
-    if (!document.getElementById("contact-btn") && doc.querySelector("#contact-btn")) {
-      document.body.insertAdjacentHTML("beforeend", doc.querySelector("#contact-btn").outerHTML);
+    if (btn && !document.querySelector("#contact-btn")) {
+      document.body.insertAdjacentElement("beforeend", btn);
     }
 
-    // Setup popup
+    // Reinitialize popup, referral, active link
     setupPopup();
-
-    // Preserve ref across links
     preserveRefAcrossLinks();
-
-    // Highlight active link
     highlightActiveLink();
 
   } catch (err) {
@@ -44,15 +48,15 @@ function setupPopup() {
   const popup = document.getElementById("contact-popup");
   const btnDefault = document.getElementById("contact-btn");
   const popupClose = document.querySelector("#contact-popup .close");
-
   if (!popup || !btnDefault || !popupClose) return;
 
-  btnDefault.addEventListener("click", () => popup.style.display = "flex");
-  popupClose.addEventListener("click", () => popup.style.display = "none");
+  // Prevent duplicate listeners
+  btnDefault.onclick = () => popup.style.display = "flex";
+  popupClose.onclick = () => popup.style.display = "none";
 
-  window.addEventListener("click", e => {
+  window.onclick = e => {
     if (e.target === popup) popup.style.display = "none";
-  });
+  };
 }
 
 /* --------------------
@@ -60,12 +64,17 @@ function setupPopup() {
 ---------------------*/
 function preserveRefAcrossLinks() {
   const urlParams = new URLSearchParams(window.location.search);
-  const refParam = urlParams.get("ref") || urlParams.get("drop") || urlParams.get("sample");
+  const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
   if (!refParam) return;
 
   document.querySelectorAll("a[href]").forEach(link => {
     const href = link.getAttribute("href");
-    if (href && !href.startsWith("#") && !href.startsWith("mailto:") && !href.includes("javascript:")) {
+    if (
+      href &&
+      !href.startsWith("#") &&
+      !href.startsWith("mailto:") &&
+      !href.includes("javascript:")
+    ) {
       const url = new URL(href, window.location.origin);
       if (!url.searchParams.has("ref") && !url.searchParams.has("drop") && !url.searchParams.has("sample")) {
         url.searchParams.set("ref", refParam);
@@ -91,7 +100,7 @@ function highlightActiveLink() {
    URL PARAMETER
 ---------------------*/
 const urlParams = new URLSearchParams(window.location.search);
-const refParam = urlParams.get("ref") || urlParams.get("drop") || urlParams.get("sample");
+const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
 /* --------------------
    GOOGLE SHEET (CSV)
@@ -116,15 +125,16 @@ let refData = {
    CLEAN VALUE
 ---------------------*/
 function cleanValue(value) {
-  return value ? value.replace(/^"|"$/g, "").trim() : "";
+  return value ? value.replace(/^"|"$/g, '').trim() : '';
 }
 
 /* --------------------
    CREATE BANNER
 ---------------------*/
 function createBanner(message) {
-  if (!message || document.getElementById("drop-banner")) return;
-  const banner = document.createElement("div");
+  if (!message) return;
+  if (document.querySelector("#drop-banner")) return; // prevent duplicates
+  const banner = document.createElement('div');
   banner.id = "drop-banner";
   banner.textContent = message;
   Object.assign(banner.style, {
@@ -154,7 +164,7 @@ function updateButtonText(text) {
    UPDATE POPUP HEADING
 ---------------------*/
 function updatePopupHeading() {
-  const popupHeading = document.querySelector("#contact-popup h2");
+  const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
 
   if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
@@ -171,11 +181,14 @@ async function loadReferrerData() {
   try {
     const res = await fetch(sheetURL);
     const text = await res.text();
-    const rows = text.trim().split("\n").map(r => r.split(","));
+    const rows = text.trim().split('\n').map(r => r.split(','));
     const headers = rows.shift().map(h => h.trim().toLowerCase());
 
     const match = rows.find(row => row[0]?.trim().toLowerCase() === refParam.toLowerCase());
-    if (!match) return;
+    if (!match) {
+      console.log("No matching ref found:", refParam);
+      return;
+    }
 
     headers.forEach((h, i) => {
       refData[h] = cleanValue(match[i]);
@@ -190,12 +203,65 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  await loadGlobalHTML();
+  await loadGlobalHTML(); // Load header/footer/popup/button
   await loadReferrerData();
 
-  if (refData.activeinactive?.toLowerCase() === "inactive") {
-    document.body.innerHTML = "<h2>This referral is no longer active.</h2>";
+  if (refData.activeinactive?.toLowerCase() === 'inactive') {
+    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
     return;
   }
 
- 
+  if (refData.bannertext) createBanner(refData.bannertext);
+  if (refData.buttontext) updateButtonText(refData.buttontext);
+  updatePopupHeading();
+}
+
+init();
+
+/* --------------------
+   FORM SUBMISSION
+---------------------*/
+document.addEventListener("submit", e => {
+  if (e.target.closest("#contact-popup form")) {
+    e.preventDefault();
+
+    const name = document.getElementById('name')?.value;
+    const email = document.getElementById('email')?.value;
+    const phone = document.getElementById('phone')?.value;
+    const message = document.getElementById('message')?.value;
+    const discount = document.getElementById('discount-code')?.value;
+
+    const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
+    const bodyLines = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Phone: ${phone}`,
+      `Message: ${message}`,
+      `Discount Code: ${discount}`,
+      refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
+    ];
+    const body = encodeURIComponent(bodyLines.join("\n"));
+
+    window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
+  }
+});
+
+/* --------------------
+   SET HIDDEN FIELDS ON CLICK
+---------------------*/
+document.addEventListener("click", e => {
+  if (e.target.id === "contact-btn") {
+    const discountField = document.getElementById('discount-code');
+    if (discountField) discountField.value = refData.discountcode || "";
+
+    let refField = document.getElementById('referrer');
+    if (!refField) {
+      refField = document.createElement('input');
+      refField.type = 'hidden';
+      refField.name = 'referrer';
+      refField.id = 'referrer';
+      document.querySelector('#contact-popup form').appendChild(refField);
+    }
+    refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
+  }
+});
