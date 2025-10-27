@@ -30,6 +30,14 @@ async function loadGlobalHTML() {
     if (btn && !document.querySelector("#contact-btn")) {
       document.body.insertAdjacentElement("beforeend", btn);
     }
+     // Show header, footer, and contact button after content loads
+const header = document.getElementById("global-header");
+const footer = document.getElementById("global-footer");
+const contactBtn = document.getElementById("contact-btn");
+
+if (header) header.style.visibility = "visible";
+if (footer) footer.style.visibility = "visible";
+if (contactBtn) contactBtn.style.visibility = "visible";
 
     // Reinitialize popup, referral, active link
     setupPopup();
