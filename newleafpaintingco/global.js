@@ -16,12 +16,16 @@ async function loadGlobalHTML() {
     const btn = doc.querySelector("#contact-btn");
 
     // Insert header
-    const headerTarget = document.getElementById("global-header") || document.getElementById("global-container");
-    if (headerTarget && header) headerTarget.replaceWith(header);
+    const headerTarget = document.getElementById("global-header");
+    if (headerTarget && header) {
+      headerTarget.replaceChildren(header);
+    }
 
     // Insert footer
-    const footerTarget = document.getElementById("global-footer") || document.getElementById("global-container");
-    if (footerTarget && footer) footerTarget.replaceWith(footer);
+    const footerTarget = document.getElementById("global-footer");
+    if (footerTarget && footer) {
+      footerTarget.replaceChildren(footer);
+    }
 
     // Insert popup & button at end of body (once)
     if (popup && !document.querySelector("#contact-popup")) {
@@ -30,14 +34,12 @@ async function loadGlobalHTML() {
     if (btn && !document.querySelector("#contact-btn")) {
       document.body.insertAdjacentElement("beforeend", btn);
     }
-     // Show header, footer, and contact button after content loads
-const header = document.getElementById("global-header");
-const footer = document.getElementById("global-footer");
-const contactBtn = document.getElementById("contact-btn");
 
-if (header) header.style.visibility = "visible";
-if (footer) footer.style.visibility = "visible";
-if (contactBtn) contactBtn.style.visibility = "visible";
+    // Show header, footer, and contact button after content loads
+    if (headerTarget) headerTarget.style.visibility = "visible";
+    if (footerTarget) footerTarget.style.visibility = "visible";
+    const contactBtn = document.getElementById("contact-btn");
+    if (contactBtn) contactBtn.style.visibility = "visible";
 
     // Reinitialize popup, referral, active link
     setupPopup();
@@ -58,13 +60,9 @@ function setupPopup() {
   const popupClose = document.querySelector("#contact-popup .close");
   if (!popup || !btnDefault || !popupClose) return;
 
-  // Prevent duplicate listeners
   btnDefault.onclick = () => popup.style.display = "flex";
   popupClose.onclick = () => popup.style.display = "none";
-
-  window.onclick = e => {
-    if (e.target === popup) popup.style.display = "none";
-  };
+  window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 }
 
 /* --------------------
@@ -141,7 +139,7 @@ function cleanValue(value) {
 ---------------------*/
 function createBanner(message) {
   if (!message) return;
-  if (document.querySelector("#drop-banner")) return; // prevent duplicates
+  if (document.querySelector("#drop-banner")) return;
   const banner = document.createElement('div');
   banner.id = "drop-banner";
   banner.textContent = message;
@@ -193,15 +191,9 @@ async function loadReferrerData() {
     const headers = rows.shift().map(h => h.trim().toLowerCase());
 
     const match = rows.find(row => row[0]?.trim().toLowerCase() === refParam.toLowerCase());
-    if (!match) {
-      console.log("No matching ref found:", refParam);
-      return;
-    }
+    if (!match) return;
 
-    headers.forEach((h, i) => {
-      refData[h] = cleanValue(match[i]);
-    });
-    console.log("Loaded referral data:", refData);
+    headers.forEach((h, i) => { refData[h] = cleanValue(match[i]); });
   } catch (err) {
     console.error("Error loading spreadsheet:", err);
   }
@@ -211,7 +203,7 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  await loadGlobalHTML(); // Load header/footer/popup/button
+  await loadGlobalHTML();
   await loadReferrerData();
 
   if (refData.activeinactive?.toLowerCase() === 'inactive') {
