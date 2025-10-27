@@ -8,7 +8,7 @@
 </head>
 <body>
 
-  <!-- GLOBAL CONTENT (header, footer, floating button, popup) -->
+  <!-- GLOBAL CONTENT PLACEHOLDER -->
   <div id="global-container"></div>
 
   <!-- PAGE-SPECIFIC CONTENT -->
@@ -48,21 +48,7 @@
     <p>— Scott L., Buxton, ME</p>
   </section>
 
-  <!-- LOAD GLOBAL HTML -->
-  <script>
-    async function loadGlobal() {
-      try {
-        const res = await fetch('global.html');
-        const html = await res.text();
-        document.getElementById('global-container').innerHTML = html;
-      } catch (err) {
-        console.error("Error loading global HTML:", err);
-      }
-    }
-    loadGlobal();
-  </script>
-
-  <!-- LOAD GLOBAL JS -->
+  <!-- LOAD GLOBAL CONTENT -->
   <script src="global.js"></script>
 
 </body>
