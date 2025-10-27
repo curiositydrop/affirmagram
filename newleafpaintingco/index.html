@@ -120,7 +120,9 @@
 
   <!-- JS SCRIPTS -->
  <script>
-// --- Popup functionality ---
+/* --------------------
+   POPUP FUNCTIONALITY
+---------------------*/
 const popup = document.getElementById("contact-popup");
 const btnDefault = document.getElementById("contact-btn");
 const close = document.querySelector(".close");
@@ -129,49 +131,42 @@ btnDefault.onclick = () => popup.style.display = "flex";
 close.onclick = () => popup.style.display = "none";
 window.onclick = e => { if (e.target === popup) popup.style.display = "none"; };
 
-// --- URL parameter ---
+/* --------------------
+   URL PARAMETER
+---------------------*/
 const urlParams = new URLSearchParams(window.location.search);
 const refParam = urlParams.get('ref') || urlParams.get('drop') || urlParams.get('sample');
 
-// --- Spreadsheet JSON URL ---
-const sheetURL = "https://docs.google.com/spreadsheets/d/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/gviz/tq?tqx=out:json";
+/* --------------------
+   GOOGLE SHEET (CSV)
+---------------------*/
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSGQaoBZ7rMgXkLt9ZvLeF9zZ5V5qv1m4mlWWowx-VskRE6hrd1rHOVAg3M4JJfXCotw8wVVK_nVasH/pub?output=csv";
 
-// --- Default refData ---
+/* --------------------
+   DEFAULT REF DATA
+   (Used for main site if no ?ref)
+---------------------*/
 let refData = {
-  ReferrerName: "",
-  ReferrerBusiness: "",
-  DiscountCode: "",
-  BannerText: "",
-  ButtonText: "",
-  EmailSubject: ""
+  id: "",
+  referrername: "",
+  businessname: "",
+  discountcode: "",
+  bannertext: "",
+  buttontext: "Get free estimate", // Default button text for main site
+  emailsubject: "New Leaf Painting Inquiry",
+  activeinactive: ""
 };
 
-// --- Load spreadsheet safely ---
-async function loadReferrerData() {
-  if (!refParam) return;
-
-  try {
-    const res = await fetch(sheetURL);
-    const text = await res.text();
-    const json = JSON.parse(text.replace(/^.*?({\"version)/, '{$1').slice(0, -2));
-    const rows = json.table.rows;
-
-    // Case-insensitive match in first column (ID)
-    const match = rows.find(r => r.c[0]?.v?.toString().toLowerCase() === refParam.toLowerCase());
-    if (match) {
-      refData.ReferrerName = match.c[1]?.v || "";
-      refData.ReferrerBusiness = match.c[2]?.v || "";
-      refData.DiscountCode = match.c[3]?.v || "";
-      refData.BannerText = match.c[4]?.v || "";
-      refData.ButtonText = match.c[5]?.v || "";
-      refData.EmailSubject = match.c[6]?.v || `New Leaf Painting Inquiry - via ${refData.ReferrerName || refData.ReferrerBusiness}`;
-    }
-  } catch (err) {
-    console.error("Spreadsheet load error:", err);
-  }
+/* --------------------
+   CLEAN VALUE
+---------------------*/
+function cleanValue(value) {
+  return value ? value.replace(/^"|"$/g, '').trim() : '';
 }
 
-// --- Create banner ---
+/* --------------------
+   CREATE BANNER
+---------------------*/
 function createBanner(message) {
   if (!message) return;
   const banner = document.createElement('div');
@@ -192,37 +187,88 @@ function createBanner(message) {
   document.body.prepend(banner);
 }
 
-// --- Update button to use spreadsheet text ---
+/* --------------------
+   UPDATE BUTTON TEXT
+---------------------*/
 function updateButtonText(text) {
-  if (!text) return;
-  btnDefault.textContent = text;
+  if (text) btnDefault.textContent = text;
 }
 
-// --- Update popup heading ---
+/* --------------------
+   UPDATE POPUP HEADING
+---------------------*/
 function updatePopupHeading() {
   const popupHeading = document.querySelector('#contact-popup h2');
   if (!popupHeading) return;
 
-  if (refData.DiscountCode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
-  else if (refData.DiscountCode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
+  if (refData.discountcode.toUpperCase().includes("DROP")) popupHeading.textContent = "Redeem Drop Reward";
+  else if (refData.discountcode.toUpperCase().includes("SAMPLE")) popupHeading.textContent = "Redeem Sample Reward";
+  else popupHeading.textContent = "Get free estimate";
 }
 
-// --- Initialize ---
+/* --------------------
+   LOAD REFERRER DATA FROM CSV
+---------------------*/
+async function loadReferrerData() {
+  if (!refParam) return; // Main site fallback uses defaults
+
+  try {
+    const res = await fetch(sheetURL);
+    const text = await res.text();
+
+    // Split CSV into rows & columns
+    const rows = text.trim().split('\n').map(r => r.split(','));
+    const headers = rows.shift().map(h => h.trim().toLowerCase());
+
+    // Find row where ID column matches refParam (case-insensitive)
+    const match = rows.find(row =>
+      row[0]?.trim().toLowerCase() === refParam.toLowerCase()
+    );
+
+    if (!match) {
+      console.log("No matching ref found:", refParam);
+      return;
+    }
+
+    // Map row values into refData
+    headers.forEach((h, i) => {
+      refData[h] = cleanValue(match[i]);
+    });
+
+    console.log("Loaded referral data:", refData);
+
+  } catch (err) {
+    console.error("Error loading spreadsheet:", err);
+  }
+}
+
+/* --------------------
+   INITIALIZE PAGE
+---------------------*/
 async function init() {
   await loadReferrerData();
 
-  // Only show banner if we have one
-  if (refData.BannerText) createBanner(refData.BannerText);
+  // Handle inactive referral
+  if (refData.activeinactive && refData.activeinactive.toLowerCase() === 'inactive') {
+    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+    return;
+  }
 
-  // Always keep one button, update its text if provided
-  if (refData.ButtonText) updateButtonText(refData.ButtonText);
+  // Show banner if present
+  if (refData.bannertext) createBanner(refData.bannertext);
 
+  // Update button text
+  if (refData.buttontext) updateButtonText(refData.buttontext);
+
+  // Update popup heading
   updatePopupHeading();
 }
 
 init();
 
-// --- Form submission ---
+/* --------------------
+   FORM SUBMISSION
+---------------------*/
 const form = document.querySelector('#contact-popup form');
 form.addEventListener('submit', e => {
   e.preventDefault();
@@ -233,24 +279,26 @@ form.addEventListener('submit', e => {
   const message = document.getElementById('message').value;
   const discount = document.getElementById('discount-code').value;
 
-  const subject = encodeURIComponent(refData.EmailSubject || "New Leaf Painting Inquiry");
+  const subject = encodeURIComponent(refData.emailsubject || "New Leaf Painting Inquiry");
   const bodyLines = [
     `Name: ${name}`,
     `Email: ${email}`,
     `Phone: ${phone}`,
     `Message: ${message}`,
     `Discount Code: ${discount}`,
-    refData.ReferrerName ? `Referrer: ${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}` : ""
+    refData.referrername ? `Referrer: ${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}` : ""
   ];
   const body = encodeURIComponent(bodyLines.join("\n"));
 
   window.location.href = `mailto:newleafpaintingcompany@gmail.com?subject=${subject}&body=${body}`;
 });
 
-// --- When button clicked, set discount/ref hidden fields ---
+/* --------------------
+   BUTTON CLICK SET HIDDEN FIELDS
+---------------------*/
 btnDefault.addEventListener('click', () => {
   const discountField = document.getElementById('discount-code');
-  if (discountField) discountField.value = refData.DiscountCode || "";
+  if (discountField) discountField.value = refData.discountcode || "";
 
   let refField = document.getElementById('referrer');
   if (!refField) {
@@ -260,7 +308,7 @@ btnDefault.addEventListener('click', () => {
     refField.id = 'referrer';
     document.querySelector('#contact-popup form').appendChild(refField);
   }
-  refField.value = `${refData.ReferrerName} ${refData.ReferrerBusiness ? "at " + refData.ReferrerBusiness : ""}`;
+  refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
 });
 </script>
 
