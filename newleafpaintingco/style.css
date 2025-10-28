@@ -350,9 +350,3 @@ footer {
   background-color: #1a7b42;
 }
 
-/* Hide header, footer, and contact button until JS finishes loading */
-#global-header,
-#global-footer,
-#contact-btn {
-  visibility: hidden;
-}
