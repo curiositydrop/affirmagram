@@ -1,9 +1,6 @@
 /* --------------------
    LOAD GLOBAL HTML (header, footer, popup)
 ---------------------*/
-// Hide body initially to prevent flicker
-document.documentElement.style.visibility = "hidden";
-
 async function loadGlobalHTML() {
   try {
     const res = await fetch("global.html");
