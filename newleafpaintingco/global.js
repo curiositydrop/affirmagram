@@ -14,37 +14,42 @@ async function loadGlobalHTML() {
     const popup = doc.querySelector("#contact-popup");
     const btn = doc.querySelector("#contact-btn");
 
-    // Insert header
+    // Inject header/footer immediately
     const headerTarget = document.getElementById("global-header");
-    if (headerTarget && header) {
-      headerTarget.replaceChildren(header);
-      headerTarget.style.visibility = "visible"; // show after load
-    }
-
-    // Insert footer
     const footerTarget = document.getElementById("global-footer");
-    if (footerTarget && footer) {
-      footerTarget.replaceChildren(footer);
-      footerTarget.style.visibility = "visible"; // show after load
-    }
+    if (headerTarget && header) headerTarget.replaceChildren(header);
+    if (footerTarget && footer) footerTarget.replaceChildren(footer);
 
-    // Insert popup & button at end of body (once)
+    // Inject popup/button once
     if (popup && !document.querySelector("#contact-popup")) {
       document.body.insertAdjacentElement("beforeend", popup);
     }
     if (btn && !document.querySelector("#contact-btn")) {
       document.body.insertAdjacentElement("beforeend", btn);
-      btn.style.visibility = "visible"; // show after load
     }
 
     // Initialize functions
     setupPopup();
     preserveRefAcrossLinks();
-    highlightActiveLink();
+    highlightActiveLink(); // run AFTER header loads
 
   } catch (err) {
     console.error("Error loading global.html:", err);
   }
+}
+
+/* --------------------
+   HIGHLIGHT ACTIVE LINK
+---------------------*/
+function highlightActiveLink() {
+  const currentPage = window.location.pathname.split("/").pop() || "index.html";
+  const links = document.querySelectorAll("nav a");
+
+  links.forEach(link => {
+    const linkPage = link.getAttribute("href").split("?")[0];
+    if (linkPage === currentPage) link.classList.add("active");
+    else link.classList.remove("active");
+  });
 }
 
 /* --------------------
@@ -78,22 +83,6 @@ function preserveRefAcrossLinks() {
       }
       link.setAttribute("href", url.pathname + url.search);
     }
-  });
-}
-
-/* --------------------
-   HIGHLIGHT ACTIVE LINK & PREVENT FLICKER
----------------------*/
-function highlightActiveLink() {
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  const links = document.querySelectorAll("nav a");
-
-  links.forEach(link => {
-    const linkPage = link.getAttribute("href").split("?")[0];
-    if (linkPage === currentPage) link.classList.add("active");
-    else link.classList.remove("active");
-
-    link.style.visibility = "visible"; // prevent flicker
   });
 }
 
