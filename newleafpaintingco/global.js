@@ -1,11 +1,10 @@
 /* --------------------
    LOAD GLOBAL HTML (header, footer, popup)
 ---------------------*/
-async function loadGlobalHTML() {
+async function loadGlobalHTML(refData = {}) {
   try {
     const res = await fetch("global.html");
     const html = await res.text();
-
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
 
@@ -26,14 +25,16 @@ async function loadGlobalHTML() {
     }
     if (btn && !document.querySelector("#contact-btn")) {
       document.body.insertAdjacentElement("beforeend", btn);
+      // Apply referral button text immediately
+      if (refData.buttontext) btn.textContent = refData.buttontext;
     }
 
-    // --- NEW FIX: Reveal nav links only after header loads
+    // Reveal nav links and highlight
     requestAnimationFrame(() => {
       document.querySelectorAll(".nav-links a").forEach(a => {
         a.style.visibility = "visible";
       });
-      highlightActiveLink(); // ensure active highlight applies after visibility
+      highlightActiveLink();
     });
 
     // Initialize other functions
@@ -197,33 +198,22 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  try {
-    // Start loading both tasks but don't wait yet
-    const globalPromise = loadGlobalHTML();
-    const refPromise = loadReferrerData();
+  document.body.style.visibility = "hidden"; // hide until refData is ready
 
-    // Immediately show the base site once the header/footer are ready
-    await globalPromise;
-    document.body.style.visibility = "visible"; // site shows instantly
+  await loadReferrerData(); // fetch ref data first
 
-    // Then finish waiting for the referral data
-    await refPromise;
-
-    // Handle inactive referrals
-    if (refData.activeinactive?.toLowerCase() === 'inactive') {
-      document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
-      return;
-    }
-
-    // Apply referral elements (once data is ready)
-    if (refData.bannertext) createBanner(refData.bannertext);
-    if (refData.buttontext) updateButtonText(refData.buttontext);
-    updatePopupHeading();
-
-  } catch (err) {
-    console.error("Error during init:", err);
-    document.body.style.visibility = "visible"; // always reveal page
+  if (refData.activeinactive?.toLowerCase() === 'inactive') {
+    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+    document.body.style.visibility = "visible";
+    return;
   }
+
+  await loadGlobalHTML(refData); // pass refData so button text updates immediately
+
+  if (refData.bannertext) createBanner(refData.bannertext);
+  updatePopupHeading();
+
+  document.body.style.visibility = "visible"; // now reveal page
 }
 
 init();
