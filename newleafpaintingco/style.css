@@ -350,3 +350,6 @@ footer {
   background-color: #1a7b42;
 }
 
+#drop-banner, #contact-btn {
+  display: none;
+}
