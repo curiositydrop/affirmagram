@@ -1,6 +1,9 @@
 /* --------------------
    LOAD GLOBAL HTML (header, footer, popup)
 ---------------------*/
+// Hide body initially to prevent flicker
+document.documentElement.style.visibility = "hidden";
+
 async function loadGlobalHTML() {
   try {
     const res = await fetch("global.html");
@@ -197,27 +200,26 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  // ✅ Run this FIRST so ref loads instantly (no flicker)
   preserveRefAcrossLinks();
 
-  // Then load everything else
   await loadGlobalHTML();
   await loadReferrerData();
 
   if (refData.activeinactive?.toLowerCase() === 'inactive') {
     document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+    document.documentElement.style.visibility = "visible";
     return;
   }
 
-  // ✅ Re-apply once everything is loaded (safe double call)
   preserveRefAcrossLinks();
 
   if (refData.bannertext) createBanner(refData.bannertext);
   if (refData.buttontext) updateButtonText(refData.buttontext);
   updatePopupHeading();
-}
 
-init();
+  // ✅ Reveal once all is ready
+  document.documentElement.style.visibility = "visible";
+}
 
 /* --------------------
    FORM SUBMISSION
