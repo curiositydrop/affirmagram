@@ -5,6 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Local Partners | New Leaf Painting Co.</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .partners {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .partners h1 {
+      font-size: 2em;
+      color: #116530;
+      margin-bottom: 10px;
+    }
+
+    .partners p {
+      margin-bottom: 40px;
+      color: #333;
+    }
+
+    .partner-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .partner-card {
+      width: 250px;
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .partner-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 15px;
+    }
+
+    .partner-card h3 {
+      color: #116530;
+      margin-bottom: 10px;
+    }
+
+    .partner-card button {
+      background: #116530;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+    }
+
+    .partner-card button:hover {
+      background: #0d4d26;
+    }
+
+    /* Popup Styles */
+    #partner-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .popup-content {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .popup-content h2 {
+      color: #116530;
+      margin-bottom: 15px;
+    }
+
+    .popup-content input,
+    .popup-content textarea {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .popup-content button {
+      background: #116530;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .popup-content button:hover {
+      background: #0d4d26;
+    }
+  </style>
 </head>
 <body>
 
@@ -12,33 +122,95 @@
   <div id="global-header"></div>
 
   <!-- PAGE CONTENT -->
-  <section class="hero">
+  <section class="partners">
     <h1>Local Partners</h1>
     <p>We proudly work with trusted local businesses to provide the best service for our clients.</p>
-  </section>
 
-  <section class="partners">
     <div class="partner-grid">
-      <div class="partner-card">
+      <div class="partner-card" data-email="partner1@email.com" data-name="Partner 1">
         <img src="partner1.png" alt="Partner 1">
         <h3>Partner 1</h3>
-        <p>Specializes in flooring and tile work.</p>
-        <button>Learn More</button>
+        <button>Contact</button>
       </div>
-      <div class="partner-card">
+
+      <div class="partner-card" data-email="partner2@email.com" data-name="Partner 2">
         <img src="partner2.png" alt="Partner 2">
         <h3>Partner 2</h3>
-        <p>High-quality cabinetry and custom woodwork.</p>
-        <button>Learn More</button>
+        <button>Contact</button>
+      </div>
+
+      <div class="partner-card" data-email="partner3@email.com" data-name="Partner 3">
+        <img src="partner3.png" alt="Partner 3">
+        <h3>Partner 3</h3>
+        <button>Contact</button>
+      </div>
+
+      <div class="partner-card" data-email="partner4@email.com" data-name="Partner 4">
+        <img src="partner4.png" alt="Partner 4">
+        <h3>Partner 4</h3>
+        <button>Contact</button>
+      </div>
+
+      <div class="partner-card" data-email="partner5@email.com" data-name="Partner 5">
+        <img src="partner5.png" alt="Partner 5">
+        <h3>Partner 5</h3>
+        <button>Contact</button>
       </div>
     </div>
   </section>
 
+  <!-- POPUP -->
+  <div id="partner-popup">
+    <div class="popup-content">
+      <h2>Contact <span id="partner-name"></span></h2>
+      <input type="text" id="user-name" placeholder="Your Name" required>
+      <input type="email" id="user-email" placeholder="Your Email" required>
+      <textarea id="user-message" placeholder="Your Message" rows="4"></textarea>
+      <button id="send-message">Send Message</button>
+      <button id="close-popup" style="background:#999;">Cancel</button>
+    </div>
+  </div>
+
   <!-- GLOBAL FOOTER -->
   <div id="global-footer"></div>
 
-  <!-- GLOBAL LOGIC -->
+  <!-- GLOBAL + PARTNER LOGIC -->
   <script src="global.js"></script>
+  <script>
+    const popup = document.getElementById('partner-popup');
+    const partnerNameSpan = document.getElementById('partner-name');
+    const sendBtn = document.getElementById('send-message');
+    const closeBtn = document.getElementById('close-popup');
 
+    let currentPartnerEmail = '';
+
+    document.querySelectorAll('.partner-card button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const card = btn.closest('.partner-card');
+        currentPartnerEmail = card.dataset.email;
+        partnerNameSpan.textContent = card.dataset.name;
+        popup.style.display = 'flex';
+      });
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+
+    sendBtn.addEventListener('click', () => {
+      const name = document.getElementById('user-name').value;
+      const email = document.getElementById('user-email').value;
+      const message = document.getElementById('user-message').value;
+
+      const subject = encodeURIComponent('General Inquiry - via New Leaf Painting Company');
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+      );
+
+      const mailtoLink = `mailto:${currentPartnerEmail}?bcc=newleafpaintingcompany@gmail.com&subject=${subject}&body=${body}`;
+      window.location.href = mailtoLink;
+      popup.style.display = 'none';
+    });
+  </script>
 </body>
 </html>
