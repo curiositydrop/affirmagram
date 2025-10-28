@@ -201,29 +201,25 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  await loadReferrerData(); // fetch CSV first
+  document.body.style.visibility = "hidden"; // hide until refData is ready
+
+  await loadReferrerData(); // fetch ref data first
 
   if (refData.activeinactive?.toLowerCase() === 'inactive') {
     document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+    document.body.style.visibility = "visible";
     return;
   }
 
-  await loadGlobalHTML(refData); // header/footer loads instantly
+  await loadGlobalHTML(refData); // pass refData so button text updates immediately
 
-  // Only show banner and update button once refData is ready
-  if (refData.bannertext) {
-    createBanner(refData.bannertext);
-    document.querySelector("#drop-banner").style.display = "block";
-  }
-
-  if (refData.buttontext) {
-    const btn = document.getElementById("contact-btn");
-    btn.textContent = refData.buttontext;
-    btn.style.display = "inline-block"; // reveal button
-  }
-
+  if (refData.bannertext) createBanner(refData.bannertext);
   updatePopupHeading();
+
+  document.body.style.visibility = "visible"; // reveal page
 }
+
+init();
 
 /* --------------------
    FORM SUBMISSION
