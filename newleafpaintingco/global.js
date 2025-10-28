@@ -50,21 +50,15 @@ async function loadGlobalHTML(refData = {}) {
    HIGHLIGHT ACTIVE LINK
 ---------------------*/
 function highlightActiveLink() {
-  // get current page without query params
-  const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  const links = document.querySelectorAll(".nav-links a");
+  const currentPage = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+  const links = document.querySelectorAll("nav a");
 
   links.forEach(link => {
-    const linkHref = link.getAttribute("href");
-    if (!linkHref) return;
-
-    // strip query params for comparison
-    const linkPage = linkHref.split("?")[0].split("/").pop();
-
+    const linkPage = link.getAttribute("href").split("?")[0].split("/").pop().toLowerCase();
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
 
-    // Ensure visible
+    // ensure visibility
     link.style.visibility = "visible";
   });
 }
