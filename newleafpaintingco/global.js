@@ -197,6 +197,10 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
+  // ✅ Run this FIRST so ref loads instantly (no flicker)
+  preserveRefAcrossLinks();
+
+  // Then load everything else
   await loadGlobalHTML();
   await loadReferrerData();
 
@@ -204,6 +208,9 @@ async function init() {
     document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
     return;
   }
+
+  // ✅ Re-apply once everything is loaded (safe double call)
+  preserveRefAcrossLinks();
 
   if (refData.bannertext) createBanner(refData.bannertext);
   if (refData.buttontext) updateButtonText(refData.buttontext);
