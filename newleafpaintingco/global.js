@@ -198,32 +198,31 @@ async function loadReferrerData() {
 ---------------------*/
 async function init() {
   try {
-    // Hide only the body (not html) so scripts can still load
-    document.body.style.visibility = "hidden";
+    // Start loading both tasks but don't wait yet
+    const globalPromise = loadGlobalHTML();
+    const refPromise = loadReferrerData();
 
-    preserveRefAcrossLinks();
+    // Immediately show the base site once the header/footer are ready
+    await globalPromise;
+    document.body.style.visibility = "visible"; // site shows instantly
 
-    // Load global elements and ref data in parallel
-    await Promise.all([loadGlobalHTML(), loadReferrerData()]);
+    // Then finish waiting for the referral data
+    await refPromise;
 
     // Handle inactive referrals
     if (refData.activeinactive?.toLowerCase() === 'inactive') {
       document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
-      document.body.style.visibility = "visible";
       return;
     }
 
-    // Apply updates once data is ready
+    // Apply referral elements (once data is ready)
     if (refData.bannertext) createBanner(refData.bannertext);
     if (refData.buttontext) updateButtonText(refData.buttontext);
     updatePopupHeading();
 
-    // ✅ Reveal everything at once
-    document.body.style.visibility = "visible";
   } catch (err) {
     console.error("Error during init:", err);
-    // Always reveal the page even if something failed
-    document.body.style.visibility = "visible";
+    document.body.style.visibility = "visible"; // always reveal page
   }
 }
 
