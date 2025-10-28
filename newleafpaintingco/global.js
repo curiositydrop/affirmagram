@@ -29,12 +29,12 @@ async function loadGlobalHTML(refData = {}) {
       if (refData.buttontext) btn.textContent = refData.buttontext;
     }
 
-    // Reveal nav links and highlight
+    // Reveal nav links and highlight active
     requestAnimationFrame(() => {
       document.querySelectorAll(".nav-links a").forEach(a => {
         a.style.visibility = "visible";
       });
-      highlightActiveLink();
+      highlightActiveLink(); // works now even with ?ref=CD-001
     });
 
     // Initialize other functions
@@ -50,15 +50,21 @@ async function loadGlobalHTML(refData = {}) {
    HIGHLIGHT ACTIVE LINK
 ---------------------*/
 function highlightActiveLink() {
+  // get current page without query params
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  const links = document.querySelectorAll("nav a");
+  const links = document.querySelectorAll(".nav-links a");
 
   links.forEach(link => {
-    const linkPage = link.getAttribute("href").split("?")[0];
+    const linkHref = link.getAttribute("href");
+    if (!linkHref) return;
+
+    // strip query params for comparison
+    const linkPage = linkHref.split("?")[0].split("/").pop();
+
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
 
-    // NEW: Ensure visible after highlight (prevents flicker)
+    // Ensure visible
     link.style.visibility = "visible";
   });
 }
@@ -213,7 +219,7 @@ async function init() {
   if (refData.bannertext) createBanner(refData.bannertext);
   updatePopupHeading();
 
-  document.body.style.visibility = "visible"; // now reveal page
+  document.body.style.visibility = "visible"; // reveal page
 }
 
 init();
