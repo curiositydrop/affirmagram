@@ -28,12 +28,17 @@ async function loadGlobalHTML() {
       document.body.insertAdjacentElement("beforeend", btn);
     }
 
-    // Initialize functions
-setupPopup();
-preserveRefAcrossLinks();
-requestAnimationFrame(() => {
-  highlightActiveLink();
-});
+    // --- NEW FIX: Reveal nav links only after header loads
+    requestAnimationFrame(() => {
+      document.querySelectorAll(".nav-links a").forEach(a => {
+        a.style.visibility = "visible";
+      });
+      highlightActiveLink(); // ensure active highlight applies after visibility
+    });
+
+    // Initialize other functions
+    setupPopup();
+    preserveRefAcrossLinks();
 
   } catch (err) {
     console.error("Error loading global.html:", err);
@@ -51,6 +56,9 @@ function highlightActiveLink() {
     const linkPage = link.getAttribute("href").split("?")[0];
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
+
+    // NEW: Ensure visible after highlight (prevents flicker)
+    link.style.visibility = "visible";
   });
 }
 
