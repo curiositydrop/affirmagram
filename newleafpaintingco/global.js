@@ -50,11 +50,14 @@ async function loadGlobalHTML(refData = {}) {
    HIGHLIGHT ACTIVE LINK
 ---------------------*/
 function highlightActiveLink() {
-  const currentPage = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
-  const links = document.querySelectorAll("nav a");
+  let currentPage = window.location.pathname.split("/").pop().toLowerCase();
+  if (!currentPage) currentPage = "index.html"; // treat root as index.html
 
+  const links = document.querySelectorAll("nav a");
   links.forEach(link => {
-    const linkPage = link.getAttribute("href").split("?")[0].split("/").pop().toLowerCase();
+    let linkPage = link.getAttribute("href").split("?")[0].split("/").pop().toLowerCase();
+    if (!linkPage) linkPage = "index.html"; // treat empty href as index.html
+
     if (linkPage === currentPage) link.classList.add("active");
     else link.classList.remove("active");
 
