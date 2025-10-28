@@ -29,9 +29,11 @@ async function loadGlobalHTML() {
     }
 
     // Initialize functions
-    setupPopup();
-    preserveRefAcrossLinks();
-    highlightActiveLink(); // run AFTER header loads
+setupPopup();
+preserveRefAcrossLinks();
+requestAnimationFrame(() => {
+  highlightActiveLink();
+});
 
   } catch (err) {
     console.error("Error loading global.html:", err);
