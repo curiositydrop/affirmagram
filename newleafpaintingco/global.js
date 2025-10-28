@@ -197,26 +197,37 @@ async function loadReferrerData() {
    INITIALIZE PAGE
 ---------------------*/
 async function init() {
-  preserveRefAcrossLinks();
+  try {
+    // Hide only the body (not html) so scripts can still load
+    document.body.style.visibility = "hidden";
 
-  await loadGlobalHTML();
-  await loadReferrerData();
+    preserveRefAcrossLinks();
 
-  if (refData.activeinactive?.toLowerCase() === 'inactive') {
-    document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
-    document.documentElement.style.visibility = "visible";
-    return;
+    // Load global elements and ref data in parallel
+    await Promise.all([loadGlobalHTML(), loadReferrerData()]);
+
+    // Handle inactive referrals
+    if (refData.activeinactive?.toLowerCase() === 'inactive') {
+      document.body.innerHTML = '<h2>This referral is no longer active.</h2>';
+      document.body.style.visibility = "visible";
+      return;
+    }
+
+    // Apply updates once data is ready
+    if (refData.bannertext) createBanner(refData.bannertext);
+    if (refData.buttontext) updateButtonText(refData.buttontext);
+    updatePopupHeading();
+
+    // ✅ Reveal everything at once
+    document.body.style.visibility = "visible";
+  } catch (err) {
+    console.error("Error during init:", err);
+    // Always reveal the page even if something failed
+    document.body.style.visibility = "visible";
   }
-
-  preserveRefAcrossLinks();
-
-  if (refData.bannertext) createBanner(refData.bannertext);
-  if (refData.buttontext) updateButtonText(refData.buttontext);
-  updatePopupHeading();
-
-  // ✅ Reveal once all is ready
-  document.documentElement.style.visibility = "visible";
 }
+
+init();
 
 /* --------------------
    FORM SUBMISSION
