@@ -292,21 +292,22 @@ function sendPartnerEmail(event) {
   const website = document.getElementById("bizWebsite")?.value;
   const message = document.getElementById("bizMessage")?.value;
 
-  const mailtoLink = `mailto:newleafpaintingcompany@gmail.com?subject=Partner Application - ${biz}&body=
-Business Name: ${biz}
+  const mailtoLink = `mailto:newleafpaintingcompany@gmail.com?subject=Partner Application - ${encodeURIComponent(biz)}&body=${encodeURIComponent(
+`Business Name: ${biz}
 Contact: ${name}
 Email: ${email}
 Phone: ${phone}
 Website/Social: ${website}
 Message:
-${message}`;
+${message}`
+  )}`;
 
   window.location.href = mailtoLink;
   closePartnerModal();
 }
 
 // Close modal if clicking outside
-document.addEventListener("click", e => {
+window.addEventListener("click", e => {
   const modal = document.getElementById("partnerModal");
   if (e.target === modal) closePartnerModal();
 });
