@@ -350,3 +350,17 @@ footer {
   background-color: #1a7b42;
 }
 
+.partner-btn {
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.2s ease;
+  border: 2px solid #4a7f3f; /* feel free to match your palette */
+}
+
+.partner-btn:hover {
+  background: #4a7f3f;
+  color: #fff;
+}
