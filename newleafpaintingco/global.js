@@ -268,3 +268,45 @@ document.addEventListener("click", e => {
     refField.value = `${refData.referrername}${refData.businessname ? " at " + refData.businessname : ""}`;
   }
 });
+
+/* --------------------
+   PARTNER POPUP + EMAIL
+---------------------*/
+function openPartnerModal() {
+  const modal = document.getElementById("partnerModal");
+  if (modal) modal.style.display = "flex";
+}
+
+function closePartnerModal() {
+  const modal = document.getElementById("partnerModal");
+  if (modal) modal.style.display = "none";
+}
+
+function sendPartnerEmail(event) {
+  event.preventDefault();
+
+  const biz = document.getElementById("bizName")?.value;
+  const name = document.getElementById("contactName")?.value;
+  const email = document.getElementById("contactEmail")?.value;
+  const phone = document.getElementById("contactPhone")?.value;
+  const website = document.getElementById("bizWebsite")?.value;
+  const message = document.getElementById("bizMessage")?.value;
+
+  const mailtoLink = `mailto:newleafpaintingcompany@gmail.com?subject=Partner Application - ${biz}&body=
+Business Name: ${biz}
+Contact: ${name}
+Email: ${email}
+Phone: ${phone}
+Website/Social: ${website}
+Message:
+${message}`;
+
+  window.location.href = mailtoLink;
+  closePartnerModal();
+}
+
+// Close modal if clicking outside
+document.addEventListener("click", e => {
+  const modal = document.getElementById("partnerModal");
+  if (e.target === modal) closePartnerModal();
+});
