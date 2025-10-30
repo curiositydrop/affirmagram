@@ -126,7 +126,7 @@
     <h1>Local Partners</h1>
     <p>We proudly partner with trusted local businesses who share our commitment to quality, honesty, and community.
 These partners may receive referral compensation when recommending New Leaf Painting Co., and we also recommend their services to our clients when they’re a strong fit.</p>
-    <a href="YOUR_FORM_LINK" class="cta-button">Apply to Become a Trusted Partner</a>
+    <a href="#" onclick="openPartnerModal()" class="cta-button">Apply to Become a Trusted Partner</a>
     <br />
     <h1>Community Referral Appreciation</h1>
     <p>We also believe in rewarding genuine word-of-mouth support from our neighbors.
@@ -220,5 +220,34 @@ Great work earns great recommendations, and we appreciate every one of them.</p>
       popup.style.display = 'none';
     });
   </script>
+  <!-- Partner Popup Modal -->
+<div id="partnerModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closePartnerModal()">&times;</span>
+    <h2>Apply to Become a Trusted Partner</h2>
+
+    <form id="partnerForm" onsubmit="sendPartnerEmail(event)">
+      <label>Business Name</label>
+      <input type="text" id="bizName" required>
+
+      <label>Contact Name</label>
+      <input type="text" id="contactName" required>
+
+      <label>Email</label>
+      <input type="email" id="contactEmail" required>
+
+      <label>Phone</label>
+      <input type="text" id="contactPhone" required>
+
+      <label>Website / Social Link</label>
+      <input type="text" id="bizWebsite">
+
+      <label>Why would you like to partner with us?</label>
+      <textarea id="bizMessage" rows="4" required></textarea>
+
+      <button type="submit" class="estimate-button">Send Application</button>
+    </form>
+  </div>
+</div>
 </body>
 </html>
