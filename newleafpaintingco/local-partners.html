@@ -6,6 +6,34 @@
   <title>Local Partners | New Leaf Painting Co.</title>
   <link rel="stylesheet" href="style.css" />
   <style>
+    #partnerModal {
+  display: none; /* Hides modal until openPartnerModal triggers it */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+#partnerModal .modal-content {
+  background: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+}
+#partnerModal .close {
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  font-size: 22px;
+}
     .partners {
       text-align: center;
       padding: 60px 20px;
@@ -126,7 +154,9 @@
     <h1>Local Partners</h1>
     <p>We proudly partner with trusted local businesses who share our commitment to quality, honesty, and community.
 These partners may receive referral compensation when recommending New Leaf Painting Co., and we also recommend their services to our clients when they’re a strong fit.</p>
-    <a href="#" onclick="openPartnerModal()" class="cta-button">Apply to Become a Trusted Partner</a>
+    <button type="button" onclick="openPartnerModal()" class="cta-button">
+  Apply to Become a Trusted Partner
+</button>
     <br />
     <h1>Community Referral Appreciation</h1>
     <p>We also believe in rewarding genuine word-of-mouth support from our neighbors.
