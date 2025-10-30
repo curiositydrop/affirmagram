@@ -248,32 +248,44 @@ Great work earns great recommendations, and we appreciate every one of them.</p>
     let currentPartnerEmail = '';
 
     document.querySelectorAll('.partner-card button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const card = btn.closest('.partner-card');
-        currentPartnerEmail = card.dataset.email;
-        partnerNameSpan.textContent = card.dataset.name;
-        popup.style.display = 'flex';
-      });
-    });
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.partner-card');
+    currentPartnerEmail = card.dataset.email;
+    partnerNameSpan.textContent = card.dataset.name;
+
+    // Add or update hidden referrer field
+    let refField = document.querySelector('#partner-popup form input[name="referrer"]');
+    if (!refField) {
+      refField = document.createElement('input');
+      refField.type = 'hidden';
+      refField.name = 'referrer';
+      document.querySelector('#partner-popup form').appendChild(refField);
+    }
+    refField.value = "New Leaf Painting Co.";
+
+    popup.style.display = 'flex';
+  });
+});
 
     closeBtn.addEventListener('click', () => {
       popup.style.display = 'none';
     });
 
     sendBtn.addEventListener('click', () => {
-      const name = document.getElementById('user-name').value;
-      const email = document.getElementById('user-email').value;
-      const message = document.getElementById('user-message').value;
+  const name = document.getElementById('user-name').value;
+  const email = document.getElementById('user-email').value;
+  const message = document.getElementById('user-message').value;
+  const referrer = document.querySelector('#partner-popup form input[name="referrer"]').value;
 
-      const subject = encodeURIComponent('General Inquiry - via New Leaf Painting Company');
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-      );
+  const subject = encodeURIComponent('General Inquiry - via New Leaf Painting Company');
+  const body = encodeURIComponent(
+    `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nReferrer: ${referrer}`
+  );
 
-      const mailtoLink = `mailto:${currentPartnerEmail}?bcc=newleafpaintingcompany@gmail.com&subject=${subject}&body=${body}`;
-      window.location.href = mailtoLink;
-      popup.style.display = 'none';
-    });
+  const mailtoLink = `mailto:${currentPartnerEmail}?bcc=newleafpaintingcompany@gmail.com&subject=${subject}&body=${body}`;
+  window.location.href = mailtoLink;
+  popup.style.display = 'none';
+});
   </script>
   <!-- Partner Popup Modal -->
 <div id="partnerModal" class="modal">
