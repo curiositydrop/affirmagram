@@ -25,14 +25,39 @@
   width: 90%;
   max-width: 400px;
   text-align: center;
-  position: relative;
+
+  /* Match popup-content styling */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#partnerModal input,
+#partnerModal textarea {
+  width: 100%;
+  margin: 8px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#partnerModal button {
+  background: #116530;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+#partnerModal button:hover {
+  background: #0d4d26;
 }
 #partnerModal .close {
-  cursor: pointer;
   position: absolute;
-  right: 12px;
   top: 8px;
+  right: 12px;
   font-size: 22px;
+  cursor: pointer;
 }
     .partners {
       text-align: center;
