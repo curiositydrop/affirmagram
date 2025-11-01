@@ -239,55 +239,91 @@ Great work earns great recommendations, and we appreciate every one of them.</p>
 
   <!-- GLOBAL + PARTNER LOGIC -->
   <script src="global.js"></script>
-  <script>
-    const popup = document.getElementById('partner-popup');
-    const partnerNameSpan = document.getElementById('partner-name');
-    const sendBtn = document.getElementById('send-message');
-    const closeBtn = document.getElementById('close-popup');
+  <!-- Partner Contact Script + Popup -->
+<script>
+  // Elements
+  const popup = document.getElementById('partner-popup');
+  const partnerNameSpan = document.getElementById('partner-name');
+  const sendBtn = document.getElementById('send-message');
+  const closeBtn = document.getElementById('close-popup');
 
-    let currentPartnerEmail = '';
+  let currentPartnerEmail = '';
 
-    document.querySelectorAll('.partner-card button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.partner-card');
-    currentPartnerEmail = card.dataset.email;
-    partnerNameSpan.textContent = card.dataset.name;
+  // Open contact popup when partner card button is clicked
+  document.querySelectorAll('.partner-card button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.partner-card');
+      currentPartnerEmail = card.dataset.email;
+      partnerNameSpan.textContent = card.dataset.name;
 
-    // Add or update hidden referrer field
-    let refField = document.querySelector('#partner-popup form input[name="referrer"]');
-    if (!refField) {
-      refField = document.createElement('input');
-      refField.type = 'hidden';
-      refField.name = 'referrer';
-      document.querySelector('#partner-popup form').appendChild(refField);
-    }
-    refField.value = "New Leaf Painting Co.";
+      // Add or update hidden referrer field
+      let refField = document.querySelector('#partner-popup form input[name="referrer"]');
+      if (!refField) {
+        refField = document.createElement('input');
+        refField.type = 'hidden';
+        refField.name = 'referrer';
+        document.querySelector('#partner-popup form').appendChild(refField);
+      }
+      refField.value = "New Leaf Painting Co.";
 
-    popup.style.display = 'flex';
-  });
-});
-
-    closeBtn.addEventListener('click', () => {
-      popup.style.display = 'none';
+      popup.style.display = 'flex';
     });
+  });
 
-    sendBtn.addEventListener('click', () => {
-  const name = document.getElementById('user-name').value;
-  const email = document.getElementById('user-email').value;
-  const message = document.getElementById('user-message').value;
-  const referrer = document.querySelector('#partner-popup form input[name="referrer"]').value;
+  // Close popup
+  closeBtn.addEventListener('click', () => {
+    popup.style.display = 'none';
+  });
 
-  const subject = encodeURIComponent('General Inquiry - via New Leaf Painting Company');
-  const body = encodeURIComponent(
-    `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nReferrer: ${referrer}`
-  );
+  // Send message
+  sendBtn.addEventListener('click', () => {
+    const name = document.getElementById('user-name').value;
+    const email = document.getElementById('user-email').value;
+    const message = document.getElementById('user-message').value;
+    const referrer = document.querySelector('#partner-popup form input[name="referrer"]').value;
 
-  const mailtoLink = `mailto:${currentPartnerEmail}?bcc=newleafpaintingcompany@gmail.com&subject=${subject}&body=${body}`;
-  window.location.href = mailtoLink;
-  popup.style.display = 'none';
-});
-  </script>
-  <!-- Partner Popup Modal -->
+    const subject = encodeURIComponent('General Inquiry - via New Leaf Painting Company');
+    const body = encodeURIComponent(
+      `Name: ${name}\nEmail: ${email}\nMessage: ${message}\nReferrer: ${referrer}`
+    );
+
+    const mailtoLink = `mailto:${currentPartnerEmail}?bcc=newleafpaintingcompany@gmail.com&subject=${subject}&body=${body}`;
+    window.location.href = mailtoLink;
+    popup.style.display = 'none';
+  });
+
+  // Functions for “Apply to Become a Trusted Partner” modal
+  function openPartnerModal() {
+    document.getElementById('partnerModal').style.display = 'flex';
+  }
+
+  function closePartnerModal() {
+    document.getElementById('partnerModal').style.display = 'none';
+  }
+
+  function sendPartnerEmail(event) {
+    event.preventDefault();
+    // Optional: handle sending email for partner application
+    alert('Partner application submitted!');
+    closePartnerModal();
+  }
+</script>
+
+<!-- Partner Contact Popup -->
+<div id="partner-popup">
+  <div class="popup-content">
+    <h2>Contact <span id="partner-name"></span></h2>
+    <form>
+      <input type="text" id="user-name" placeholder="Your Name" required>
+      <input type="email" id="user-email" placeholder="Your Email" required>
+      <textarea id="user-message" placeholder="Your Message" rows="4"></textarea>
+      <button type="button" id="send-message">Send Message</button>
+      <button type="button" id="close-popup" style="background:#999;">Cancel</button>
+    </form>
+  </div>
+</div>
+
+<!-- Partner Application Modal -->
 <div id="partnerModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closePartnerModal()">&times;</span>
