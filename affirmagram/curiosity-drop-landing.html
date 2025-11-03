@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Curiosity Drop — Claim Your Reward</title>
+
+<!-- Google font (optional) -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#f7fbff;
+    --ink:#042435;
+    --accent:#0077b6;
+    --card:#ffffff;
+    --muted:#6b7a86;
+  }
+  html,body{height:100%;}
+  body{
+    margin:0;font-family:Montserrat,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+    background:var(--bg); color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px; box-sizing:border-box;
+  }
+
+  .stage {
+    width:100%; max-width:520px; margin:0 auto;
+    text-align:center;
+  }
+
+  .logo{ width:96px; margin:8px auto 10px; opacity:0.95; }
+
+  /* Hero */
+  h1{ font-size:1.25rem; margin:6px 0 6px; font-weight:700; letter-spacing:0.2px; }
+  p.lead{ margin:0 0 18px; color:var(--muted); font-size:0.975rem; }
+
+  .card{
+    background:var(--card);
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 8px 28px rgba(2,22,34,0.06);
+    border:1px solid rgba(0,0,0,0.04);
+  }
+
+  .center{ text-align:center; }
+
+  .btn {
+    display:inline-block; padding:11px 18px; border-radius:10px; background:var(--accent);
+    color:white; font-weight:600; border:none; cursor:pointer; font-size:0.98rem;
+    box-shadow:0 6px 18px rgba(0,119,182,0.14); transition:transform .12s ease,box-shadow .12s;
+  }
+  .btn:active{ transform:translateY(1px); box-shadow:0 4px 10px rgba(0,119,182,0.08); }
+  .small{ font-size:0.9rem; padding:8px 14px; border-radius:8px; }
+  .muted{ color:var(--muted); font-size:0.92rem; }
+
+  /* challenge area */
+  .challenge { margin-top:14px; }
+  .options { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-top:12px; }
+  .option { background:#f3f8fb; padding:10px 12px; border-radius:10px; cursor:pointer; min-width:140px; text-align:center; border:1px solid rgba(0,0,0,0.03); }
+  .option:hover{ transform:translateY(-3px); transition:transform .12s; box-shadow:0 8px 20px rgba(2,22,34,0.04); }
+
+  .result { margin-top:14px; min-height:22px; font-weight:600; }
+
+  /* reward */
+  .reward-card { margin-top:18px; padding:18px; border-radius:12px; border:1px solid rgba(0,0,0,0.04); background:linear-gradient(180deg,#fff,#fbfeff); }
+  .count { font-weight:700; font-size:1.2rem; color:var(--accent); }
+  .reward-title{ font-weight:700; margin-bottom:6px; }
+
+  /* small helpers */
+  .hidden{ display:none; }
+  footer{ margin-top:18px; font-size:0.82rem; color:var(--muted); }
+
+  /* responsive */
+  @media (max-width:420px){
+    .option{ min-width:120px; font-size:0.95rem; }
+    h1{ font-size:1.12rem; }
+  }
+</style>
+</head>
+<body>
+  <main class="stage">
+    <div class="card center" id="screen-welcome">
+      <img src="CD_LOGO_SRC" alt="Curiosity Drop" class="logo" id="logoTop" onerror="this.style.display='none'">
+      <h1>CONGRATULATIONS — you’re one of the curious.</h1>
+      <p class="lead">Smart homeowners always explore what others ignore.<br><strong>We knew we'd see you here.</strong></p>
+      <p class="muted">One final step to claim your reward:</p>
+      <div style="margin-top:12px;">
+        <button class="btn" id="startBtn">Continue</button>
+      </div>
+    </div>
+
+    <!-- Challenge container (hidden until Continue clicked) -->
+    <div class="card hidden" id="screen-challenge" style="margin-top:18px;">
+      <h1 style="font-size:1.05rem">Just one last test…</h1>
+      <p class="muted">Prove you’re truly a smart homeowner.</p>
+
+      <div id="challengeArea" class="challenge" aria-live="polite"></div>
+      <div class="result" id="result"></div>
+      <div style="margin-top:12px;">
+        <button class="btn small hidden" id="nextBtn" onclick="revealReward()">Unlock Reward</button>
+      </div>
+    </div>
+
+    <!-- Reward -->
+    <div class="card hidden" id="screen-reward" style="margin-top:18px;">
+      <div class="reward-card">
+        <div class="reward-title">✅ Verified Curiosity Detected</div>
+        <div class="muted">Your curiosity earned you:</div>
+        <div style="margin-top:8px; font-size:1.05rem;"><strong>10% off premium interior painting</strong></div>
+        <div style="margin-top:10px" class="muted">(Redeem within 14 days)</div>
+        <p style="margin-top:12px" class="muted">Redirecting in <span class="count" id="timer">12</span> seconds…</p>
+        <div style="margin-top:10px;">
+          <button class="btn small" id="claimNow">Show Me Where</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="muted">Curiosity Drop — for homeowners who notice. • <small id="debug"></small></footer>
+  </main>
+
+<script>
+/* ========== Config ========== */
+const REDIRECT_URL = 'https://curiositydrop.com/newleafpaintingco?drop=1'; // <-- CHANGE THIS to your target
+const COUNTDOWN_SECONDS = 12;
+
+/* ========== Utilities ========== */
+function $(sel){ return document.querySelector(sel); }
+function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+
+/* ========== Puzzle library (three types) ========== */
+const puzzles = [
+  // 1: Multiple choice quick logic
+  {
+    id: 'mc-logic',
+    render: (container, cb) => {
+      container.innerHTML = `
+        <div><strong>Which simple upgrade refreshes a home most — without moving a single wall?</strong></div>
+        <div class="options" role="list">
+          <div class="option" role="listitem" data-ok="false">A new goldfish</div>
+          <div class="option" role="listitem" data-ok="false">A scented candle</div>
+          <div class="option" role="listitem" data-ok="true">Professional painting</div>
+        </div>
+      `;
+      container.querySelectorAll('.option').forEach(el=>{
+        el.addEventListener('click', () => {
+          const correct = el.getAttribute('data-ok') === 'true';
+          cb(correct);
+        });
+      });
+    }
+  },
+
+  // 2: Short riddle + input box
+  {
+    id: 'riddle-input',
+    render: (container, cb) => {
+      container.innerHTML = `
+        <div><strong>Riddle:</strong> I transform a space without moving anything. I change how you feel in seconds. What am I?</div>
+        <div style="margin-top:10px;">
+          <input id="rAnswer" placeholder="Type your answer..." style="padding:10px;border-radius:8px;border:1px solid #e6eef6;width:100%;box-sizing:border-box"/>
+        </div>
+        <div style="margin-top:10px;">
+          <button class="btn small" id="rSubmit">Submit</button>
+        </div>
+      `;
+      container.querySelector('#rSubmit').addEventListener('click', ()=>{
+        const v = (container.querySelector('#rAnswer').value||'').trim().toLowerCase();
+        const correct = ['paint','paint job','fresh paint','painting','fresh paintjob','paint job','paintwork'].includes(v);
+        cb(correct);
+      });
+    }
+  },
+
+  // 3: Tap-to-find "golden drop" tiles (3x3)
+  {
+    id: 'tile-find',
+    render: (container, cb) => {
+      container.innerHTML = `<div><strong>Tap until you find the Golden Drop</strong></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;">
+        ${Array.from({length:9}).map((_,i)=>`<div class="option tile" data-id="${i}" style="padding:18px 8px">?</div>`).join('')}
+      </div>
+      <div style="margin-top:12px;color:var(--muted);font-size:0.92rem">One tile hides the drop. Keep tapping until you win.</div>`;
+      const tiles = container.querySelectorAll('.tile');
+      const winner = Math.floor(Math.random()*9);
+      tiles.forEach(t=>{
+        t.addEventListener('click', () => {
+          const id = Number(t.getAttribute('data-id'));
+          if(id === winner){
+            t.textContent = '💧'; t.style.background='#e6fbff'; t.style.border='1px solid rgba(0,119,182,0.12)';
+            cb(true);
+          } else {
+            t.textContent = '✕'; t.style.opacity = '0.6';
+            // allow retry
+            cb(false, {retry:true});
+          }
+        });
+      });
+    }
+  }
+];
+
+/* ========== App flow ========== */
+const startBtn = $('#startBtn'), screenWelcome = $('#screen-welcome'),
+      screenChallenge = $('#screen-challenge'), challengeArea = $('#challengeArea'),
+      resultEl = $('#result'), screenReward = $('#screen-reward'),
+      nextBtn = $('#nextBtn'), claimNow = $('#claimNow'), timerSpan = $('#timer');
+
+let activePuzzle = null;
+
+startBtn.addEventListener('click', async () => {
+  screenWelcome.classList.add('hidden');
+  screenChallenge.classList.remove('hidden');
+  await wait(220);
+  launchRandomPuzzle();
+});
+
+function launchRandomPuzzle(){
+  resultEl.textContent = '';
+  challengeArea.innerHTML = '';
+  // pick random puzzle
+  activePuzzle = puzzles[Math.floor(Math.random()*puzzles.length)];
+  activePuzzle.render(challengeArea, puzzleCallback);
+}
+
+let lastWrongHinted = false;
+function puzzleCallback(correct, meta){
+  if(correct){
+    resultEl.style.color = '#0a884a';
+    resultEl.textContent = 'Nice — curiosity approved.';
+    // small delay then show reward button
+    nextBtn.classList.remove('hidden');
+    nextBtn.onclick = revealReward;
+  } else {
+    // If it's a tile-find retry, we don't spam text; otherwise show try again
+    if(meta && meta.retry){
+      resultEl.style.color = 'var(--muted)';
+      resultEl.textContent = 'Not this one — keep going.';
+    } else {
+      resultEl.style.color = '#c1121f';
+      resultEl.textContent = 'Not quite — try again.';
+    }
+    // For input/riddle, give a gentle hint after 2 wrong attempts
+    if(activePuzzle.id === 'riddle-input'){
+      if(!lastWrongHinted){
+        lastWrongHinted = true;
+      } else {
+        resultEl.textContent = 'Hint: Think color. Think coverage.';
+      }
+    }
+  }
+}
+
+/* Reveal reward and start countdown */
+function revealReward(){
+  screenChallenge.classList.add('hidden');
+  screenReward.classList.remove('hidden');
+  startCountdown();
+}
+
+let countdownInterval = null;
+function startCountdown(){
+  let t = COUNTDOWN_SECONDS;
+  timerSpan.textContent = t;
+  countdownInterval = setInterval(()=>{
+    t--; timerSpan.textContent = t;
+    if(t<=0){
+      clearInterval(countdownInterval);
+      goRedirect();
+    }
+  },1000);
+}
+
+/* Claim now button */
+claimNow.addEventListener('click', ()=> {
+  clearInterval(countdownInterval);
+  goRedirect();
+});
+
+/* redirect */
+function goRedirect(){
+  // Support redirect override via URL param ?r=...
+  const urlParams = new URLSearchParams(window.location.search);
+  const r = urlParams.get('r') || REDIRECT_URL;
+  // add a small token to show they came from curiosity (optional)
+  const final = r + (r.includes('?') ? '&' : '?') + 'curiosity=1';
+  window.location.href = final;
+}
+
+/* Debug small: show which puzzle loaded (hidden by default) */
+document.getElementById('debug').textContent = '';
+</script>
+</body>
+</html>
