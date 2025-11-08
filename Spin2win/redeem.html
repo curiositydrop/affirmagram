@@ -29,20 +29,16 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 }
 .brought-by-white {
     text-align: center;
-    margin-top: 1rem;  /* space below the grey reward box */
+    margin-top: 1rem;
     font-size: 0.95rem;
     color: #333;
 }
-
 .brought-by-white a {
     color: #ff6b6b;
     text-decoration: none;
     font-weight: bold;
 }
-
-.brought-by-white a:hover {
-    text-decoration: underline;
-}
+.brought-by-white a:hover { text-decoration: underline; }
 .primary-btn:hover { background:#ff4757; }
 #copyButton { padding:0.5rem 1rem; font-size:1rem; margin-top:0.5rem; }
 
@@ -97,15 +93,12 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
         <button id="claimButton" class="primary-btn">Claim Prize</button>
 
-        <!-- Claim Code & Copy Button -->
         <p id="refCode" style="font-weight:bold; margin-top:1rem;">Your Claim Code: </p>
     </div>
-    <!-- Brought to you by outside grey box but inside white container -->
+
     <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
 </div>
-</div>
 
-<!-- Popup Claim Form -->
 <div id="popupForm">
   <div class="form-content">
     <h3>Claim Your Prize</h3>
@@ -117,26 +110,25 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <script src="sponsors.js"></script>
 <script>
-// Read sponsor ID and reference code from URL
 const params = new URLSearchParams(window.location.search);
 const sponsorId = params.get("sponsor");
 const refCode = params.get("ref");
 const winner = sponsors[sponsorId];
 
 if (winner) {
-    // Populate sponsor info
     document.getElementById("sponsorName").textContent = winner.name;
     document.getElementById("prize").textContent = winner.prize;
     document.getElementById("logo").src = winner.logo;
     document.getElementById("logo").alt = winner.name + " Logo";
 
-    // Show reference/claim code
     document.getElementById('refCode').textContent = "Your Claim Code: " + refCode;
 
-    // Claim prize popup
     const claimButton = document.getElementById('claimButton');
     const popupForm = document.getElementById('popupForm');
     const sendEmail = document.getElementById('sendEmail');
+
+    // Log page load (scan/redeem)
+    logEvent(winner.name, refCode, 'redeem');
 
     claimButton.addEventListener('click', () => {
         popupForm.style.display = 'flex';
@@ -162,8 +154,19 @@ if (winner) {
 
         window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
 
+        // Log claim with user info
+        logEvent(winner.name, refCode, 'claim', name, email);
+
         popupForm.style.display = 'none';
     });
+}
+
+// Tracking function
+function logEvent(dropName, refCode, action, name="", email="") {
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+    }).catch(err => console.log('Logging failed', err));
 }
 </script>
 
