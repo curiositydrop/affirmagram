@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Curiosity Drop!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body { font-family:Arial, sans-serif; background:#f5f5f5; margin:0; padding:0;
+       display:flex; justify-content:center; align-items:center; height:100vh; }
+.container { background:#fff; padding:2rem; border-radius:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); max-width:400px; }
+h1 { font-size:2rem; margin-bottom:0.5rem; }
+.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; }
+.reward-box h2 { font-size:1.5rem; margin-bottom:0.5rem; }
+.reward-box img { max-width:150px; margin-bottom:1rem; }
+.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; display:inline-block; text-decoration:none; }
+.primary-btn:hover { background:#ff4757; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎉 You Won! 🎉</h1>
+    <div class="reward-box">
+        <img id="logo" src="" alt="Sponsor Logo">
+        <h2 id="sponsorName">Sponsor Name</h2>
+        <p id="prize">Prize / Offer</p>
+        <p id="contact">Contact Info</p>
+        <a id="visitSponsor" class="primary-btn" href="#" target="_blank">Visit Sponsor</a>
+    </div>
+</div>
+
+<script src="sponsors.js"></script>
+<script>
+// Read sponsor ID from query parameter
+const params = new URLSearchParams(window.location.search);
+const sponsorId = params.get("sponsor");
+const winner = sponsors[sponsorId];
+
+if(winner){
+    document.getElementById("sponsorName").textContent = winner.name;
+    document.getElementById("prize").textContent = winner.prize;
+    document.getElementById("contact").textContent = winner.contact;
+    document.getElementById("logo").src = winner.logo;
+    document.getElementById("visitSponsor").href = winner.url;
+}
+</script>
+
+</body>
+</html>
