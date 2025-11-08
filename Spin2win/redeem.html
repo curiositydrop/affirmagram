@@ -106,23 +106,14 @@ const refCode = params.get("ref");
 const winner = sponsors[sponsorId];
 
 if (winner) {
+    // Populate sponsor info
     document.getElementById("sponsorName").textContent = winner.name;
     document.getElementById("prize").textContent = winner.prize;
-    document.getElementById("contact").textContent = winner.contact;
     document.getElementById("logo").src = winner.logo;
+    document.getElementById("logo").alt = winner.name + " Logo";
 
     // Show reference/claim code
-    const refEl = document.getElementById('refCode');
-    refEl.textContent = "Your Claim Code: " + refCode;
-
-    // Copy button functionality
-    const copyButton = document.getElementById('copyButton');
-    copyButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(refCode).then(() => {
-            copyButton.textContent = "Copied!";
-            setTimeout(() => { copyButton.textContent = "Copy Code"; }, 2000);
-        }).catch(err => console.error('Failed to copy: ', err));
-    });
+    document.getElementById('refCode').textContent = "Your Claim Code: " + refCode;
 
     // Claim prize popup
     const claimButton = document.getElementById('claimButton');
