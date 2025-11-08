@@ -125,6 +125,9 @@ const spinButton = document.getElementById("spinButton");
 const confetti = document.getElementById("confetti");
 const spinSound = document.getElementById("spinSound");
 
+// --- Placeholder characters for shuffle effect ---
+const placeholderChars = ["***", "???", "•••", "!!!", "???", "***"];
+
 // --- LOGGING FUNCTION ---
 function logSpin(dropName){
     fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
@@ -137,26 +140,24 @@ function logSpin(dropName){
 spinButton.addEventListener("click", () => {
     spinButton.disabled = true; // prevent double click
 
-    // Play audio (you can add your clip later)
+    // Play audio if set
     if(spinSound.src) spinSound.play();
 
-    let flickerTime = 2000; // total flicker duration
+    let flickerTime = 2000; // total shuffle duration
     let flickerInterval = 100; // flicker speed
-    let elapsed = 0;
 
-    const flicker = setInterval(() => {
-        const randomDrop = drops[Math.floor(Math.random() * drops.length)];
-        dropNameEl.textContent = randomDrop.name;
-        elapsed += flickerInterval;
+    // Start flicker: show placeholder chars rapidly
+    let flicker = setInterval(() => {
+        dropNameEl.textContent = placeholderChars[Math.floor(Math.random() * placeholderChars.length)];
     }, flickerInterval);
 
-    // After flickerTime, pick the real drop
+    // After flickerTime, reveal final Drop
     setTimeout(() => {
         clearInterval(flicker);
 
-        // Pick the final Drop
+        // pick the final drop
         const finalPick = drops[Math.floor(Math.random() * drops.length)];
-        dropNameEl.textContent = finalPick.name;
+        dropNameEl.textContent = finalPick.name; // reveal real sponsor
 
         // optional: show confetti
         confetti.style.display = 'block';
@@ -171,6 +172,9 @@ spinButton.addEventListener("click", () => {
         }, 1500);
 
     }, flickerTime);
+
+    // initial spin message
+    dropNameEl.textContent = "Spinning…";
 });
 </script>
 
