@@ -29,23 +29,75 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 }
 .primary-btn:hover { background:#ff4757; }
 #copyButton { padding:0.5rem 1rem; font-size:1rem; margin-top:0.5rem; }
+
+/* Popup Form Styles */
+#popupForm {
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+}
+.form-content {
+    background:#fff;
+    padding:2rem;
+    border-radius:10px;
+    max-width:350px;
+    width:90%;
+    text-align:left;
+}
+.form-content h3 {
+    text-align:center;
+    margin-top:0;
+}
+.form-content input {
+    width:100%;
+    padding:0.5rem;
+    margin:0.5rem 0;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+.form-content button {
+    width:100%;
+    padding:0.8rem;
+    background:#ff6b6b;
+    border:none;
+    color:#fff;
+    border-radius:6px;
+    cursor:pointer;
+}
+.form-content button:hover { background:#ff4757; }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🎉 You Won! 🎉</h1>
+    <h1>🎉 WINNER! 🎉</h1>
     <div class="reward-box">
         <img id="logo" src="" alt="Sponsor Logo">
         <h2 id="sponsorName">Sponsor Name</h2>
         <p id="prize">Prize / Offer</p>
         <p id="contact">Contact Info</p>
+
+        <button id="claimButton" class="primary-btn">Claim Prize</button>
         <a id="visitSponsor" class="primary-btn" href="#" target="_blank">Visit Sponsor</a>
 
         <!-- Claim Code & Copy Button -->
         <p id="refCode" style="font-weight:bold; margin-top:1rem;">Your Claim Code: </p>
         <button id="copyButton" class="primary-btn">Copy Code</button>
     </div>
+</div>
+
+<!-- Popup Claim Form -->
+<div id="popupForm">
+  <div class="form-content">
+    <h3>Claim Your Prize</h3>
+    <input type="text" id="userName" placeholder="Your Name" required>
+    <input type="email" id="userEmail" placeholder="Your Email" required>
+    <input type="tel" id="userPhone" placeholder="Your Phone (optional)">
+    <button id="sendEmail">Submit Claim</button>
+  </div>
 </div>
 
 <script src="sponsors.js"></script>
@@ -56,7 +108,7 @@ const sponsorId = params.get("sponsor");
 const refCode = params.get("ref");
 const winner = sponsors[sponsorId];
 
-if(winner){
+if (winner) {
     document.getElementById("sponsorName").textContent = winner.name;
     document.getElementById("prize").textContent = winner.prize;
     document.getElementById("contact").textContent = winner.contact;
@@ -72,10 +124,41 @@ if(winner){
     copyButton.addEventListener('click', () => {
         navigator.clipboard.writeText(refCode).then(() => {
             copyButton.textContent = "Copied!";
-            setTimeout(()=>{ copyButton.textContent = "Copy Code"; }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-        });
+            setTimeout(() => { copyButton.textContent = "Copy Code"; }, 2000);
+        }).catch(err => console.error('Failed to copy: ', err));
+    });
+
+    // Claim prize popup
+    const claimButton = document.getElementById('claimButton');
+    const popupForm = document.getElementById('popupForm');
+    const sendEmail = document.getElementById('sendEmail');
+
+    claimButton.addEventListener('click', () => {
+        popupForm.style.display = 'flex';
+    });
+
+    popupForm.addEventListener('click', (e) => {
+        if (e.target === popupForm) popupForm.style.display = 'none';
+    });
+
+    sendEmail.addEventListener('click', () => {
+        const name = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+        const phone = document.getElementById('userPhone').value;
+
+        if (!name || !email) {
+            alert('Please fill in your name and email.');
+            return;
+        }
+
+        const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
+        const body = encodeURIComponent(
+            `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`
+        );
+
+        window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
+
+        popupForm.style.display = 'none';
     });
 }
 </script>
