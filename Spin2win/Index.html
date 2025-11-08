@@ -66,11 +66,19 @@ const spinSound = document.getElementById("spinSound");
 const placeholderChars = ["***","???","•••","!!!","???","***"];
 
 // Logging function (optional)
-function logSpin(dropName){
+function logSpin(dropName, refCode){
     fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',{
         method:'POST',
-        body: JSON.stringify({drop: dropName, timestamp: new Date().toISOString()})
+        body: JSON.stringify({drop: dropName, ref: refCode, timestamp: new Date().toISOString()})
     }).catch(err=>console.log('Logging failed',err));
+}
+
+// Generate unique reference code
+function generateRefCode() {
+    const date = new Date();
+    const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
+    const rand = Math.floor(Math.random()*9000)+1000; // 1000-9999
+    return `CD-${yyyymmdd}-${rand}`;
 }
 
 spinButton.addEventListener("click", () => {
@@ -101,11 +109,14 @@ spinButton.addEventListener("click", () => {
         confetti.style.display='block';
         setTimeout(()=>{ confetti.style.display='none'; }, 2000);
 
-        logSpin(finalPick.name);
+        // Generate unique reference code
+        const refCode = generateRefCode();
 
-        // Show Redeem button (no redirect until clicked)
+        logSpin(finalPick.name, refCode);
+
+        // Show Redeem button with ref code in URL
         redeemButton.style.display="inline-block";
-        redeemButton.href=`redeem.html?sponsor=${randomKey}`;
+        redeemButton.href=`redeem.html?sponsor=${randomKey}&ref=${refCode}`;
 
     }, flickerTime);
 
