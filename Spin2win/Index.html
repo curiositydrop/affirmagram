@@ -46,6 +46,7 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
         <span class="checkmark">🎯</span>
         <h2 id="dropName">Tap spin to reveal your Drop!</h2>
         <p>No gimmicks. No ads. Just curiosity → rewards.</p>
+        <!-- Redeem button hidden by default -->
         <a id="redeemButton" class="primary-btn" href="#" style="display:none;">Redeem Your Drop</a>
     </div>
 
@@ -64,6 +65,7 @@ const spinSound = document.getElementById("spinSound");
 
 const placeholderChars = ["***","???","•••","!!!","???","***"];
 
+// Logging function (optional)
 function logSpin(dropName){
     fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',{
         method:'POST',
@@ -80,31 +82,36 @@ spinButton.addEventListener("click", () => {
     let flickerTime = 2000;
     let flickerInterval = 100;
 
+    // Flicker animation
     let flicker = setInterval(()=>{
         dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
     }, flickerInterval);
 
     setTimeout(()=>{
         clearInterval(flicker);
-        // pick final sponsor
+
+        // Pick final sponsor
         const keys = Object.keys(sponsors);
         const randomKey = keys[Math.floor(Math.random()*keys.length)];
         const finalPick = sponsors[randomKey];
 
         dropNameEl.textContent = finalPick.name;
 
+        // Show confetti briefly
         confetti.style.display='block';
         setTimeout(()=>{ confetti.style.display='none'; }, 2000);
 
         logSpin(finalPick.name);
 
-        // Show redeem button linking to redeem page
+        // Show Redeem button (no redirect until clicked)
         redeemButton.style.display="inline-block";
         redeemButton.href=`redeem.html?sponsor=${randomKey}`;
+
     }, flickerTime);
 
     dropNameEl.textContent="Spinning…";
 });
 </script>
+
 </body>
 </html>
