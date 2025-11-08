@@ -27,6 +27,22 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; 
     border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; display:inline-block; text-decoration:none; 
 }
+.brought-by-white {
+    text-align: center;
+    margin-top: 1rem;  /* space below the grey reward box */
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.brought-by-white a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.brought-by-white a:hover {
+    text-decoration: underline;
+}
 .primary-btn:hover { background:#ff4757; }
 #copyButton { padding:0.5rem 1rem; font-size:1rem; margin-top:0.5rem; }
 
@@ -83,8 +99,10 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
         <!-- Claim Code & Copy Button -->
         <p id="refCode" style="font-weight:bold; margin-top:1rem;">Your Claim Code: </p>
-    
     </div>
+    <!-- Brought to you by outside grey box but inside white container -->
+    <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
+</div>
 </div>
 
 <!-- Popup Claim Form -->
