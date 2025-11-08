@@ -5,7 +5,7 @@ const sponsors = {
     prize: "10% off interior painting",
     contact: "207.468.5509",
     url: "/drop/newleaf",
-    logo: "curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png"
+    logo: "http://www.curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png"
   },
   mbg: {
     name: "MBG Digital",
