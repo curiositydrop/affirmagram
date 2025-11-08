@@ -31,9 +31,10 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <script src="sponsors.js"></script>
 <script>
-// Read sponsor ID from query parameter
+// Read sponsor ID and reference code from URL
 const params = new URLSearchParams(window.location.search);
 const sponsorId = params.get("sponsor");
+const refCode = params.get("ref");
 const winner = sponsors[sponsorId];
 
 if(winner){
@@ -42,6 +43,13 @@ if(winner){
     document.getElementById("contact").textContent = winner.contact;
     document.getElementById("logo").src = winner.logo;
     document.getElementById("visitSponsor").href = winner.url;
+
+    // Show reference/claim code
+    const refEl = document.createElement('p');
+    refEl.textContent = "Your Claim Code: " + refCode;
+    refEl.style.fontWeight = "bold";
+    refEl.style.marginTop = "1rem";
+    document.querySelector('.reward-box').appendChild(refEl);
 }
 </script>
 
