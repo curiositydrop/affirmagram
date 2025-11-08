@@ -30,17 +30,15 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 }
 .brought-by-white {
     text-align: center;
-    margin-top: 1rem;  /* space below the grey reward box */
+    margin-top: 1rem;
     font-size: 0.95rem;
     color: #333;
 }
-
 .brought-by-white a {
     color: #ff6b6b;
     text-decoration: none;
     font-weight: bold;
 }
-
 .brought-by-white a:hover {
     text-decoration: underline;
 }
@@ -62,14 +60,12 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
         <span class="checkmark">🎯</span>
         <h2 id="dropName">Tap spin to reveal your win!</h2>
         <p id="itSimple">It really <i>is</i> that simple!</p>
-        <!-- Redeem button hidden by default -->
         <a id="redeemButton" class="primary-btn" href="#" style="display:none;">Redeem Your Reward!</a>
     </div>
 
     <button class="primary-btn" id="spinButton">🎯 Spin to Win</button>
     <audio id="spinSound" src="" preload="auto"></audio>
     <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
-</div>
 </div>
 
 <script src="sponsors.js"></script>
@@ -79,28 +75,30 @@ const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
 const confetti = document.getElementById("confetti");
 const spinSound = document.getElementById("spinSound");
+const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
-// Logging function (optional)
-function logSpin(dropName, refCode){
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec',{
-        method:'POST',
-        body: JSON.stringify({drop: dropName, ref: refCode, timestamp: new Date().toISOString()})
-    }).catch(err=>console.log('Logging failed',err));
+// Logging function for Google Sheet
+function logEvent(dropName, refCode, action, name="", email="") {
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+    }).catch(err => console.log('Logging failed', err));
 }
 
 // Generate unique reference code
 function generateRefCode() {
     const date = new Date();
     const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
-    const rand = Math.floor(Math.random()*9000)+1000; // 1000-9999
+    const rand = Math.floor(Math.random()*9000)+1000;
     return `CD-${yyyymmdd}-${rand}`;
 }
 
 spinButton.addEventListener("click", () => {
     spinButton.disabled = true;
     redeemButton.style.display="none";
+    itSimple.style.display = "none";
 
     if(spinSound.src) spinSound.play();
 
@@ -129,7 +127,8 @@ spinButton.addEventListener("click", () => {
         // Generate unique reference code
         const refCode = generateRefCode();
 
-        logSpin(finalPick.name, refCode);
+        // Log spin to Google Sheet
+        logEvent(finalPick.name, refCode, 'spin');
 
         // Show Redeem button with ref code in URL
         redeemButton.style.display="inline-block";
@@ -138,7 +137,6 @@ spinButton.addEventListener("click", () => {
     }, flickerTime);
 
     dropNameEl.textContent="Spinning…";
-document.getElementById("itSimple").style.display = "none"; // <- new line
 });
 </script>
 
