@@ -81,7 +81,6 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
         <p id="contact">Contact Info</p>
 
         <button id="claimButton" class="primary-btn">Claim Prize</button>
-        <a id="visitSponsor" class="primary-btn" href="#" target="_blank">Visit Sponsor</a>
 
         <!-- Claim Code & Copy Button -->
         <p id="refCode" style="font-weight:bold; margin-top:1rem;">Your Claim Code: </p>
@@ -95,7 +94,6 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     <h3>Claim Your Prize</h3>
     <input type="text" id="userName" placeholder="Your Name" required>
     <input type="email" id="userEmail" placeholder="Your Email" required>
-    <input type="tel" id="userPhone" placeholder="Your Phone (optional)">
     <button id="sendEmail">Submit Claim</button>
   </div>
 </div>
@@ -113,7 +111,6 @@ if (winner) {
     document.getElementById("prize").textContent = winner.prize;
     document.getElementById("contact").textContent = winner.contact;
     document.getElementById("logo").src = winner.logo;
-    document.getElementById("visitSponsor").href = winner.url;
 
     // Show reference/claim code
     const refEl = document.getElementById('refCode');
@@ -144,7 +141,6 @@ if (winner) {
     sendEmail.addEventListener('click', () => {
         const name = document.getElementById('userName').value;
         const email = document.getElementById('userEmail').value;
-        const phone = document.getElementById('userPhone').value;
 
         if (!name || !email) {
             alert('Please fill in your name and email.');
@@ -153,7 +149,7 @@ if (winner) {
 
         const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
         const body = encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`
+            `Name: ${name}\nEmail: ${email}\n\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`
         );
 
         window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
