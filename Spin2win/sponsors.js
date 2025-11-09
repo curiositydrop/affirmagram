@@ -7,8 +7,9 @@ const sponsors = {
     url: "/drop/newleaf",
     logo: "http://www.curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png",
     email: "info@newleafpaintingco.com",
-    deposit: 500, // optional initial deposit placeholder, can track in Google Sheet instead
-    spinsUsed: 0  // optional placeholder, increment in your logging if desired
+    permanent: true, // stays in rotation always
+    deposit: 0,      // or 500 if you want a placeholder
+    spinsUsed: 0
   },
   /*
   mbg: {
