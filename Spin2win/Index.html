@@ -111,7 +111,9 @@ async function fetchSponsorsFromSheet() {
 
 // pick random eligible sponsor client-side
 function pickRandomEligibleSponsor(data) {
-    const eligible = Object.keys(data).filter(k => data[k].credits >= data[k].costPerWin);
+    const eligible = Object.keys(data).filter(
+  k => data[k].permanent || data[k].credits >= data[k].costPerWin
+);
     if (eligible.length === 0) return null;
     const key = eligible[Math.floor(Math.random()*eligible.length)];
     return data[key];
