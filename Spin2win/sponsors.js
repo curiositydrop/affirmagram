@@ -13,7 +13,7 @@ const sponsors = {
     prize: "15% off marketing package",
     contact: "contact@mbgdigital.com",
     url: "/drop/mbg",
-    logo: "/images/mbg-logo.png"
+    logo: "/images/mbg-logo.png",
     email: "mbergeron79@gmail.com"
   },
   mystery: {
