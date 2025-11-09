@@ -8,6 +8,7 @@ const sponsors = {
     logo: "http://www.curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png",
     email: "info@newleafpaintingco.com"
   },
+  /*
   mbg: {
     name: "MBG Digital",
     prize: "15% off marketing package",
@@ -15,12 +16,13 @@ const sponsors = {
     url: "/drop/mbg",
     logo: "/images/mbg-logo.png",
     email: "mbergeron79@gmail.com"
-  },
+  }, */
+  /*
   mystery: {
     name: "Mystery Drop",
     prize: "Surprise Gift",
     contact: "info@example.com",
     url: "/drop/loading",
     logo: "/images/mystery-logo.png"
-  }
+  }*/
 };
