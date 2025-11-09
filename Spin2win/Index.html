@@ -42,12 +42,8 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
 </div>
 
-<!-- Load sponsors data -->
 <script src="sponsors.js"></script>
 <script>
-// CONFIG: replace with your Apps Script base URL
-const SHEET_API_BASE_URL = "https://script.google.com/macros/s/DEPLOY_ID/exec"; // <-- REPLACE
-
 const dropNameEl = document.getElementById("dropName");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
@@ -56,14 +52,11 @@ const spinSound = document.getElementById("spinSound");
 const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
-
-let sponsorsData = {}; // hold sponsor objects keyed by sponsorId
+let sponsorsData = {}; // will hold sponsor objects keyed by sponsorId
 
 // ==============================
 // HELPER FUNCTIONS
 // ==============================
-
-// Generate unique reference code
 function generateRefCode() {
     const date = new Date();
     const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
@@ -71,45 +64,21 @@ function generateRefCode() {
     return `CD-${yyyymmdd}-${rand}`;
 }
 
-// Logging helper: fallback to console if POST fails
+// Placeholder for sheet logging
 async function postToSheet(payload) {
-    try {
-        const res = await fetch(SHEET_API_BASE_URL, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(payload)
-        });
-        return await res.json();
-    } catch (err) {
-        console.warn('POST to sheet failed:', err);
-        return {status:"error", message: err.message};
-    }
+    // Implement later
+    console.log("Logging payload:", payload);
+    return {status:"ok", remaining: payload.remaining || 0};
 }
 
-// Fetch sponsors from sheet (GET)
+// Fetch sponsors (placeholder local fallback)
 async function fetchSponsorsFromSheet() {
-    try {
-        const url = SHEET_API_BASE_URL + "?action=getSponsors";
-        const res = await fetch(url);
-        const data = await res.json();
-        const obj = {};
-        data.forEach(s => {
-            obj[s.sponsorId] = {
-                sponsorId: s.sponsorId,
-                name: s.name,
-                prize: s.prize,
-                email: s.email,
-                permanent: s.permanent || false,
-                credits: Number(s.credits) || 0,
-                costPerWin: Number(s.costPerWin) || 3,
-                spinsUsed: Number(s.spinsUsed) || 0
-            };
-        });
-        return obj;
-    } catch (err) {
-        console.warn('Failed to fetch sponsors from sheet, falling back to local sponsors.js', err);
-        return window.sponsors || {};
+    // Use your sponsors.js for now
+    const obj = {};
+    for (let key in sponsors) {
+        obj[key] = {...sponsors[key]};
     }
+    return obj;
 }
 
 // ==============================
@@ -125,31 +94,30 @@ function pickRandomEligibleSponsor(data) {
 }
 
 // ==============================
-// SPIN BUTTON CLICK LOGIC
+// SPIN BUTTON LOGIC
 // ==============================
 spinButton.addEventListener("click", async () => {
     spinButton.disabled = true;
-    redeemButton.style.display = "none";
+    redeemButton.style.display="none";
     itSimple.style.display = "none";
+    if(spinSound.src) spinSound.play();
 
-    if (spinSound.src) spinSound.play();
-
-    // Flicker animation
     let flickerTime = 2000;
     let flickerInterval = 100;
-    let flicker = setInterval(() => {
-        dropNameEl.textContent = placeholderChars[Math.floor(Math.random() * placeholderChars.length)];
+
+    let flicker = setInterval(()=>{
+        dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
     }, flickerInterval);
 
     setTimeout(async () => {
-        clearInterval(flicker);
+        clearInterval(flicker); // stop flicker first
 
-        // Load sponsors if not loaded
+        // Load sponsors
         if (!Object.keys(sponsorsData).length) {
             sponsorsData = await fetchSponsorsFromSheet();
         }
 
-        // Pick a sponsor client-side
+        // Pick a random eligible sponsor
         let candidate = pickRandomEligibleSponsor(sponsorsData);
 
         // Fallback: always show New Leaf if nothing else
@@ -157,40 +125,29 @@ spinButton.addEventListener("click", async () => {
             candidate = sponsorsData['newleaf'];
         }
 
-        // Generate ref code
+        // Generate reference code
         const refCode = generateRefCode();
 
-        // Update UI immediately so user sees the sponsor
+        // Update UI immediately
         dropNameEl.textContent = candidate.name;
 
-        // Attempt to log spin to sheet
-        let result;
-        if (SHEET_API_BASE_URL && !SHEET_API_BASE_URL.includes("DEPLOY_ID")) {
-            try {
-                result = await postToSheet({
-                    action: "spin",
-                    sponsorId: candidate.sponsorId,
-                    sponsorName: candidate.name,
-                    refCode: refCode
-                });
-            } catch (err) {
-                console.warn("Failed to log spin, proceeding anyway:", err);
-                result = { status: "ok", remaining: candidate.credits || 0 };
-            }
-        } else {
-            result = { status: "ok", remaining: candidate.credits || 0 };
-        }
+        // Attempt to log spin
+        await postToSheet({
+            action: "spin",
+            sponsorId: candidate.sponsorId,
+            sponsorName: candidate.name,
+            refCode: refCode,
+            remaining: candidate.credits
+        });
 
-        // Update local sponsor credits if present
-        if (sponsorsData[candidate.sponsorId]) {
-            sponsorsData[candidate.sponsorId].credits = result.remaining;
-        }
+        // Update local credits
+        sponsorsData[candidate.sponsorId].credits = (candidate.credits || 0) - (candidate.costPerWin || 3);
 
         // Show confetti
         confetti.style.display = "block";
-        setTimeout(() => { confetti.style.display = "none"; }, 2000);
+        setTimeout(()=>{ confetti.style.display='none'; }, 2000);
 
-        // Show Redeem button
+        // Show redeem button
         redeemButton.style.display = "inline-block";
         redeemButton.href = `redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
 
