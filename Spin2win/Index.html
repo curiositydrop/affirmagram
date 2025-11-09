@@ -79,11 +79,22 @@ const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
-// Logging function for Google Sheet
-function logEvent(dropName, refCode, action, name="", email="") {
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+// ---- LOGGING FUNCTION (full tracking) ----
+function logEvent(dropName, refCode, action, name="", email="", phone="", message="") {
+    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // <-- Replace with your Apps Script ID
+    const payload = {
+        drop: dropName,
+        ref: refCode,
+        action: action,
+        name: name,
+        email: email,
+        phone: phone,
+        message: message,
+        timestamp: new Date().toISOString()
+    };
+    fetch(scriptURL, {
         method: 'POST',
-        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+        body: JSON.stringify(payload)
     }).catch(err => console.log('Logging failed', err));
 }
 
@@ -127,7 +138,7 @@ spinButton.addEventListener("click", () => {
         // Generate unique reference code
         const refCode = generateRefCode();
 
-        // Log spin to Google Sheet
+        // ---- LOG THE SPIN EVENT ----
         logEvent(finalPick.name, refCode, 'spin');
 
         // Show Redeem button with ref code in URL
