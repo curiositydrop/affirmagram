@@ -45,9 +45,6 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <script src="sponsors.js"></script>
 <script>
-/* CONFIG: replace with your Apps Script base URL (no params) */
-const SHEET_API_BASE_URL = "https://script.google.com/macros/s/DEPLOY_ID/exec"; // <-- REPLACE
-
 const dropNameEl = document.getElementById("dropName");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
@@ -58,6 +55,10 @@ const itSimple = document.getElementById("itSimple");
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
 let sponsorsData = {}; // will hold sponsor objects keyed by sponsorId
+
+// ==============================
+// HELPER FUNCTIONS
+// ==============================
 
 // Generate unique reference code
 function generateRefCode() {
@@ -88,7 +89,6 @@ async function fetchSponsorsFromSheet() {
         const url = SHEET_API_BASE_URL + "?action=getSponsors";
         const res = await fetch(url);
         const data = await res.json();
-        // transform into keyed object, only sponsors with credits >= costPerWin are eligible
         const obj = {};
         data.forEach(s => {
             obj[s.sponsorId] = {
@@ -96,6 +96,7 @@ async function fetchSponsorsFromSheet() {
                 name: s.name,
                 prize: s.prize,
                 email: s.email,
+                permanent: s.permanent || false,
                 credits: Number(s.credits) || 0,
                 costPerWin: Number(s.costPerWin) || 3,
                 spinsUsed: Number(s.spinsUsed) || 0
@@ -104,21 +105,25 @@ async function fetchSponsorsFromSheet() {
         return obj;
     } catch (err) {
         console.warn('Failed to fetch sponsors from sheet, falling back to local sponsors.js', err);
-        // fallback to local sponsors.js
         return window.sponsors || {};
     }
 }
 
-// pick random eligible sponsor client-side
+// ==============================
+// PICK RANDOM ELIGIBLE SPONSOR
+// ==============================
 function pickRandomEligibleSponsor(data) {
     const eligible = Object.keys(data).filter(
-  k => data[k].permanent || data[k].credits >= data[k].costPerWin
-);
+        k => data[k].permanent || data[k].credits >= data[k].costPerWin
+    );
     if (eligible.length === 0) return null;
-    const key = eligible[Math.floor(Math.random()*eligible.length)];
+    const key = eligible[Math.floor(Math.random() * eligible.length)];
     return data[key];
 }
 
+// ==============================
+// SPIN BUTTON CLICK LOGIC
+// ==============================
 spinButton.addEventListener("click", async () => {
     spinButton.disabled = true;
     redeemButton.style.display="none";
@@ -141,20 +146,19 @@ spinButton.addEventListener("click", async () => {
             sponsorsData = await fetchSponsorsFromSheet();
         }
 
-        // pick a sponsor client-side
+        // Pick a sponsor client-side
         let candidate = pickRandomEligibleSponsor(sponsorsData);
 
         if (!candidate) {
-            // nothing eligible
             dropNameEl.textContent = "No prizes available this week 😢";
             spinButton.disabled = false;
             return;
         }
 
-        // generate ref code
+        // Generate ref code
         const refCode = generateRefCode();
 
-        // ask server to decrement and log the spin
+        // Ask server to decrement and log the spin
         const payload = {
             action: "spin",
             sponsorId: candidate.sponsorId,
@@ -165,46 +169,18 @@ spinButton.addEventListener("click", async () => {
         const result = await postToSheet(payload);
 
         if (result && result.status === "ok") {
-            // success: server decremented credits and logged
             dropNameEl.textContent = candidate.name;
-
-            // update local view of credits (if present)
             if (sponsorsData[candidate.sponsorId]) {
                 sponsorsData[candidate.sponsorId].credits = result.remaining;
             }
 
-            // Show confetti
             confetti.style.display='block';
             setTimeout(()=>{ confetti.style.display='none'; }, 2000);
 
-            // Show Redeem button with ref code in URL
             redeemButton.style.display="inline-block";
             redeemButton.href=`redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
-
         } else {
-            // server said no credits or error — refresh sponsors and retry once
-            sponsorsData = await fetchSponsorsFromSheet();
-            const retryCandidate = pickRandomEligibleSponsor(sponsorsData);
-            if (!retryCandidate) {
-                dropNameEl.textContent = "No prizes available this week 😢";
-                spinButton.disabled = false;
-                return;
-            } else {
-                // attempt second try (same flow)
-                const ref2 = generateRefCode();
-                const res2 = await postToSheet({action:"spin", sponsorId: retryCandidate.sponsorId, sponsorName: retryCandidate.name, refCode: ref2});
-                if (res2 && res2.status === "ok") {
-                    dropNameEl.textContent = retryCandidate.name;
-                    confetti.style.display='block';
-                    setTimeout(()=>{ confetti.style.display='none'; }, 2000);
-                    redeemButton.style.display="inline-block";
-                    redeemButton.href=`redeem.html?sponsor=${retryCandidate.sponsorId}&ref=${ref2}`;
-                } else {
-                    dropNameEl.textContent = "No prizes available right now. Try again later.";
-                    spinButton.disabled = false;
-                    return;
-                }
-            }
+            dropNameEl.textContent = "No prizes available right now. Try again later.";
         }
 
         spinButton.disabled = false;
