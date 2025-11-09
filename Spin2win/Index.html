@@ -5,43 +5,18 @@
 <title>Curiosity Drop — Spin to Win 🎯</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin:0; padding:0;
-    display:flex; justify-content:center; align-items:center;
-    height:100vh;
-}
-.container {
-    background:#fff; padding:2rem; border-radius:12px;
-    text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2);
-    max-width:400px; position:relative;
-}
+/* (keep your existing styles) */
+body { font-family: Arial, sans-serif; background: #f5f5f5; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh;}
+.container { background:#fff; padding:2rem; border-radius:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); max-width:400px; position:relative;}
 h1 { font-size:2rem; margin-bottom:0.5rem; }
 .lead, .subtle { margin:0.5rem 0; }
-.reward-box {
-    background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative;
-}
+.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative; }
 .reward-box h2 { font-size:1.5rem; margin-bottom:0.5rem; }
 .checkmark { font-size:2rem; }
-.primary-btn {
-    padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none;
-    border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s;
-}
-.brought-by-white {
-    text-align: center;
-    margin-top: 1rem;
-    font-size: 0.95rem;
-    color: #333;
-}
-.brought-by-white a {
-    color: #ff6b6b;
-    text-decoration: none;
-    font-weight: bold;
-}
-.brought-by-white a:hover {
-    text-decoration: underline;
-}
+.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s; }
+.brought-by-white { text-align: center; margin-top: 1rem; font-size: 0.95rem; color: #333; }
+.brought-by-white a { color: #ff6b6b; text-decoration: none; font-weight: bold; }
+.brought-by-white a:hover { text-decoration: underline; }
 .primary-btn:hover { background:#ff4757; }
 .confetti { position:absolute; width:100%; height:100%; pointer-events:none; }
 .tiny { font-size:0.8rem; color:#666; margin-top:1rem; }
@@ -70,6 +45,9 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <script src="sponsors.js"></script>
 <script>
+/* CONFIG: replace with your Apps Script base URL (no params) */
+const SHEET_API_BASE_URL = "https://script.google.com/macros/s/DEPLOY_ID/exec"; // <-- REPLACE
+
 const dropNameEl = document.getElementById("dropName");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
@@ -79,24 +57,7 @@ const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
-// ---- LOGGING FUNCTION (full tracking) ----
-function logEvent(dropName, refCode, action, name="", email="", phone="", message="") {
-    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // <-- Replace with your Apps Script ID
-    const payload = {
-        drop: dropName,
-        ref: refCode,
-        action: action,
-        name: name,
-        email: email,
-        phone: phone,
-        message: message,
-        timestamp: new Date().toISOString()
-    };
-    fetch(scriptURL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-    }).catch(err => console.log('Logging failed', err));
-}
+let sponsorsData = {}; // will hold sponsor objects keyed by sponsorId
 
 // Generate unique reference code
 function generateRefCode() {
@@ -106,7 +67,57 @@ function generateRefCode() {
     return `CD-${yyyymmdd}-${rand}`;
 }
 
-spinButton.addEventListener("click", () => {
+// Logging helper: fallback to console if POST fails
+async function postToSheet(payload) {
+    try {
+        const res = await fetch(SHEET_API_BASE_URL, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(payload)
+        });
+        return await res.json();
+    } catch (err) {
+        console.warn('POST to sheet failed:', err);
+        return {status:"error", message: err.message};
+    }
+}
+
+// Fetch sponsors from sheet (GET)
+async function fetchSponsorsFromSheet() {
+    try {
+        const url = SHEET_API_BASE_URL + "?action=getSponsors";
+        const res = await fetch(url);
+        const data = await res.json();
+        // transform into keyed object, only sponsors with credits >= costPerWin are eligible
+        const obj = {};
+        data.forEach(s => {
+            obj[s.sponsorId] = {
+                sponsorId: s.sponsorId,
+                name: s.name,
+                prize: s.prize,
+                email: s.email,
+                credits: Number(s.credits) || 0,
+                costPerWin: Number(s.costPerWin) || 3,
+                spinsUsed: Number(s.spinsUsed) || 0
+            };
+        });
+        return obj;
+    } catch (err) {
+        console.warn('Failed to fetch sponsors from sheet, falling back to local sponsors.js', err);
+        // fallback to local sponsors.js
+        return window.sponsors || {};
+    }
+}
+
+// pick random eligible sponsor client-side
+function pickRandomEligibleSponsor(data) {
+    const eligible = Object.keys(data).filter(k => data[k].credits >= data[k].costPerWin);
+    if (eligible.length === 0) return null;
+    const key = eligible[Math.floor(Math.random()*eligible.length)];
+    return data[key];
+}
+
+spinButton.addEventListener("click", async () => {
     spinButton.disabled = true;
     redeemButton.style.display="none";
     itSimple.style.display = "none";
@@ -116,35 +127,85 @@ spinButton.addEventListener("click", () => {
     let flickerTime = 2000;
     let flickerInterval = 100;
 
-    // Flicker animation
     let flicker = setInterval(()=>{
         dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
     }, flickerInterval);
 
-    setTimeout(()=>{
+    setTimeout(async ()=>{
         clearInterval(flicker);
 
-        // Pick final sponsor
-        const keys = Object.keys(sponsors);
-        const randomKey = keys[Math.floor(Math.random()*keys.length)];
-        const finalPick = sponsors[randomKey];
+        // Load sponsors if not loaded
+        if (!Object.keys(sponsorsData).length) {
+            sponsorsData = await fetchSponsorsFromSheet();
+        }
 
-        dropNameEl.textContent = finalPick.name;
+        // pick a sponsor client-side
+        let candidate = pickRandomEligibleSponsor(sponsorsData);
 
-        // Show confetti briefly
-        confetti.style.display='block';
-        setTimeout(()=>{ confetti.style.display='none'; }, 2000);
+        if (!candidate) {
+            // nothing eligible
+            dropNameEl.textContent = "No prizes available this week 😢";
+            spinButton.disabled = false;
+            return;
+        }
 
-        // Generate unique reference code
+        // generate ref code
         const refCode = generateRefCode();
 
-        // ---- LOG THE SPIN EVENT ----
-        logEvent(finalPick.name, refCode, 'spin');
+        // ask server to decrement and log the spin
+        const payload = {
+            action: "spin",
+            sponsorId: candidate.sponsorId,
+            sponsorName: candidate.name,
+            refCode: refCode
+        };
 
-        // Show Redeem button with ref code in URL
-        redeemButton.style.display="inline-block";
-        redeemButton.href=`redeem.html?sponsor=${randomKey}&ref=${refCode}`;
+        const result = await postToSheet(payload);
 
+        if (result && result.status === "ok") {
+            // success: server decremented credits and logged
+            dropNameEl.textContent = candidate.name;
+
+            // update local view of credits (if present)
+            if (sponsorsData[candidate.sponsorId]) {
+                sponsorsData[candidate.sponsorId].credits = result.remaining;
+            }
+
+            // Show confetti
+            confetti.style.display='block';
+            setTimeout(()=>{ confetti.style.display='none'; }, 2000);
+
+            // Show Redeem button with ref code in URL
+            redeemButton.style.display="inline-block";
+            redeemButton.href=`redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
+
+        } else {
+            // server said no credits or error — refresh sponsors and retry once
+            sponsorsData = await fetchSponsorsFromSheet();
+            const retryCandidate = pickRandomEligibleSponsor(sponsorsData);
+            if (!retryCandidate) {
+                dropNameEl.textContent = "No prizes available this week 😢";
+                spinButton.disabled = false;
+                return;
+            } else {
+                // attempt second try (same flow)
+                const ref2 = generateRefCode();
+                const res2 = await postToSheet({action:"spin", sponsorId: retryCandidate.sponsorId, sponsorName: retryCandidate.name, refCode: ref2});
+                if (res2 && res2.status === "ok") {
+                    dropNameEl.textContent = retryCandidate.name;
+                    confetti.style.display='block';
+                    setTimeout(()=>{ confetti.style.display='none'; }, 2000);
+                    redeemButton.style.display="inline-block";
+                    redeemButton.href=`redeem.html?sponsor=${retryCandidate.sponsorId}&ref=${ref2}`;
+                } else {
+                    dropNameEl.textContent = "No prizes available right now. Try again later.";
+                    spinButton.disabled = false;
+                    return;
+                }
+            }
+        }
+
+        spinButton.disabled = false;
     }, flickerTime);
 
     dropNameEl.textContent="Spinning…";
