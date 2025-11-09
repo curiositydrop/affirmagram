@@ -9,10 +9,11 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; margin:0; padding:0;
 .container { background:#fff; padding:2rem; border-radius:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); max-width:400px; position:relative;}
 h1 { font-size:2rem; margin-bottom:0.5rem; }
 .lead, .subtle { margin:0.5rem 0; }
-.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative; }
+.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative; min-height:300px;}
 .reward-box h2 { font-size:1.5rem; margin-bottom:0.5rem; }
+.reward-box img { max-width:150px; margin-bottom:1rem; display:none; }
 .checkmark { font-size:2rem; }
-.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s; }
+.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s; display:none; text-decoration:none; }
 .brought-by-white { text-align: center; margin-top: 1rem; font-size: 0.95rem; color: #333; }
 .brought-by-white a { color: #ff6b6b; text-decoration: none; font-weight: bold; }
 .brought-by-white a:hover { text-decoration: underline; }
@@ -31,13 +32,13 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     <p class="subtle">No gimmicks. No ads. Just curiosity → rewards.</p>
 
     <div class="reward-box">
-        <span class="checkmark">🎯</span>
+        <img id="dropLogo" src="" alt="Sponsor Logo">
         <h2 id="dropName">Tap spin to reveal your win!</h2>
-        <p id="itSimple">It really <i>is</i> that simple!</p>
-        <a id="redeemButton" class="primary-btn" href="#" style="display:none;">Redeem Your Reward!</a>
+        <p id="dropPrize">It really <i>is</i> that simple!</p>
+        <a id="redeemButton" class="primary-btn" href="#">Claim Prize</a>
     </div>
 
-    <button class="primary-btn" id="spinButton">🎯 Spin to Win</button>
+    <button class="primary-btn" id="spinButton" style="display:inline-block;">🎯 Spin to Win</button>
     <audio id="spinSound" src="" preload="auto"></audio>
     <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
 </div>
@@ -45,18 +46,17 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 <script src="sponsors.js"></script>
 <script>
 const dropNameEl = document.getElementById("dropName");
+const dropPrizeEl = document.getElementById("dropPrize");
+const dropLogoEl = document.getElementById("dropLogo");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
 const confetti = document.getElementById("confetti");
 const spinSound = document.getElementById("spinSound");
-const itSimple = document.getElementById("itSimple");
 
-const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
-let sponsorsData = {}; // will hold sponsor objects keyed by sponsorId
+const placeholderChars = ["🎯🎯🎯","🎉🎉🎉","✨✨✨","🎁🎁🎁","💫💫💫","⭐️⭐️⭐"];
 
-// ==============================
-// HELPER FUNCTIONS
-// ==============================
+let sponsorsData = {}; // filled later
+
 function generateRefCode() {
     const date = new Date();
     const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
@@ -64,98 +64,82 @@ function generateRefCode() {
     return `CD-${yyyymmdd}-${rand}`;
 }
 
-// Placeholder for sheet logging
-async function postToSheet(payload) {
-    // Implement later
-    console.log("Logging payload:", payload);
-    return {status:"ok", remaining: payload.remaining || 0};
+async function postToSheet(payload){
+    /* placeholder for logging to sheet */
+    console.log("Logging spin:", payload);
+    return {status:"ok", remaining: payload.remainingCredits || 0};
 }
 
-// Fetch sponsors (placeholder local fallback)
-async function fetchSponsorsFromSheet() {
-    // Use your sponsors.js for now
-    const obj = {};
-    for (let key in sponsors) {
-        obj[key] = {...sponsors[key]};
-    }
-    return obj;
+async function fetchSponsorsFromSheet(){
+    /* placeholder: fallback to sponsors.js data */
+    return window.sponsors || {};
 }
 
-// ==============================
-// PICK RANDOM ELIGIBLE SPONSOR
-// ==============================
-function pickRandomEligibleSponsor(data) {
+// pick random eligible sponsor
+function pickRandomEligibleSponsor(data){
     const eligible = Object.keys(data).filter(
         k => data[k].permanent || data[k].credits >= data[k].costPerWin
     );
-    if (eligible.length === 0) return null;
-    const key = eligible[Math.floor(Math.random() * eligible.length)];
+    if(eligible.length === 0) return null;
+    const key = eligible[Math.floor(Math.random()*eligible.length)];
     return data[key];
 }
 
-// ==============================
-// SPIN BUTTON LOGIC
-// ==============================
-spinButton.addEventListener("click", async () => {
+spinButton.addEventListener("click", async ()=>{
     spinButton.disabled = true;
     redeemButton.style.display="none";
-    itSimple.style.display = "none";
-    if(spinSound.src) spinSound.play();
 
-    let flickerTime = 2000;
-    let flickerInterval = 100;
-
-    let flicker = setInterval(()=>{
+    // flicker animation
+    let flickerInterval = setInterval(()=>{
         dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
-    }, flickerInterval);
+        dropPrizeEl.textContent = "";
+        dropLogoEl.style.display="none";
+    }, 100);
 
-    setTimeout(async () => {
-        clearInterval(flicker); // stop flicker first
+    setTimeout(async ()=>{
+        clearInterval(flickerInterval);
 
-        // Load sponsors
-        if (!Object.keys(sponsorsData).length) {
+        if(!Object.keys(sponsorsData).length){
             sponsorsData = await fetchSponsorsFromSheet();
         }
 
-        // Pick a random eligible sponsor
+        // pick sponsor
         let candidate = pickRandomEligibleSponsor(sponsorsData);
 
-        // Fallback: always show New Leaf if nothing else
-        if (!candidate) {
-            candidate = sponsorsData['newleaf'];
+        // fallback to newleaf
+        if(!candidate) candidate = sponsorsData['newleaf'];
+
+        if(!candidate){
+            dropNameEl.textContent = "No prizes available this week 😢";
+            dropPrizeEl.textContent = "";
+            dropLogoEl.style.display="none";
+            spinButton.disabled = false;
+            return;
         }
 
-        // Generate reference code
         const refCode = generateRefCode();
 
-        // Update UI immediately
+        // placeholder for logging/decrement
+        await postToSheet({action:"spin", sponsorId:candidate.sponsorId, sponsorName:candidate.name, refCode});
+
         dropNameEl.textContent = candidate.name;
+        dropPrizeEl.textContent = candidate.prize;
+        if(candidate.logo){
+            dropLogoEl.src = candidate.logo;
+            dropLogoEl.style.display="block";
+        }
 
-        // Attempt to log spin
-        await postToSheet({
-            action: "spin",
-            sponsorId: candidate.sponsorId,
-            sponsorName: candidate.name,
-            refCode: refCode,
-            remaining: candidate.credits
-        });
+        confetti.style.display='block';
+        setTimeout(()=>{confetti.style.display='none';},2000);
 
-        // Update local credits
-        sponsorsData[candidate.sponsorId].credits = (candidate.credits || 0) - (candidate.costPerWin || 3);
-
-        // Show confetti
-        confetti.style.display = "block";
-        setTimeout(()=>{ confetti.style.display='none'; }, 2000);
-
-        // Show redeem button
-        redeemButton.style.display = "inline-block";
-        redeemButton.href = `redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
+        redeemButton.style.display="inline-block";
+        redeemButton.href=`redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
 
         spinButton.disabled = false;
-    }, flickerTime);
 
-    dropNameEl.textContent = "Spinning…";
+    }, 2000);
 });
 </script>
+
 </body>
 </html>
