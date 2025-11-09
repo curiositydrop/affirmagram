@@ -6,7 +6,9 @@ const sponsors = {
     contact: "207.468.5509",
     url: "/drop/newleaf",
     logo: "http://www.curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png",
-    email: "info@newleafpaintingco.com"
+    email: "info@newleafpaintingco.com",
+    deposit: 500, // optional initial deposit placeholder, can track in Google Sheet instead
+    spinsUsed: 0  // optional placeholder, increment in your logging if desired
   },
   /*
   mbg: {
@@ -15,7 +17,9 @@ const sponsors = {
     contact: "contact@mbgdigital.com",
     url: "/drop/mbg",
     logo: "/images/mbg-logo.png",
-    email: "mbergeron79@gmail.com"
+    email: "mbergeron79@gmail.com",
+    deposit: 500,
+    spinsUsed: 0
   }, */
   /*
   mystery: {
@@ -23,6 +27,8 @@ const sponsors = {
     prize: "Surprise Gift",
     contact: "info@example.com",
     url: "/drop/loading",
-    logo: "/images/mystery-logo.png"
-  }*/
+    logo: "/images/mystery-logo.png",
+    deposit: 0,
+    spinsUsed: 0
+  } */
 };
