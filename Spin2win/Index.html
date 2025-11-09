@@ -5,18 +5,43 @@
 <title>Curiosity Drop — Spin to Win 🎯</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family: Arial, sans-serif; background: #f5f5f5; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh;}
-.container { background:#fff; padding:2rem; border-radius:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); max-width:400px; position:relative;}
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin:0; padding:0;
+    display:flex; justify-content:center; align-items:center;
+    height:100vh;
+}
+.container {
+    background:#fff; padding:2rem; border-radius:12px;
+    text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2);
+    max-width:400px; position:relative;
+}
 h1 { font-size:2rem; margin-bottom:0.5rem; }
 .lead, .subtle { margin:0.5rem 0; }
-.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative; text-align:center; }
-.reward-box img { max-width:150px; margin-bottom:1rem; border-radius:8px; }
+.reward-box {
+    background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; position:relative;
+}
 .reward-box h2 { font-size:1.5rem; margin-bottom:0.5rem; }
-.checkmark { font-size:2rem; display:block; margin-bottom:0.5rem; }
-.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s; }
-.brought-by-white { text-align: center; margin-top: 1rem; font-size: 0.95rem; color: #333; }
-.brought-by-white a { color: #ff6b6b; text-decoration: none; font-weight: bold; }
-.brought-by-white a:hover { text-decoration: underline; }
+.checkmark { font-size:2rem; }
+.primary-btn {
+    padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none;
+    border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; transition:0.3s;
+}
+.brought-by-white {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+.brought-by-white a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+.brought-by-white a:hover {
+    text-decoration: underline;
+}
 .primary-btn:hover { background:#ff4757; }
 .confetti { position:absolute; width:100%; height:100%; pointer-events:none; }
 .tiny { font-size:0.8rem; color:#666; margin-top:1rem; }
@@ -27,14 +52,14 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 <div class="container fade-in">
     <div class="confetti" id="confetti"></div>
 
-    <h1>🎉 Congratulations! 🎉</h1>
-    <p class="subtle">Your curiosity has paid off! No gimmicks. No ads.</p>
+    <h1>🎉Congratulations!🎉</h1>
+    <h2>Your curiosity has paid off!</h2>
+    <p class="subtle">No gimmicks. No ads.</p>Just curiosity → rewards.</p>
 
     <div class="reward-box">
-        <img id="dropLogo" src="" alt="" style="display:none;">
         <span class="checkmark">🎯</span>
         <h2 id="dropName">Tap spin to reveal your win!</h2>
-        <p id="dropPrize" class="subtle"></p>
+        <p id="itSimple">It really <i>is</i> that simple!</p>
         <a id="redeemButton" class="primary-btn" href="#" style="display:none;">Redeem Your Reward!</a>
     </div>
 
@@ -45,21 +70,24 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <script src="sponsors.js"></script>
 <script>
-const SHEET_API_BASE_URL = "https://script.google.com/macros/s/DEPLOY_ID/exec"; // <-- REPLACE
 const dropNameEl = document.getElementById("dropName");
-const dropPrizeEl = document.getElementById("dropPrize");
-const dropLogoEl = document.getElementById("dropLogo");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
 const confetti = document.getElementById("confetti");
 const spinSound = document.getElementById("spinSound");
+const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
-let sponsorsData = {};
 
-// ==============================
-// HELPER FUNCTIONS
-// ==============================
+// Logging function for Google Sheet
+function logEvent(dropName, refCode, action, name="", email="") {
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+    }).catch(err => console.log('Logging failed', err));
+}
+
+// Generate unique reference code
 function generateRefCode() {
     const date = new Date();
     const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
@@ -67,135 +95,58 @@ function generateRefCode() {
     return `CD-${yyyymmdd}-${rand}`;
 }
 
-async function postToSheet(payload) {
-    try {
-        const res = await fetch(SHEET_API_BASE_URL, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(payload)
-        });
-        return await res.json();
-    } catch (err) {
-        console.warn('POST to sheet failed:', err);
-        return {status:"error", message: err.message};
-    }
-}
-
-async function fetchSponsorsFromSheet() {
-    try {
-        const url = SHEET_API_BASE_URL + "?action=getSponsors";
-        const res = await fetch(url);
-        const data = await res.json();
-        const obj = {};
-        data.forEach(s => {
-            obj[s.sponsorId] = {
-                sponsorId: s.sponsorId,
-                name: s.name,
-                prize: s.prize,
-                email: s.email,
-                logo: s.logo || "",
-                permanent: s.permanent || false,
-                credits: Number(s.credits) || 0,
-                costPerWin: Number(s.costPerWin) || 3,
-                spinsUsed: Number(s.spinsUsed) || 0
-            };
-        });
-        return obj;
-    } catch (err) {
-        console.warn('Failed to fetch sponsors from sheet, falling back to local sponsors.js', err);
-        return window.sponsors || {};
-    }
-}
-
-// ==============================
-// PICK RANDOM ELIGIBLE SPONSOR
-// ==============================
+// Pick a random eligible sponsor (always include New Leaf)
 function pickRandomEligibleSponsor(data) {
-    const eligible = Object.keys(data).filter(
-        k => data[k].permanent || data[k].credits >= data[k].costPerWin
-    );
+    const eligible = Object.keys(data).filter(k => {
+        return data[k].permanent || data[k].credits >= (data[k].costPerWin || 3);
+    });
     if (eligible.length === 0) return null;
-    const key = eligible[Math.floor(Math.random() * eligible.length)];
+    const key = eligible[Math.floor(Math.random()*eligible.length)];
     return data[key];
 }
 
-// ==============================
-// SPIN LOGIC
-// ==============================
-spinButton.addEventListener("click", async () => {
+spinButton.addEventListener("click", () => {
     spinButton.disabled = true;
     redeemButton.style.display="none";
-    dropPrizeEl.style.display="none";
-    dropLogoEl.style.display="none";
+    itSimple.style.display = "none";
 
     if(spinSound.src) spinSound.play();
 
     let flickerTime = 2000;
     let flickerInterval = 100;
 
+    // Flicker animation
     let flicker = setInterval(()=>{
         dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
     }, flickerInterval);
 
-    setTimeout(async ()=>{
+    setTimeout(()=>{
         clearInterval(flicker);
 
-        // Load sponsors if not loaded
-        if(!Object.keys(sponsorsData).length){
-            sponsorsData = await fetchSponsorsFromSheet();
-        }
+        // Pick sponsor
+        let candidate = pickRandomEligibleSponsor(sponsors);
 
-        // Ensure New Leaf is present
-        if(!sponsorsData['newleaf']){
-            sponsorsData['newleaf'] = {
-                sponsorId: 'newleaf',
-                name: "New Leaf Painting",
-                prize: "10% off interior painting",
-                contact: "207.468.5509",
-                url: "/drop/newleaf",
-                logo: "http://www.curiositydrop.com/newleafpaintingco/7D16A71A-2AF9-4EBB-863A-09C24D4F6662.png",
-                email: "info@newleafpaintingco.com",
-                permanent: true,
-                credits: 0,
-                spinsUsed: 0
-            };
-        }
+        // Fallback: always show New Leaf if nothing else
+        if (!candidate) candidate = sponsors['newleaf'];
 
-        // Pick a sponsor
-        let candidate = pickRandomEligibleSponsor(sponsorsData);
-        if(!candidate) candidate = sponsorsData['newleaf'];
+        dropNameEl.innerHTML = `<img src="${candidate.logo}" style="max-width:100%;border-radius:8px;margin-bottom:0.5rem;"><br>${candidate.name}<br><span style="font-size:1rem;">${candidate.prize}</span>`;
 
-        // Generate ref code
-        const refCode = generateRefCode();
-
-        // Update UI
-        dropNameEl.textContent = candidate.name;
-        dropPrizeEl.textContent = candidate.prize;
-        dropPrizeEl.style.display = "block";
-        if(candidate.logo){
-            dropLogoEl.src = candidate.logo;
-            dropLogoEl.style.display="block";
-        }
-
-        // Ask server to decrement and log the spin
-        const payload = {
-            action: "spin",
-            sponsorId: candidate.sponsorId,
-            sponsorName: candidate.name,
-            refCode: refCode
-        };
-        const result = await postToSheet(payload);
-        if(result && result.status === "ok" && sponsorsData[candidate.sponsorId]){
-            sponsorsData[candidate.sponsorId].credits = result.remaining;
-        }
-
+        // Show confetti briefly
         confetti.style.display='block';
         setTimeout(()=>{ confetti.style.display='none'; }, 2000);
 
+        // Generate unique reference code
+        const refCode = generateRefCode();
+
+        // Log spin to Google Sheet
+        logEvent(candidate.name, refCode, 'spin', candidate.name, candidate.email);
+
+        // Show Redeem button with ref code in URL
         redeemButton.style.display="inline-block";
         redeemButton.href=`redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
 
         spinButton.disabled = false;
+
     }, flickerTime);
 
     dropNameEl.textContent="Spinning…";
