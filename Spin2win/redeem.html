@@ -104,7 +104,16 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     <h3>Claim Your Prize</h3>
     <input type="text" id="userName" placeholder="Your Name" required>
     <input type="email" id="userEmail" placeholder="Your Email" required>
+    <label for="userPhone">Phone (optional)</label>
+<input type="text" id="userPhone" placeholder="Optional">
+
+<label for="userMessage">Message (optional)</label>
+<textarea id="userMessage" placeholder="Optional message to the sponsor"></textarea>
     <button id="sendEmail">Submit Claim</button>
+  <p class="tiny">
+    🔒 We respect your privacy. Your information is shared only with the sponsor you contact.
+    Curiosity Drop simply provides the introduction and is not involved in any further communication or transaction.
+</p>
   </div>
 </div>
 
@@ -139,26 +148,29 @@ if (winner) {
     });
 
     sendEmail.addEventListener('click', () => {
-        const name = document.getElementById('userName').value;
-        const email = document.getElementById('userEmail').value;
+    const name = document.getElementById('userName').value;
+    const email = document.getElementById('userEmail').value;
+    const phone = document.getElementById('userPhone').value;
+    const message = document.getElementById('userMessage').value;
 
-        if (!name || !email) {
-            alert('Please fill in your name and email.');
-            return;
-        }
+    if (!name || !email) {
+        alert('Please fill in your name and email.');
+        return;
+    }
 
-        const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
-        const body = encodeURIComponent(
-            `Name: ${name}\nEmail: ${email}\n\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`
-        );
+    // Construct email body including optional fields if provided
+    let bodyContent = `Name: ${name}\nEmail: ${email}\n`;
+    if (phone) bodyContent += `Phone: ${phone}\n`;
+    if (message) bodyContent += `Message: ${message}\n`;
+    bodyContent += `\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`;
 
-        window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
+    const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
+    const body = encodeURIComponent(bodyContent);
 
-        // Log claim with user info
-        logEvent(winner.name, refCode, 'claim', name, email);
+    window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
 
-        popupForm.style.display = 'none';
-    });
+    popupForm.style.display = 'none';
+});
 }
 
 // Tracking function
