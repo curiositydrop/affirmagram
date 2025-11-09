@@ -147,13 +147,12 @@ spinButton.addEventListener("click", async () => {
         }
 
         // Pick a sponsor client-side
-        let candidate = pickRandomEligibleSponsor(sponsorsData);
+let candidate = pickRandomEligibleSponsor(sponsorsData);
 
-        if (!candidate) {
-            dropNameEl.textContent = "No prizes available this week 😢";
-            spinButton.disabled = false;
-            return;
-        }
+// Fallback: always show New Leaf if nothing else
+if (!candidate) {
+    candidate = sponsorsData['newleaf'];
+}
 
         // Generate ref code
         const refCode = generateRefCode();
