@@ -43,18 +43,19 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     text-decoration: underline;
 }
 .primary-btn:hover { background:#ff4757; }
-.confetti { position:absolute; width:100%; height:100%; pointer-events:none; }
 .tiny { font-size:0.8rem; color:#666; margin-top:1rem; }
+.fade-in { animation: fadeIn 0.5s ease forwards; opacity:0; }
+@keyframes fadeIn { to { opacity:1; } }
 </style>
 </head>
 <body>
 
 <div class="container fade-in">
-    <div class="confetti" id="confetti"></div>
+    <canvas id="confetti" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
 
     <h1>🎉Congratulations!🎉</h1>
     <h2>Your curiosity has paid off!</h2>
-    <p class="subtle">No gimmicks. No ads.</p>Just curiosity → rewards.</p>
+    <p class="subtle">No gimmicks. No ads. Just curiosity → rewards.</p>
 
     <div class="reward-box">
         <span class="checkmark">🎯</span>
@@ -64,102 +65,94 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     </div>
 
     <button class="primary-btn" id="spinButton">🎯 Spin to Win</button>
-    <audio id="spinSound" src="" preload="auto"></audio>
+    <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
     <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script src="sponsors.js"></script>
 <script>
 const dropNameEl = document.getElementById("dropName");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
-const confetti = document.getElementById("confetti");
+const confettiCanvas = document.getElementById("confetti");
 const spinSound = document.getElementById("spinSound");
 const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
-/* --- Google Sheet Logging --- */
+// Logging function for Google Sheet
 function logEvent(dropName, refCode, action, name="", email="") {
-  fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      drop: dropName,
-      ref: refCode,
-      action: action,
-      name: name,
-      email: email
-    })
-  }).catch(err => console.log('Logging failed', err));
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+    }).catch(err => console.log('Logging failed', err));
 }
 
-/* --- Generate unique reference code --- */
+// Generate unique reference code
 function generateRefCode() {
-  const date = new Date();
-  const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
-  const rand = Math.floor(Math.random()*9000)+1000;
-  return `CD-${yyyymmdd}-${rand}`;
+    const date = new Date();
+    const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
+    const rand = Math.floor(Math.random()*9000)+1000;
+    return `CD-${yyyymmdd}-${rand}`;
 }
 
-/* --- Pick eligible sponsor --- */
-function pickSponsor() {
-  const keys = Object.keys(sponsors);
-  const eligible = keys.filter(k => {
-    const s = sponsors[k];
-    return s.permanent || !s.credits || s.credits > 0; // New Leaf always eligible
-  });
-  const randomKey = eligible[Math.floor(Math.random() * eligible.length)];
-  return { key: randomKey, sponsor: sponsors[randomKey] };
+// Confetti function
+function launchConfetti() {
+    const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
+    myConfetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+    });
 }
 
-/* --- Spin Button Click Logic --- */
 spinButton.addEventListener("click", () => {
-  spinButton.disabled = true;
-  redeemButton.style.display = "none";
-  itSimple.style.display = "none";
+    spinButton.disabled = true;
+    redeemButton.style.display = "none";
+    itSimple.style.display = "none";
 
-  if (spinSound.src) spinSound.play();
+    if(spinSound.src) spinSound.play();
 
-  let flickerTime = 2000;
-  let flickerInterval = 100;
+    let flickerTime = 2000;
+    let flickerInterval = 100;
 
-  // Flicker animation
-  let flicker = setInterval(() => {
-    dropNameEl.textContent = placeholderChars[Math.floor(Math.random() * placeholderChars.length)];
-  }, flickerInterval);
+    // Flicker animation
+    let flicker = setInterval(()=>{
+        dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
+    }, flickerInterval);
 
-  setTimeout(() => {
-    clearInterval(flicker);
+    dropNameEl.textContent = "Spinning…";
 
-    // Pick final sponsor
-    const { key, sponsor } = pickSponsor();
-    if (!sponsor) {
-      dropNameEl.textContent = "No prizes available this week 😢";
-      spinButton.disabled = false;
-      return;
-    }
+    setTimeout(()=>{
+        clearInterval(flicker);
 
-    dropNameEl.textContent = sponsor.name;
+        // Pick final sponsor
+        const keys = Object.keys(sponsors);
+        const randomKey = keys[Math.floor(Math.random()*keys.length)];
+        const finalPick = sponsors[randomKey];
 
-    // Confetti effect
-    confetti.style.display = 'block';
-    setTimeout(() => { confetti.style.display = 'none'; }, 2000);
+        dropNameEl.textContent = finalPick.name;
 
-    // Generate reference code
-    const refCode = generateRefCode();
+        // Show confetti briefly
+        launchConfetti();
 
-    // Log spin silently in background
-    logEvent(sponsor.name, refCode, 'spin');
+        // Generate unique reference code
+        const refCode = generateRefCode();
 
-    // Show redeem button
-    redeemButton.style.display = "inline-block";
-    redeemButton.href = `redeem.html?sponsor=${key}&ref=${refCode}`;
+        // Log spin to Google Sheet
+        logEvent(finalPick.name, refCode, 'spin');
 
-    spinButton.disabled = false;
-  }, flickerTime);
+        // Show Redeem button with ref code in URL
+        redeemButton.href=`redeem.html?sponsor=${randomKey}&ref=${refCode}`;
+        redeemButton.style.display="inline-block";
 
-  dropNameEl.textContent = "Spinning…";
+        // Fade in "It really is that simple!"
+        itSimple.style.display = "block";
+
+    }, flickerTime);
 });
 </script>
+
 </body>
 </html>
