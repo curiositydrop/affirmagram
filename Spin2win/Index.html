@@ -79,79 +79,87 @@ const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
 
-// Logging function for Google Sheet
+/* --- Google Sheet Logging --- */
 function logEvent(dropName, refCode, action, name="", email="") {
-    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
-        method: 'POST',
-        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
-    }).catch(err => console.log('Logging failed', err));
+  fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+    method: 'POST',
+    body: JSON.stringify({
+      drop: dropName,
+      ref: refCode,
+      action: action,
+      name: name,
+      email: email
+    })
+  }).catch(err => console.log('Logging failed', err));
 }
 
-// Generate unique reference code
+/* --- Generate unique reference code --- */
 function generateRefCode() {
-    const date = new Date();
-    const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
-    const rand = Math.floor(Math.random()*9000)+1000;
-    return `CD-${yyyymmdd}-${rand}`;
+  const date = new Date();
+  const yyyymmdd = date.toISOString().slice(0,10).replace(/-/g,'');
+  const rand = Math.floor(Math.random()*9000)+1000;
+  return `CD-${yyyymmdd}-${rand}`;
 }
 
-// Pick a random eligible sponsor (always include New Leaf)
-function pickRandomEligibleSponsor(data) {
-    const eligible = Object.keys(data).filter(k => {
-        return data[k].permanent || data[k].credits >= (data[k].costPerWin || 3);
-    });
-    if (eligible.length === 0) return null;
-    const key = eligible[Math.floor(Math.random()*eligible.length)];
-    return data[key];
+/* --- Pick eligible sponsor --- */
+function pickSponsor() {
+  const keys = Object.keys(sponsors);
+  const eligible = keys.filter(k => {
+    const s = sponsors[k];
+    return s.permanent || !s.credits || s.credits > 0; // New Leaf always eligible
+  });
+  const randomKey = eligible[Math.floor(Math.random() * eligible.length)];
+  return { key: randomKey, sponsor: sponsors[randomKey] };
 }
 
+/* --- Spin Button Click Logic --- */
 spinButton.addEventListener("click", () => {
-    spinButton.disabled = true;
-    redeemButton.style.display="none";
-    itSimple.style.display = "none";
+  spinButton.disabled = true;
+  redeemButton.style.display = "none";
+  itSimple.style.display = "none";
 
-    if(spinSound.src) spinSound.play();
+  if (spinSound.src) spinSound.play();
 
-    let flickerTime = 2000;
-    let flickerInterval = 100;
+  let flickerTime = 2000;
+  let flickerInterval = 100;
 
-    // Flicker animation
-    let flicker = setInterval(()=>{
-        dropNameEl.textContent = placeholderChars[Math.floor(Math.random()*placeholderChars.length)];
-    }, flickerInterval);
+  // Flicker animation
+  let flicker = setInterval(() => {
+    dropNameEl.textContent = placeholderChars[Math.floor(Math.random() * placeholderChars.length)];
+  }, flickerInterval);
 
-    setTimeout(()=>{
-        clearInterval(flicker);
+  setTimeout(() => {
+    clearInterval(flicker);
 
-        // Pick sponsor
-        let candidate = pickRandomEligibleSponsor(sponsors);
+    // Pick final sponsor
+    const { key, sponsor } = pickSponsor();
+    if (!sponsor) {
+      dropNameEl.textContent = "No prizes available this week 😢";
+      spinButton.disabled = false;
+      return;
+    }
 
-        // Fallback: always show New Leaf if nothing else
-        if (!candidate) candidate = sponsors['newleaf'];
+    dropNameEl.textContent = sponsor.name;
 
-        dropNameEl.innerHTML = `<img src="${candidate.logo}" style="max-width:100%;border-radius:8px;margin-bottom:0.5rem;"><br>${candidate.name}<br><span style="font-size:1rem;">${candidate.prize}</span>`;
+    // Confetti effect
+    confetti.style.display = 'block';
+    setTimeout(() => { confetti.style.display = 'none'; }, 2000);
 
-        // Show confetti briefly
-        confetti.style.display='block';
-        setTimeout(()=>{ confetti.style.display='none'; }, 2000);
+    // Generate reference code
+    const refCode = generateRefCode();
 
-        // Generate unique reference code
-        const refCode = generateRefCode();
+    // Log spin silently in background
+    logEvent(sponsor.name, refCode, 'spin');
 
-        // Log spin to Google Sheet
-        logEvent(candidate.name, refCode, 'spin', candidate.name, candidate.email);
+    // Show redeem button
+    redeemButton.style.display = "inline-block";
+    redeemButton.href = `redeem.html?sponsor=${key}&ref=${refCode}`;
 
-        // Show Redeem button with ref code in URL
-        redeemButton.style.display="inline-block";
-        redeemButton.href=`redeem.html?sponsor=${candidate.sponsorId}&ref=${refCode}`;
+    spinButton.disabled = false;
+  }, flickerTime);
 
-        spinButton.disabled = false;
-
-    }, flickerTime);
-
-    dropNameEl.textContent="Spinning…";
+  dropNameEl.textContent = "Spinning…";
 });
 </script>
-
 </body>
 </html>
