@@ -5,14 +5,81 @@
 <title>Your Curiosity Drop!</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body { font-family:Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; display:flex; justify-content:center; align-items:center; height:100vh; }
-.container { background:#fff; padding:2rem; border-radius:12px; text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); max-width:400px; }
-.reward-box { background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; min-height:320px; }
-.primary-btn { padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; display:inline-block; text-decoration:none; }
-.form-content input, .form-content textarea { width:100%; padding:0.5rem; margin:0.5rem 0; border-radius:6px; border:1px solid #ccc; }
-#popupForm { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.6); justify-content:center; align-items:center; }
-.form-content { background:#fff; padding:2rem; border-radius:10px; max-width:350px; width:90%; text-align:left; }
-.tiny { font-size:0.8rem; color:#666; margin-top:1rem; }
+body { 
+    font-family:Arial, sans-serif; 
+    background:#f5f5f5; 
+    margin:0; padding:0;
+    display:flex; justify-content:center; align-items:center; 
+    height:100vh; 
+}
+.container { 
+    background:#fff; padding:2rem; border-radius:12px; 
+    text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2); 
+    max-width:400px; 
+}
+h1 { font-size:2rem; margin-bottom:0.5rem; }
+.reward-box { 
+    background:#f0f0f0; padding:1rem; margin:1rem 0; border-radius:8px; min-height:320px;
+}
+.reward-box h2 { font-size:1.5rem; margin-bottom:0.5rem; }
+.reward-box img { max-width:150px; margin-bottom:1rem; }
+.primary-btn { 
+    padding:1rem 2rem; font-size:1.2rem; background:#ff6b6b; border:none; 
+    border-radius:8px; color:#fff; cursor:pointer; margin-top:1rem; display:inline-block; text-decoration:none; 
+}
+.brought-by-white {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+.brought-by-white a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+.brought-by-white a:hover { text-decoration: underline; }
+.primary-btn:hover { background:#ff4757; }
+#copyButton { padding:0.5rem 1rem; font-size:1rem; margin-top:0.5rem; }
+
+/* Popup Form Styles */
+#popupForm {
+    display:none;
+    position:fixed;
+    top:0; left:0; right:0; bottom:0;
+    background:rgba(0,0,0,0.6);
+    justify-content:center;
+    align-items:center;
+}
+.form-content {
+    background:#fff;
+    padding:2rem;
+    border-radius:10px;
+    max-width:350px;
+    width:90%;
+    text-align:left;
+}
+.form-content h3 {
+    text-align:center;
+    margin-top:0;
+}
+.form-content input {
+    width:100%;
+    padding:0.5rem;
+    margin:0.5rem 0;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
+.form-content button {
+    width:100%;
+    padding:0.8rem;
+    background:#ff6b6b;
+    border:none;
+    color:#fff;
+    border-radius:6px;
+    cursor:pointer;
+}
+.form-content button:hover { background:#ff4757; }
 </style>
 </head>
 <body>
@@ -20,7 +87,7 @@ body { font-family:Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; d
 <div class="container">
     <h1>🎉 WINNER! 🎉</h1>
     <div class="reward-box">
-        <img id="logo" src="" alt="Sponsor Logo" style="max-width:150px; margin-bottom:1rem;">
+        <img id="logo" src="" alt="Sponsor Logo">
         <h2 id="sponsorName">Sponsor Name</h2>
         <p id="prize">Prize / Offer</p>
 
@@ -36,92 +103,81 @@ body { font-family:Arial, sans-serif; background:#f5f5f5; margin:0; padding:0; d
   <div class="form-content">
     <h3>Claim Your Prize</h3>
     <input type="text" id="userName" placeholder="Your Name" required>
-    <input type="email" id="userEmail" placeholder="Your Email" required>
-    <input type="text" id="userPhone" placeholder="Phone (optional)">
-    <input type="text" id="userMessage" placeholder="Message (optional)">
-    <button id="sendEmail" class="primary-btn">Submit Claim</button>
-    <p class="tiny">
-      🔒 We respect your privacy. Your information is shared only with the sponsor you contact.
-      Curiosity Drop simply provides the introduction and is not involved in further communication.
-    </p>
+<input type="email" id="userEmail" placeholder="Your Email" required>
+<input type="text" id="userPhone" placeholder="Phone (optional)">
+<input type="text" id="userMessage" placeholder="Message (optional)">
+    <button id="sendEmail">Submit Claim</button>
+  <p class="tiny">
+    🔒 We respect your privacy. Your information is shared only with the sponsor you contact.
+    Curiosity Drop simply provides the introduction and is not involved in any further communication or transaction.
+</p>
   </div>
 </div>
 
 <script src="sponsors.js"></script>
 <script>
-const SHEET_API_BASE_URL = "https://script.google.com/macros/s/DEPLOY_ID/exec"; // <-- replace
-
 const params = new URLSearchParams(window.location.search);
 const sponsorId = params.get("sponsor");
 const refCode = params.get("ref");
-const winner = (window.sponsors && window.sponsors[sponsorId]) ? window.sponsors[sponsorId] : null;
+const winner = sponsors[sponsorId];
 
 if (winner) {
     document.getElementById("sponsorName").textContent = winner.name;
     document.getElementById("prize").textContent = winner.prize;
     document.getElementById("logo").src = winner.logo;
     document.getElementById("logo").alt = winner.name + " Logo";
+
     document.getElementById('refCode').textContent = "Your Claim Code: " + refCode;
-}
 
-const claimButton = document.getElementById('claimButton');
-const popupForm = document.getElementById('popupForm');
-const sendEmail = document.getElementById('sendEmail');
+    const claimButton = document.getElementById('claimButton');
+    const popupForm = document.getElementById('popupForm');
+    const sendEmail = document.getElementById('sendEmail');
 
-claimButton.addEventListener('click', () => popupForm.style.display = 'flex');
-popupForm.addEventListener('click', (e) => { if (e.target === popupForm) popupForm.style.display = 'none'; });
+    // Log page load (scan/redeem)
+    logEvent(winner.name, refCode, 'redeem');
 
-async function postToSheet(payload) {
-    try {
-        const res = await fetch(SHEET_API_BASE_URL, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify(payload)
-        });
-        return await res.json();
-    } catch(err){
-        console.warn('POST failed', err);
-        return {status:"error", message: err.message};
-    }
-}
+    claimButton.addEventListener('click', () => {
+        popupForm.style.display = 'flex';
+    });
 
-sendEmail.addEventListener('click', async () => {
+    popupForm.addEventListener('click', (e) => {
+        if (e.target === popupForm) popupForm.style.display = 'none';
+    });
+
+    sendEmail.addEventListener('click', () => {
     const name = document.getElementById('userName').value;
     const email = document.getElementById('userEmail').value;
     const phone = document.getElementById('userPhone').value;
     const message = document.getElementById('userMessage').value;
 
-    if (!name || !email) { alert('Please fill in your name and email.'); return; }
+    if (!name || !email) {
+        alert('Please fill in your name and email.');
+        return;
+    }
 
-    // Log claim to sheet (send 'claim' action)
-    await postToSheet({
-        action: "claim",
-        sponsorId: sponsorId,
-        sponsorName: winner ? winner.name : sponsorId,
-        refCode: refCode,
-        name: name,
-        email: email,
-        phone: phone,
-        message: message
-    });
-
-    // Construct email
-    const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
+    // Construct email body including optional fields if provided
     let bodyContent = `Name: ${name}\nEmail: ${email}\n`;
     if (phone) bodyContent += `Phone: ${phone}\n`;
     if (message) bodyContent += `Message: ${message}\n`;
-    bodyContent += `\nSponsor: ${winner ? winner.name : sponsorId}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`;
+    bodyContent += `\nSponsor: ${winner.name}\nClaim Code: ${refCode}\n\nSubmitted via Curiosity Drop`;
+
+    const subject = encodeURIComponent(`Prize Claim via Curiosity Drop`);
     const body = encodeURIComponent(bodyContent);
 
-    // Open mail client
-    if (winner && winner.email) {
-        window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
-    } else {
-        alert('Claim logged. Sponsor email not available to auto-send.');
-    }
+    window.location.href = `mailto:${winner.email}?subject=${subject}&body=${body}`;
 
     popupForm.style.display = 'none';
 });
+}
+
+// Tracking function
+function logEvent(dropName, refCode, action, name="", email="") {
+    fetch('https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec', {
+        method: 'POST',
+        body: JSON.stringify({drop: dropName, ref: refCode, action: action, name: name, email: email})
+    }).catch(err => console.log('Logging failed', err));
+}
 </script>
+
 </body>
 </html>
