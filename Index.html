@@ -113,9 +113,11 @@ ul { margin-left:1.5rem; }
     <h2>Join Spin2Win Rotation</h2>
     <p>Enter your info and we’ll add your business as a prize location:</p>
     <form id="spinForm">
-      <input type="text" name="name" placeholder="Business Name" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
+      <input type="text" name="businessName" placeholder="Business Name" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
+      <input type="text" name="ownerName" placeholder="Owner Name" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
       <input type="email" name="email" placeholder="Email" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
-      <textarea name="details" placeholder="Prize/Discount Details" style="width:100%;padding:0.5rem;margin:0.5rem 0;"></textarea>
+      <input type="tel" name="phone" placeholder="Phone Number (optional)" style="width:100%;padding:0.5rem;margin:0.5rem 0;">
+      <textarea name="details" placeholder="Prize/Discount Details" required style="width:100%;padding:0.5rem;margin:0.5rem 0;"></textarea>
       <button type="submit" class="primary-btn">Submit</button>
     </form>
   </div>
@@ -125,7 +127,7 @@ ul { margin-left:1.5rem; }
 <div id="posterModal" class="modal">
   <div class="modal-content">
     <span class="close" id="posterClose">&times;</span>
-    <img src="poster-sample.pdf" alt="Sample Poster" style="width:100%;height:auto;">
+    <img src="poster-sample.png" alt="Sample Poster" style="width:100%;height:auto;">
   </div>
 </div>
 
@@ -169,13 +171,17 @@ window.onclick = (event) => {
   if(event.target == posterModal) posterModal.style.display='none';
 }
 
-// Optional: submit form via email (mailto)
+// Submit form via email (mailto)
 document.getElementById('spinForm').addEventListener('submit', function(e){
   e.preventDefault();
-  const name = this.name.value;
+  const businessName = this.businessName.value;
+  const ownerName = this.ownerName.value;
   const email = this.email.value;
+  const phone = this.phone.value;
   const details = this.details.value;
-  window.location.href = `mailto:youremail@domain.com?subject=Spin2Win Sign-Up&body=Business Name: ${name}%0AEmail: ${email}%0ADetails: ${details}`;
+
+  window.location.href = `mailto:youremail@domain.com?subject=Spin2Win Sign-Up&body=Business Name: ${businessName}%0AOwner Name: ${ownerName}%0AEmail: ${email}%0APhone: ${phone}%0ADetails: ${details}`;
+
   this.reset();
   spinModal.style.display='none';
 });
