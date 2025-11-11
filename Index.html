@@ -101,9 +101,85 @@ ul { margin-left:1.5rem; }
         </ul>
     </section>
 
-    <a href="poster-sample.pdf" class="primary-btn" target="_blank">See Sample Poster</a>
-    <a href="https://curiositydrop.com/drop-locations" class="primary-btn" target="_blank">View Current Drop Locations</a>
-    <a href="https://curiositydrop.com/join-spin2win" class="primary-btn" target="_blank">Join Spin2Win Rotation</a>
+    <!-- Buttons -->
+<a href="#" class="primary-btn" id="joinSpinBtn">Join Spin2Win Rotation</a>
+<a href="#" class="primary-btn" id="viewPosterBtn">See Sample Poster</a>
+<a href="https://curiositydrop.com/drop-locations" class="primary-btn" target="_blank">View Current Drop Locations</a>
+
+<!-- Join Spin2Win Email Form Modal -->
+<div id="spinModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="spinClose">&times;</span>
+    <h2>Join Spin2Win Rotation</h2>
+    <p>Enter your info and we’ll add your business as a prize location:</p>
+    <form id="spinForm">
+      <input type="text" name="name" placeholder="Business Name" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
+      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:0.5rem;margin:0.5rem 0;">
+      <textarea name="details" placeholder="Prize/Discount Details" style="width:100%;padding:0.5rem;margin:0.5rem 0;"></textarea>
+      <button type="submit" class="primary-btn">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- View Poster Modal -->
+<div id="posterModal" class="modal">
+  <div class="modal-content">
+    <span class="close" id="posterClose">&times;</span>
+    <img src="poster-sample.pdf" alt="Sample Poster" style="width:100%;height:auto;">
+  </div>
+</div>
+
+<!-- Modal Styles -->
+<style>
+.modal {
+  display:none; 
+  position:fixed; 
+  z-index:1000; 
+  left:0; top:0; width:100%; height:100%; 
+  overflow:auto; 
+  background-color: rgba(0,0,0,0.6);
+}
+.modal-content {
+  background:#fff; margin:10% auto; padding:2rem; border-radius:12px; max-width:500px; position:relative;
+}
+.close {
+  position:absolute; top:10px; right:15px; font-size:1.5rem; cursor:pointer;
+}
+</style>
+
+<!-- Modal Scripts -->
+<script>
+// Spin2Win Modal
+const spinModal = document.getElementById('spinModal');
+const joinSpinBtn = document.getElementById('joinSpinBtn');
+const spinClose = document.getElementById('spinClose');
+joinSpinBtn.onclick = () => { spinModal.style.display='block'; }
+spinClose.onclick = () => { spinModal.style.display='none'; }
+
+// Poster Modal
+const posterModal = document.getElementById('posterModal');
+const viewPosterBtn = document.getElementById('viewPosterBtn');
+const posterClose = document.getElementById('posterClose');
+viewPosterBtn.onclick = () => { posterModal.style.display='block'; }
+posterClose.onclick = () => { posterModal.style.display='none'; }
+
+// Close modals if user clicks outside
+window.onclick = (event) => {
+  if(event.target == spinModal) spinModal.style.display='none';
+  if(event.target == posterModal) posterModal.style.display='none';
+}
+
+// Optional: submit form via email (mailto)
+document.getElementById('spinForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = this.name.value;
+  const email = this.email.value;
+  const details = this.details.value;
+  window.location.href = `mailto:youremail@domain.com?subject=Spin2Win Sign-Up&body=Business Name: ${name}%0AEmail: ${email}%0ADetails: ${details}`;
+  this.reset();
+  spinModal.style.display='none';
+});
+</script>
 
     <p class="brought-by-white">Powered by <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
 </div>
