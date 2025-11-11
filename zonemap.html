@@ -14,25 +14,40 @@ body {
 }
 
 header {
-  background: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  padding: 1rem;
+    background: #fff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    flex-wrap: wrap; /* allows wrapping on smaller screens */
 }
 
-header img { 
-    width:70px;
-    height:auto;
-    vertical-align:middle;
-    margin-right:10px; 
+header img {
+    height: 70px;
+    margin-right: 1rem;
 }
 
-  header h1 {
-  display: inline-block;
-  font-size: 2.4rem;
-  margin: 0;
-  vertical-align: middle;
-  text-align:center;
-  color: #333;
+header h1 {
+    font-size: 2.4rem;
+    margin: 0;
+    text-align: center;
+    color: #333;
+    flex: 1 1 100%; /* full width on mobile */
+}
+
+@media (max-width: 600px) {
+    header {
+        justify-content: center; /* center items on small screens */
+    }
+
+    header img {
+        margin: 0 0 0.5rem 0; /* spacing below logo */
+    }
+
+    header h1 {
+        font-size: 2rem; /* slightly smaller on mobile */
+        text-align: center;
+    }
 }
 
 h2 {
