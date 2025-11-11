@@ -1,141 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Curiosity Drop</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #e0f7fa; /* light Curiosity Drop blue */
-      color: #003049; /* deep blue accent */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
-    .logo {
-      width: 120px;
-      margin-bottom: 20px;
-    }
-    h1 {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
-    .riddle-box {
-      background: #ffffff;
-      border: 2px solid #0077b6; /* Curiosity Drop blue border */
-      border-radius: 12px;
-      padding: 30px 20px;
-      max-width: 500px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    button {
-      background: #0077b6; /* Curiosity Drop blue */
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #005f86;
-    }
-    .result {
-      margin-top: 20px;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Curiosity Drop — Discover, Scan, Win!</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin:0; padding:0;
+}
+header {
+    background:#fff;
+    padding:1rem 2rem;
+    display:flex;
+    align-items:center;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+header img { 
+    height:50px; 
+    margin-right:1rem; 
+}
+header h1 {
+    font-size:1.8rem;
+    margin:0;
+}
+.container {
+    max-width:800px;
+    margin:2rem auto;
+    background:#fff;
+    padding:2rem;
+    border-radius:12px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+    text-align:center;
+}
+h2 { font-size:1.5rem; margin-bottom:1rem; }
+p { margin:0.8rem 0; color:#333; line-height:1.4; }
+.primary-btn {
+    padding:1rem 2rem;
+    font-size:1.2rem;
+    background:#ff6b6b;
+    border:none;
+    border-radius:8px;
+    color:#fff;
+    cursor:pointer;
+    margin-top:1.5rem;
+    transition:0.3s;
+    text-decoration:none;
+    display:inline-block;
+}
+.primary-btn:hover { background:#ff4757; }
+section { margin:2rem 0; text-align:left; }
+ul { margin-left:1.5rem; }
+.brought-by-white {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    color: #333;
+}
+.brought-by-white a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: bold;
+}
+.brought-by-white a:hover {
+    text-decoration: underline;
+}
+</style>
 </head>
 <body>
 
-  <img src="cd-logo.png" alt="Curiosity Drop Logo" class="logo">
+<header>
+    <img src="logo-placeholder.png" alt="Curiosity Drop Logo">
+    <h1>Curiosity Drop</h1>
+</header>
 
-  <h1>Welcome to Curiosity Drop!</h1>
-  <p>Where real rewards are hidden in riddles and revealed by your own curiosity.</p>
+<div class="container">
+    <h2>Discover, Scan, and Win!</h2>
+    <p>Curiosity Drop is a fun, local experience designed to engage your customers while helping your business gain exposure. Customers scan our small QR posters to unlock rewards, surprises, or exclusive content — and every scan is a win!</p>
 
-  <div class="riddle-box">
-    <p>What gives your home a new beginning without moving a single wall?</p>
-    <div>
-      <button onclick="checkAnswer(this, false)">A Goldfish</button>
-      <button onclick="checkAnswer(this, false)">A dancing cactus</button>
-      <button onclick="checkAnswer(this, true)">Interior Painting</button>
-    </div>
-    <div class="result" id="result"></div>
-  </div>
+    <section>
+        <h2>How it Works</h2>
+        <ul>
+            <li>Place a small QR poster in your store or near the exit.</li>
+            <li>Customers scan it and are taken to a playful landing page.</li>
+            <li>Every scan generates engagement, excitement, and foot traffic.</li>
+        </ul>
+    </section>
 
-  <div style="margin-top:20px; text-align:center;">
-    <a href="/for-business">
-      <button style="background:#0077b6; color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">
-        Business Owners Click Here
-      </button>
-    </a>
-  </div>
+    <section>
+        <h2>Benefits for Your Business</h2>
+        <ul>
+            <li>Get listed on our Drop Locations map for extra exposure.</li>
+            <li>Encourage repeat visits and word-of-mouth buzz.</li>
+            <li>Show your community that you’re innovative and fun — all at no cost.</li>
+        </ul>
+    </section>
 
-<script>
-  // Create reward box (hidden initially)
-  const rewardBox = document.createElement('div');
-  rewardBox.id = 'rewardBox';
-  rewardBox.style.display = 'none';
-  document.body.appendChild(rewardBox);
+    <a href="poster-sample.pdf" class="primary-btn" target="_blank">See Sample Poster</a>
+    <a href="https://curiositydrop.com/drop-locations" class="primary-btn" target="_blank">View Current Drop Locations</a>
 
-  // Define the content for reward box
-  rewardBox.innerHTML = `
-    <div style="
-      background:#ffffff;
-      border:2px solid #0077b6;
-      border-radius:12px;
-      padding:25px 15px;
-      margin-top:20px;
-      max-width:500px;
-      text-align:center;
-      box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    ">
-      <p style="font-size:1.1em; color:#023047; margin-bottom:10px;">
-        🎉 Congratulations! You answered correctly, and your curiosity has earned you <strong>10% off!</strong> 
-        (Must be redeemed within 14 days.)
-      </p>
-      <p class="countdown" style="color:#555;">
-        Redirecting in <span id="timer">12</span> seconds to show you where...
-      </p>
-    </div>
-  `;
-
-  // Main function to check answers
-  function checkAnswer(button, isCorrect) {
-    const resultDiv = document.getElementById('result');
-    const riddleBox = document.querySelector('.riddle-box');
-
-    if (isCorrect) {
-      // Hide riddle and show reward
-      riddleBox.style.display = 'none';
-      rewardBox.style.display = 'block';
-
-      // Countdown timer
-      let timeLeft = 12;
-      const timerSpan = document.getElementById('timer');
-      const countdown = setInterval(() => {
-        timeLeft--;
-        timerSpan.textContent = timeLeft;
-        if (timeLeft <= 0) {
-          clearInterval(countdown);
-          // Redirect to index with ?drop=1
-          window.location.href = 'https://curiositydrop.com/newleafpaintingco?drop=1';
-        }
-      }, 1000);
-    } else {
-      resultDiv.textContent = "Oops! Try again.";
-      resultDiv.style.color = "#d62828";
-    }
-  }
-</script>
+    <p class="brought-by-white">Powered by <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
+</div>
 
 </body>
 </html>
