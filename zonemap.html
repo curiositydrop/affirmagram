@@ -18,14 +18,14 @@ header {
     padding: 1rem 2rem;
     display: flex;
     align-items: center;
-    justify-content: center; /* centers logo + text together */
-    flex-wrap: wrap; /* allows stacking on small screens */
+    justify-content: center; 
+    flex-wrap: wrap; 
     box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
 header img {
     height: 70px;
-    margin-right: 1rem; /* space between logo and title */
+    margin-right: 1rem; 
 }
 
 header h1 {
@@ -36,11 +36,11 @@ header h1 {
 
 @media (max-width: 600px) {
     header {
-        flex-direction: column; /* stack logo above title on mobile */
+        flex-direction: column; 
     }
 
     header img {
-        margin: 0 0 0.5rem 0; /* spacing below logo */
+        margin: 0 0 0.5rem 0; 
     }
 
     header h1 {
@@ -82,6 +82,19 @@ iframe {
 .back-btn:hover {
   background: #ff4757;
 }
+
+.dropzone-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem auto 2rem auto;
+  max-width: 400px;
+  text-align: left;
+}
+
+.dropzone-list li {
+  margin: 5px 0;
+  font-weight: bold;
+}
 </style>
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8J19CG6L"></script>
@@ -102,8 +115,25 @@ iframe {
 <h2>Current Drop Locations</h2>
 <p>Explore where curiosity turns into rewards. More locations added regularly!</p>
 
+<!-- Drop Zone List -->
+<ul class="dropzone-list">
+  <li>Bob & Mike's Mini Mart - Saco</li>
+  <li>Kirin Asian Kitchen - Waterboro</li>
+  <li>Waterboro Market - Waterboro</li>
+
+  <!-- Placeholder for future businesses -->
+  <!--
+  <li>Business Four</li>
+  <li>Business Five</li>
+  <li>Business Six</li>
+  <li>Business Seven</li>
+  <li>Business Eight</li>
+  <li>Business Nine</li>
+  <li>Business Ten</li>
+  -->
+</ul>
+
 <div class="map-container">
-  <!-- Replace YOUR_MAP_ID below with your embed map ID -->
   <iframe 
     src="https://www.google.com/maps/d/u/0/embed?mid=1IEspOSZLYKpCvC_jynHkZOMsF32y2Go&ehbc=2E312F&noprof=1" 
     allowfullscreen="" loading="lazy">
