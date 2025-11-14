@@ -15,8 +15,8 @@ const sponsors = {
     name: "MBG Digital",
     prize: "10% off marketing package",
     contact: "207.468.5509",
-    url: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
-    logo: "/images/mbg-logo.png",
+    url: "/drop/mbgdigital",
+    logo: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
     email: "mbergeron79@gmail.com",
     permanent: true, // stays in rotation always
     deposit: 500,
