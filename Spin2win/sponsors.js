@@ -13,11 +13,12 @@ const sponsors = {
   },
   mbg: {
     name: "MBG Digital",
-    prize: "15% off marketing package",
-    contact: "contact@mbgdigital.com",
-    url: "/drop/mbg",
+    prize: "10% off marketing package",
+    contact: "207.468.5509",
+    url: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
     logo: "/images/mbg-logo.png",
     email: "mbergeron79@gmail.com",
+    permanent: true, // stays in rotation always
     deposit: 500,
     spinsUsed: 0
   },
@@ -28,6 +29,7 @@ const sponsors = {
     contact: "info@example.com",
     url: "/drop/loading",
     logo: "/images/mystery-logo.png",
+    permanent: true, // stays in rotation always
     deposit: 0,
     spinsUsed: 0
   } */
