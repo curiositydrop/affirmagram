@@ -80,6 +80,22 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     cursor:pointer;
 }
 .form-content button:hover { background:#ff4757; }
+
+.drop-locations-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  margin: 1rem auto;
+  background: #1e90ff; /* bright blue to stand out from your red Back button */
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.drop-locations-btn:hover {
+  background: #0d6efd; /* slightly darker blue on hover */
+}
 </style>
     <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VY8J19CG6L"></script>
@@ -100,11 +116,13 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
         <p id="prize">Prize / Offer</p>
 
         <button id="claimButton" class="primary-btn">Claim Prize</button>
+        <button id="claimButton" class="primary-byn">See all Drop Locations</button> 
 
         <p id="refCode" style="font-weight:bold; margin-top:1rem;">Your Claim Code: </p>
     </div>
 
-    <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a></p>
+    <p class="brought-by-white">Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a><br>
+    <p class="brought-by-white">Built and developed by: <a href="https://curiositydrop.com/mbgdigital" target="_blank">MBG Digital</a>
 </div>
 
 <div id="popupForm">
@@ -117,8 +135,7 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     <button id="sendEmail">Submit Claim</button>
   <p class="tiny">
     🔒 We respect your privacy. Your information is shared only with the sponsor you contact.
-    Curiosity Drop simply provides the introduction and is not involved in any further communication or transaction.
-</p>
+    Curiosity Drop simply provides the introduction and is not involved in any further communication or transaction.</p>
   </div>
 </div>
 
