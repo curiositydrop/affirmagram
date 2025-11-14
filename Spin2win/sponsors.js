@@ -11,7 +11,6 @@ const sponsors = {
     deposit: 0,      // or 500 if you want a placeholder
     spinsUsed: 0
   },
-  /*
   mbg: {
     name: "MBG Digital",
     prize: "15% off marketing package",
@@ -21,7 +20,7 @@ const sponsors = {
     email: "mbergeron79@gmail.com",
     deposit: 500,
     spinsUsed: 0
-  }, */
+  },
   /*
   mystery: {
     name: "Mystery Drop",
