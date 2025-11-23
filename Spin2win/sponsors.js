@@ -13,7 +13,7 @@ const sponsors = {
   },
   mbg: {
     name: "MBG Digital",
-    prize: "10% off marketing package",
+    prize: "Free hosting with 2+ page build!",
     contact: "207.468.5509",
     url: "/drop/mbgdigital",
     logo: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
