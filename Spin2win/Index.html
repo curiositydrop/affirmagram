@@ -58,7 +58,6 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 <body>
 
 <div class="container fade-in">
-    <div class="confetti" id="confetti"></div>
 
     <h1>🎉Congratulations!🎉</h1>
     <h2>Your curiosity has paid off!</h2>
@@ -131,8 +130,13 @@ spinButton.addEventListener("click", () => {
         dropNameEl.innerHTML = `${finalPick.name}<br><span style="font-size:1rem; opacity:0.8;">Presents…</span>`;
 
         // Show confetti briefly
-        confetti.style.display='block';
-        setTimeout(()=>{ confetti.style.display='none'; }, 2000);
+        // Real confetti animation 🎉
+confetti({
+    particleCount: 120,
+    spread: 70,
+    startVelocity: 40,
+    origin: { y: 0.6 }
+});
 
         // Generate unique reference code
         const refCode = generateRefCode();
