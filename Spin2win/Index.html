@@ -71,7 +71,11 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
     </div>
 
     <button class="primary-btn" id="spinButton">🎯 Spin to Win</button>
-    <audio id="spinSound" src="" preload="auto"></audio>
+
+    <!-- AUDIO CLIPS -->
+    <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
+    <audio id="winSound" src="fanfare.mp3" preload="auto"></audio>
+
     <p class="brought-by-white">
   Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a> &mdash; Built and developed by: <a href="https://mbgdigital.com" target="_blank">MBG Digital</a>
 </p>
@@ -84,6 +88,7 @@ const dropNameEl = document.getElementById("dropName");
 const spinButton = document.getElementById("spinButton");
 const redeemButton = document.getElementById("redeemButton");
 const spinSound = document.getElementById("spinSound");
+const winSound = document.getElementById("winSound");
 const itSimple = document.getElementById("itSimple");
 
 const placeholderChars = ["🎯🎯🎯", "🎉🎉🎉", "✨✨✨", "🎁🎁🎁", "💫💫💫", "⭐️⭐️⭐"];
@@ -109,7 +114,10 @@ spinButton.addEventListener("click", () => {
     redeemButton.style.display="none";
     itSimple.style.display = "none";
 
-    if(spinSound.src) spinSound.play();
+    // PLAY SPIN SOUND
+    spinSound.currentTime = 0;
+    spinSound.volume = 0.5;
+    spinSound.play();
 
     let flickerTime = 2000;
     let flickerInterval = 100;
@@ -129,14 +137,13 @@ spinButton.addEventListener("click", () => {
 
         dropNameEl.innerHTML = `${finalPick.name}<br><span style="font-size:1rem; opacity:0.8;">Presents…</span>`;
 
-        // Show confetti briefly
-        // Real confetti animation 🎉
-confetti({
-    particleCount: 120,
-    spread: 70,
-    startVelocity: 40,
-    origin: { y: 0.6 }
-});
+        // Confetti 🎉
+        confetti({ particleCount: 120, spread: 70, startVelocity: 40, origin: { y: 0.6 } });
+
+        // PLAY WIN/FANFARE SOUND
+        winSound.currentTime = 0;
+        winSound.volume = 0.7;
+        winSound.play();
 
         // Generate unique reference code
         const refCode = generateRefCode();
