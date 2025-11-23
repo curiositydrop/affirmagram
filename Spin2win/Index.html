@@ -128,7 +128,7 @@ spinButton.addEventListener("click", () => {
         const randomKey = keys[Math.floor(Math.random()*keys.length)];
         const finalPick = sponsors[randomKey];
 
-        dropNameEl.textContent = finalPick.name;
+        dropNameEl.innerHTML = `${finalPick.name}<br><span style="font-size:1rem; opacity:0.8;">Presents…</span>`;
 
         // Show confetti briefly
         confetti.style.display='block';
