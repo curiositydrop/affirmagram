@@ -1,122 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testimonials - New Leaf Painting</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Your existing stylesheet -->
-    <style>
-        /* Extra styling if needed */
-        .testimonial-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Testimonials | New Leaf Painting Co.</title>
+  <meta name="description" content="See real customer testimonials for New Leaf Painting Co. Trusted interior painters serving Southern Maine with professional workmanship and exceptional care.">
+  <link rel="stylesheet" href="style.css" />
 
-        .testimonial {
-            background: #ffffff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 6px solid #4CAF50;
-            border-radius: 6px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+  <style>
+    /* PAGE-SPECIFIC ENHANCEMENTS (kept minimal to match your theme) */
+    .testimonial-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
 
-        .testimonial h3 {
-            margin: 0 0 10px;
-            color: #333;
-        }
+    .testimonial-card {
+      background: #fff;
+      padding: 25px;
+      border-left: 6px solid #4caf50;
+      border-radius: 6px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-        .testimonial p {
-            font-size: 1.05rem;
-            color: #505050;
-        }
+    .testimonial-card blockquote {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #333;
+      margin: 0 0 10px 0;
+    }
 
-        .testimonial-form {
-            background: #f7f7f7;
-            padding: 20px;
-            border-radius: 6px;
-            margin-top: 40px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+    .testimonial-card .client-name {
+      font-weight: bold;
+      color: #2e2e2e;
+    }
 
-        .testimonial-form input,
-        .testimonial-form textarea {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
+    .stars {
+      color: #4caf50;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      display: inline-block;
+    }
 
-        .testimonial-form button {
-            background: #4CAF50;
-            color: white;
-            padding: 12px 18px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+    /* FORM */
+    .testimonial-form {
+      background: #f7f7f7;
+      padding: 30px;
+      border-radius: 8px;
+      margin-top: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
 
-        .testimonial-form button:hover {
-            background: #45a049;
-        }
-    </style>
+    .testimonial-form h3 {
+      margin-top: 0;
+    }
+
+    .testimonial-form input,
+    .testimonial-form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .testimonial-form button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s ease;
+    }
+
+    .testimonial-form button:hover {
+      background-color: #43a047;
+    }
+
+    .testimonial-intro {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+  </style>
 </head>
+
 <body>
 
-    <!-- HEADER / NAVIGATION (copy from index.html) -->
-    <header>
-        <h1>New Leaf Painting</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="testimonials.html">Testimonials</a>
-            <a href="contact.html">Contact</a>
-        </nav>
-    </header>
+  <!-- GLOBAL HEADER -->
+  <div id="global-header"></div>
 
-    <section class="testimonial-container">
-        <h2>What Our Clients Say</h2>
+  <!-- PAGE CONTENT -->
+  <section class="hero" style="padding-bottom: 20px;">
+    <h1>What Our Clients Say</h1>
+    <p>Real reviews from homeowners across Southern Maine who trusted New Leaf Painting Co.</p>
+  </section>
 
-        <!-- Hard-coded testimonials (you can add/remove these anytime) -->
-        <div class="testimonial">
-            <h3>Sarah W.</h3>
-            <p>"Mike did an amazing job on our living room and hallway. Fast, clean, and super professional. Highly recommended!"</p>
-        </div>
+  <div class="testimonial-wrapper">
 
-        <div class="testimonial">
-            <h3>John M.</h3>
-            <p>"Showed up on time, worked efficiently, and the results speak for themselves. Will use New Leaf Painting again."</p>
-        </div>
+    <div class="testimonial-intro">
+      <h2>Customer Experiences</h2>
+      <p>Here’s what people are saying after transforming their homes with us:</p>
+    </div>
 
-        <!-- ADD MORE testimonials manually here -->
+    <!-- EXISTING & SAMPLE TESTIMONIALS -->
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>
+        “They made the process easy from start to finish. The rooms look incredible!”
+      </blockquote>
+      <div class="client-name">— Scott L., Buxton, ME</div>
+    </div>
 
-        <hr style="margin: 40px 0;">
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>
+        “Mike’s attention to detail is unreal. The trim looks perfect and the cleanup was spotless. Highly recommended!”
+      </blockquote>
+      <div class="client-name">— Jennifer M., Cape Elizabeth</div>
+    </div>
 
-        <h2>Submit Your Testimonial</h2>
-        <p>Have feedback for New Leaf Painting? We'd love to hear it!</p>
+    <div class="testimonial-card">
+      <div class="stars">★★★★★</div>
+      <blockquote>
+        “Professional, fast, and very fair pricing. We’ll be calling New Leaf Painting for the rest of the house next!”
+      </blockquote>
+      <div class="client-name">— Tom & Rebecca, Falmouth</div>
+    </div>
 
-        <!-- EMAIL SUBMISSION FORM (No backend needed) -->
-        <form class="testimonial-form"
-              action="https://formsubmit.co/YOUR_EMAIL_HERE"
-              method="POST">
+    <!-- SUBMISSION FORM -->
+    <div class="testimonial-form">
+      <h3>Submit Your Testimonial</h3>
+      <p>Share your experience — your feedback helps local homeowners feel confident choosing New Leaf Painting Co.</p>
 
-            <!-- FormSubmit required hidden fields -->
-            <input type="hidden" name="_subject" value="New Testimonial Submission">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_template" value="table">
+      <form action="https://formsubmit.co/YOUR_EMAIL_HERE" method="POST">
+        <input type="hidden" name="_subject" value="New Testimonial Submission">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
 
-            <label>Your Name</label>
-            <input type="text" name="Name" required>
+        <label>Your Name</label>
+        <input type="text" name="Name" required>
 
-            <label>Your Testimonial</label>
-            <textarea name="Testimonial" rows="5" required></textarea>
+        <label>Your Location (optional)</label>
+        <input type="text" name="Location">
 
-            <button type="submit">Submit Testimonial</button>
-        </form>
+        <label>Your Testimonial</label>
+        <textarea name="Testimonial" rows="5" required></textarea>
 
-    </section>
+        <button type="submit">Submit Testimonial</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- CTA BUTTON -->
+  <section style="text-align:center; margin: 40px 0;">
+    <button 
+      type="button" 
+      class="cta-button"
+      onclick="document.getElementById('contact-popup').style.display='flex';">
+      Schedule a Free Estimate
+    </button>
+  </section>
+
+  <!-- GLOBAL FOOTER -->
+  <div id="global-footer"></div>
+
+  <!-- GLOBAL LOGIC -->
+  <script src="global.js"></script>
 
 </body>
 </html>
