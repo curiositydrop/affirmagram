@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials - New Leaf Painting</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Your existing stylesheet -->
+    <style>
+        /* Extra styling if needed */
+        .testimonial-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .testimonial {
+            background: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 6px solid #4CAF50;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .testimonial h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .testimonial p {
+            font-size: 1.05rem;
+            color: #505050;
+        }
+
+        .testimonial-form {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 40px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .testimonial-form input,
+        .testimonial-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .testimonial-form button {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .testimonial-form button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER / NAVIGATION (copy from index.html) -->
+    <header>
+        <h1>New Leaf Painting</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="testimonials.html">Testimonials</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <section class="testimonial-container">
+        <h2>What Our Clients Say</h2>
+
+        <!-- Hard-coded testimonials (you can add/remove these anytime) -->
+        <div class="testimonial">
+            <h3>Sarah W.</h3>
+            <p>"Mike did an amazing job on our living room and hallway. Fast, clean, and super professional. Highly recommended!"</p>
+        </div>
+
+        <div class="testimonial">
+            <h3>John M.</h3>
+            <p>"Showed up on time, worked efficiently, and the results speak for themselves. Will use New Leaf Painting again."</p>
+        </div>
+
+        <!-- ADD MORE testimonials manually here -->
+
+        <hr style="margin: 40px 0;">
+
+        <h2>Submit Your Testimonial</h2>
+        <p>Have feedback for New Leaf Painting? We'd love to hear it!</p>
+
+        <!-- EMAIL SUBMISSION FORM (No backend needed) -->
+        <form class="testimonial-form"
+              action="https://formsubmit.co/YOUR_EMAIL_HERE"
+              method="POST">
+
+            <!-- FormSubmit required hidden fields -->
+            <input type="hidden" name="_subject" value="New Testimonial Submission">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+
+            <label>Your Name</label>
+            <input type="text" name="Name" required>
+
+            <label>Your Testimonial</label>
+            <textarea name="Testimonial" rows="5" required></textarea>
+
+            <button type="submit">Submit Testimonial</button>
+        </form>
+
+    </section>
+
+</body>
+</html>
