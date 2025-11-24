@@ -142,24 +142,20 @@
   <input type="hidden" name="_captcha" value="false">
   <input type="hidden" name="_template" value="table">
 
-  <label>Your Name</label>
-  <input type="text" name="Name" required>
+  <input type="text" name="Name" placeholder="Your Name" required>
 
-  <label>Your Location (optional)</label>
-  <input type="text" name="Location">
+  <input type="text" name="Location" placeholder="Your Location (optional)">
 
-  <label>Your Star Rating (1–5)</label>
   <select name="Rating" required>
-    <option value="">Select...</option>
+    <option value="">How would you rate your experience? (1–5 Stars)</option>
     <option value="5">★★★★★ – 5 Stars</option>
     <option value="4">★★★★☆ – 4 Stars</option>
     <option value="3">★★★☆☆ – 3 Stars</option>
     <option value="2">★★☆☆☆ – 2 Stars</option>
     <option value="1">★☆☆☆☆ – 1 Star</option>
   </select>
-   <br>
-  <label>Your Testimonial</label>
-  <textarea name="Testimonial" rows="5" required></textarea>
+
+  <textarea name="Testimonial" rows="5" placeholder="Your Testimonial" required></textarea>
 
   <button type="submit">Submit Testimonial</button>
 </form>
