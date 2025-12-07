@@ -13,6 +13,36 @@
         background: #0d0d0d;
         color: #fff;
         text-align: center;
+        overflow-x: hidden;
+    }
+
+    /* SUBTLE SMOKE BEHIND HEADER */
+    .smoke {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+        overflow: hidden;
+    }
+    .smoke::before {
+        content: "";
+        position: absolute;
+        width: 300%;
+        height: 300%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        filter: blur(70px);
+        animation: drift 25s infinite linear;
+    }
+    @keyframes drift {
+        0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+        50% { transform: translate(-45%, -55%) rotate(120deg) scale(1.1); }
+        100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
     }
 
     /* HEADER WRAPPER */
@@ -40,15 +70,20 @@
         letter-spacing: 2px;
         text-transform: uppercase;
         color: white;
-        text-shadow: 0 0 8px rgba(255,140,0,0.6), 0 0 20px rgba(255,69,0,0.3);
+        text-shadow: 
+            0 0 6px rgba(255,140,0,0.6),
+            0 0 12px rgba(255,69,0,0.5),
+            0 0 20px rgba(255,140,0,0.3);
     }
 
-    /* DIVIDER LINE */
+    /* NEON DIVIDER LINE */
     .divider {
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(to right, rgba(255,140,0,0) 0%, rgba(255,140,0,0.7) 50%, rgba(255,140,0,0) 100%);
-        margin: 20px 0 25px 0;
+        width: 80%;
+        height: 2px;
+        margin: 20px auto 25px auto;
+        background: #ff8c00;
+        box-shadow: 0 0 15px rgba(255,140,0,0.6);
+        border-radius: 2px;
     }
 
     /* MENU */
@@ -86,8 +121,8 @@
         opacity: 0.92;
     }
 
-    /* PRIMARY GLOW BUTTON — ALWAYS GLOWING (JOIN THE CLUB) */
-    .glow-btn-primary {
+    /* JOIN THE CLUB BUTTON — BURNT EDGE ORANGE GLOW */
+    .join-btn {
         display: inline-block;
         padding: 14px 26px;
         margin: 15px;
@@ -95,19 +130,19 @@
         font-weight: 600;
         color: #000;
         background: #ff8c00;
-        border: 1px solid #ffa640;
+        border: 2px solid #cc6600; /* darker burnt edge border */
         border-radius: 8px;
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         transition: 0.3s ease;
         box-shadow:
-            0 0 15px rgba(255,140,0,1),
-            0 0 35px rgba(255,69,0,0.8),
-            0 0 55px rgba(255,69,0,0.5);
+            0 0 20px rgba(255,140,0,0.9),
+            0 0 40px rgba(255,69,0,0.6),
+            0 0 60px rgba(255,69,0,0.4);
     }
 
-    .glow-btn-primary:hover {
+    .join-btn:hover {
         transform: scale(1.08);
         box-shadow:
             0 0 25px rgba(255,160,10,1),
@@ -115,8 +150,8 @@
             0 0 80px rgba(255,80,0,0.7);
     }
 
-    /* SECONDARY BUTTON — DARK WITH BORDER GLOW (ENTER SECRET WORLD) */
-    .glow-btn-secondary {
+    /* ENTER SECRET WORLD BUTTON — DARK WITH GLOW ON HOVER */
+    .secret-btn {
         display: inline-block;
         padding: 14px 26px;
         margin: 15px;
@@ -124,7 +159,7 @@
         font-weight: 600;
         color: white;
         background: #1a1a1a;
-        border: 2px solid #ff9c41);
+        border: 2px solid #ff9c41;
         border-radius: 8px;
         text-decoration: none;
         text-transform: uppercase;
@@ -135,7 +170,7 @@
             0 0 15px rgba(255,69,0,0.2);
     }
 
-    .glow-btn-secondary:hover {
+    .secret-btn:hover {
         background: #ff8c00;
         color: #000;
         box-shadow:
@@ -150,24 +185,22 @@
         .logo { font-size: 2rem; }
         nav a { display: inline-block; margin: 8px 6px; }
         .main-text { font-size: 1.05rem; }
-        .glow-btn-primary,
-        .glow-btn-secondary {
-            font-size: 1rem;
-            padding: 12px 20px;
-        }
+        .join-btn, .secret-btn { font-size: 1rem; padding: 12px 20px; }
     }
+
 </style>
 
 </head>
 <body>
 
+    <!-- SUBTLE SMOKE BACKGROUND -->
+    <div class="smoke"></div>
+
     <!-- HEADER AREA -->
     <div class="header-container">
 
-        <!-- TOP LOGO SPOT -->
         <img class="top-logo" src="YOUR-LOGO.png" alt="Highway Haze Logo">
 
-        <!-- TEXT LOGO -->
         <div class="logo">Highway Haze™ Club</div>
 
     </div>
@@ -193,9 +226,9 @@
         If you’re here… you found the smoke trail.
     </p>
 
-    <!-- UPDATED BUTTONS -->
-    <a class="glow-btn-primary" href="#">Join the Club</a>
-    <a class="glow-btn-secondary" href="/curiositydrop-secret">Enter the Secret World</a>
+    <!-- BUTTONS -->
+    <a class="join-btn" href="#">Join the Club</a>
+    <a class="secret-btn" href="/curiositydrop-secret">Enter the Secret World</a>
 
 </body>
 </html>
