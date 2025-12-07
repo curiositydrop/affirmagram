@@ -13,12 +13,36 @@
         background: #0d0d0d;
         color: #fff;
         text-align: center;
+        overflow-x: hidden;
+    }
+
+    /* ==============================
+       ROLLING SMOKE BACKGROUND
+       ============================== */
+    .smoke-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 180px;
+        background: url('https://i.imgur.com/8fKQw3H.png') repeat-x;
+        background-size: cover;
+        opacity: 0.18;
+        animation: smokeMove 22s linear infinite;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    @keyframes smokeMove {
+        0% { background-position: 0 0; }
+        100% { background-position: 2000px 0; }
     }
 
     /* HEADER WRAPPER */
     .header-container {
         padding-top: 20px;
         padding-bottom: 20px;
+        position: relative;
     }
 
     /* LOGO IMAGE SLOT */
@@ -86,8 +110,38 @@
         opacity: 0.92;
     }
 
-    /* GLOW BUTTONS */
-    .glow-btn {
+    /* PRIMARY GLOW BUTTON — ALWAYS GLOWING (JOIN THE CLUB) */
+    .glow-btn-primary {
+        display: inline-block;
+        padding: 14px 26px;
+        margin: 15px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #000;
+        background: #ff8c00;
+        border: 1px solid #ffa640;
+        border-radius: 8px;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: 0.3s ease;
+        box-shadow:
+            0 0 15px rgba(255,140,0,1),
+            0 0 35px rgba(255,69,0,0.8),
+            0 0 55px rgba(255,69,0,0.5);
+    }
+
+    .glow-btn-primary:hover {
+        transform: scale(1.08);
+        box-shadow:
+            0 0 25px rgba(255,160,10,1),
+            0 0 55px rgba(255,90,0,1),
+            0 0 80px rgba(255,80,0,0.7);
+    }
+
+    /* SECONDARY BUTTON — GLITCH + DARK GLOW */
+    .glow-btn-secondary {
+        position: relative;
         display: inline-block;
         padding: 14px 26px;
         margin: 15px;
@@ -95,19 +149,52 @@
         font-weight: 600;
         color: white;
         background: #1a1a1a;
-        border: 1px solid #ff9c41;
+        border: 2px solid #ff9c41;
         border-radius: 8px;
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         transition: 0.3s ease;
-        box-shadow: 0 0 10px rgba(255,140,0,0.4), 0 0 20px rgba(255,69,0,0.2);
+        overflow: hidden;
     }
 
-    .glow-btn:hover {
+    /* GLITCH EFFECT */
+    .glow-btn-secondary::before,
+    .glow-btn-secondary::after {
+        content: attr(data-text);
+        position: absolute;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        color: #ff8c00;
+        text-shadow: 1px 0 #ff8c00;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    .glow-btn-secondary:hover::before {
+        animation: glitch1 0.5s linear 1;
+    }
+
+    .glow-btn-secondary:hover::after {
+        animation: glitch2 0.35s linear 1;
+    }
+
+    @keyframes glitch1 {
+        0% { clip: rect(0, 9999px, 0, 0); opacity: 0.6; transform: translate(-2px, -2px); }
+        50% { clip: rect(12px, 9999px, 40px, 0); opacity: 0.3; transform: translate(2px, 2px); }
+        100% { clip: rect(0, 9999px, 0, 0); opacity: 0; transform: translate(0,0); }
+    }
+
+    @keyframes glitch2 {
+        0% { clip: rect(6px, 9999px, 20px, 0); opacity: 0.6; transform: translate(2px, -2px); }
+        50% { clip: rect(0, 9999px, 30px, 0); opacity: 0.3; transform: translate(-2px, 1px); }
+        100% { clip: rect(0, 9999px, 0, 0); opacity: 0; transform: translate(0,0); }
+    }
+
+    .glow-btn-secondary:hover {
         background: #ff8c00;
         color: #000;
-        box-shadow: 
+        box-shadow:
             0 0 15px rgba(255,140,0,0.9),
             0 0 35px rgba(255,69,0,0.7),
             0 0 55px rgba(255,69,0,0.4);
@@ -119,17 +206,24 @@
         .logo { font-size: 2rem; }
         nav a { display: inline-block; margin: 8px 6px; }
         .main-text { font-size: 1.05rem; }
-        .glow-btn { font-size: 1rem; padding: 12px 20px; }
+        .glow-btn-primary,
+        .glow-btn-secondary {
+            font-size: 1rem;
+            padding: 12px 20px;
+        }
     }
 </style>
 
 </head>
 <body>
 
+    <!-- SMOKE BACKGROUND -->
+    <div class="smoke-bg"></div>
+
     <!-- HEADER AREA -->
     <div class="header-container">
 
-        <!-- TOP LOGO SPOT (REPLACE WITH YOUR IMAGE) -->
+        <!-- TOP LOGO SPOT -->
         <img class="top-logo" src="YOUR-LOGO.png" alt="Highway Haze Logo">
 
         <!-- TEXT LOGO -->
@@ -158,9 +252,12 @@
         If you’re here… you found the smoke trail.
     </p>
 
-    <!-- BUTTONS -->
-    <a class="glow-btn" href="#">Join the Club</a>
-    <a class="glow-btn" href="/curiositydrop-secret">Enter the Secret World</a>
+    <!-- UPDATED BUTTONS -->
+    <a class="glow-btn-primary" href="#">Join the Club</a>
+
+    <a class="glow-btn-secondary" href="/curiositydrop-secret" data-text="Enter the Secret World">
+        Enter the Secret World
+    </a>
 
 </body>
 </html>
