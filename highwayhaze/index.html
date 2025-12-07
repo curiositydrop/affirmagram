@@ -35,7 +35,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 70%);
         filter: blur(70px);
         animation: drift 25s infinite linear;
     }
@@ -71,18 +71,18 @@
         text-transform: uppercase;
         color: white;
         text-shadow: 
-            0 0 6px rgba(255,140,0,0.6),
-            0 0 12px rgba(255,69,0,0.5),
-            0 0 20px rgba(255,140,0,0.3);
+            0 0 6px rgba(58,107,53,0.6),
+            0 0 12px rgba(36,72,34,0.5),
+            0 0 20px rgba(58,107,53,0.3);
     }
 
-    /* NEON DIVIDER LINE */
+    /* NEON DIVIDER LINE (natural green) */
     .divider {
         width: 80%;
         height: 2px;
         margin: 20px auto 25px auto;
-        background: #ff8c00;
-        box-shadow: 0 0 15px rgba(255,140,0,0.6);
+        background: #3A6B35;
+        box-shadow: 0 0 12px rgba(58,107,53,0.5);
         border-radius: 2px;
     }
 
@@ -101,13 +101,13 @@
     }
 
     nav a:hover {
-        color: #ffb46a;
-        text-shadow: 0 0 6px rgba(255,140,0,0.6);
+        color: #8FC77C;
+        text-shadow: 0 0 6px rgba(58,107,53,0.6);
     }
 
     nav a.active {
-        color: #ffb46a;
-        border-bottom: 2px solid #ffb46a;
+        color: #8FC77C;
+        border-bottom: 2px solid #8FC77C;
         padding-bottom: 3px;
     }
 
@@ -121,7 +121,7 @@
         opacity: 0.92;
     }
 
-    /* JOIN THE CLUB BUTTON — BURNT EDGE ORANGE GLOW */
+    /* JOIN THE CLUB BUTTON — LEAF GREEN WITH SUBTLE GLOW */
     .join-btn {
         display: inline-block;
         padding: 14px 26px;
@@ -129,25 +129,24 @@
         font-size: 1.2rem;
         font-weight: 600;
         color: #000;
-        background: #ff8c00;
-        border: 2px solid #cc6600; /* darker burnt edge border */
+        background: #3A6B35;
+        border: 2px solid #244822; /* darker burnt-edge */
         border-radius: 8px;
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         transition: 0.3s ease;
         box-shadow:
-            0 0 20px rgba(255,140,0,0.9),
-            0 0 40px rgba(255,69,0,0.6),
-            0 0 60px rgba(255,69,0,0.4);
+            0 0 10px rgba(58,107,53,0.6),
+            0 0 20px rgba(36,72,34,0.4);
     }
 
     .join-btn:hover {
         transform: scale(1.08);
         box-shadow:
-            0 0 25px rgba(255,160,10,1),
-            0 0 55px rgba(255,90,0,1),
-            0 0 80px rgba(255,80,0,0.7);
+            0 0 15px rgba(58,107,53,0.8),
+            0 0 35px rgba(36,72,34,0.6),
+            0 0 50px rgba(58,107,53,0.4);
     }
 
     /* ENTER SECRET WORLD BUTTON — DARK WITH GLOW ON HOVER */
@@ -159,24 +158,24 @@
         font-weight: 600;
         color: white;
         background: #1a1a1a;
-        border: 2px solid #ff9c41;
+        border: 2px solid #3A6B35;
         border-radius: 8px;
         text-decoration: none;
         text-transform: uppercase;
         letter-spacing: 1.5px;
         transition: 0.3s ease;
         box-shadow:
-            0 0 8px rgba(255,140,0,0.3),
-            0 0 15px rgba(255,69,0,0.2);
+            0 0 8px rgba(58,107,53,0.3),
+            0 0 15px rgba(36,72,34,0.2);
     }
 
     .secret-btn:hover {
-        background: #ff8c00;
+        background: #3A6B35;
         color: #000;
         box-shadow:
-            0 0 15px rgba(255,140,0,0.9),
-            0 0 35px rgba(255,69,0,0.7),
-            0 0 55px rgba(255,69,0,0.4);
+            0 0 15px rgba(58,107,53,0.9),
+            0 0 35px rgba(36,72,34,0.7),
+            0 0 55px rgba(58,107,53,0.4);
         transform: scale(1.05);
     }
 
