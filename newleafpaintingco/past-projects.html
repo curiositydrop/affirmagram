@@ -15,15 +15,24 @@
 
   gtag('config', 'G-ZFESYBBBWD');
 </script>
-  .project-gallery {
+ .project-gallery {
   display: flex;
   gap: 20px;
   justify-content: center;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-wrap: nowrap;   /* keeps them side-by-side */
 }
 
 .image-wrap {
   text-align: center;
+  flex: 1;             /* lets images share the row evenly */
+  max-width: 400px;    /* optional — keeps them from getting huge */
+}
+
+.project-gallery img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
 }
 
 .caption {
@@ -36,16 +45,7 @@
 }
 
 .after {
-  color: #1f6b33; /* your green */
-}
-
-.project-divider {
-  border: none;
-  height: 3px;
-  width: 80%;
-  margin: 40px auto;
-  background-color: #1f6b33;
-  border-radius: 3px;
+  color: #1f6b33;
 }
 </head>
 <body>
