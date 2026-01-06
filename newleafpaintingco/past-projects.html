@@ -21,7 +21,9 @@
   gap: 20px;
   justify-content: center;
   align-items: flex-start;
-  flex-wrap: nowrap;     /* NEVER wrap — always side-by-side */
+  flex-wrap: nowrap;
+  max-width: 900px;      /* keeps images from touching edges */
+  margin: 0 auto;        /* centers the gallery */
 }
 
 .image-wrap {
@@ -34,6 +36,14 @@
   width: 100%;
   height: auto;
   border-radius: 6px;
+}
+    .project-divider {
+  border: none;
+  height: 6px;            /* thicker */
+  width: 85%;             /* slightly wider */
+  margin: 50px auto;      /* a bit more breathing room */
+  background-color: #1f6b33;  /* your site green */
+  border-radius: 6px;     /* smoother ends */
 }
     </style> 
 </head>
@@ -48,28 +58,22 @@
     <p>Take a look at a few of the rooms we’ve transformed and the clients we’ve delighted.</p>
   </section>
 
-  <section class="projects">
-  
-  <div class="project-card">
+  <h3>Kitchen Cabinet Refresh</h3>
+<p>This cabinet respray gave this kitchen a nice new look.</p>
 
-    <div class="project-gallery">
+<div class="project-gallery">
 
-      <div class="image-wrap">
-        <img src="IMG_8428.jpeg" alt="Cabinet repaint before" class="clickable-img">
-        <p class="caption before">Before</p>
-      </div>
-
-      <div class="image-wrap">
-        <img src="IMG_8455.jpeg" alt="Cabinet repaint after" class="clickable-img">
-        <p class="caption after">After</p>
-      </div>
-
-    </div>
-
-    <h3>Kitchen Cabinet Refresh</h3>
-    <p>This cabinet respray gave this kitchen a nice new look.</p>
-
+  <div class="image-wrap">
+    <img src="IMG_8428.jpeg" alt="Cabinet repaint before" class="clickable-img">
+    <p class="caption before">Before</p>
   </div>
+
+  <div class="image-wrap">
+    <img src="IMG_8455.jpeg" alt="Cabinet repaint after" class="clickable-img">
+    <p class="caption after">After</p>
+  </div>
+
+</div>
 
 </section>
 
