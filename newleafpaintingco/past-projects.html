@@ -20,32 +20,19 @@
   gap: 20px;
   justify-content: center;
   align-items: flex-start;
-  flex-wrap: nowrap;   /* keeps them side-by-side */
+  flex-wrap: nowrap;     /* NEVER wrap — always side-by-side */
 }
 
 .image-wrap {
   text-align: center;
-  flex: 1;             /* lets images share the row evenly */
-  max-width: 400px;    /* optional — keeps them from getting huge */
+  flex: 1;               /* share space evenly */
+  max-width: 400px;      /* optional */
 }
 
 .project-gallery img {
   width: 100%;
   height: auto;
   border-radius: 6px;
-}
-
-.caption {
-  margin-top: 6px;
-  font-weight: 600;
-}
-
-.before {
-  color: #777;
-}
-
-.after {
-  color: #1f6b33;
 }
 </head>
 <body>
