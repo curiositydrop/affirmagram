@@ -377,7 +377,7 @@ gap:0;
 .logo-area img{
 height:340px;
 width:auto;
-filter: drop-shadow(0 0 6px rgba(255,0,76,0.4));
+filter: drop-shadow(0 0 10px rgba(255,0,76,0.55)) drop-shadow(0 0 18px rgba(255,255,255,0.12));
 }
 
 .logo-area .tagline{
@@ -389,39 +389,39 @@ line-height:1.2;
 
 @media (max-width: 768px){
 .logo-area img{
-height:180px;
+height:220px;
 }
 
 .logo-area .tagline{
-font-size:18px;
+font-size:22px;
 padding:0 12px;
 }
 
 nav{
-padding:8px 8px 16px 8px;
-gap:4px;
+padding:10px 8px 18px 8px;
+gap:6px;
 }
 
 nav a{
-font-size:12px;
-margin:4px 6px;
+font-size:16px;
+margin:5px 8px;
 }
 
 .hero{
-padding:50px 20px;
+padding:55px 20px;
 }
 
 .hero h2{
-font-size:24px;
+font-size:34px;
 }
 
 .hero p{
-font-size:16px;
+font-size:22px;
 }
 
 .hero-buttons .button{
-font-size:14px;
-padding:12px 18px;
+font-size:16px;
+padding:12px 20px;
 }
 
 .featured h2,
@@ -432,7 +432,7 @@ padding:12px 18px;
 .profile-bio h3,
 .profile-videos h3,
 .form-page h2{
-font-size:24px;
+font-size:34px;
 }
 
 .video-card{
@@ -442,11 +442,11 @@ max-width:180px;
 }
 
 .video-card p{
-font-size:14px;
+font-size:16px;
 }
 
 .video-card img{
-height:90px;
+height:100px;
 }
 
 .scene-card{
@@ -455,12 +455,12 @@ max-width:280px;
 }
 
 .scene-card h3{
-font-size:20px;
+font-size:24px;
 }
 
 .scene-card p,
 .scene-card a{
-font-size:15px;
+font-size:18px;
 }
 
 .steps{
@@ -468,26 +468,26 @@ gap:20px;
 }
 
 .steps h3{
-font-size:24px;
+font-size:26px;
 }
 
 .steps p{
-font-size:15px;
+font-size:18px;
 }
 
 .page-hero p,
 .form-page p,
 .profile-bio p,
 .profile-info p{
-font-size:16px;
+font-size:18px;
 }
 
 .filters h3{
-font-size:20px;
+font-size:24px;
 }
 
 .filter-links a{
-font-size:14px;
+font-size:16px;
 padding:10px 14px;
 }
 
@@ -497,26 +497,26 @@ max-width:320px;
 }
 
 .profile-card h3{
-font-size:22px;
+font-size:24px;
 }
 
 .profile-card p{
-font-size:16px;
+font-size:18px;
 }
 
 .profile-card .button,
 .profile-info .button,
 .cta a.button{
-font-size:14px;
+font-size:16px;
 padding:12px 18px;
 }
 
 .profile-info h2{
-font-size:28px;
+font-size:34px;
 }
 
 .submission-form label{
-font-size:16px;
+font-size:18px;
 }
 
 .submission-form input,
@@ -526,6 +526,6 @@ font-size:16px;
 }
 
 footer{
-font-size:14px;
+font-size:16px;
 }
 }
