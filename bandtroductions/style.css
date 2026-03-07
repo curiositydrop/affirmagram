@@ -387,9 +387,12 @@ margin:0;
 line-height:1.2;
 }
 
-@media (max-width: 768px){
+/* MOBILE */
+
+@media (max-width:768px){
+
 .logo-area img{
-height:220px;
+height:190px;
 }
 
 .logo-area .tagline{
@@ -397,22 +400,26 @@ font-size:22px;
 padding:0 12px;
 }
 
+/* stacked mobile navigation */
+
 nav{
-padding:10px 8px 18px 8px;
+flex-direction:column;
+align-items:center;
 gap:6px;
+padding:12px 0 20px 0;
 }
 
 nav a{
-font-size:16px;
-margin:5px 8px;
+font-size:18px;
+margin:4px 0;
 }
 
 .hero{
-padding:55px 20px;
+padding:40px 20px;
 }
 
 .hero h2{
-font-size:34px;
+font-size:30px;
 }
 
 .hero p{
@@ -436,17 +443,16 @@ font-size:34px;
 }
 
 .video-card{
-width:30%;
-min-width:100px;
-max-width:180px;
+width:90%;
+max-width:260px;
 }
 
 .video-card p{
-font-size:16px;
+font-size:18px;
 }
 
 .video-card img{
-height:100px;
+height:120px;
 }
 
 .scene-card{
@@ -528,4 +534,5 @@ font-size:16px;
 footer{
 font-size:16px;
 }
+
 }
