@@ -161,3 +161,53 @@ color:white;
 text-decoration:none;
 display:inline-block;
 }
+.profile-page{
+padding:60px 20px;
+max-width:1000px;
+margin:0 auto;
+}
+
+.profile-top{
+display:flex;
+flex-wrap:wrap;
+gap:30px;
+align-items:flex-start;
+justify-content:center;
+}
+
+.profile-top img{
+width:300px;
+max-width:100%;
+height:auto;
+background:#333;
+border-radius:8px;
+}
+
+.profile-info{
+max-width:500px;
+}
+
+.profile-info h2{
+margin-top:0;
+}
+
+.profile-info .button{
+margin-top:15px;
+padding:12px 24px;
+background:#ff004c;
+color:white;
+text-decoration:none;
+display:inline-block;
+}
+
+.profile-bio,
+.profile-videos{
+margin-top:50px;
+text-align:center;
+}
+
+.profile-bio p{
+max-width:800px;
+margin:0 auto;
+line-height:1.6;
+}
