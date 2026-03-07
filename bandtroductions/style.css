@@ -1,0 +1,102 @@
+body{
+font-family: Arial, sans-serif;
+margin:0;
+background:#111;
+color:white;
+}
+
+header{
+text-align:center;
+padding:40px;
+background:#000;
+}
+
+nav a{
+margin:10px;
+color:#0ff;
+text-decoration:none;
+}
+
+.hero{
+text-align:center;
+padding:80px 20px;
+}
+
+.hero-buttons .button{
+margin:10px;
+padding:12px 25px;
+background:#ff004c;
+color:white;
+text-decoration:none;
+display:inline-block;
+}
+
+.featured{
+padding:60px 20px;
+text-align:center;
+}
+
+.video-grid{
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.video-card{
+width:200px;
+}
+
+.video-card img{
+width:100%;
+background:#333;
+height:120px;
+}
+
+.local-scene{
+padding:60px 20px;
+text-align:center;
+}
+
+.scene-grid{
+display:flex;
+justify-content:center;
+gap:30px;
+flex-wrap:wrap;
+}
+
+.scene-card{
+background:#222;
+padding:25px;
+width:220px;
+border-radius:6px;
+}
+
+.scene-card a{
+color:#0ff;
+text-decoration:none;
+}
+
+.how-it-works{
+text-align:center;
+padding:60px;
+}
+
+.steps{
+display:flex;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+}
+
+.cta{
+text-align:center;
+padding:60px;
+background:#222;
+}
+
+footer{
+text-align:center;
+padding:30px;
+background:#000;
+}
