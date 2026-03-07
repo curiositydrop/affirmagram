@@ -250,3 +250,27 @@ font-size:16px;
 cursor:pointer;
 border-radius:4px;
 }
+.logo-area{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+margin-bottom:10px;
+flex-wrap:wrap;
+}
+
+.logo-area img{
+height:70px;
+width:auto;
+}
+
+.logo-text h1{
+margin:0;
+font-size:26px;
+}
+
+.logo-text p{
+margin:0;
+font-size:14px;
+color:#aaa;
+}
