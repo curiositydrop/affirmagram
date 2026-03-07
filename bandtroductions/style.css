@@ -12,13 +12,17 @@ background:#000;
 }
 
 nav{
-padding:0 0 15px 0;
+padding:10px 0 20px 0;
+display:flex;
+justify-content:center;
+flex-wrap:wrap;
 }
 
 nav a{
-margin:10px;
+margin:8px 12px;
 color:#0ff;
 text-decoration:none;
+font-size:16px;
 }
 
 .hero{
@@ -33,6 +37,7 @@ background:#ff004c;
 color:white;
 text-decoration:none;
 display:inline-block;
+border-radius:4px;
 }
 
 .featured{
@@ -55,6 +60,7 @@ width:200px;
 width:100%;
 background:#333;
 height:120px;
+object-fit:cover;
 }
 
 .local-scene{
@@ -83,7 +89,7 @@ text-decoration:none;
 
 .how-it-works{
 text-align:center;
-padding:60px;
+padding:60px 20px;
 }
 
 .steps{
@@ -95,7 +101,7 @@ flex-wrap:wrap;
 
 .cta{
 text-align:center;
-padding:60px;
+padding:60px 20px;
 background:#222;
 }
 
@@ -104,6 +110,7 @@ text-align:center;
 padding:30px;
 background:#000;
 }
+
 .page-hero{
 text-align:center;
 padding:60px 20px 30px;
@@ -164,7 +171,9 @@ background:#ff004c;
 color:white;
 text-decoration:none;
 display:inline-block;
+border-radius:4px;
 }
+
 .profile-page{
 padding:60px 20px;
 max-width:1000px;
@@ -202,6 +211,7 @@ background:#ff004c;
 color:white;
 text-decoration:none;
 display:inline-block;
+border-radius:4px;
 }
 
 .profile-bio,
@@ -215,6 +225,7 @@ max-width:800px;
 margin:0 auto;
 line-height:1.6;
 }
+
 .form-page{
 max-width:800px;
 margin:0 auto;
@@ -265,13 +276,43 @@ gap:0;
 }
 
 .logo-area img{
-height:240px;
+height:220px;
 width:auto;
 display:block;
 }
 
 .logo-area .tagline{
-font-size:45px;
+font-size:18px;
 color:#aaa;
-margin: -80px 0 8px 0;
-line-height
+margin:0;
+line-height:1.1;
+}
+
+@media (max-width: 768px){
+.logo-area img{
+height:180px;
+}
+
+.logo-area .tagline{
+font-size:16px;
+}
+
+nav a{
+font-size:15px;
+margin:6px 10px;
+}
+
+.hero{
+padding:60px 20px;
+}
+
+.profile-card{
+width:90%;
+max-width:320px;
+}
+
+.scene-card{
+width:90%;
+max-width:280px;
+}
+}
