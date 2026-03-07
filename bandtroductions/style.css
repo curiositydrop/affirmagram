@@ -7,7 +7,7 @@ color:white;
 
 header{
 text-align:center;
-padding:40px;
+padding:10px 0 0 0;
 background:#000;
 }
 
@@ -261,12 +261,12 @@ gap:0;
 }
 
 .logo-area img{
-height:400px;
+height:540px;
 width:auto;
 }
 
 .tagline{
-font-size:18px;
+font-size:20px;
 color:#aaa;
 margin-top:-65px;
 }
