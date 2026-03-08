@@ -688,3 +688,35 @@ font-size:15px;
 padding:10px 16px;
 }
 }
+.featured-performance{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:40px;
+flex-wrap:wrap;
+margin-top:30px;
+}
+
+.album-cover img{
+width:220px;
+height:220px;
+object-fit:cover;
+border-radius:8px;
+background:#333;
+}
+
+.live-video{
+max-width:500px;
+text-align:center;
+}
+
+.live-video p{
+font-size:20px;
+margin-top:10px;
+}
+
+.live-video iframe{
+width:100%;
+height:280px;
+border-radius:8px;
+}
