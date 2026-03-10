@@ -1,76 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BANDtroductions</title>
-<link rel="stylesheet" href="style.css?v=4">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BANDtroductions</title>
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 
 <body>
 
 <header>
+  <div class="logo-area">
+    <img src="IMG_9367.png" alt="BANDtroductions Logo">
+    <p class="tagline">Show the music. Find your band.</p>
+  </div>
 
-<div class="logo-area">
-<img src="IMG_9367.png" alt="BANDtroductions Logo">
-<p class="tagline">Show the music. Find your band.</p>
-</div>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="bands.html">Browse Bands</a>
-<a href="musicians.html">Browse Musicians</a>
-<a href="submit-band.html">Submit Your Band</a>
-<a href="submit-musician.html">Submit as Musician</a>
-<a href="about.html">About</a>
-</nav>
-
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="bands.html">Browse Bands</a>
+    <a href="musicians.html">Browse Musicians</a>
+    <a href="submit-band.html">Submit Your Band</a>
+    <a href="submit-musician.html">Submit as Musician</a>
+    <a href="about.html">About</a>
+  </nav>
 </header>
 
 <section class="form-page">
+  <h2>Get Your Band Featured</h2>
+  <p>
+    Send in your band info and performance video to be featured on BANDtroductions.
+  </p>
 
-<h2>Get Your Band Featured</h2>
-<p>
-Send in your band info and performance video to be featured on BANDtroductions.
-</p>
+  <form
+    name="band-submission"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+    action="/thank-you.html"
+    class="submission-form"
+  >
+    <input type="hidden" name="form-name" value="band-submission">
 
-<form class="submission-form">
+    <p style="display:none;">
+      <label>Don’t fill this out if you're human: <input name="bot-field"></label>
+    </p>
 
-<label for="band-name">Band Name</label>
-<input type="text" id="band-name" name="band-name">
+    <label for="band-name">Band Name</label>
+    <input type="text" id="band-name" name="band-name" required>
 
-<label for="band-location">Location</label>
-<input type="text" id="band-location" name="band-location">
+    <label for="band-location">Location</label>
+    <input type="text" id="band-location" name="band-location" required>
 
-<label for="band-genre">Genre</label>
-<input type="text" id="band-genre" name="band-genre">
+    <label for="band-genre">Genre</label>
+    <input type="text" id="band-genre" name="band-genre">
 
-<label for="members">Current Members</label>
-<input type="text" id="members" name="members">
+    <label for="members">Current Members</label>
+    <input type="text" id="members" name="members">
 
-<label for="looking-for">Looking For</label>
-<input type="text" id="looking-for" name="looking-for">
+    <label for="looking-for">Looking For</label>
+    <input type="text" id="looking-for" name="looking-for">
 
-<label for="band-influences">Influences</label>
-<input type="text" id="band-influences" name="band-influences">
+    <label for="band-influences">Influences</label>
+    <input type="text" id="band-influences" name="band-influences">
 
-<label for="band-video">Performance Video Link</label>
-<input type="url" id="band-video" name="band-video">
+    <label for="band-video">Performance Video Link</label>
+    <input type="url" id="band-video" name="band-video">
 
-<label for="band-bio">Short Band Bio</label>
-<textarea id="band-bio" name="band-bio" rows="6"></textarea>
+    <label for="band-bio">Short Band Bio</label>
+    <textarea id="band-bio" name="band-bio" rows="6"></textarea>
 
-<label for="band-contact">Contact Email or Social Link</label>
-<input type="text" id="band-contact" name="band-contact">
+    <label for="band-contact">Contact Email or Social Link</label>
+    <input type="text" id="band-contact" name="band-contact" required>
 
-<button type="submit">Submit Band</button>
-
-</form>
-
+    <button type="submit">Submit Band</button>
+  </form>
 </section>
 
 <footer>
-<p>© BANDtroductions</p>
+  <p>© BANDtroductions</p>
 </footer>
 
 </body>
