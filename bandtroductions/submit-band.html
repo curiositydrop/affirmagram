@@ -32,48 +32,50 @@
   </p>
 
   <form
-    name="band-submission"
-    method="POST"
-    data-netlify="true"
-    netlify-honeypot="bot-field"
-    action="/thank-you.html"
-    class="submission-form"
-  >
-    <input type="hidden" name="form-name" value="band-submission">
+  name="band-submission"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  action="/thank-you.html"
+  class="submission-form"
+>
 
-    <p style="display:none;">
-      <label>Don’t fill this out if you're human: <input name="bot-field"></label>
-    </p>
+<input type="hidden" name="form-name" value="band-submission">
 
-    <label for="band-name">Band Name</label>
-    <input type="text" id="band-name" name="band-name" required>
+<p style="display:none;">
+<label>Don’t fill this out if you're human: <input name="bot-field"></label>
+</p>
 
-    <label for="band-location">Location</label>
-    <input type="text" id="band-location" name="band-location" required>
+<label for="band-name">Band Name *</label>
+<input type="text" id="band-name" name="band-name" required>
 
-    <label for="band-genre">Genre</label>
-    <input type="text" id="band-genre" name="band-genre">
+<label for="band-location">Location</label>
+<input type="text" id="band-location" name="band-location">
 
-    <label for="members">Current Members</label>
-    <input type="text" id="members" name="members">
+<label for="band-genre">Genre</label>
+<input type="text" id="band-genre" name="band-genre">
 
-    <label for="looking-for">Looking For</label>
-    <input type="text" id="looking-for" name="looking-for">
+<label for="members">Current Members</label>
+<input type="text" id="members" name="members">
 
-    <label for="band-influences">Influences</label>
-    <input type="text" id="band-influences" name="band-influences">
+<label for="looking-for">Looking For</label>
+<input type="text" id="looking-for" name="looking-for">
 
-    <label for="band-video">Performance Video Link</label>
-    <input type="url" id="band-video" name="band-video">
+<label for="band-influences">Influences</label>
+<input type="text" id="band-influences" name="band-influences">
 
-    <label for="band-bio">Short Band Bio</label>
-    <textarea id="band-bio" name="band-bio" rows="6"></textarea>
+<label for="band-video">Performance Video Link</label>
+<input type="url" id="band-video" name="band-video">
 
-    <label for="band-contact">Contact Email or Social Link</label>
-    <input type="text" id="band-contact" name="band-contact" required>
+<label for="band-bio">Short Band Bio</label>
+<textarea id="band-bio" name="band-bio" rows="6"></textarea>
 
-    <button type="submit">Submit Band</button>
-  </form>
+<label for="band-contact">Contact Email or Social *</label>
+<input type="text" id="band-contact" name="band-contact" required>
+
+<button type="submit">Submit Band</button>
+
+</form>
 </section>
 
 <footer>
