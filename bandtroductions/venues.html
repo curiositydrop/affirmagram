@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BANDtroductions</title>
+<link rel="stylesheet" href="style.css?v=4">
+
+<style>
+.search-box-wrap{
+text-align:center;
+padding:20px;
+}
+
+.search-box-wrap input{
+width:100%;
+max-width:500px;
+padding:14px 16px;
+font-size:18px;
+border:none;
+border-radius:4px;
+background:#222;
+color:white;
+}
+
+@media (max-width:768px){
+.search-box-wrap input{
+font-size:16px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-area">
+<img src="IMG_9367.png" alt="BANDtroductions Logo">
+<p class="tagline">Maine's Musician Hub</p>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="bands.html">Browse Bands</a>
+<a href="musicians.html">Browse Musicians</a>
+<a href="venues.html">Browse Venues</a>
+<a href="submit-band.html">Submit Your Band</a>
+<a href="submit-musician.html">Submit as Musician</a>
+<a href="sponsors.html">Sponsors</a>
+<a href="about.html">About</a>
+</nav>
+
+</header>
+
+<section class="page-hero">
+
+<h2>Discover Venues Across Maine</h2>
+
+<p>
+Browse venues, bars, restaurants and local stages that support live music across Maine and beyond.
+</p>
+
+</section>
+
+<section class="filters">
+<h3>Search by Town</h3>
+</section>
+
+<section class="search-box-wrap">
+<input type="text" id="townSearch" placeholder="Type a town...">
+</section>
+
+<section class="musician-directory">
+
+<div class="profile-grid" id="venueGrid">
+
+<div class="profile-card" data-town="portland">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Port City Stage</h3>
+<p><strong>Town:</strong> Portland, ME</p>
+<p><strong>Type:</strong> Bar & Live Music Venue</p>
+<p><strong>Hosts:</strong> Rock, Indie, Acoustic</p>
+<p><strong>Booking:</strong> Open to local acts</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+<div class="profile-card" data-town="saco">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Riverlight Tavern</h3>
+<p><strong>Town:</strong> Saco, ME</p>
+<p><strong>Type:</strong> Restaurant & Music Spot</p>
+<p><strong>Hosts:</strong> Acoustic, Folk, Singer-Songwriter</p>
+<p><strong>Booking:</strong> Local musicians welcome</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+<div class="profile-card" data-town="biddeford">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Main Street Sound Hall</h3>
+<p><strong>Town:</strong> Biddeford, ME</p>
+<p><strong>Type:</strong> Small Venue / Event Space</p>
+<p><strong>Hosts:</strong> Punk, Rock, Alternative</p>
+<p><strong>Booking:</strong> Available for band inquiries</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+<div class="profile-card" data-town="wells">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Coastal Jam House</h3>
+<p><strong>Town:</strong> Wells, ME</p>
+<p><strong>Type:</strong> Bar & Grill</p>
+<p><strong>Hosts:</strong> Rock, Blues, Covers</p>
+<p><strong>Booking:</strong> Looking for weekend acts</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+<div class="profile-card" data-town="lewiston">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Pine State Performance Hall</h3>
+<p><strong>Town:</strong> Lewiston, ME</p>
+<p><strong>Type:</strong> Performance Venue</p>
+<p><strong>Hosts:</strong> Rock, Metal, Mixed Events</p>
+<p><strong>Booking:</strong> Open to submissions</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+<div class="profile-card" data-town="portsmouth">
+<img src="placeholder.jpg" alt="Venue profile">
+<h3>Harbor Lights Live</h3>
+<p><strong>Town:</strong> Portsmouth, NH</p>
+<p><strong>Type:</strong> Pub & Live Stage</p>
+<p><strong>Hosts:</strong> Indie, Acoustic, Pop Rock</p>
+<p><strong>Booking:</strong> Booking regional talent</p>
+<a class="button" href="venue-profile.html">View Venue</a>
+</div>
+
+</div>
+
+</section>
+
+<section class="cta">
+
+<h2>Own or manage a live music venue?</h2>
+<a class="button" href="submit-venue.html">Submit Your Venue</a>
+
+</section>
+
+<footer>
+<p>© BANDtroductions</p>
+</footer>
+
+<script>
+const townSearch = document.getElementById('townSearch');
+const venueCards = document.querySelectorAll('#venueGrid .profile-card');
+
+townSearch.addEventListener('input', function() {
+  const searchValue = this.value.toLowerCase().trim();
+
+  venueCards.forEach(card => {
+    const town = card.dataset.town.toLowerCase();
+
+    if (town.includes(searchValue)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
