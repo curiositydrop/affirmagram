@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BANDtroductions</title>
+<link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body>
+
+<header>
+
+<div class="logo-area">
+<img src="IMG_9367.png" alt="BANDtroductions Logo">
+<p class="tagline">Maine's Musician Hub</p>
+</div>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="bands.html">Browse Bands</a>
+<a href="musicians.html">Browse Musicians</a>
+<a href="venues.html">Browse Venues</a>
+<a href="submit-band.html">Submit Your Band</a>
+<a href="submit-musician.html">Submit as Musician</a>
+<a href="submit-venue.html">Submit Your Venue</a>
+<a href="sponsors.html">Sponsors</a>
+<a href="about.html">About</a>
+</nav>
+
+</header>
+
+<section class="form-page">
+
+<h2>Submit Your Venue</h2>
+<p>
+Own or manage a venue that supports live music? Send in your venue details to be featured on BANDtroductions.
+</p>
+
+<form
+name="venue-submission"
+method="POST"
+data-netlify="true"
+netlify
+netlify-honeypot="bot-field"
+action="/bandtroductions/thank-you.html"
+class="submission-form"
+enctype="multipart/form-data"
+>
+
+<input type="hidden" name="form-name" value="venue-submission">
+<input type="hidden" name="subject" value="New BANDtroductions Venue Submission">
+
+<p style="display:none;">
+<label>Don't fill this out if you're human: <input name="bot-field"></label>
+</p>
+
+<label for="venue-name">Venue Name *</label>
+<input type="text" id="venue-name" name="venue-name" required>
+
+<label for="venue-town">Town / City *</label>
+<input type="text" id="venue-town" name="venue-town" required>
+
+<label for="venue-type">Type of Venue</label>
+<input type="text" id="venue-type" name="venue-type">
+
+<label for="genres-hosted">Genres Hosted</label>
+<input type="text" id="genres-hosted" name="genres-hosted">
+
+<label for="booking-status">Booking Status</label>
+<input type="text" id="booking-status" name="booking-status">
+
+<label for="website-social">Website or Social Link</label>
+<input type="text" id="website-social" name="website-social">
+
+<label for="venue-photo">Venue Photo or Logo</label>
+<input type="file" id="venue-photo" name="venue-photo">
+
+<label for="venue-description">Short Venue Description</label>
+<textarea id="venue-description" name="venue-description" rows="6"></textarea>
+
+<label for="venue-contact">Booking Contact Email or Social *</label>
+<input type="text" id="venue-contact" name="venue-contact" required>
+
+<button type="submit">Submit Venue</button>
+
+</form>
+
+</section>
+
+<footer>
+<p>© BANDtroductions</p>
+</footer>
+
+</body>
+</html>
