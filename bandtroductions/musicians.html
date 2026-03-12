@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BANDtroductions</title>
 <link rel="stylesheet" href="style.css?v=4">
+
+<style>
+.filter-links a.active {
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+</style>
 </head>
 
 <body>
@@ -29,18 +39,34 @@
 
 <section class="page-hero">
 <h2>Find the Right Musician</h2>
-<p>Browse singers, drummers, guitarists, bassists and more from the local scene.</p>
+<p>Browse singers, drummers, guitarists, bassists, keyboard players and more from the local scene.</p>
 </section>
 
 <section class="filters">
-<h3>Browse by Category</h3>
-<div class="filter-links">
-<a href="#">Vocals</a>
-<a href="#">Guitar</a>
-<a href="#">Bass</a>
-<a href="#">Drums</a>
-<a href="#">Keys</a>
-<a href="#">All Styles</a>
+<h3>Browse by Genre</h3>
+<div class="filter-links genre-filter">
+<a href="#" data-genre="rock">Rock</a>
+<a href="#" data-genre="alternative">Alternative</a>
+<a href="#" data-genre="indie">Indie</a>
+<a href="#" data-genre="metal">Metal</a>
+<a href="#" data-genre="punk">Punk</a>
+<a href="#" data-genre="pop">Pop</a>
+<a href="#" data-genre="folk">Folk</a>
+<a href="#" data-genre="acoustic">Acoustic</a>
+<a href="#" data-genre="ambient">Ambient</a>
+<a href="#" data-genre="all" class="active">All Genres</a>
+</div>
+</section>
+
+<section class="filters">
+<h3>Browse by Instrument</h3>
+<div class="filter-links instrument-filter">
+<a href="#" data-instrument="vocals">Vocals</a>
+<a href="#" data-instrument="guitar">Guitar</a>
+<a href="#" data-instrument="bass">Bass</a>
+<a href="#" data-instrument="drums">Drums</a>
+<a href="#" data-instrument="keys">Keys</a>
+<a href="#" data-instrument="all" class="active">All Instruments</a>
 </div>
 </section>
 
@@ -48,7 +74,7 @@
 
 <div class="profile-grid">
 
-<div class="profile-card">
+<div class="profile-card" data-genre="rock alternative" data-instrument="drums">
 <img src="placeholder.jpg" alt="Jake drummer profile">
 <h3>Jake</h3>
 <p><strong>Instrument:</strong> Drums</p>
@@ -57,7 +83,7 @@
 <a class="button" href="musician-profile.html">View Profile</a>
 </div>
 
-<div class="profile-card">
+<div class="profile-card" data-genre="indie pop" data-instrument="vocals">
 <img src="placeholder.jpg" alt="Sarah vocals profile">
 <h3>Sarah</h3>
 <p><strong>Instrument:</strong> Vocals</p>
@@ -66,7 +92,7 @@
 <a class="button" href="musician-profile.html">View Profile</a>
 </div>
 
-<div class="profile-card">
+<div class="profile-card" data-genre="metal rock" data-instrument="guitar">
 <img src="placeholder.jpg" alt="Mike guitar profile">
 <h3>Mike</h3>
 <p><strong>Instrument:</strong> Guitar</p>
@@ -75,7 +101,7 @@
 <a class="button" href="musician-profile.html">View Profile</a>
 </div>
 
-<div class="profile-card">
+<div class="profile-card" data-genre="punk rock" data-instrument="bass">
 <img src="placeholder.jpg" alt="Chris bass profile">
 <h3>Chris</h3>
 <p><strong>Instrument:</strong> Bass</p>
@@ -84,7 +110,7 @@
 <a class="button" href="musician-profile.html">View Profile</a>
 </div>
 
-<div class="profile-card">
+<div class="profile-card" data-genre="alternative ambient" data-instrument="keys">
 <img src="placeholder.jpg" alt="Emily keys profile">
 <h3>Emily</h3>
 <p><strong>Instrument:</strong> Keys</p>
@@ -93,7 +119,7 @@
 <a class="button" href="musician-profile.html">View Profile</a>
 </div>
 
-<div class="profile-card">
+<div class="profile-card" data-genre="acoustic folk rock" data-instrument="vocals guitar">
 <img src="placeholder.jpg" alt="Tony vocals and guitar profile">
 <h3>Tony</h3>
 <p><strong>Instrument:</strong> Vocals / Guitar</p>
@@ -114,6 +140,54 @@
 <footer>
 <p>© BANDtroductions</p>
 </footer>
+
+<script>
+let selectedGenre = 'all';
+let selectedInstrument = 'all';
+
+const genreLinks = document.querySelectorAll('.genre-filter a');
+const instrumentLinks = document.querySelectorAll('.instrument-filter a');
+const musicianCards = document.querySelectorAll('.profile-card');
+
+function filterMusicians() {
+  musicianCards.forEach(card => {
+    const cardGenres = card.dataset.genre.split(' ');
+    const cardInstruments = card.dataset.instrument.split(' ');
+
+    const genreMatch = selectedGenre === 'all' || cardGenres.includes(selectedGenre);
+    const instrumentMatch = selectedInstrument === 'all' || cardInstruments.includes(selectedInstrument);
+
+    if (genreMatch && instrumentMatch) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function setActiveLink(links, clickedLink) {
+  links.forEach(link => link.classList.remove('active'));
+  clickedLink.classList.add('active');
+}
+
+genreLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    selectedGenre = this.dataset.genre;
+    setActiveLink(genreLinks, this);
+    filterMusicians();
+  });
+});
+
+instrumentLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    selectedInstrument = this.dataset.instrument;
+    setActiveLink(instrumentLinks, this);
+    filterMusicians();
+  });
+});
+</script>
 
 </body>
 </html>
