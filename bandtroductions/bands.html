@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BANDtroductions</title>
 <link rel="stylesheet" href="style.css?v=4">
+
+<style>
+.filter-links a.active {
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+</style>
 </head>
 
 <body>
@@ -50,7 +60,7 @@ Explore local bands, discover new music, and connect with musicians across Maine
 <a href="#" data-genre="indie">Indie</a>
 <a href="#" data-genre="punk">Punk</a>
 <a href="#" data-genre="pop">Pop</a>
-<a href="#" data-genre="all">All Genres</a>
+<a href="#" data-genre="all" class="active">All Genres</a>
 
 </div>
 
@@ -194,11 +204,18 @@ Explore local bands, discover new music, and connect with musicians across Maine
 const filterLinks = document.querySelectorAll('.filter-links a');
 const bandCards = document.querySelectorAll('.profile-card');
 
+function setActiveLink(clickedLink) {
+  filterLinks.forEach(link => link.classList.remove('active'));
+  clickedLink.classList.add('active');
+}
+
 filterLinks.forEach(link => {
   link.addEventListener('click', function(e) {
     e.preventDefault();
 
     const selectedGenre = this.dataset.genre;
+
+    setActiveLink(this);
 
     bandCards.forEach(card => {
       const cardGenre = card.dataset.genre;
