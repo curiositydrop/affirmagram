@@ -45,12 +45,12 @@ Browse bands across the local scene searching for singers, drummers, guitarists 
 
 <div class="filter-links">
 
-<a href="#">Rock</a>
-<a href="#">Metal</a>
-<a href="#">Indie</a>
-<a href="#">Punk</a>
-<a href="#">Pop</a>
-<a href="#">All Genres</a>
+<a href="#" data-genre="rock">Rock</a>
+<a href="#" data-genre="metal">Metal</a>
+<a href="#" data-genre="indie">Indie</a>
+<a href="#" data-genre="punk">Punk</a>
+<a href="#" data-genre="pop">Pop</a>
+<a href="#" data-genre="all">All Genres</a>
 
 </div>
 
@@ -62,7 +62,7 @@ Browse bands across the local scene searching for singers, drummers, guitarists 
 <div class="profile-grid">
 
 
-<div class="profile-card">
+<div class="profile-card" data-genre="rock">
 
 <img src="IMG_9383.jpeg">
 
@@ -190,6 +190,28 @@ Browse bands across the local scene searching for singers, drummers, guitarists 
 
 </footer>
 
+<script>
+const filterLinks = document.querySelectorAll('.filter-links a');
+const bandCards = document.querySelectorAll('.profile-card');
+
+filterLinks.forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    const selectedGenre = this.dataset.genre;
+
+    bandCards.forEach(card => {
+      const cardGenre = card.dataset.genre;
+
+      if (selectedGenre === 'all' || cardGenre === selectedGenre) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+</script>
 
 </body>
 </html>
