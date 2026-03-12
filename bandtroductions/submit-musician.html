@@ -35,13 +35,29 @@
 Send in your info and performance video to be featured on BANDtroductions.
 </p>
 
-<form class="submission-form">
+<form
+name="musician-submission"
+method="POST"
+data-netlify="true"
+netlify
+netlify-honeypot="bot-field"
+action="/bandtroductions/thank-you.html"
+class="submission-form"
+enctype="multipart/form-data"
+>
 
-<label for="name">Name / Stage Name</label>
-<input type="text" id="name" name="name">
+<input type="hidden" name="form-name" value="musician-submission">
+<input type="hidden" name="subject" value="New BANDtroductions Musician Submission">
 
-<label for="instrument">Instrument</label>
-<input type="text" id="instrument" name="instrument">
+<p style="display:none;">
+<label>Don't fill this out if you're human: <input name="bot-field"></label>
+</p>
+
+<label for="name">Name / Stage Name *</label>
+<input type="text" id="name" name="name" required>
+
+<label for="instrument">Instrument *</label>
+<input type="text" id="instrument" name="instrument" required>
 
 <label for="location">Location</label>
 <input type="text" id="location" name="location">
@@ -58,11 +74,14 @@ Send in your info and performance video to be featured on BANDtroductions.
 <label for="video">Performance Video Link</label>
 <input type="url" id="video" name="video">
 
+<label for="photo">Profile Photo</label>
+<input type="file" id="photo" name="photo">
+
 <label for="bio">Short Bio</label>
 <textarea id="bio" name="bio" rows="6"></textarea>
 
-<label for="contact">Contact Email or Social Link</label>
-<input type="text" id="contact" name="contact">
+<label for="contact">Contact Email or Social Link *</label>
+<input type="text" id="contact" name="contact" required>
 
 <button type="submit">Submit Profile</button>
 
