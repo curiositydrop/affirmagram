@@ -57,64 +57,51 @@ Send in your band info and performance video to be featured on BANDtroductions.
 </p>
 
 
-<form
-name="band-submission"
-method="POST"
-data-netlify="true"
-netlify-honeypot="bot-field"
-action="/bandtroductions/thank-you.html"
+<form 
+action="https://formsubmit.co/mbergeron79@gmail.com" 
+method="POST" 
 class="submission-form"
 enctype="multipart/form-data"
 >
 
-<input type="hidden" name="form-name" value="band-submission">
-
-<input type="hidden" name="subject" value="New BANDtroductions Band Submission">
+<input type="hidden" name="_subject" value="New BANDtroductions Band Submission">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://curiositydrop.com/bandtroductions/thank-you.html">
 
 <p style="display:none;">
-<label>Don't fill this out if you're human: <input name="bot-field"></label>
+<label>Don't fill this out if you're human: <input name="_honey"></label>
 </p>
 
-
 <label for="band-name">Band Name *</label>
-<input type="text" id="band-name" name="band-name" required>
-
+<input type="text" id="band-name" name="Band Name" required>
 
 <label for="band-location">Location</label>
-<input type="text" id="band-location" name="band-location">
-
+<input type="text" id="band-location" name="Location">
 
 <label for="band-genre">Genre</label>
-<input type="text" id="band-genre" name="band-genre">
-
+<input type="text" id="band-genre" name="Genre">
 
 <label for="members">Current Members</label>
-<input type="text" id="members" name="members">
-
+<input type="text" id="members" name="Members">
 
 <label for="looking-for">Looking For</label>
-<input type="text" id="looking-for" name="looking-for">
-
+<input type="text" id="looking-for" name="Looking For">
 
 <label for="band-influences">Influences</label>
-<input type="text" id="band-influences" name="band-influences">
-
+<input type="text" id="band-influences" name="Influences">
 
 <label for="band-video">Performance Video Link</label>
-<input type="url" id="band-video" name="band-video">
-
+<input type="url" id="band-video" name="Video Link">
 
 <label for="band-image">Band Logo or Photo</label>
-<input type="file" id="band-image" name="band-image">
-
+<input type="file" id="band-image" name="attachment" accept="image/*">
 
 <label for="band-bio">Short Band Bio</label>
-<textarea id="band-bio" name="band-bio" rows="6"></textarea>
-
+<textarea id="band-bio" name="Band Bio" rows="6"></textarea>
 
 <label for="band-contact">Contact Email or Social *</label>
-<input type="text" id="band-contact" name="band-contact" required>
-
+<input type="text" id="band-contact" name="Contact Info" required>
 
 <button type="submit">Submit Band</button>
 
