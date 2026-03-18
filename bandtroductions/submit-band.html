@@ -94,8 +94,16 @@ enctype="multipart/form-data"
 <label for="band-video">Performance Video Link</label>
 <input type="url" id="band-video" name="Video Link">
 
-<label for="band-image">Band Logo or Photo</label>
+<!-- 👇 ADDED HELPER TEXT -->
+<p style="font-size: 14px; opacity: 0.8;">
+Upload a photo OR paste a link (link is recommended for best results)
+</p>
+
+<label for="band-image">Band Logo or Photo (upload)</label>
 <input type="file" id="band-image" name="attachment" accept="image/*">
+
+<label for="band-image-link">Band Photo Link (recommended)</label>
+<input type="url" id="band-image-link" name="Image Link" placeholder="Facebook, Instagram, Google Drive, or website link">
 
 <label for="band-bio">Short Band Bio</label>
 <textarea id="band-bio" name="Band Bio" rows="6"></textarea>
