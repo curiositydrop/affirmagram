@@ -54,53 +54,59 @@
 Send in your info and performance video to be featured on BANDtroductions.
 </p>
 
-<form
-name="musician-submission"
-method="POST"
-data-netlify="true"
-netlify
-netlify-honeypot="bot-field"
-action="/bandtroductions/thank-you.html"
+<form 
+action="https://formsubmit.co/mbergeron79@gmail.com" 
+method="POST" 
 class="submission-form"
 enctype="multipart/form-data"
 >
 
-<input type="hidden" name="form-name" value="musician-submission">
-<input type="hidden" name="subject" value="New BANDtroductions Musician Submission">
+<input type="hidden" name="_subject" value="New BANDtroductions Musician Submission">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://curiositydrop.com/bandtroductions/thank-you.html">
 
 <p style="display:none;">
-<label>Don't fill this out if you're human: <input name="bot-field"></label>
+<label>Don't fill this out if you're human: <input name="_honey"></label>
 </p>
 
 <label for="name">Name / Stage Name *</label>
-<input type="text" id="name" name="name" required>
+<input type="text" id="name" name="Musician Name" required>
 
 <label for="instrument">Instrument *</label>
-<input type="text" id="instrument" name="instrument" required>
+<input type="text" id="instrument" name="Instrument" required>
 
 <label for="location">Location</label>
-<input type="text" id="location" name="location">
+<input type="text" id="location" name="Location">
 
 <label for="genre">Style / Genre</label>
-<input type="text" id="genre" name="genre">
+<input type="text" id="genre" name="Genre">
 
 <label for="influences">Influences</label>
-<input type="text" id="influences" name="influences">
+<input type="text" id="influences" name="Influences">
 
 <label for="availability">Availability</label>
-<input type="text" id="availability" name="availability">
+<input type="text" id="availability" name="Availability">
 
 <label for="video">Performance Video Link</label>
-<input type="url" id="video" name="video">
+<input type="url" id="video" name="Video Link">
 
-<label for="photo">Profile Photo</label>
-<input type="file" id="photo" name="photo">
+<!-- 👇 helper text -->
+<p style="font-size: 14px; opacity: 0.8;">
+Upload a photo OR paste a link (link is recommended for best results)
+</p>
+
+<label for="photo">Profile Photo (upload)</label>
+<input type="file" id="photo" name="attachment" accept="image/*">
+
+<label for="photo-link">Profile Photo Link (recommended)</label>
+<input type="url" id="photo-link" name="Image Link" placeholder="Facebook, Instagram, Google Drive, or website link">
 
 <label for="bio">Short Bio</label>
-<textarea id="bio" name="bio" rows="6"></textarea>
+<textarea id="bio" name="Bio" rows="6"></textarea>
 
 <label for="contact">Contact Email or Social Link *</label>
-<input type="text" id="contact" name="contact" required>
+<input type="text" id="contact" name="Contact Info" required>
 
 <button type="submit">Submit Profile</button>
 
