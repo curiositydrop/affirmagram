@@ -108,6 +108,11 @@
       font-family: Arial, sans-serif;
     }
 
+    .fanwall-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
     .fanwall-char-count {
       text-align: right;
       margin-top: 8px;
@@ -196,6 +201,23 @@
       font-size: 15px;
     }
 
+    .fanwall-post-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .fanwall-delete-btn {
+      background: #ff004c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .fanwall-empty {
       text-align: center;
       color: #aaa;
@@ -242,7 +264,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, query, limitToLast } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, query, limitToLast, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB0OomEFVzP4folbUyuBD-PKEoXKVnnEOg",
@@ -263,6 +285,9 @@
       "asshole", "assholes", "dick", "pussy", "cunt", "motherfucker",
       "motherfuckers", "slut", "whore", "bastard", "damn"
     ];
+
+    const ADMIN_PASSWORD = "Nicholas#1";
+    const COOLDOWN_SECONDS = 30;
 
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -288,7 +313,34 @@
       });
     }
 
-    function createPostElement(data) {
+    function isAdmin() {
+      return localStorage.getItem("btFanWallAdmin") === "true";
+    }
+
+    function getCooldownRemaining() {
+      const lastPost = Number(localStorage.getItem("btFanWallLastPost") || "0");
+      const elapsed = Math.floor((Date.now() - lastPost) / 1000);
+      return Math.max(0, COOLDOWN_SECONDS - elapsed);
+    }
+
+    function setLastPostNow() {
+      localStorage.setItem("btFanWallLastPost", Date.now().toString());
+    }
+
+    async function deletePost(postId) {
+      if (!isAdmin()) return;
+      const confirmed = confirm("Delete this post?");
+      if (!confirmed) return;
+
+      try {
+        await remove(ref(database, `${WALL_PATH}/${postId}`));
+      } catch (error) {
+        console.error("Delete error:", error);
+        alert("Could not delete post.");
+      }
+    }
+
+    function createPostElement(postId, data) {
       const post = document.createElement("div");
       post.className = "fanwall-post";
 
@@ -318,7 +370,31 @@
       post.appendChild(message);
       post.appendChild(time);
 
+      if (isAdmin()) {
+        const actions = document.createElement("div");
+        actions.className = "fanwall-post-actions";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "fanwall-delete-btn";
+        deleteBtn.textContent = "Delete Post";
+        deleteBtn.addEventListener("click", () => deletePost(postId));
+
+        actions.appendChild(deleteBtn);
+        post.appendChild(actions);
+      }
+
       return post;
+    }
+
+    function updateCooldownUI(button, statusMessage) {
+      const remaining = getCooldownRemaining();
+
+      if (remaining > 0 && !isAdmin()) {
+        button.disabled = true;
+        statusMessage.textContent = `Please wait ${remaining}s before posting again.`;
+      } else {
+        button.disabled = false;
+      }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
@@ -329,6 +405,13 @@
       const messageInput = document.getElementById("message");
       const statusMessage = document.getElementById("statusMessage");
       const charCount = document.getElementById("charCount");
+      const submitButton = document.getElementById("submitButton");
+      const wallLabel = document.getElementById("wallLabel");
+      const title = document.getElementById("fanWallTitle");
+
+      if (isAdmin()) {
+        wallLabel.textContent = "Newest posts first • Admin mode";
+      }
 
       const wallRef = query(ref(database, WALL_PATH), limitToLast(100));
 
@@ -336,7 +419,10 @@
         const allPosts = [];
 
         snapshot.forEach((childSnapshot) => {
-          allPosts.push(childSnapshot.val());
+          allPosts.push({
+            id: childSnapshot.key,
+            ...childSnapshot.val()
+          });
         });
 
         allPosts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
@@ -349,7 +435,7 @@
         }
 
         allPosts.forEach((postData) => {
-          postsContainer.appendChild(createPostElement(postData));
+          postsContainer.appendChild(createPostElement(postData.id, postData));
         });
       });
 
@@ -357,8 +443,16 @@
         charCount.textContent = `${messageInput.value.length}/300`;
       });
 
+      setInterval(() => updateCooldownUI(submitButton, statusMessage), 1000);
+      updateCooldownUI(submitButton, statusMessage);
+
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+
+        if (!isAdmin() && getCooldownRemaining() > 0) {
+          updateCooldownUI(submitButton, statusMessage);
+          return;
+        }
 
         let name = nameInput.value.trim();
         let type = typeInput.value;
@@ -386,12 +480,60 @@
         .then(() => {
           form.reset();
           charCount.textContent = "0/300";
-          statusMessage.textContent = "Your message is live on the wall.";
+          setLastPostNow();
+          updateCooldownUI(submitButton, statusMessage);
+          statusMessage.textContent = "Your message just hit the wall.";
         })
         .catch((error) => {
           console.error("Error saving message:", error);
           statusMessage.textContent = "Something went wrong. Please try again.";
         });
+      });
+
+      // Desktop hidden admin unlock
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "F" && e.shiftKey && e.ctrlKey) {
+          const entered = prompt("Admin password:");
+          if (entered === ADMIN_PASSWORD) {
+            localStorage.setItem("btFanWallAdmin", "true");
+            location.reload();
+          } else if (entered !== null) {
+            alert("Wrong password.");
+          }
+        }
+
+        if (e.key === "Escape" && isAdmin()) {
+          localStorage.removeItem("btFanWallAdmin");
+          location.reload();
+        }
+      });
+
+      // Mobile hidden admin unlock: tap Fan Wall title 5 times
+      let tapCount = 0;
+      let lastTap = 0;
+
+      title.addEventListener("click", () => {
+        const now = Date.now();
+
+        if (now - lastTap < 1000) {
+          tapCount++;
+        } else {
+          tapCount = 1;
+        }
+
+        lastTap = now;
+
+        if (tapCount >= 5) {
+          tapCount = 0;
+
+          const entered = prompt("Admin password:");
+          if (entered === ADMIN_PASSWORD) {
+            localStorage.setItem("btFanWallAdmin", "true");
+            location.reload();
+          } else if (entered !== null) {
+            alert("Wrong password.");
+          }
+        }
       });
     });
   </script>
@@ -422,13 +564,11 @@
 </header>
 
 <section class="hero">
-  <h2>Fan Wall</h2>
-
+  <h2 id="fanWallTitle">Fan Wall</h2>
   <p>
     Leave a message for the Maine music scene. Shout out a band, post feedback on the site,
     or let other musicians know what kind of sound you're looking for.
   </p>
-
   <p style="color:#888;font-size:18px;margin-top:10px;">
     Live updates. Real fans. Real musicians. Real feedback.
   </p>
@@ -471,7 +611,7 @@
           <div class="fanwall-char-count" id="charCount">0/300</div>
         </div>
 
-        <button type="submit" class="button fanwall-submit">Post to the Wall</button>
+        <button type="submit" class="button fanwall-submit" id="submitButton">Post to the Wall</button>
         <div class="fanwall-status" id="statusMessage"></div>
         <div class="fanwall-helper">Keep it respectful. Profanity is automatically filtered.</div>
       </form>
@@ -480,7 +620,7 @@
     <div class="fanwall-feed">
       <div class="fanwall-feed-top">
         <h3>Live Wall</h3>
-        <span>Newest posts first</span>
+        <span id="wallLabel">Newest posts first</span>
       </div>
 
       <div id="posts" class="fanwall-posts">
