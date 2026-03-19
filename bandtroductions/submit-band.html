@@ -62,6 +62,7 @@ action="https://formsubmit.co/mbergeron79@gmail.com"
 method="POST" 
 class="submission-form"
 enctype="multipart/form-data"
+onsubmit="return validateBandForm()"
 >
 
 <input type="hidden" name="_subject" value="New BANDtroductions Band Submission">
@@ -91,10 +92,15 @@ enctype="multipart/form-data"
 <label for="band-influences">Influences</label>
 <input type="text" id="band-influences" name="Influences">
 
-<label for="band-video">Performance Video Link</label>
-<input type="url" id="band-video" name="Video Link">
+<label for="band-video">Performance Video Link *</label>
+<input type="url" id="band-video" name="Video Link" required>
 
-<!-- 👇 ADDED HELPER TEXT -->
+<!-- 🔥 HELPER TEXT -->
+<p style="font-size: 14px; opacity: 0.8; margin-top: -5px;">
+Video is required — this is how venues and fans discover your sound.
+</p>
+
+<!-- IMAGE HELPER -->
 <p style="font-size: 14px; opacity: 0.8;">
 Upload a photo OR paste a link (link is recommended for best results)
 </p>
@@ -114,6 +120,20 @@ Upload a photo OR paste a link (link is recommended for best results)
 <button type="submit">Submit Band</button>
 
 </form>
+
+<script>
+function validateBandForm() {
+    const imageUpload = document.getElementById("band-image").files.length;
+    const imageLink = document.getElementById("band-image-link").value.trim();
+
+    if (imageUpload === 0 && imageLink === "") {
+        alert("Please upload a band photo OR provide an image link.");
+        return false;
+    }
+
+    return true;
+}
+</script>
 
 </section>
 
