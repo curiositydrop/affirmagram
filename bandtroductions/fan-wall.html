@@ -478,6 +478,20 @@
           timestamp: Date.now()
         })
         .then(() => {
+
+          fetch("https://hooks.zapier.com/hooks/catch/26890159/upi5zg9/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              name,
+              type,
+              text,
+              timestamp: Date.now()
+            })
+          }).catch(err => console.log("Zapier error:", err));
+
           form.reset();
           charCount.textContent = "0/300";
           setLastPostNow();
@@ -490,7 +504,6 @@
         });
       });
 
-      // Desktop hidden admin unlock
       document.addEventListener("keydown", (e) => {
         if (e.key === "F" && e.shiftKey && e.ctrlKey) {
           const entered = prompt("Admin password:");
@@ -508,7 +521,6 @@
         }
       });
 
-      // Mobile hidden admin unlock: tap Fan Wall title 5 times
       let tapCount = 0;
       let lastTap = 0;
 
