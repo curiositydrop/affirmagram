@@ -59,6 +59,7 @@ action="https://formsubmit.co/mbergeron79@gmail.com"
 method="POST" 
 class="submission-form"
 enctype="multipart/form-data"
+onsubmit="return validateVenueForm()"
 >
 
 <input type="hidden" name="_subject" value="New BANDtroductions Venue Submission">
@@ -88,7 +89,7 @@ enctype="multipart/form-data"
 <label for="website-social">Website or Social Link</label>
 <input type="text" id="website-social" name="Website / Social">
 
-<!-- 👇 helper text -->
+<!-- HELPER -->
 <p style="font-size: 14px; opacity: 0.8;">
 Upload a photo OR paste a link (link is recommended for best results)
 </p>
@@ -108,6 +109,20 @@ Upload a photo OR paste a link (link is recommended for best results)
 <button type="submit">Submit Venue</button>
 
 </form>
+
+<script>
+function validateVenueForm() {
+    const imageUpload = document.getElementById("venue-photo").files.length;
+    const imageLink = document.getElementById("venue-photo-link").value.trim();
+
+    if (imageUpload === 0 && imageLink === "") {
+        alert("Please upload a venue photo/logo OR provide an image link.");
+        return false;
+    }
+
+    return true;
+}
+</script>
 
 </section>
 
