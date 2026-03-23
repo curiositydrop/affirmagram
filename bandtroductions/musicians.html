@@ -15,7 +15,6 @@
   padding: 6px 10px;
 }
 </style>
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BANDtroductions</title>
@@ -82,9 +81,11 @@
 <a href="#" data-genre="indie">Indie</a>
 <a href="#" data-genre="lightrock">Light Rock</a>
 <a href="#" data-genre="metal">Metal</a>
+<a href="#" data-genre="newrock">New Rock</a>
 <a href="#" data-genre="pop">Pop</a>
 <a href="#" data-genre="prog">Prog</a>
 <a href="#" data-genre="punk">Punk</a>
+<a href="#" data-genre="r&b">R&B</a>
 <a href="#" data-genre="rock">Rock</a>
 
 </div>
@@ -113,7 +114,7 @@
 
 <div class="profile-grid">
 
-<div class="profile-card" data-genre="blues rock funk" data-instrument="guitar">
+<div class="profile-card" data-genre="blues, rock, funk" data-instrument="guitar">
 <img src="IMG_9470.jpeg" alt="Fred Guitar profile">
 <h3>Fred</h3>
 <p><strong>Instrument:</strong> Guitar</p>
@@ -123,7 +124,7 @@
 <a class="button" href="fred-guitar.html">View Profile</a>
 </div>
 
-<div class="profile-card" data-genre="country lightrock" data-instrument="rhythem guitar vocals">
+<div class="profile-card" data-genre="country, lightrock" data-instrument="rhythem guitar, vocals">
 <img src="IMG_9471.jpeg" alt="Purgatory Jack profile">
 <h3>Jack Duggins (Purgatory Jack)</h3>
 <p><strong>Instrument:</strong> Rhythem Guitar / Vocals</p>
@@ -134,7 +135,7 @@
 <a class="button" href="purgatory-jack.html">View Profile</a>
 </div>
 
-<div class="profile-card" data-genre="indie folk" data-instrument="guitar vocals">
+<div class="profile-card" data-genre="indie, folk" data-instrument="guitar, vocals">
 <!-- <img src="placeholder.jpg" alt="Sarah vocals profile"> -->
 <h3>Pat Barceleau</h3>
 <p><strong>Instrument:</strong> Guitar/Vocals</p>
@@ -143,7 +144,7 @@
 <a class="button" href="pat-barceleau.html">View Profile</a>
 </div>
 
-<div class="profile-card" data-genre="americana folk" data-instrument="guitar">
+<div class="profile-card" data-genre="americana, folk" data-instrument="guitar">
 <img src="IMG_9525.jpeg" alt="Thomas Charles Clukey profile pic">
 <h3>Thomas Charles Clukey</h3>
 <p><strong>Instrument:</strong> Guitar</p>
@@ -151,16 +152,16 @@
 <p><strong>Style:</strong> Americana,  Folk,  Singer Songwriter</p>
 <a class="button" href="thomas-charles-clukey.html">View Profile</a>
 </div>
-<!--
-<div class="profile-card" data-genre="punk rock" data-instrument="bass">
-<img src="placeholder.jpg" alt="Chris bass profile">
-<h3>Chris</h3>
-<p><strong>Instrument:</strong> Bass</p>
-<p><strong>Location:</strong> Saco, ME</p>
-<p><strong>Style:</strong> Punk / Rock</p>
-<a class="button" href="musician-profile.html">View Profile</a>
+  
+<div class="profile-card" data-genre="rock, alternative, new rock, country, pop, r&b, blues" data-instrument="vocals">
+<img src="placeholder.jpg" alt="Niomi Larivee / Omi profile">
+<h3>Niome Larivee / Omi</h3>
+<p><strong>Instrument:</strong> Vocals</p>
+<p><strong>Location:</strong> Augusta, ME (will travel)</p>
+<p><strong>Style:</strong> Rock/alternative/new rock/country/pop/R&B/blues</p>
+<a class="button" href="niomi-larrivee-omi.html">View Profile</a>
 </div>
-
+<!--
 <div class="profile-card" data-genre="alternative ambient" data-instrument="keys">
 <img src="placeholder.jpg" alt="Emily keys profile">
 <h3>Emily</h3>
@@ -202,11 +203,19 @@ const musicianCards = document.querySelectorAll('.profile-card');
 
 function filterMusicians() {
   musicianCards.forEach(card => {
-    const cardGenres = card.dataset.genre.split(' ');
-    const cardInstruments = card.dataset.instrument.split(' ');
+    const cardGenres = card.dataset.genre
+      ? card.dataset.genre.split(',').map(g => g.toLowerCase().trim())
+      : [];
 
-    const genreMatch = selectedGenre === 'all' || cardGenres.includes(selectedGenre);
-    const instrumentMatch = selectedInstrument === 'all' || cardInstruments.includes(selectedInstrument);
+    const cardInstruments = card.dataset.instrument
+      ? card.dataset.instrument.split(',').map(i => i.toLowerCase().trim())
+      : [];
+
+    const genreMatch =
+      selectedGenre === 'all' || cardGenres.includes(selectedGenre);
+
+    const instrumentMatch =
+      selectedInstrument === 'all' || cardInstruments.includes(selectedInstrument);
 
     if (genreMatch && instrumentMatch) {
       card.style.display = 'block';
@@ -224,7 +233,7 @@ function setActiveLink(links, clickedLink) {
 genreLinks.forEach(link => {
   link.addEventListener('click', function(e) {
     e.preventDefault();
-    selectedGenre = this.dataset.genre;
+    selectedGenre = this.dataset.genre.toLowerCase().trim();
     setActiveLink(genreLinks, this);
     filterMusicians();
   });
@@ -233,7 +242,7 @@ genreLinks.forEach(link => {
 instrumentLinks.forEach(link => {
   link.addEventListener('click', function(e) {
     e.preventDefault();
-    selectedInstrument = this.dataset.instrument;
+    selectedInstrument = this.dataset.instrument.toLowerCase().trim();
     setActiveLink(instrumentLinks, this);
     filterMusicians();
   });
