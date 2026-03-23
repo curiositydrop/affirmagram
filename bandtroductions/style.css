@@ -247,7 +247,7 @@ line-height:1.5;
 
 .profile-card img{
   width:100%;
-  height:180px;
+  height:240px;
   object-fit:cover;
   object-position:top; /* 👈 THIS is the fix */
   background:#333;
