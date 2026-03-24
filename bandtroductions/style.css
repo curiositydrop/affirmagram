@@ -746,7 +746,7 @@ border-radius:8px;
   background: #ff004c;
   color: #fff;
   font-weight: bold;
-  padding: 2px 8px; /* 👈 tighter */
+  padding: 2px 10px; /* 👈 tighter */
   white-space: nowrap; /* 👈 prevents stacking */
   flex-shrink: 0;
   text-align: center;
@@ -763,7 +763,7 @@ border-radius:8px;
 .news-track {
   display: flex; /* 👈 key change */
   width: max-content;
-  animation: scroll-left 40s linear infinite; /* 👈 lower = faster */
+  animation: scroll-left 30s linear infinite; /* 👈 lower = faster */
 }
 
 .news-group {
