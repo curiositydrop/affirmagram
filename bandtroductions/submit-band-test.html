@@ -25,63 +25,7 @@
 
 <body>
 
-<header>
-
-<div class="logo-area">
-<img src="IMG_9367.png" alt="BANDtroductions Logo">
-<p class="tagline">Maine's Musician Hub</p>
-</div>
-
-<nav>
-    <a href="index.html">Home</a>
-    <a href="bands.html">Browse Bands</a>
-    <a href="musicians.html">Browse Musicians</a>
-    <a href="venues.html">Browse Venues</a>
-    <a href="bandmatch.html">BandMatch</a>
-    <a href="submit-band.html">Submit Your Band</a>
-    <a href="submit-musician.html">Submit as Musician</a>
-    <a href="submit-venue.html">Submit Your Venue</a>
-    <a href="sponsors.html">Sponsors</a>
-    <a href="support.html">Support</a>
-    <a href="about.html">About</a>
-    <a href="fan-wall.html" style="color:#ff004c;">Fan Wall-(Live)</a>
-  </nav>
-
-</header>
-
-<div class="news-scroller">
-
-  <div class="news-label">SPECIAL<br>REPORT</div>
-
-  <div class="news-track-wrapper">
-    <div class="news-track">
-
-      <div class="news-group">
-        <span>💬 What should we put in this scroll? Drop it on the Fan Wall →</span>
-        <span>🎸 Featured: 
-  <a href="/bandtroductions/pic.html">
-    Paradise Is Cancelled
-  </a> • Hard Rock / Metal →
-</span>
-        <span>🥁 Sponsored Spotlight: 
-    <a href="https://woodiesdrumsticks.com/bandtroductions" target="_blank">
-      Woodies Drumsticks
-    </a> — Built for real players • Get 10% off your first order!
-  </span>
-        <span>👀 Keep watching… you never know what might drop →</span>
-      </div>
-
-      <div class="news-group">
-        <span>💬 What should we put in this scroll? Drop it on the Fan Wall →</span>
-        <span>🎸 Bands: Want to be featured here? Boost your band →</span>
-        <span>🚀 Sponsor this scroll & get seen →</span>
-        <span>👀 Keep watching… you never know what might drop →</span>
-      </div>
-
-    </div>
-  </div>
-
-</div>
+<div id="global-header"></div>
   
 <section class="form-page">
 
@@ -244,12 +188,7 @@ function validateBandForm(event) {
 
 </section>
 
-
-<footer>
-
-<p>© BANDtroductions</p>
-
-</footer>
+<div id="global-footer"></div>
 <div id="falling-guitar-layer"></div>
 
 <style>
@@ -407,5 +346,7 @@ setTimeout(spawnFallingGuitar, 2000);
 // Keep checking on interval
 setInterval(spawnFallingGuitar, guitarCheckEvery);
 </script>
+
+<script src="/bandtroductions/global.js?v=1"></script>
 </body>
 </html>
