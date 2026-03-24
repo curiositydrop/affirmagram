@@ -224,6 +224,162 @@ function validateBandForm(event) {
 <p>© BANDtroductions</p>
 
 </footer>
+<div id="falling-guitar-layer"></div>
 
+<style>
+#falling-guitar-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.falling-guitar {
+  position: fixed;
+  top: -70px;
+  font-size: 42px;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  z-index: 10000;
+  animation-name: guitarFall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  text-shadow: 0 0 8px rgba(255,255,255,0.35);
+}
+
+@keyframes guitarFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 1;
+  }
+}
+</style>
+
+<script>
+const fallingGuitarEnabled = true;
+
+// ==========================================
+// LIVE SETTINGS
+// ==========================================
+
+// Where the guitar goes when clicked
+const guitarClickLink = "support.html";
+
+// Allowed dates (3 days per month example)
+// UNCOMMENT these for live use:
+// const allowedGuitarDates = ["2026-03-28", "2026-03-29", "2026-03-30"];
+
+// For testing, keep this active:
+const allowedGuitarDates = [];
+
+// Spawn check interval
+const guitarCheckEvery = 60000; // checks every 60 seconds
+
+// Spawn at most once per hour
+// UNCOMMENT for live use:
+// const guitarSpawnCooldownMs = 60 * 60 * 1000; // 1 hour
+
+// For testing, keep this active:
+const guitarSpawnCooldownMs = 30000; // 30 seconds for testing
+
+// Fall speed
+const guitarMinDuration = 7000;
+const guitarMaxDuration = 11000;
+
+// Max visible at once
+const guitarMaxOnScreen = 1;
+
+// Local storage keys
+const guitarLastSpawnKey = "bandtroductions_guitar_last_spawn";
+const guitarClaimedKey = "bandtroductions_guitar_claimed";
+
+// ==========================================
+// HELPERS
+// ==========================================
+
+function isAllowedGuitarDay() {
+  if (!allowedGuitarDates.length) return true;
+
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
+  return allowedGuitarDates.includes(todayStr);
+}
+
+function hasAlreadyClaimedGuitar() {
+  return localStorage.getItem(guitarClaimedKey) === "true";
+}
+
+function canSpawnGuitarNow() {
+  const lastSpawn = localStorage.getItem(guitarLastSpawnKey);
+  if (!lastSpawn) return true;
+
+  const elapsed = Date.now() - Number(lastSpawn);
+  return elapsed >= guitarSpawnCooldownMs;
+}
+
+function markGuitarSpawned() {
+  localStorage.setItem(guitarLastSpawnKey, Date.now().toString());
+}
+
+function markGuitarClaimed() {
+  localStorage.setItem(guitarClaimedKey, "true");
+}
+
+function spawnFallingGuitar() {
+  const layer = document.getElementById("falling-guitar-layer");
+  const current = document.querySelectorAll(".falling-guitar").length;
+
+  if (!fallingGuitarEnabled) return;
+  if (!isAllowedGuitarDay()) return;
+  if (!canSpawnGuitarNow()) return;
+  if (hasAlreadyClaimedGuitar()) return;
+  if (current >= guitarMaxOnScreen) return;
+
+  const guitar = document.createElement("div");
+  guitar.className = "falling-guitar";
+  guitar.innerHTML = "🎸";
+
+  const left = Math.random() * (window.innerWidth - 60);
+  const duration = Math.floor(Math.random() * (guitarMaxDuration - guitarMinDuration + 1)) + guitarMinDuration;
+  const size = Math.floor(Math.random() * 14) + 34;
+
+  guitar.style.left = `${left}px`;
+  guitar.style.fontSize = `${size}px`;
+  guitar.style.animationDuration = `${duration}ms`;
+
+  guitar.addEventListener("click", function () {
+    if (hasAlreadyClaimedGuitar()) return;
+
+    markGuitarClaimed();
+    guitar.remove();
+    window.location.href = guitarClickLink;
+  });
+
+  guitar.addEventListener("animationend", function () {
+    guitar.remove();
+  });
+
+  markGuitarSpawned();
+  layer.appendChild(guitar);
+}
+
+// Run once shortly after load
+setTimeout(spawnFallingGuitar, 2000);
+
+// Keep checking on interval
+setInterval(spawnFallingGuitar, guitarCheckEvery);
+</script>
 </body>
 </html>
