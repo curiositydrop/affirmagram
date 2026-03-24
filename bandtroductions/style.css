@@ -786,6 +786,6 @@ border-radius:8px;
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%); /* 👈 because of duplicated content */
+    transform: translateX(-100%); /* 👈 because of duplicated content */
   }
 }
