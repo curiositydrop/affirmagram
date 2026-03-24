@@ -763,13 +763,14 @@ border-radius:8px;
 .news-track {
   display: inline-block;
   white-space: nowrap;
-  animation: scroll-left 55s linear infinite;
+  animation: scroll-left 50s linear infinite;
 }
 
 .news-track span {
   margin-right: 120px;
   color: #fff;
   font-weight: bold;
+  font-size: 10px;
 }
 
 /* 🎥 ANIMATION */
