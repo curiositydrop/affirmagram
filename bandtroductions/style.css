@@ -738,6 +738,7 @@ border-radius:8px;
   border-bottom: 2px solid #ff004c;
   overflow: hidden;
   font-family: Arial, sans-serif;
+  height: 32px; /* 👈 controls thickness */
 }
 
 /* 🔴 LEFT FIXED LABEL */
@@ -745,13 +746,12 @@ border-radius:8px;
   background: #ff004c;
   color: #fff;
   font-weight: bold;
-  padding: 3px 8px;
-  white-space: normal;
+  padding: 2px 8px; /* 👈 tighter */
+  white-space: nowrap; /* 👈 prevents stacking */
   flex-shrink: 0;
   text-align: center;
-  line-height: 1.1;
-  font-size: 14px;
-  width: 70px;
+  line-height: 1;
+  font-size: 12px;
 }
 
 /* 🎬 SCROLL AREA */
@@ -761,24 +761,31 @@ border-radius:8px;
 }
 
 .news-track {
-  display: inline-block;
-  white-space: nowrap;
-  animation: scroll-left 50s linear infinite;
+  display: flex; /* 👈 key change */
+  width: max-content;
+  animation: scroll-left 40s linear infinite; /* 👈 lower = faster */
 }
 
-.news-track span {
-  margin-right: 120px;
+.news-group {
+  display: flex;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.news-group span {
+  margin-right: 100px;
   color: #fff;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 12px;
+  line-height: 32px; /* 👈 vertical alignment */
 }
 
-/* 🎥 ANIMATION */
+/* 🎥 ANIMATION (smooth loop) */
 @keyframes scroll-left {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%); /* 👈 because of duplicated content */
   }
 }
