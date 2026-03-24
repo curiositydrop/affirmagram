@@ -738,7 +738,7 @@ border-radius:8px;
   border-bottom: 2px solid #ff004c;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  height: 32px; /* 👈 sweet spot for stacked label */
+  height: 30px; /* 👈 sweet spot for stacked label */
 }
 
 /* 🔴 LEFT LABEL */
