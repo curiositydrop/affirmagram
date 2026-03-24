@@ -133,10 +133,18 @@ Paid plans will redirect to secure checkout after submission. Free listings rema
 <label for="band-video">Performance Video Link * (YouTube or Vimeo only)</label>
 <input type="url" id="band-video" name="Video Link" required>
 
+<!-- 🔥 HELPER TEXT -->
 <p style="font-size: 14px; opacity: 0.8; margin-top: -5px;">
 Video is required — this is how venues and fans discover your sound.
 </p>
 
+<label for="band-video-2">Performance Video Link 2</label>
+<input type="url" id="band-video-2" name="Video Link 2" placeholder="Optional second YouTube or Vimeo link">
+
+<label for="band-video-3">Performance Video Link 3</label>
+<input type="url" id="band-video-3" name="Video Link 3" placeholder="Optional third YouTube or Vimeo link">
+
+<!-- IMAGE HELPER -->
 <p style="font-size: 14px; opacity: 0.8;">
 Upload a photo OR paste a link (link is recommended for best results)
 </p>
@@ -146,6 +154,12 @@ Upload a photo OR paste a link (link is recommended for best results)
 
 <label for="band-image-link">Band Photo Link (recommended)</label>
 <input type="url" id="band-image-link" name="Image Link" placeholder="Facebook, Instagram, Google Drive, or website link">
+
+<label for="band-image-link-2">Band Photo Link 2</label>
+<input type="url" id="band-image-link-2" name="Image Link 2" placeholder="Optional second image link">
+
+<label for="band-image-link-3">Band Photo Link 3</label>
+<input type="url" id="band-image-link-3" name="Image Link 3" placeholder="Optional third image link">
 
 <label for="band-bio">Short Band Bio *</label>
 <textarea id="band-bio" name="Band Bio" rows="6" required></textarea>
@@ -167,6 +181,8 @@ function validateBandForm(event) {
     const imageUpload = document.getElementById("band-image").files.length;
     const imageLink = document.getElementById("band-image-link").value.trim();
     const videoLink = document.getElementById("band-video").value.trim().toLowerCase();
+    const videoLink2 = document.getElementById("band-video-2").value.trim().toLowerCase();
+    const videoLink3 = document.getElementById("band-video-3").value.trim().toLowerCase();
     const bio = document.getElementById("band-bio").value.trim();
 
     if (imageUpload === 0 && imageLink === "") {
@@ -180,6 +196,26 @@ function validateBandForm(event) {
         !videoLink.includes("vimeo.com")
     ) {
         alert("Please submit a YouTube or Vimeo link only.");
+        return false;
+    }
+
+    if (
+        videoLink2 !== "" &&
+        !videoLink2.includes("youtube.com") &&
+        !videoLink2.includes("youtu.be") &&
+        !videoLink2.includes("vimeo.com")
+    ) {
+        alert("Performance Video Link 2 must be a YouTube or Vimeo link.");
+        return false;
+    }
+
+    if (
+        videoLink3 !== "" &&
+        !videoLink3.includes("youtube.com") &&
+        !videoLink3.includes("youtu.be") &&
+        !videoLink3.includes("vimeo.com")
+    ) {
+        alert("Performance Video Link 3 must be a YouTube or Vimeo link.");
         return false;
     }
 
