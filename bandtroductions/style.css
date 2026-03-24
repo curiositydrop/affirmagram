@@ -728,8 +728,7 @@ margin-top:10px;
 width:100%;
 height:280px;
 border-radius:8px;
-}
-.news-scroller {
+}.news-scroller {
   width: 100%;
   display: flex;
   align-items: center;
@@ -738,7 +737,7 @@ border-radius:8px;
   border-bottom: 2px solid #ff004c;
   overflow: hidden;
   font-family: Arial, sans-serif;
-  height: 30px; /* 👈 sweet spot for stacked label */
+  height: 30px;
 }
 
 /* 🔴 LEFT LABEL */
@@ -751,7 +750,6 @@ border-radius:8px;
   font-size: 11px;
   line-height: 1;
   flex-shrink: 0;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -771,7 +769,7 @@ border-radius:8px;
 .news-track {
   display: flex;
   width: max-content;
-  animation: scroll-left 18s linear infinite; /* 👈 SPEED (lower = faster) */
+  animation: scroll-left 18s linear infinite;
 }
 
 /* 🔁 DUPLICATED GROUPS */
@@ -779,6 +777,21 @@ border-radius:8px;
   display: flex;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+/* 🔗 LINK STYLE */
+.news-group a {
+  color: #00e5ff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.news-group a:hover {
+  text-decoration: underline;
+}
+
+.news-group a:visited {
+  color: #00e5ff;
 }
 
 /* 🧾 TEXT ITEMS */
