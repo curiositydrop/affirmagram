@@ -827,6 +827,6 @@ border-radius:8px;
 }
 .support-text a {
   color: #00e6ff; /* match your nav teal */
-  text-decoration: underline;
+  text-decoration: none;
   font-weight: 500;
 }
