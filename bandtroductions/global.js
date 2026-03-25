@@ -21,3 +21,9 @@ fetch('/bandtroductions/global.html?v=1')
   .catch(error => {
     console.error('Error loading global header/footer:', error);
   });
+function toggleWatchNav() {
+  const nav = document.getElementById('mainNav');
+  if (nav) {
+    nav.classList.toggle('show-watch-nav');
+  }
+}
