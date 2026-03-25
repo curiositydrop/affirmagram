@@ -815,3 +815,13 @@ border-radius:8px;
     transform: translateX(-50%);
   }
 }
+.support-section {
+  text-align: center;
+  padding: 10px 0 15px;
+}
+
+.support-text {
+  font-size: 14px;
+  margin-bottom: 8px;
+  opacity: 0.85;
+}
