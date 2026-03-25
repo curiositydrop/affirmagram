@@ -893,3 +893,12 @@ border-radius:8px;
     grid-template-columns: repeat(2, 1fr);
   }
 }
+/* Hide toggle everywhere by default */
+.watch-nav-toggle {
+  display: none;
+}
+
+/* ONLY show it on the watch page */
+.watch-page .watch-nav-toggle {
+  display: block;
+}
