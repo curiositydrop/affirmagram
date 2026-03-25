@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watch Maine Music | BANDtroductions</title>
+
+<link rel="stylesheet" href="style.css?v=4">
+<script src="global.js" defer></script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-60112G8RH3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-60112G8RH3');
+</script>
+
+</head>
+
+<body>
+
+<div id="global-header"></div>
+
+<section class="band-hero">
+  <h1>Watch Maine Music 🎸</h1>
+  <p>Discover local bands, musicians, and performances from across Maine.</p>
+</section>
+
+<section class="video-player-wrap">
+  <div class="main-video">
+    <iframe
+      id="mainVideo"
+      src="https://www.youtube.com/embed/k8tmjbJiOI0"
+      title="Main Video Player"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <div class="now-playing">
+    <h2 id="videoTitle">Matt Roller</h2>
+    <a class="button" id="profileLink" href="matt-roller.html">View Profile</a>
+  </div>
+</section>
+
+<section class="band-main">
+  <p class="video-cta">
+    Want your video featured here?
+    <a href="https://venmo.com/Telis-Bergeron" target="_blank">💙 Boost your video for $10</a>.
+  </p>
+
+  <div class="video-browser">
+
+    <div class="video-item">
+      <img src="inbound3252448236670404864.png" alt="Matt Roller">
+      <h3>Matt Roller</h3>
+      <p>Punk • Waterboro, Maine</p>
+      <a class="button" href="#"
+         onclick="swapVideo('https://www.youtube.com/embed/k8tmjbJiOI0','Matt Roller','matt-roller.html'); return false;">
+         Play Video
+      </a>
+      <a class="button" href="matt-roller.html">View Profile</a>
+    </div>
+
+    <div class="video-item">
+      <img src="COGT Logo Image.png" alt="Church of Good Times Trio">
+      <h3>Church of Good Times Trio</h3>
+      <p>Instrumental Jazz/Jam • Portland, Maine</p>
+      <a class="button" href="#"
+         onclick="swapVideo('https://www.youtube.com/embed/VIDEO_ID_HERE','Church of Good Times Trio','church-of-good-times-trio.html'); return false;">
+         Play Video
+      </a>
+      <a class="button" href="church-of-good-times-trio.html">View Profile</a>
+    </div>
+
+  </div>
+</section>
+
+<div id="global-footer"></div>
+
+<script>
+function swapVideo(videoUrl, title, profileUrl) {
+  document.getElementById('mainVideo').src = videoUrl;
+  document.getElementById('videoTitle').textContent = title;
+  document.getElementById('profileLink').href = profileUrl;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
