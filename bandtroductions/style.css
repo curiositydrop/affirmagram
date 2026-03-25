@@ -1029,3 +1029,12 @@ font-size:13px;
 padding:8px 12px;
 }
 }
+.video-cta a {
+  color: #00cfc8; /* teal */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.video-cta a:hover {
+  text-decoration: underline;
+}
