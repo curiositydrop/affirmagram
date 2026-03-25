@@ -902,3 +902,45 @@ border-radius:8px;
 .watch-page .watch-nav-toggle {
   display: block;
 }
+/* WATCH PAGE NAV + STICKY PLAYER */
+
+.watch-nav-toggle {
+  display: none;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.watch-nav-toggle a {
+  color: #00e6ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* only show toggle on watch page */
+.watch-page .watch-nav-toggle {
+  display: block;
+}
+
+/* hide nav on watch page by default */
+.watch-page #mainNav {
+  display: none;
+}
+
+/* show nav when toggle is clicked */
+.watch-page #mainNav.show-watch-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 10px 20px 10px;
+}
+
+/* keep player visible while scrolling */
+.watch-page .video-player-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: #111;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
