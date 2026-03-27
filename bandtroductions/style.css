@@ -1040,3 +1040,14 @@ padding:8px 12px;
 .video-cta a:hover {
   text-decoration: underline;
 }
+.watch-psa {
+  margin: 20px 0;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #00e5ff;
+  border: 1px solid #00e5ff;
+  background: rgba(0, 229, 255, 0.08);
+  border-radius: 6px;
+  font-weight: bold;
+}
