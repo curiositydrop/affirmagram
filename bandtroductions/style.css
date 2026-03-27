@@ -614,12 +614,12 @@ color:#00e5ff;
 margin-right:70px;
 color:#fff;
 font-weight:bold;
-font-size:12px;
+font-size:14px;
 }
 
 @keyframes scroll-left {
   0% {
-    transform: translateX(20%);
+    transform: translateX(15%);
   }
   100% {
     transform: translateX(-100%);
