@@ -586,7 +586,7 @@ align-items:center;
 .news-track{
 display:flex;
 width:max-content;
-animation:scroll-left 35s linear infinite;
+animation:scroll-left 39s linear infinite;
 will-change:transform;
 }
 
