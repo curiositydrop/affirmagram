@@ -619,13 +619,12 @@ font-size:12px;
 
 @keyframes scroll-left{
 0%{
-transform:translateX(0);
+transform:translateX(100%);
 }
 100%{
-transform:translateX(-50%);
+transform:translateX(-100%);
 }
 }
-
 .support-section{
 text-align:center;
 padding:10px 0 15px;
