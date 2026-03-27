@@ -591,6 +591,7 @@ animation:scroll-left 35s linear infinite;
 display:flex;
 white-space:nowrap;
 flex-shrink:0;
+padding-left: 50%;
 }
 
 .news-group a{
