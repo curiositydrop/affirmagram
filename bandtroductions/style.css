@@ -617,13 +617,13 @@ font-weight:bold;
 font-size:12px;
 }
 
-@keyframes scroll-left{
-0%{
-transform:translateX(100%);
-}
-100%{
-transform:translateX(-100%);
-}
+@keyframes scroll-left {
+  0% {
+    transform: translateX(30%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 .support-section{
 text-align:center;
