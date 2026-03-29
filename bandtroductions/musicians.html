@@ -15,19 +15,43 @@
   padding: 6px 10px;
 }
 
-.filter-dropdown-wrap {
-  margin-top: 12px;
+.filter-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.filter-group {
+  flex: 1 1 260px;
+  max-width: 320px;
+}
+
+.filter-group h3 {
+  margin-bottom: 8px;
 }
 
 .filter-dropdown {
   width: 100%;
-  max-width: 320px;
   padding: 10px 12px;
   font-size: 16px;
   border-radius: 6px;
   border: 1px solid #444;
   background: #111;
   color: #fff;
+}
+
+@media (max-width: 768px) {
+  .filter-row {
+    gap: 10px;
+  }
+
+  .filter-group {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
 }
 </style>
 
@@ -51,50 +75,52 @@
 </section>
 
 <section class="filters">
-<h3>Browse by Genre</h3>
-<div class="filter-dropdown-wrap">
-<select id="genreFilter" class="filter-dropdown">
-<option value="all">All Genres</option>
-<option value="acoustic">Acoustic</option>
-<option value="alternative">Alternative</option>
-<option value="ambient">Ambient</option>
-<option value="blues">Blues</option>
-<option value="country">Country</option>
-<option value="emo">Emo</option>
-<option value="folk">Folk</option>
-<option value="funk">Funk</option>
-<option value="hardrock">Hard Rock</option>
-<option value="indie">Indie</option>
-<option value="lightrock">Light Rock</option>
-<option value="metal">Metal</option>
-<option value="newrock">New Rock</option>
-<option value="pop">Pop</option>
-<option value="prog">Prog</option>
-<option value="punk">Punk</option>
-<option value="r&b">R&amp;B</option>
-<option value="rock">Rock</option>
-</select>
-</div>
-</section>
+  <div class="filter-row">
 
-<section class="filters">
-<h3>Browse by Instrument</h3>
-<div class="filter-dropdown-wrap">
-<select id="instrumentFilter" class="filter-dropdown">
-<option value="all">All Instruments</option>
-<option value="bass">Bass</option>
-<option value="dj">DJ</option>
-<option value="drums">Drums</option>
-<option value="guitar">Guitar</option>
-<option value="keys">Keys</option>
-<option value="multiinstrumentalist">Multi-Instrumentalist</option>
-<option value="percussion">Percussion</option>
-<option value="rhythmguitar">Rhythm Guitar</option>
-<option value="saxhorns">Sax / Horns</option>
-<option value="violinstrings">Violin / Strings</option>
-<option value="vocals">Vocals</option>
-</select>
-</div>
+    <div class="filter-group">
+      <h3>Browse by Genre</h3>
+      <select id="genreFilter" class="filter-dropdown">
+        <option value="all">All Genres</option>
+        <option value="acoustic">Acoustic</option>
+        <option value="alternative">Alternative</option>
+        <option value="ambient">Ambient</option>
+        <option value="blues">Blues</option>
+        <option value="country">Country</option>
+        <option value="emo">Emo</option>
+        <option value="folk">Folk</option>
+        <option value="funk">Funk</option>
+        <option value="hardrock">Hard Rock</option>
+        <option value="indie">Indie</option>
+        <option value="lightrock">Light Rock</option>
+        <option value="metal">Metal</option>
+        <option value="newrock">New Rock</option>
+        <option value="pop">Pop</option>
+        <option value="prog">Prog</option>
+        <option value="punk">Punk</option>
+        <option value="r&b">R&amp;B</option>
+        <option value="rock">Rock</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <h3>Browse by Instrument</h3>
+      <select id="instrumentFilter" class="filter-dropdown">
+        <option value="all">All Instruments</option>
+        <option value="bass">Bass</option>
+        <option value="dj">DJ</option>
+        <option value="drums">Drums</option>
+        <option value="guitar">Guitar</option>
+        <option value="keys">Keys</option>
+        <option value="multiinstrumentalist">Multi-Instrumentalist</option>
+        <option value="percussion">Percussion</option>
+        <option value="rhythmguitar">Rhythm Guitar</option>
+        <option value="saxhorns">Sax / Horns</option>
+        <option value="violinstrings">Violin / Strings</option>
+        <option value="vocals">Vocals</option>
+      </select>
+    </div>
+
+  </div>
 </section>
 
 <section class="musician-directory">
