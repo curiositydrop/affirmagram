@@ -166,7 +166,12 @@ if (winner) {
     logEvent(winner.name, refCode, 'redeem');
 
     claimButton.addEventListener('click', () => {
-        popupForm.style.display = 'flex';
+        if (winner.name === "Woodies Drumsticks") {
+            logEvent(winner.name, refCode, 'claim_click');
+            window.location.href = winner.url;
+        } else {
+            popupForm.style.display = 'flex';
+        }
     });
 
     popupForm.addEventListener('click', (e) => {
