@@ -29,7 +29,7 @@ Woodies: {
     prize: "10% off your first order!",
     // contact: "207.468.5509",
     url: "https://woodiesdrumsticks.com/bandtroductions",
-    // logo: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
+    logo: "http://www.curiositydrop.com/bandtroductions/logo.jpeg",
     // email: "mbergeron79@gmail.com",
     permanent: true, // stays in rotation always
     deposit: 500,
