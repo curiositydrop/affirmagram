@@ -17,6 +17,12 @@ body {
     text-align:center; box-shadow:0 5px 20px rgba(0,0,0,0.2);
     max-width:400px; position:relative;
 }
+.welcome-banner {
+    background: #fff4f4;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
 h1 { font-size:2rem; margin-bottom:0.5rem; }
 .lead, .subtle { margin:0.5rem 0; }
 .reward-box {
@@ -60,25 +66,28 @@ h1 { font-size:2rem; margin-bottom:0.5rem; }
 
 <div class="container fade-in">
 
-    <h1>Welcome, BANDtroductions user!</h1>
-    <h2>We had a feeling we'd see you here. </h2></h2>
-    <p class="subtle">Not from an ad, </p>just pure curiosity.</p>
+    <div class="welcome-banner">
+        <h1>Welcome, BANDtroductions user!</h1>
+        <h2>We had a feeling you’d end up here.</h2>
+        <p class="subtle">Not from an ad,</p>
+        <p class="subtle">just pure curiosity.</p>
+    </div>
 
     <div class="reward-box">
         <span class="checkmark">🎯</span>
-        <h2 id="dropName">Now, let's see what your curiosity got you!</h2>
-        <p id="itSimple">It really <i>is</i> that simple!</p>
+        <h2 id="dropName">Let’s see what curiosity just unlocked…</h2>
+        <p id="itSimple">No catch. Just curiosity.</p>
         <a id="redeemButton" class="primary-btn" href="#" style="display:none;">Your Exclusive Reward!</a>
     </div>
 
-    <button class="primary-btn" id="spinButton">🎯 Spin to Win</button>
+    <button class="primary-btn" id="spinButton">🎯 Spin It</button>
 
     <!-- AUDIO CLIPS -->
     <audio id="spinSound" src="wheel-spin-click-slow-down-101152.mp3" preload="auto"></audio>
     <audio id="winSound" src="success-fanfare-trumpets-6185.mp3" preload="auto"></audio>
 
     <p class="brought-by-white">
-  Brought to you by: <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a> &mdash; Built and developed by: <a href="https://curiositydrop.com/mbgdigital" target="_blank">MBG Digital</a>
+  Powered by <a href="https://curiositydrop.com" target="_blank">CuriosityDrop.com</a> &mdash; Built by <a href="https://curiositydrop.com/mbgdigital" target="_blank">MBG Digital</a>
 </p>
 </div>
 
