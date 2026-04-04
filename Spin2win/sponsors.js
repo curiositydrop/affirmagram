@@ -1,5 +1,6 @@
 // Single source of truth for all sponsors
 const sponsors = {
+  <!-- 
   newleaf: {
     name: "New Leaf Painting",
     prize: "10% off interior painting",
@@ -11,6 +12,7 @@ const sponsors = {
     deposit: 0,      // or 500 if you want a placeholder
     spinsUsed: 0
   },
+-->
   mbg: {
     name: "MBG Digital",
     prize: "Free hosting with 2+ page build!",
@@ -18,6 +20,17 @@ const sponsors = {
     url: "/drop/mbgdigital",
     logo: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png",
     email: "mbergeron79@gmail.com",
+    permanent: true, // stays in rotation always
+    deposit: 500,
+    spinsUsed: 0
+  },
+Woodies: {
+    name: "Woodies Drumsticks",
+    prize: "10% off your first order!",
+    <!-- contact: "207.468.5509",-->
+    url: "https://woodiesdrumsticks.com/bandtroductions",
+    <!-- logo: "http://www.curiositydrop.com/mbgdigital/E29EFBD5-92E9-4BC9-9C66-87A081850CCE.png", -->
+    <!-- email: "mbergeron79@gmail.com", -->
     permanent: true, // stays in rotation always
     deposit: 500,
     spinsUsed: 0
