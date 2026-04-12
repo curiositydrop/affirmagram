@@ -21,9 +21,21 @@ fetch('/bandtroductions/global.html?v=1')
   .catch(error => {
     console.error('Error loading global header/footer:', error);
   });
+
 function toggleWatchNav() {
   const nav = document.getElementById('mainNav');
   if (nav) {
     nav.classList.toggle('show-watch-nav');
   }
+}
+
+/* 🔥 SHARE FUNCTION (added below, nothing else changed) */
+function shareCurrentPage() {
+  const url = window.location.href;
+
+  window.open(
+    'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url),
+    '_blank',
+    'width=600,height=500'
+  );
 }
