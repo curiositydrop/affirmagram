@@ -43,6 +43,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: center;
 }
 
 .main-video {
@@ -70,6 +71,22 @@
   margin-bottom: 20px;
   opacity: 0.92;
 }
+
+.now-playing-links {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.now-playing-links a {
+  color: teal;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.now-playing-links a:hover {
+  text-decoration: underline;
+}
 </style>
 </head>
 
@@ -90,9 +107,10 @@
   <div class="now-playing">
     <h2 id="videoTitle">Loading videos...</h2>
     <p class="now-playing-meta" id="videoMeta">Please wait while BANDfeed loads.</p>
-    <div class="video-actions" style="margin-top: 15px;">
-      <a class="button" id="profileLink" href="#">View Profile</a>
-      <a class="button" href="#" id="shareCurrentBandBtn" onclick="shareCurrentBand(); return false;">Share</a>
+
+    <div class="now-playing-links">
+      <a id="profileLink" href="#">View Profile</a>
+      <a href="#" id="shareCurrentBandBtn" onclick="shareCurrentBand(); return false;">Share</a>
     </div>
   </div>
 </section>
@@ -178,11 +196,6 @@ function extractYouTubeVideoId(url) {
   return match ? match[1] : null;
 }
 
-function isGooglePhotosLink(url) {
-  if (!url) return false;
-  return url.includes("photos.app.goo.gl") || url.includes("photos.google.com");
-}
-
 function toAbsoluteBandUrl(relativeOrAbsoluteUrl) {
   if (!relativeOrAbsoluteUrl) return "https://curiositydrop.com/bandtroductions/";
 
@@ -264,7 +277,6 @@ function playVideoAt(index) {
   player.loadVideoById(item.videoId);
   updateNowPlaying(item);
   highlightActiveItem();
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function onPlayerStateChange(event) {
@@ -315,22 +327,12 @@ function createVideoItem(item, index) {
   const safeMeta = item.meta ? item.meta : "Maine Music";
   const imageSrc = item.image || "IMG_9383.jpeg";
 
-  let watchButtonHtml = "";
-
-  if (item.videoId) {
-    watchButtonHtml = `
-      <a class="button" href="#"
-         onclick="playVideoAt(${index}); return false;">
-         ▶ Watch
-      </a>
-    `;
-  } else if (item.fallbackUrl) {
-    watchButtonHtml = `
-      <a class="button" href="${item.fallbackUrl}" target="_blank">
-         ▶ Watch
-      </a>
-    `;
-  }
+  const watchButtonHtml = `
+    <a class="button" href="#"
+       onclick="playVideoAt(${index}); return false;">
+       ▶ Watch
+    </a>
+  `;
 
   div.innerHTML = `
     <img src="${imageSrc}" alt="${item.title}">
@@ -385,11 +387,15 @@ async function extractVideoFromProfile(profileUrl, fallbackDataVideo) {
     if (iframe) {
       const src = iframe.getAttribute("src");
       const embedUrl = normalizeYouTubeUrl(src) || src;
-      return {
-        embedUrl,
-        videoId: extractYouTubeVideoId(embedUrl),
-        fallbackUrl: null
-      };
+      const videoId = extractYouTubeVideoId(embedUrl);
+
+      if (videoId) {
+        return {
+          embedUrl,
+          videoId,
+          fallbackUrl: null
+        };
+      }
     }
 
     const links = [...doc.querySelectorAll("a")]
@@ -398,35 +404,27 @@ async function extractVideoFromProfile(profileUrl, fallbackDataVideo) {
 
     for (const link of links) {
       const ytEmbed = normalizeYouTubeUrl(link);
-      if (ytEmbed) {
+      const videoId = extractYouTubeVideoId(ytEmbed);
+      if (ytEmbed && videoId) {
         return {
           embedUrl: ytEmbed,
-          videoId: extractYouTubeVideoId(ytEmbed),
+          videoId,
           fallbackUrl: null
         };
       }
     }
 
     const ytFromCard = normalizeYouTubeUrl(fallbackDataVideo);
-    if (ytFromCard) {
+    const cardVideoId = extractYouTubeVideoId(ytFromCard);
+    if (ytFromCard && cardVideoId) {
       return {
         embedUrl: ytFromCard,
-        videoId: extractYouTubeVideoId(ytFromCard),
+        videoId: cardVideoId,
         fallbackUrl: null
       };
     }
 
-    if (isGooglePhotosLink(fallbackDataVideo)) {
-      return { embedUrl: null, videoId: null, fallbackUrl: fallbackDataVideo };
-    }
-
-    for (const link of links) {
-      if (isGooglePhotosLink(link)) {
-        return { embedUrl: null, videoId: null, fallbackUrl: link };
-      }
-    }
-
-    console.log("❌ No usable video:", profileUrl);
+    console.log("❌ No usable YouTube video:", profileUrl);
     return null;
   } catch (err) {
     console.log("Skipped profile:", profileUrl, err);
@@ -451,20 +449,7 @@ async function loadBandfeed() {
 
   for (const card of allCards) {
     const videoData = await extractVideoFromProfile(card.profileUrl, card.dataVideo);
-
-    if (!videoData) {
-      console.log("⚠️ Missing video but keeping profile:", card.profileUrl);
-      finalItems.push({
-        title: card.title,
-        image: card.image,
-        profileUrl: card.profileUrl,
-        meta: card.meta,
-        embedUrl: null,
-        videoId: null,
-        fallbackUrl: null
-      });
-      continue;
-    }
+    if (!videoData || !videoData.videoId) continue;
 
     finalItems.push({
       title: card.title,
@@ -473,7 +458,7 @@ async function loadBandfeed() {
       meta: card.meta,
       embedUrl: videoData.embedUrl,
       videoId: videoData.videoId,
-      fallbackUrl: videoData.fallbackUrl
+      fallbackUrl: null
     });
   }
 
