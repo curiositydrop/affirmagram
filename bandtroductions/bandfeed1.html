@@ -87,6 +87,17 @@
 .now-playing-links a:hover {
   text-decoration: underline;
 }
+
+/* 🔥 Scroller visibility override for BANDfeed only */
+.watch-page .news-scroller {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.watch-page .watch-nav-toggle {
+  display: block !important;
+}
 </style>
 </head>
 
@@ -498,6 +509,17 @@ loadBandfeed();
 </script>
 
 <script src="global.js"></script>
+
+<script>
+window.addEventListener("load", function () {
+  const scroller = document.querySelector(".news-scroller");
+  if (scroller) {
+    scroller.style.display = "flex";
+    scroller.style.visibility = "visible";
+    scroller.style.opacity = "1";
+  }
+});
+</script>
 
 </body>
 </html>
