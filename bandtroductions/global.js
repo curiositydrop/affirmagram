@@ -29,11 +29,21 @@ function toggleWatchNav() {
   }
 }
 
-/* 🔥 SHARE FUNCTION (only change made here) */
+/* 🔥 UPDATED SHARE FUNCTION (mobile + desktop friendly) */
 function shareCurrentPage() {
   const path = window.location.pathname;
   const fullUrl = 'https://curiositydrop.com' + path;
 
+  // Mobile (iPhone, etc.)
+  if (navigator.share) {
+    navigator.share({
+      title: document.title,
+      url: fullUrl
+    }).catch(() => {});
+    return;
+  }
+
+  // Desktop fallback (Facebook share)
   window.open(
     'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(fullUrl),
     '_blank',
