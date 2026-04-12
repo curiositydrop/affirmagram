@@ -324,12 +324,19 @@ function createVideoItem(item, index) {
   const div = document.createElement("div");
   div.className = "video-item";
 
+  if (item.videoId) {
+    div.style.cursor = "pointer";
+    div.onclick = function () {
+      playVideoAt(index);
+    };
+  }
+
   const safeMeta = item.meta ? item.meta : "Maine Music";
   const imageSrc = item.image || "IMG_9383.jpeg";
 
   const watchButtonHtml = `
     <a class="button" href="#"
-       onclick="playVideoAt(${index}); return false;">
+       onclick="event.stopPropagation(); playVideoAt(${index}); return false;">
        ▶ Watch
     </a>
   `;
@@ -342,8 +349,8 @@ function createVideoItem(item, index) {
     </div>
     <div class="video-actions">
       ${watchButtonHtml}
-      <a class="button" href="${item.profileUrl}">View Profile</a>
-      <a class="button" href="#" onclick="shareSpecificPage('${item.profileUrl.replace(/'/g, "\\'")}','${item.title.replace(/'/g, "\\'")}'); return false;">Share</a>
+      <a class="button" href="${item.profileUrl}" onclick="event.stopPropagation();">View Profile</a>
+      <a class="button" href="#" onclick="event.stopPropagation(); shareSpecificPage('${item.profileUrl.replace(/'/g, "\\'")}','${item.title.replace(/'/g, "\\'")}'); return false;">Share</a>
     </div>
   `;
 
