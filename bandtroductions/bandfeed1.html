@@ -426,6 +426,7 @@ async function extractVideoFromProfile(profileUrl, fallbackDataVideo) {
       }
     }
 
+    console.log("❌ No usable video:", profileUrl);
     return null;
   } catch (err) {
     console.log("Skipped profile:", profileUrl, err);
@@ -450,7 +451,20 @@ async function loadBandfeed() {
 
   for (const card of allCards) {
     const videoData = await extractVideoFromProfile(card.profileUrl, card.dataVideo);
-    if (!videoData) continue;
+
+    if (!videoData) {
+      console.log("⚠️ Missing video but keeping profile:", card.profileUrl);
+      finalItems.push({
+        title: card.title,
+        image: card.image,
+        profileUrl: card.profileUrl,
+        meta: card.meta,
+        embedUrl: null,
+        videoId: null,
+        fallbackUrl: null
+      });
+      continue;
+    }
 
     finalItems.push({
       title: card.title,
