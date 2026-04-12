@@ -29,12 +29,13 @@ function toggleWatchNav() {
   }
 }
 
-/* 🔥 SHARE FUNCTION (added below, nothing else changed) */
+/* 🔥 SHARE FUNCTION (only change made here) */
 function shareCurrentPage() {
-  const url = window.location.href;
+  const path = window.location.pathname;
+  const fullUrl = 'https://curiositydrop.com' + path;
 
   window.open(
-    'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url),
+    'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(fullUrl),
     '_blank',
     'width=600,height=500'
   );
