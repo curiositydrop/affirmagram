@@ -50,23 +50,52 @@ function shareCurrentPage() {
     'width=600,height=500'
   );
 }
+
 /* 🎸 FALLING GUITAR SYSTEM */
 
 const fallingGuitarEnabled = true;
-const guitarClickedKey = "bandtroductions_guitar_clicked_session";
 
-const guitarMinDelay = 2000;
-const guitarMaxDelay = 4000;
+const guitarMinDelay = 10000;
+const guitarMaxDelay = 15000;
 
 const guitarMinDuration = 7000;
 const guitarMaxDuration = 11000;
 
+let guitarPopupOpen = false;
+
 const musicFacts = [
-  "The first music video aired on MTV was 'Video Killed the Radio Star.'",
-  "A piano has 88 keys.",
-  "Drums are one of the oldest musical instruments.",
-  "Freddie Mercury had four extra teeth.",
-  "The world's largest rock band had 900+ musicians."
+  {
+    text: "The first music video aired on MTV was 'Video Killed the Radio Star.'",
+    source: "The Buggles — MTV launch era (1981)"
+  },
+  {
+    text: "The world's largest rock band had 1,000 musicians perform 'Learn to Fly.'",
+    source: "Rockin’1000 — Cesena, Italy (2015)"
+  },
+  {
+    text: "6gig came out of Portland, Maine, and their song 'Hit the Ground' received MTV2 airplay.",
+    source: "6gig — Portland, Maine / MTV2 era"
+  },
+  {
+    text: "Howie Day is a Maine artist who started performing across New England as a teenager before breaking out nationally.",
+    source: "Howie Day — Bangor/Brewer, Maine"
+  },
+  {
+    text: "Rustic Overtones grew out of Portland’s music scene and later landed an Arista deal backed by Clive Davis.",
+    source: "Rustic Overtones — Portland, Maine / Arista"
+  },
+  {
+    text: "A piano has 88 keys.",
+    source: "Standard modern piano layout"
+  },
+  {
+    text: "Drums are among the oldest known musical instruments in human history.",
+    source: "Ancient percussion traditions"
+  },
+  {
+    text: "Freddie Mercury’s extra teeth are often credited as part of what helped shape his vocal sound.",
+    source: "Freddie Mercury — vocal lore"
+  }
 ];
 
 const musicRiddles = [
@@ -80,10 +109,17 @@ function getRandomItem(arr){
 }
 
 function getRandomContent(){
-  const showFact = Math.random() < 0.7;
+  const showFact = Math.random() < 0.85;
 
   if(showFact){
-    return `<h3>🎵 Music Fact</h3><p>${getRandomItem(musicFacts)}</p>`;
+    const fact = getRandomItem(musicFacts);
+    return `
+      <h3>🎵 Music Fact</h3>
+      <p>${fact.text}</p>
+      <p style="margin-top:10px; font-size:14px; opacity:0.7;">
+        ${fact.source}
+      </p>
+    `;
   }
 
   const riddle = getRandomItem(musicRiddles);
@@ -109,16 +145,21 @@ function openGuitarPopup(){
   const overlay = document.getElementById("guitar-popup-overlay");
   const content = document.getElementById("guitar-popup-content");
 
+  guitarPopupOpen = true;
+
   content.innerHTML = getRandomContent();
   overlay.style.display = "flex";
 }
 
 function closeGuitarPopup(){
   document.getElementById("guitar-popup-overlay").style.display = "none";
+  guitarPopupOpen = false;
+
+  scheduleNext();
 }
 
 function spawnGuitar(){
-  if(sessionStorage.getItem(guitarClickedKey)) return;
+  if(!fallingGuitarEnabled) return;
 
   const layer = document.getElementById("falling-guitar-layer");
   if(!layer) return;
@@ -137,23 +178,21 @@ function spawnGuitar(){
   g.style.animationDuration = (guitarMinDuration + Math.random()*4000) + "ms";
 
   g.onclick = () => {
-    sessionStorage.setItem(guitarClickedKey,true);
     g.remove();
     openGuitarPopup();
   };
 
   g.onanimationend = () => {
     g.remove();
-    if(!sessionStorage.getItem(guitarClickedKey)){
-      scheduleNext();
-    }
+    scheduleNext();
   };
 
   layer.appendChild(g);
 }
 
 function scheduleNext(){
-  if(sessionStorage.getItem(guitarClickedKey)) return;
+  if(!fallingGuitarEnabled) return;
+  if(guitarPopupOpen) return;
 
   const delay = guitarMinDelay + Math.random()*(guitarMaxDelay-guitarMinDelay);
   setTimeout(spawnGuitar, delay);
