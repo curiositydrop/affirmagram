@@ -55,8 +55,8 @@ function shareCurrentPage() {
 const fallingGuitarEnabled = true;
 const guitarClickedKey = "bandtroductions_guitar_clicked_session";
 
-const guitarMinDelay = 30000;
-const guitarMaxDelay = 45000;
+const guitarMinDelay = 2000;
+const guitarMaxDelay = 4000;
 
 const guitarMinDuration = 7000;
 const guitarMaxDuration = 11000;
