@@ -1309,3 +1309,16 @@ padding:8px 12px;
   max-width:900px;
   margin:0 auto 20px auto;
 }
+.gear-mini-note{
+  font-size:18px;
+  color:#aaa;
+  max-width:800px;
+  margin:20px auto 0 auto;
+}
+
+@media (max-width:768px){
+  .gear-mini-note{
+    font-size:16px;
+    padding:0 10px;
+  }
+}
