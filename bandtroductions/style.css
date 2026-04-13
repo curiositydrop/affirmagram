@@ -1144,3 +1144,159 @@ padding:8px 12px;
   border-radius:6px;
   cursor:pointer;
 }
+/* GEAR EXCHANGE */
+
+.gear-hero{
+  padding:50px 20px 30px;
+}
+
+.gear-hero h2{
+  font-size:48px;
+  margin-bottom:12px;
+}
+
+.gear-subtext{
+  color:#fff;
+  font-size:24px;
+  max-width:900px;
+  margin:0 auto 25px auto;
+}
+
+.gear-explainer{
+  padding:20px;
+  display:flex;
+  justify-content:center;
+  gap:22px;
+  flex-wrap:wrap;
+  max-width:1200px;
+  margin:0 auto 20px auto;
+}
+
+.gear-explainer-box{
+  background:#222;
+  border-radius:8px;
+  padding:24px;
+  width:300px;
+  text-align:center;
+}
+
+.gear-explainer-box h3{
+  font-size:28px;
+  margin-top:0;
+  margin-bottom:12px;
+}
+
+.gear-explainer-box p{
+  font-size:20px;
+  margin:0;
+}
+
+.section-intro{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.section-intro h2{
+  font-size:42px;
+  margin-bottom:10px;
+}
+
+.section-intro p{
+  font-size:22px;
+  margin:0;
+}
+
+.gear-card p{
+  margin:8px 0;
+}
+
+.gear-rules{
+  text-align:center;
+  padding:30px 20px 70px;
+}
+
+.gear-rules h2{
+  font-size:42px;
+  margin-bottom:25px;
+}
+
+.gear-rules-grid{
+  gap:25px;
+}
+
+.gear-form-note{
+  color:#ffcc66;
+  font-weight:bold;
+}
+
+.submission-form select{
+  padding:14px;
+  border:none;
+  border-radius:4px;
+  font-size:18px;
+  background:#222;
+  color:white;
+}
+
+.submission-form input[type="file"]{
+  padding:14px;
+  border:none;
+  border-radius:4px;
+  font-size:18px;
+  background:#222;
+  color:white;
+}
+
+.payment-page{
+  padding-top:30px;
+  padding-bottom:60px;
+}
+
+.payment-box{
+  margin:30px 0;
+}
+
+.payment-note{
+  font-size:20px;
+  max-width:700px;
+  margin:0 auto;
+}
+
+@media (max-width:768px){
+
+  .gear-hero h2{
+    font-size:36px;
+  }
+
+  .gear-subtext{
+    font-size:20px;
+  }
+
+  .gear-explainer-box{
+    width:90%;
+    max-width:320px;
+  }
+
+  .gear-explainer-box h3{
+    font-size:24px;
+  }
+
+  .gear-explainer-box p{
+    font-size:18px;
+  }
+
+  .section-intro h2,
+  .gear-rules h2{
+    font-size:34px;
+  }
+
+  .section-intro p,
+  .payment-note{
+    font-size:18px;
+  }
+
+  .submission-form select,
+  .submission-form input[type="file"]{
+    font-size:16px;
+  }
+}
