@@ -729,7 +729,7 @@ padding:12px 10px 20px 10px;
 .watch-page .video-player-wrap{
 position:sticky;
 top:0;
-z-index:50;
+z-index:200;
 background:#111;
 padding-top:10px;
 padding-bottom:10px;
