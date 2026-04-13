@@ -1051,3 +1051,96 @@ padding:8px 12px;
   border-radius: 6px;
   font-weight: bold;
 }
+
+/* 🎸 FALLING GUITAR + POPUP */
+
+#falling-guitar-layer{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:9999;
+}
+
+.falling-guitar{
+  position:fixed;
+  top:-70px;
+  font-size:42px;
+  cursor:pointer;
+  pointer-events:auto;
+  user-select:none;
+  z-index:10000;
+  animation-name:guitarFall;
+  animation-timing-function:linear;
+  animation-fill-mode:forwards;
+  text-shadow:0 0 8px rgba(255,255,255,0.35);
+}
+
+@keyframes guitarFall{
+  0%{
+    transform:translateY(0) rotate(0deg);
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+  }
+}
+
+#guitar-popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:10001;
+  padding:20px;
+}
+
+#guitar-popup{
+  position:relative;
+  width:min(92vw, 420px);
+  background:#111;
+  border:2px solid #00e5ff;
+  border-radius:12px;
+  padding:26px 20px 20px;
+  text-align:center;
+}
+
+#guitar-popup-close{
+  position:absolute;
+  top:8px;
+  right:10px;
+  background:none;
+  border:none;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+}
+
+#guitar-popup-content h3{
+  color:#00e5ff;
+  margin-bottom:10px;
+}
+
+#guitar-popup-content p{
+  font-size:18px;
+}
+
+#guitar-popup-tease{
+  margin-top:12px;
+  font-size:14px;
+  opacity:0.75;
+  color:#00e5ff;
+}
+
+#guitar-popup-skip{
+  margin-top:18px;
+  padding:10px 18px;
+  border:none;
+  background:#ff004c;
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
+}
