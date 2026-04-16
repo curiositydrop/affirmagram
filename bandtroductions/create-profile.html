@@ -187,7 +187,7 @@
       <input type="password" id="band-password" name="Profile Password" required>
 
       <p class="helper-text">
-        This is case sensitive. Example: Nicholas#1
+        Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.
       </p>
 
       <label for="band-confirm-password">Confirm Password *</label>
@@ -279,7 +279,7 @@
       <input type="password" id="musician-password" name="Profile Password" required>
 
       <p class="helper-text">
-        This is case sensitive. Example: Nicholas#1
+        Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.
       </p>
 
       <label for="musician-confirm-password">Confirm Password *</label>
@@ -375,7 +375,7 @@
       <input type="password" id="venue-password" name="Profile Password" required>
 
       <p class="helper-text">
-        This is case sensitive. Example: Nicholas#1
+        Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.
       </p>
 
       <label for="venue-confirm-password">Confirm Password *</label>
@@ -417,6 +417,11 @@
     );
   }
 
+  function isStrongPassword(password) {
+    const strongPasswordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+    return strongPasswordPattern.test(password);
+  }
+
   function validatePasswordMatch(passwordId, confirmPasswordId) {
     const password = document.getElementById(passwordId).value;
     const confirmPassword = document.getElementById(confirmPasswordId).value;
@@ -442,6 +447,7 @@
 
   function validateBandForm() {
     const videoLink = document.getElementById("band-video").value;
+    const password = document.getElementById("band-password").value;
 
     if (!isValidVideoLink(videoLink)) {
       alert("Please submit a YouTube or Vimeo link only for the band video.");
@@ -455,6 +461,11 @@
       return false;
     }
 
+    if (!isStrongPassword(password)) {
+      alert("Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.");
+      return false;
+    }
+
     if (!validatePasswordMatch("band-password", "band-confirm-password")) {
       return false;
     }
@@ -464,6 +475,7 @@
 
   function validateMusicianForm() {
     const videoLink = document.getElementById("musician-video").value;
+    const password = document.getElementById("musician-password").value;
 
     if (!isValidVideoLink(videoLink)) {
       alert("Please submit a YouTube or Vimeo link only for the musician video.");
@@ -477,6 +489,11 @@
       return false;
     }
 
+    if (!isStrongPassword(password)) {
+      alert("Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.");
+      return false;
+    }
+
     if (!validatePasswordMatch("musician-password", "musician-confirm-password")) {
       return false;
     }
@@ -485,10 +502,17 @@
   }
 
   function validateVenueForm() {
+    const password = document.getElementById("venue-password").value;
+
     if (!validateOptionalVideoFields(
       ["venue-video-1", "venue-video-2", "venue-video-3", "venue-video-4", "venue-video-5"],
       "Please use YouTube or Vimeo links only for all venue video fields."
     )) {
+      return false;
+    }
+
+    if (!isStrongPassword(password)) {
+      alert("Password must be at least 8 characters and include 1 uppercase letter, 1 number, and 1 special character.");
       return false;
     }
 
