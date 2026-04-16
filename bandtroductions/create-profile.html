@@ -143,11 +143,23 @@
       <label for="band-influences">Influences</label>
       <input type="text" id="band-influences" name="Influences">
 
-      <label for="band-video">Performance Video Link * (YouTube or Vimeo only)</label>
-      <input type="url" id="band-video" name="Video Link" required>
+      <label for="band-video">Performance Video Link 1 * (YouTube or Vimeo only)</label>
+      <input type="url" id="band-video" name="Video Link 1" required>
+
+      <label for="band-video-2">Performance Video Link 2 (Optional)</label>
+      <input type="url" id="band-video-2" name="Video Link 2">
+
+      <label for="band-video-3">Performance Video Link 3 (Optional)</label>
+      <input type="url" id="band-video-3" name="Video Link 3">
+
+      <label for="band-video-4">Performance Video Link 4 (Optional)</label>
+      <input type="url" id="band-video-4" name="Video Link 4">
+
+      <label for="band-video-5">Performance Video Link 5 (Optional)</label>
+      <input type="url" id="band-video-5" name="Video Link 5">
 
       <p class="helper-text">
-        Paste a YouTube or Vimeo performance link only. Facebook and Instagram video links do not work properly for profiles.
+        Paste YouTube or Vimeo performance links only. Facebook and Instagram video links do not work properly for profiles.
       </p>
 
       <label for="band-image">Band Logo or Photo *</label>
@@ -170,9 +182,6 @@
       <p class="helper-text">
         Enter a valid email address. This is required.
       </p>
-
-      <label for="band-contact">Contact Email or Social *</label>
-      <input type="text" id="band-contact" name="Contact Info" required>
 
       <label for="band-password">Enter Password *</label>
       <input type="password" id="band-password" name="Profile Password" required>
@@ -230,11 +239,23 @@
       <label for="musician-availability">Availability</label>
       <input type="text" id="musician-availability" name="Availability">
 
-      <label for="musician-video">Performance Video Link * (YouTube or Vimeo only)</label>
-      <input type="url" id="musician-video" name="Video Link" required>
+      <label for="musician-video">Performance Video Link 1 * (YouTube or Vimeo only)</label>
+      <input type="url" id="musician-video" name="Video Link 1" required>
+
+      <label for="musician-video-2">Performance Video Link 2 (Optional)</label>
+      <input type="url" id="musician-video-2" name="Video Link 2">
+
+      <label for="musician-video-3">Performance Video Link 3 (Optional)</label>
+      <input type="url" id="musician-video-3" name="Video Link 3">
+
+      <label for="musician-video-4">Performance Video Link 4 (Optional)</label>
+      <input type="url" id="musician-video-4" name="Video Link 4">
+
+      <label for="musician-video-5">Performance Video Link 5 (Optional)</label>
+      <input type="url" id="musician-video-5" name="Video Link 5">
 
       <p class="helper-text">
-        Paste a YouTube or Vimeo performance link only. Facebook and Instagram video links do not work properly for profiles.
+        Paste YouTube or Vimeo performance links only. Facebook and Instagram video links do not work properly for profiles.
       </p>
 
       <label for="musician-photo">Profile Photo *</label>
@@ -253,9 +274,6 @@
       <p class="helper-text">
         Enter a valid email address. This is required.
       </p>
-
-      <label for="musician-contact">Contact Email or Social Link *</label>
-      <input type="text" id="musician-contact" name="Contact Info" required>
 
       <label for="musician-password">Enter Password *</label>
       <input type="password" id="musician-password" name="Profile Password" required>
@@ -317,6 +335,25 @@
       <label for="venue-website-social">Website or Social Link</label>
       <input type="text" id="venue-website-social" name="Website / Social">
 
+      <label for="venue-video-1">Venue Video Link 1 (Optional - YouTube or Vimeo only)</label>
+      <input type="url" id="venue-video-1" name="Video Link 1">
+
+      <label for="venue-video-2">Venue Video Link 2 (Optional)</label>
+      <input type="url" id="venue-video-2" name="Video Link 2">
+
+      <label for="venue-video-3">Venue Video Link 3 (Optional)</label>
+      <input type="url" id="venue-video-3" name="Video Link 3">
+
+      <label for="venue-video-4">Venue Video Link 4 (Optional)</label>
+      <input type="url" id="venue-video-4" name="Video Link 4">
+
+      <label for="venue-video-5">Venue Video Link 5 (Optional)</label>
+      <input type="url" id="venue-video-5" name="Video Link 5">
+
+      <p class="helper-text">
+        Paste YouTube or Vimeo video links only if included. Facebook and Instagram video links do not work properly for profiles.
+      </p>
+
       <label for="venue-photo">Venue Photo or Logo *</label>
       <input type="file" id="venue-photo" name="attachment" accept="image/*" required>
 
@@ -333,9 +370,6 @@
       <p class="helper-text">
         Enter a valid email address. This is required.
       </p>
-
-      <label for="venue-contact">Booking Contact Email or Social *</label>
-      <input type="text" id="venue-contact" name="Contact Info" required>
 
       <label for="venue-password">Enter Password *</label>
       <input type="password" id="venue-password" name="Profile Password" required>
@@ -395,11 +429,29 @@
     return true;
   }
 
+  function validateOptionalVideoFields(videoIds, errorMessage) {
+    for (let i = 0; i < videoIds.length; i++) {
+      const field = document.getElementById(videoIds[i]);
+      if (field && field.value.trim() !== "" && !isValidVideoLink(field.value)) {
+        alert(errorMessage);
+        return false;
+      }
+    }
+    return true;
+  }
+
   function validateBandForm() {
     const videoLink = document.getElementById("band-video").value;
 
     if (!isValidVideoLink(videoLink)) {
       alert("Please submit a YouTube or Vimeo link only for the band video.");
+      return false;
+    }
+
+    if (!validateOptionalVideoFields(
+      ["band-video-2", "band-video-3", "band-video-4", "band-video-5"],
+      "Please use YouTube or Vimeo links only for all band video fields."
+    )) {
       return false;
     }
 
@@ -418,6 +470,13 @@
       return false;
     }
 
+    if (!validateOptionalVideoFields(
+      ["musician-video-2", "musician-video-3", "musician-video-4", "musician-video-5"],
+      "Please use YouTube or Vimeo links only for all musician video fields."
+    )) {
+      return false;
+    }
+
     if (!validatePasswordMatch("musician-password", "musician-confirm-password")) {
       return false;
     }
@@ -426,6 +485,13 @@
   }
 
   function validateVenueForm() {
+    if (!validateOptionalVideoFields(
+      ["venue-video-1", "venue-video-2", "venue-video-3", "venue-video-4", "venue-video-5"],
+      "Please use YouTube or Vimeo links only for all venue video fields."
+    )) {
+      return false;
+    }
+
     if (!validatePasswordMatch("venue-password", "venue-confirm-password")) {
       return false;
     }
