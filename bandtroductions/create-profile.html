@@ -49,6 +49,14 @@
       width: 100%;
       box-sizing: border-box;
     }
+
+    .venue-paid-note {
+      background: rgba(255, 255, 255, 0.06);
+      border-left: 4px solid #ff004c;
+      padding: 12px 15px;
+      margin: 15px 0 20px;
+      border-radius: 6px;
+    }
   </style>
 </head>
 
@@ -105,7 +113,7 @@
       method="POST"
       class="submission-form"
       enctype="multipart/form-data"
-      onsubmit="return validateBandForm(event)"
+      onsubmit="return validateBandForm()"
     >
       <input type="hidden" name="_subject" value="New BANDtroductions Band Submission">
       <input type="hidden" name="_captcha" value="false">
@@ -156,8 +164,25 @@
         Tell people about your sound, style, and vibe.
       </p>
 
+      <label for="band-email">Email *</label>
+      <input type="email" id="band-email" name="Email" placeholder="you@yourband.com" required>
+
+      <p class="helper-text">
+        Enter a valid email address. This is required.
+      </p>
+
       <label for="band-contact">Contact Email or Social *</label>
       <input type="text" id="band-contact" name="Contact Info" required>
+
+      <label for="band-password">Enter Password *</label>
+      <input type="password" id="band-password" name="Profile Password" required>
+
+      <p class="helper-text">
+        This is case sensitive. Example: Nicholas#1
+      </p>
+
+      <label for="band-confirm-password">Confirm Password *</label>
+      <input type="password" id="band-confirm-password" required>
 
       <button type="submit">Submit Band</button>
     </form>
@@ -222,8 +247,25 @@
       <label for="musician-bio">Short Bio *</label>
       <textarea id="musician-bio" name="Bio" rows="6" required></textarea>
 
+      <label for="musician-email">Email *</label>
+      <input type="email" id="musician-email" name="Email" placeholder="you@example.com" required>
+
+      <p class="helper-text">
+        Enter a valid email address. This is required.
+      </p>
+
       <label for="musician-contact">Contact Email or Social Link *</label>
       <input type="text" id="musician-contact" name="Contact Info" required>
+
+      <label for="musician-password">Enter Password *</label>
+      <input type="password" id="musician-password" name="Profile Password" required>
+
+      <p class="helper-text">
+        This is case sensitive. Example: Nicholas#1
+      </p>
+
+      <label for="musician-confirm-password">Confirm Password *</label>
+      <input type="password" id="musician-confirm-password" required>
 
       <button type="submit">Submit Musician Profile</button>
     </form>
@@ -235,6 +277,10 @@
     <p>
       Own or manage a venue that supports live music? Send in your venue details to be featured on BANDtroductions.
     </p>
+
+    <div class="venue-paid-note">
+      <strong>Note:</strong> Venue profiles are a paid listing on BANDtroductions. Payment option coming soon.
+    </div>
 
     <form
       action="https://formsubmit.co/mbergeron79@gmail.com"
@@ -281,10 +327,28 @@
       <label for="venue-description">Short Venue Description *</label>
       <textarea id="venue-description" name="Venue Description" rows="6" required></textarea>
 
+      <label for="venue-email">Email *</label>
+      <input type="email" id="venue-email" name="Email" placeholder="you@venue.com" required>
+
+      <p class="helper-text">
+        Enter a valid email address. This is required.
+      </p>
+
       <label for="venue-contact">Booking Contact Email or Social *</label>
       <input type="text" id="venue-contact" name="Contact Info" required>
 
+      <label for="venue-password">Enter Password *</label>
+      <input type="password" id="venue-password" name="Profile Password" required>
+
+      <p class="helper-text">
+        This is case sensitive. Example: Nicholas#1
+      </p>
+
+      <label for="venue-confirm-password">Confirm Password *</label>
+      <input type="password" id="venue-confirm-password" required>
+
       <button type="submit">Submit Venue</button>
+      <!-- <button type="button">Pay and Submit Venue</button> -->
     </form>
   </div>
 
@@ -319,11 +383,27 @@
     );
   }
 
-  function validateBandForm(event) {
+  function validatePasswordMatch(passwordId, confirmPasswordId) {
+    const password = document.getElementById(passwordId).value;
+    const confirmPassword = document.getElementById(confirmPasswordId).value;
+
+    if (password !== confirmPassword) {
+      alert("Passwords must match exactly.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateBandForm() {
     const videoLink = document.getElementById("band-video").value;
 
     if (!isValidVideoLink(videoLink)) {
       alert("Please submit a YouTube or Vimeo link only for the band video.");
+      return false;
+    }
+
+    if (!validatePasswordMatch("band-password", "band-confirm-password")) {
       return false;
     }
 
@@ -338,10 +418,18 @@
       return false;
     }
 
+    if (!validatePasswordMatch("musician-password", "musician-confirm-password")) {
+      return false;
+    }
+
     return true;
   }
 
   function validateVenueForm() {
+    if (!validatePasswordMatch("venue-password", "venue-confirm-password")) {
+      return false;
+    }
+
     return true;
   }
 </script>
