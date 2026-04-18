@@ -1396,3 +1396,22 @@ padding:8px 12px;
     font-size:18px;
   }
 }
+@media (max-width:768px){
+  .watch-nav-toggle{
+    display:block;
+    text-align:center;
+    margin:10px 0;
+  }
+
+  #mainNav{
+    display:none;
+  }
+
+  #mainNav.show-watch-nav{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:6px 14px;
+    padding:12px 10px 20px 10px;
+  }
+}
