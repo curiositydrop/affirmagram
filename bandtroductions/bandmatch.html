@@ -30,9 +30,7 @@ Bands looking for musicians. Musicians looking for bands.
 
 <h2>Bands Looking for Members</h2>
 
-<div class="profile-grid">
-
-<!-- ADD BAND CARDS HERE -->
+<div class="profile-grid" id="bands-looking-grid">
 
 </div>
 
@@ -43,9 +41,7 @@ Bands looking for musicians. Musicians looking for bands.
 
 <h2>Musicians Looking for Bands</h2>
 
-<div class="profile-grid">
-
-<!-- ADD MUSICIAN CARDS HERE -->
+<div class="profile-grid" id="musicians-looking-grid">
 
 </div>
 
@@ -68,6 +64,91 @@ Create your profile and get in front of bands and musicians in your area.
 <div id="global-footer"></div>
 
 <script src="/bandtroductions/global.js?v=1"></script>
+
+<script>
+const BANDMATCH_SOURCE_PAGES = [
+  "bands.html",
+  "musicians.html"
+];
+
+async function fetchBandmatchHtml(url) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Failed to fetch ${url}`);
+  return await response.text();
+}
+
+function parseLookingCardsFromPage(html) {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const cards = [...doc.querySelectorAll(".profile-card")];
+
+  return cards.map(card => {
+    const lookingType = card.getAttribute("data-looking-type");
+    const lookingInfo = card.getAttribute("data-looking-info");
+
+    if (!lookingType || !lookingInfo) return null;
+
+    const clonedCard = card.cloneNode(true);
+
+    return {
+      lookingType: lookingType.trim().toLowerCase(),
+      lookingInfo: lookingInfo.trim(),
+      cardElement: clonedCard
+    };
+  }).filter(Boolean);
+}
+
+async function loadBandmatch() {
+  const bandsGrid = document.getElementById("bands-looking-grid");
+  const musiciansGrid = document.getElementById("musicians-looking-grid");
+
+  if (!bandsGrid || !musiciansGrid) return;
+
+  bandsGrid.innerHTML = "";
+  musiciansGrid.innerHTML = "";
+
+  let foundBandMatches = false;
+  let foundMusicianMatches = false;
+
+  for (const page of BANDMATCH_SOURCE_PAGES) {
+    try {
+      const html = await fetchBandmatchHtml(page);
+      const lookingCards = parseLookingCardsFromPage(html);
+
+      lookingCards.forEach(item => {
+        if (item.lookingType === "members") {
+          bandsGrid.appendChild(item.cardElement);
+          foundBandMatches = true;
+        }
+
+        if (item.lookingType === "band") {
+          musiciansGrid.appendChild(item.cardElement);
+          foundMusicianMatches = true;
+        }
+      });
+    } catch (error) {
+      console.error("Could not load BandMatch source page:", page, error);
+    }
+  }
+
+  if (!foundBandMatches) {
+    bandsGrid.innerHTML = `
+      <p style="text-align:center; opacity:0.8; max-width:700px; margin:0 auto;">
+        No bands are currently listed as looking for members.
+      </p>
+    `;
+  }
+
+  if (!foundMusicianMatches) {
+    musiciansGrid.innerHTML = `
+      <p style="text-align:center; opacity:0.8; max-width:700px; margin:0 auto;">
+        No musicians are currently listed as looking to join a band.
+      </p>
+    `;
+  }
+}
+
+loadBandmatch();
+</script>
 
 </body>
 </html>
