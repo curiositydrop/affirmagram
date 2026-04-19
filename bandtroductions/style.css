@@ -1476,3 +1476,16 @@ padding:8px 12px;
     font-size:18px;
   }
 }
+/* 🔽 HEADER TIGHTEN */
+  .logo-area{
+    padding:5px 0 0 0;
+  }
+
+  .logo-area img{
+    height:120px;
+  }
+
+  .logo-area .tagline{
+    font-size:18px;
+    margin-top:-2px;
+  }
