@@ -57,6 +57,10 @@
       margin: 15px 0 20px;
       border-radius: 6px;
     }
+
+    .conditional-field {
+      display: none;
+    }
   </style>
 </head>
 
@@ -137,8 +141,16 @@
       <label for="band-members">Current Members</label>
       <input type="text" id="band-members" name="Members">
 
-      <label for="band-looking-for">Looking For</label>
-      <input type="text" id="band-looking-for" name="Looking For">
+      <label for="band-looking-members">Are you looking for members?</label>
+      <select id="band-looking-members" name="Looking For Members?" onchange="toggleBandLookingFields()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="band-looking-members-fields" class="conditional-field">
+        <label for="band-looking-for">Who are you looking for?</label>
+        <input type="text" id="band-looking-for" name="Looking For" placeholder="Ex: Vocalist, guitarist, drummer">
+      </div>
 
       <label for="band-influences">Influences</label>
       <input type="text" id="band-influences" name="Influences">
@@ -232,6 +244,17 @@
 
       <label for="musician-genre">Style / Genre *</label>
       <input type="text" id="musician-genre" name="Genre" placeholder="Ex: Rock, Acoustic (pick best 2)" required>
+
+      <label for="musician-looking-band">Are you looking to join a band?</label>
+      <select id="musician-looking-band" name="Looking To Join A Band?" onchange="toggleMusicianLookingFields()">
+        <option value="No" selected>No</option>
+        <option value="Yes">Yes</option>
+      </select>
+
+      <div id="musician-looking-band-fields" class="conditional-field">
+        <label for="musician-looking-for">What kind of band are you looking for?</label>
+        <input type="text" id="musician-looking-for" name="Looking To Join" placeholder="Ex: Rock band, acoustic duo, metal project">
+      </div>
 
       <label for="musician-influences">Influences</label>
       <input type="text" id="musician-influences" name="Influences">
@@ -406,6 +429,18 @@
     } else if (selected === "venue") {
       document.getElementById("venue-form-panel").classList.add("active");
     }
+  }
+
+  function toggleBandLookingFields() {
+    const select = document.getElementById("band-looking-members");
+    const fields = document.getElementById("band-looking-members-fields");
+    fields.style.display = select.value === "Yes" ? "block" : "none";
+  }
+
+  function toggleMusicianLookingFields() {
+    const select = document.getElementById("musician-looking-band");
+    const fields = document.getElementById("musician-looking-band-fields");
+    fields.style.display = select.value === "Yes" ? "block" : "none";
   }
 
   function isValidVideoLink(link) {
