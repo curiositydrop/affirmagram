@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Band of the Week | BANDtroductions</title>
+
+<link rel="stylesheet" href="style.css?v=29">
+</head>
+
+<body class="botw-page">
+
+<div id="global-header"></div>
+
+<!-- 🏆 HERO = WINNER -->
+<section class="botw-current botw-hero">
+
+  <h2>🏆 Band of the Week</h2>
+
+  <!-- 🔥 SPONSOR (MOVED HERE) -->
+  <div class="botw-sponsor">
+  <a href="#" class="botw-sponsor-link">
+    <span>Sponsored by: <strong>New Leaf Painting Co.</strong></span>
+    <img src="E25C1BF6-8B68-40AD-BC11-2427F37BC179.png" alt="New Leaf Painting Co. logo" class="botw-sponsor-logo">
+  </a>
+</div>
+
+  <div class="botw-winner">
+
+  <h3 id="currentWinnerName">Burning Time</h3>
+
+  <img src="IMG_9383.jpeg" alt="Burning Time">
+
+  <p id="currentWinnerMeta">Rock / Metal • Maine</p>
+  <p id="currentWinnerVotes">Current test spotlight</p>
+
+  <div class="band-links">
+    <a class="button" id="currentWinnerLink" href="burning-time.html">View Band</a>
+    <a class="button" href="bandfeed1.html">Vote 🤘</a>
+  </div>
+
+</div>
+  </div>
+
+</section>
+
+<!-- 🔽 SUBTLE DESCRIPTION -->
+<section class="botw-description">
+  <p>
+    Vote for your favorite local band across the site. Each week, the top voted band earns the spotlight and gets added to the archive.
+  </p>
+</section>
+
+<!-- 📊 LIVE LEADERBOARD -->
+<section class="botw-previous">
+  <h2>Live Vote Leaderboard</h2>
+  <div class="botw-archive" id="botwLeaderboard">
+    <p class="botw-empty">Loading leaderboard...</p>
+  </div>
+</section>
+
+<!-- 📜 PREVIOUS WINNERS -->
+<section class="botw-previous">
+  <h2>Previous Winners</h2>
+
+  <div class="botw-archive" id="previousWinners">
+    <p class="botw-empty">Previous winners will appear here once voting rounds begin.</p>
+  </div>
+</section>
+
+<div id="global-footer"></div>
+
+<script src="global.js"></script>
+<script type="module" src="band-of-the-week.js?v=4"></script>
+
+</body>
+</html>
