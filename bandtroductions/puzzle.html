@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BANDtroductions Puzzle Drop</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #2b0000, #050505 55%, #000);
+      color: #fff;
+      text-align: center;
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 18px;
+    }
+
+    .hero {
+      border: 2px solid #ff2b2b;
+      border-radius: 18px;
+      padding: 28px 18px;
+      background: rgba(0,0,0,0.72);
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.35);
+    }
+
+    h1 {
+      color: #ff2b2b;
+      font-size: clamp(2rem, 6vw, 4rem);
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .tagline {
+      font-size: 1.15rem;
+      color: #ddd;
+      margin-bottom: 22px;
+    }
+
+    .sponsor {
+      display: inline-block;
+      margin: 15px 0 25px;
+      padding: 10px 18px;
+      border: 1px solid #ff2b2b;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(255,0,0,0.12);
+      font-weight: bold;
+    }
+
+    .controls {
+      margin: 22px 0;
+    }
+
+    button, .reward-btn {
+      background: #ff2b2b;
+      color: #fff;
+      border: none;
+      padding: 14px 22px;
+      margin: 8px;
+      border-radius: 999px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 0 14px rgba(255, 0, 0, 0.45);
+    }
+
+    button:hover, .reward-btn:hover {
+      background: #ff4a4a;
+      transform: scale(1.03);
+    }
+
+    .skip-btn {
+      background: #222;
+      border: 1px solid #777;
+      box-shadow: none;
+    }
+
+    .puzzle-wrap {
+      margin: 25px auto;
+      max-width: 640px;
+    }
+
+    #puzzleBoard {
+      width: min(90vw, 600px);
+      height: min(90vw, 600px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 3px;
+      border: 3px solid #ff2b2b;
+      background: #111;
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.45);
+      touch-action: none;
+    }
+
+    .piece {
+      background-size: 400% 400%;
+      cursor: grab;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .piece:active {
+      cursor: grabbing;
+      opacity: 0.75;
+    }
+
+    .message {
+      margin-top: 18px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    #rewardBox, #skipBox {
+      display: none;
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.8);
+      border: 2px solid #ff2b2b;
+      box-shadow: 0 0 22px rgba(255,0,0,0.35);
+    }
+
+    .win {
+      color: #ff2b2b;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .small {
+      color: #aaa;
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>BANDtroductions Puzzle Drop</h1>
+      <p class="tagline">Think you can solve it? The real reward is hidden behind the puzzle.</p>
+
+      <div class="sponsor">Sponsored by: [Your Business Here]</div>
+
+      <div class="controls">
+        <button onclick="startPuzzle()">Start Puzzle</button>
+        <button class="skip-btn" onclick="skipPuzzle()">Skip Puzzle</button>
+      </div>
+
+      <div class="puzzle-wrap">
+        <div id="puzzleBoard"></div>
+      </div>
+
+      <p class="message" id="statusText">Move the pieces around until the image is complete.</p>
+
+      <div id="rewardBox">
+        <div class="win">Puzzle Solved!</div>
+        <p>You found the real Drop. Most people never make it this far.</p>
+        <a class="reward-btn" href="https://bandtroductions.com/secret-entry" target="_top">
+          Unlock Secret Entry
+        </a>
+      </div>
+
+      <div id="skipBox">
+        <div class="win">Standard Entry</div>
+        <p>No shame. Curiosity is optional. This takes you to the regular giveaway entry.</p>
+        <a class="reward-btn" href="https://bandtroductions.com/standard-entry" target="_top">
+          Enter Standard Giveaway
+        </a>
+      </div>
+
+      <p class="small">Powered by BANDtroductions</p>
+    </section>
+  </div>
+
+  <script>
+    const puzzleImage = "bandtroductions-logo.png"; 
+    const gridSize = 4;
+    const board = document.getElementById("puzzleBoard");
+    const statusText = document.getElementById("statusText");
+    let pieces = [];
+
+    function startPuzzle() {
+      document.getElementById("rewardBox").style.display = "none";
+      document.getElementById("skipBox").style.display = "none";
+      statusText.textContent = "Move the pieces around until the image is complete.";
+      createPuzzle();
+    }
+
+    function skipPuzzle() {
+      document.getElementById("skipBox").style.display = "block";
+      document.getElementById("rewardBox").style.display = "none";
+      statusText.textContent = "You chose the standard path.";
+    }
+
+    function createPuzzle() {
+      board.innerHTML = "";
+      pieces = [];
+
+      for (let i = 0; i < gridSize * gridSize; i++) {
+        const piece = document.createElement("div");
+        piece.className = "piece";
+        piece.draggable = true;
+        piece.dataset.correct = i;
+
+        const x = i % gridSize;
+        const y = Math.floor(i / gridSize);
+
+        piece.style.backgroundImage = `url('${puzzleImage}')`;
+        piece.style.backgroundPosition = `${(x / (gridSize - 1)) * 100}% ${(y / (gridSize - 1)) * 100}%`;
+
+        pieces.push(piece);
+      }
+
+      shuffle(pieces);
+
+      pieces.forEach((piece, index) => {
+        piece.dataset.current = index;
+        board.appendChild(piece);
+      });
+
+      enableDrag();
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function enableDrag() {
+      let dragged = null;
+
+      document.querySelectorAll(".piece").forEach(piece => {
+        piece.addEventListener("dragstart", () => {
+          dragged = piece;
+        });
+
+        piece.addEventListener("dragover", e => {
+          e.preventDefault();
+        });
+
+        piece.addEventListener("drop", e => {
+          e.preventDefault();
+          if (!dragged || dragged === piece) return;
+
+          const draggedClone = dragged.cloneNode(true);
+          const targetClone = piece.cloneNode(true);
+
+          board.replaceChild(draggedClone, piece);
+          board.replaceChild(targetClone, dragged);
+
+          enableDrag();
+          checkSolved();
+        });
+      });
+    }
+
+    function checkSolved() {
+      const currentPieces = [...document.querySelectorAll(".piece")];
+
+      const solved = currentPieces.every((piece, index) => {
+        return Number(piece.dataset.correct) === index;
+      });
+
+      if (solved) {
+        statusText.textContent = "Boom. Puzzle complete.";
+        document.getElementById("rewardBox").style.display = "block";
+        document.getElementById("skipBox").style.display = "none";
+      }
+    }
+
+    startPuzzle();
+  </script>
+</body>
+</html>
