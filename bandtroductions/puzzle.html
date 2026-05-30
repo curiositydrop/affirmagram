@@ -339,7 +339,6 @@ function endDrag(e){
 
   if(dropTarget && dropTarget.classList.contains("piece") && dropTarget !== activePiece){
     swapPieces(activePiece, dropTarget);
-    checkSolved();
   }
 
   activePiece.classList.remove("dragging");
@@ -365,6 +364,10 @@ function swapPieces(piece1, piece2){
 
   piece2.style.backgroundPosition = tempPosition;
   piece2.dataset.correct = tempCorrect;
+
+  setTimeout(() => {
+    checkSolved();
+  }, 100);
 }
 
 function checkSolved(showMessage = false){
