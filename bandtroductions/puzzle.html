@@ -247,8 +247,11 @@ let clone = null;
 let startX = 0;
 let startY = 0;
 let pieceRect = null;
+let puzzleLocked = false;
 
 function startPuzzle(){
+  puzzleLocked = false;
+
   document.getElementById("rewardBox").style.display = "none";
   document.getElementById("skipBox").style.display = "none";
   document.getElementById("statusText").innerHTML = "Drag one piece onto another to swap them.";
@@ -290,6 +293,8 @@ function createPuzzle(){
 }
 
 function startDrag(e){
+  if(puzzleLocked) return;
+
   e.preventDefault();
 
   activePiece = e.currentTarget;
@@ -373,6 +378,8 @@ function checkSolved(showMessage = false){
   });
 
   if(solved){
+    puzzleLocked = true;
+
     document.getElementById("rewardBox").style.display = "block";
     document.getElementById("skipBox").style.display = "none";
     document.getElementById("statusText").innerHTML =
