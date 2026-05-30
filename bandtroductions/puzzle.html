@@ -198,6 +198,10 @@ Sponsored by: [Your Business Here]
 Drag one piece onto another to swap them.
 </p>
 
+<button class="start-btn" onclick="checkSolved(true)">
+  Check Puzzle
+</button>
+
 <div id="rewardBox">
 
 <div class="win">
@@ -358,7 +362,7 @@ function swapPieces(piece1, piece2){
   piece2.dataset.correct = tempCorrect;
 }
 
-function checkSolved(){
+function checkSolved(showMessage = false){
   const pieces = document.querySelectorAll(".piece");
   let solved = true;
 
@@ -371,7 +375,12 @@ function checkSolved(){
   if(solved){
     document.getElementById("rewardBox").style.display = "block";
     document.getElementById("skipBox").style.display = "none";
-    document.getElementById("statusText").innerHTML = "🎉 Puzzle Complete!";
+    document.getElementById("statusText").innerHTML =
+      "🎉 Puzzle Complete! Hidden reward unlocked.";
+  }
+  else if(showMessage){
+    document.getElementById("statusText").innerHTML =
+      "Not quite yet — a few pieces are still out of place.";
   }
 }
 
