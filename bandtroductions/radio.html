@@ -212,6 +212,50 @@
   .radio-hero {
     padding-top: 45px;
   }
+  .radio-top{
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 20px;
+
+  display:grid;
+  grid-template-columns:1fr 1.2fr;
+  gap:30px;
+  align-items:center;
+}
+
+.radio-branding{
+  text-align:center;
+}
+
+.radio-brand-logo{
+  width:100%;
+  max-width:420px;
+  filter:drop-shadow(
+    0 0 25px rgba(0,200,180,.35)
+  );
+}
+
+.radio-branding h2{
+  color:#00c8b4;
+  font-size:2rem;
+  margin-top:20px;
+}
+
+.radio-branding p{
+  color:#aaa;
+  line-height:1.8;
+  font-size:1.05rem;
+}
+
+@media(max-width:850px){
+
+  .radio-top{
+    grid-template-columns:1fr;
+  }
+
+  .radio-brand-logo{
+    max-width:280px;
+  }
 }
 </style>
 
