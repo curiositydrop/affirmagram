@@ -223,18 +223,54 @@
 
 <main class="radio-page">
 
-  <section class="radio-hero">
-    <img src="bandtroductions-radio-badge.png" alt="BANDtroductions Radio">
+  <section class="radio-top">
 
-    <h1>BANDtroductions Radio</h1>
+  <div class="radio-branding">
 
-    <p>Where Local Music Lives</p>
+    <img
+      src="bandtroductions-radio-badge.png"
+      alt="BANDtroductions Radio"
+      class="radio-brand-logo"
+    >
 
-    <p class="radio-tagline">
-      Independent bands. Local music. Underground artists. Venue spotlights.
-      No algorithms. No admin approval. No bullshit. Just music.
+    <h2>Where Local Music Lives</h2>
+
+    <p>
+      No algorithms.<br>
+      No admin approval.<br>
+      No bullshit.<br>
+      Just music.
     </p>
-  </section>
+
+  </div>
+
+  <div class="radio-card now-playing">
+
+    <h2>Now Playing</h2>
+
+    <img id="trackCover"
+         src="IMG_9367.png"
+         alt="Album Art">
+
+    <h3 id="trackTitle">
+      BANDtroductions Radio Beta
+    </h3>
+
+    <p id="trackArtist">
+      Independent Music Discovery
+    </p>
+
+    <audio id="audioPlayer" controls></audio>
+
+    <a id="profileLink"
+       class="radio-btn"
+       href="bands.html">
+      View Band Profile
+    </a>
+
+  </div>
+
+</section>
 
   <section class="genre-bar">
     <button class="active" data-genre="all">All</button>
