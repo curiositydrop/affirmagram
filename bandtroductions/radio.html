@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="BANDtroductions">
 <meta property="og:image" content="https://www.bandtroductions.com/bandtroductions-radio-badge.png">
 
-<link rel="stylesheet" href="style.css?v=1">
+<link rel="stylesheet" href="style.css?v=8">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-60112G8RH3"></script>
 <script>
@@ -34,41 +34,36 @@
   padding-bottom: 60px;
 }
 
-.radio-hero {
+.radio-top {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+  align-items: center;
+}
+
+.radio-branding {
   text-align: center;
-  padding: 70px 20px 35px;
-  background:
-    radial-gradient(circle at center, rgba(0,200,180,0.22), transparent 35%),
-    linear-gradient(180deg, #050505 0%, #101010 100%);
 }
 
-.radio-hero img {
-  width: 260px;
-  max-width: 80%;
-  margin-bottom: 22px;
-  filter: drop-shadow(0 0 25px rgba(0,200,180,0.35));
+.radio-brand-logo {
+  width: 100%;
+  max-width: 420px;
+  filter: drop-shadow(0 0 25px rgba(0,200,180,.35));
 }
 
-.radio-hero h1 {
-  font-size: clamp(2.3rem, 6vw, 4.5rem);
-  margin: 0;
-  color: #fff;
-  letter-spacing: 1px;
-}
-
-.radio-hero p {
+.radio-branding h2 {
   color: #00c8b4;
-  font-size: 1.25rem;
-  font-weight: 800;
-  margin-top: 10px;
+  font-size: 2rem;
+  margin-top: 20px;
 }
 
-.radio-tagline {
-  color: #aaa !important;
-  max-width: 700px;
-  margin: 16px auto 0 !important;
-  font-size: 1rem !important;
-  line-height: 1.6;
+.radio-branding p {
+  color: #aaa;
+  line-height: 1.8;
+  font-size: 1.05rem;
 }
 
 .genre-bar {
@@ -205,12 +200,13 @@
 }
 
 @media (max-width: 850px) {
+  .radio-top,
   .radio-layout {
     grid-template-columns: 1fr;
   }
 
-  .radio-hero {
-    padding-top: 45px;
+  .radio-brand-logo {
+    max-width: 280px;
   }
 }
 </style>
@@ -223,17 +219,47 @@
 
 <main class="radio-page">
 
-  <section class="radio-hero">
-    <img src="bandtroductions-radio-badge.png" alt="BANDtroductions Radio">
+  <section class="radio-top">
 
-    <h1>BANDtroductions Radio</h1>
+    <div class="radio-branding">
 
-    <p>Where Local Music Lives</p>
+      <img
+        src="bandtroductions-radio-badge.png"
+        alt="BANDtroductions Radio"
+        class="radio-brand-logo"
+      >
 
-    <p class="radio-tagline">
-      Independent bands. Local music. Underground artists. Venue spotlights.
-      No algorithms. No admin approval. No bullshit. Just music.
-    </p>
+      <h2>Where Local Music Lives</h2>
+
+      <p>
+        No algorithms.<br>
+        No admin approval.<br>
+        No bullshit.<br>
+        Just music.
+      </p>
+
+    </div>
+
+    <div class="radio-card now-playing">
+
+      <h2>Now Playing</h2>
+
+      <img id="trackCover" src="IMG_9367.png" alt="Album Art">
+
+      <h3 id="trackTitle">BANDtroductions Radio Beta</h3>
+
+      <p id="trackArtist">Independent Music Discovery</p>
+
+      <audio id="audioPlayer" controls></audio>
+
+      <br>
+
+      <a id="profileLink" class="radio-btn" href="bands.html">
+        View Band Profile
+      </a>
+
+    </div>
+
   </section>
 
   <section class="genre-bar">
@@ -248,23 +274,6 @@
   <section class="radio-layout">
 
     <div class="radio-main">
-
-      <div class="radio-card now-playing">
-        <h2>Now Playing</h2>
-
-        <img id="trackCover" src="IMG_9367.png" alt="Album Art">
-
-        <h3 id="trackTitle">BANDtroductions Radio Beta</h3>
-        <p id="trackArtist">Independent Music Discovery</p>
-
-        <audio id="audioPlayer" controls></audio>
-
-        <br>
-
-        <a id="profileLink" class="radio-btn" href="bands.html">
-          View Band Profile
-        </a>
-      </div>
 
       <div class="radio-card">
         <h2>Up Next</h2>
@@ -317,7 +326,7 @@
 
 <div id="global-footer"></div>
 
-<script src="global.js?v=2"></script>
+<script src="global.js?v=3"></script>
 
 <script>
 const tracks = [
