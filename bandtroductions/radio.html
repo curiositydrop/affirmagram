@@ -203,9 +203,9 @@
 
   .radio-top {
     display: grid;
-    grid-template-columns: 95px 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 12px;
-    align-items: start;
+    align-items: stretch;
     margin: 20px auto;
     padding: 0 12px;
   }
@@ -215,20 +215,27 @@
   }
 
   .radio-branding {
+    background: #111;
+    border: 1px solid rgba(0,200,180,0.28);
+    border-radius: 20px;
+    padding: 14px;
     text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
   }
 
   .radio-brand-logo {
-    max-width: 90px;
     width: 100%;
+    max-width: 150px;
+    margin: 0 auto 10px;
     display: block;
-    margin: 0 auto 8px;
   }
 
   .radio-branding h2 {
     color: #00c8b4;
-    font-size: 1rem;
-    line-height: 1.15;
+    font-size: 1.3rem;
+    line-height: 1.05;
     margin: 0;
   }
 
@@ -240,11 +247,6 @@
     padding: 14px;
   }
 
-  .now-playing h2 {
-    font-size: 1rem;
-    margin-bottom: 10px;
-  }
-
   #trackCover {
     width: 120px;
     margin: 8px auto;
@@ -254,14 +256,6 @@
     font-size: 1.2rem;
   }
 
-  #trackArtist {
-    font-size: 0.8rem;
-  }
-
-  .radio-btn {
-    padding: 10px 14px;
-    font-size: 0.8rem;
-  }
 }
 </style>
 
