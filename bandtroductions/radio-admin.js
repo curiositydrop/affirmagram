@@ -41,16 +41,20 @@ onValue(submissionsRef, (snapshot) => {
     card.className = "submission-card";
 
     card.innerHTML = `
-      <h2>${song.artist || "Unknown Artist"}</h2>
+  <h2>${song.artist || "Unknown Artist"}</h2>
 
-      <p><strong>Title:</strong> ${song.title || ""}</p>
-      <p><strong>Album:</strong> ${song.album || ""}</p>
-      <p><strong>Genre:</strong> ${song.genre || ""}</p>
+  <p><strong>Title:</strong> ${song.title || ""}</p>
+  <p><strong>Album:</strong> ${song.album || ""}</p>
+  <p><strong>Genre:</strong> ${song.genre || ""}</p>
 
-      <button class="admin-btn" data-key="${key}">
-        Approve Song
-      </button>
-    `;
+  <button class="admin-btn approve-btn" data-key="${key}">
+    Approve Song
+  </button>
+
+  <button class="admin-btn delete-btn" data-key="${key}">
+    Delete Submission
+  </button>
+`;
 
     adminContainer.appendChild(card);
   });
