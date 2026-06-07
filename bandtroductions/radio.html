@@ -93,7 +93,21 @@
   color: #000;
   box-shadow: 0 0 18px rgba(0,200,180,0.35);
 }
+.genre-select {
+  background: #151515;
+  color: #ddd;
+  border: 1px solid rgba(0,200,180,0.35);
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  outline: none;
+}
 
+.genre-select:focus {
+  border-color: #00c8b4;
+  box-shadow: 0 0 18px rgba(0,200,180,0.35);
+}
 .radio-layout {
   max-width: 1200px;
   margin: 35px auto 0;
@@ -349,14 +363,23 @@
 
   </section>
 
-  <section class="genre-bar">
-    <button class="active" data-genre="all">All</button>
-    <button data-genre="rock">Rock</button>
-    <button data-genre="metal">Metal</button>
-    <button data-genre="country">Country</button>
-    <button data-genre="alternative">Alternative</button>
-    <button data-genre="acoustic">Acoustic</button>
-  </section>
+ <section class="genre-bar">
+  <button id="allGenreBtn" class="active" data-genre="all">All</button>
+
+  <select id="genreSelect" class="genre-select">
+    <option value="all">Select Genre</option>
+    <option value="rock">Rock</option>
+    <option value="metal">Metal</option>
+    <option value="country">Country</option>
+    <option value="alternative">Alternative</option>
+    <option value="acoustic">Acoustic</option>
+    <option value="punk">Punk</option>
+    <option value="blues">Blues</option>
+    <option value="hiphop">Hip-Hop</option>
+    <option value="folk">Folk</option>
+    <option value="pop">Pop</option>
+  </select>
+</section>
 
   <section class="radio-layout">
 
@@ -521,13 +544,25 @@ function filterGenre(genre) {
   renderRecentlyPlayed();
 }
 
-document.querySelectorAll(".genre-bar button").forEach(button => {
-  button.addEventListener("click", function () {
-    document.querySelectorAll(".genre-bar button").forEach(btn => btn.classList.remove("active"));
-    this.classList.add("active");
+const allGenreBtn = document.getElementById("allGenreBtn");
+const genreSelect = document.getElementById("genreSelect");
 
-    filterGenre(this.dataset.genre);
-  });
+allGenreBtn.addEventListener("click", function () {
+  allGenreBtn.classList.add("active");
+  genreSelect.value = "all";
+  filterGenre("all");
+});
+
+genreSelect.addEventListener("change", function () {
+  const selectedGenre = this.value;
+
+  if (selectedGenre === "all") {
+    allGenreBtn.classList.add("active");
+  } else {
+    allGenreBtn.classList.remove("active");
+  }
+
+  filterGenre(selectedGenre);
 });
 
 audioPlayer.addEventListener("ended", function () {
