@@ -200,13 +200,67 @@
 }
 
 @media (max-width: 850px) {
-  .radio-top,
+
+  .radio-top {
+    display: grid;
+    grid-template-columns: 95px 1fr;
+    gap: 12px;
+    align-items: start;
+    margin: 20px auto;
+    padding: 0 12px;
+  }
+
   .radio-layout {
     grid-template-columns: 1fr;
   }
 
+  .radio-branding {
+    text-align: left;
+  }
+
   .radio-brand-logo {
-    max-width: 280px;
+    max-width: 90px;
+    width: 100%;
+    display: block;
+    margin: 0 auto 8px;
+  }
+
+  .radio-branding h2 {
+    color: #00c8b4;
+    font-size: 1rem;
+    line-height: 1.15;
+    margin: 0;
+  }
+
+  .radio-branding p {
+    display: none;
+  }
+
+  .now-playing {
+    padding: 14px;
+  }
+
+  .now-playing h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  #trackCover {
+    width: 120px;
+    margin: 8px auto;
+  }
+
+  #trackTitle {
+    font-size: 1.2rem;
+  }
+
+  #trackArtist {
+    font-size: 0.8rem;
+  }
+
+  .radio-btn {
+    padding: 10px 14px;
+    font-size: 0.8rem;
   }
 }
 </style>
