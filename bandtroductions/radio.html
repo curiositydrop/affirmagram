@@ -212,50 +212,6 @@
   .radio-hero {
     padding-top: 45px;
   }
-  .radio-top{
-  max-width:1200px;
-  margin:40px auto;
-  padding:0 20px;
-
-  display:grid;
-  grid-template-columns:1fr 1.2fr;
-  gap:30px;
-  align-items:center;
-}
-
-.radio-branding{
-  text-align:center;
-}
-
-.radio-brand-logo{
-  width:100%;
-  max-width:420px;
-  filter:drop-shadow(
-    0 0 25px rgba(0,200,180,.35)
-  );
-}
-
-.radio-branding h2{
-  color:#00c8b4;
-  font-size:2rem;
-  margin-top:20px;
-}
-
-.radio-branding p{
-  color:#aaa;
-  line-height:1.8;
-  font-size:1.05rem;
-}
-
-@media(max-width:850px){
-
-  .radio-top{
-    grid-template-columns:1fr;
-  }
-
-  .radio-brand-logo{
-    max-width:280px;
-  }
 }
 </style>
 
@@ -267,54 +223,18 @@
 
 <main class="radio-page">
 
-  <section class="radio-top">
+  <section class="radio-hero">
+    <img src="bandtroductions-radio-badge.png" alt="BANDtroductions Radio">
 
-  <div class="radio-branding">
+    <h1>BANDtroductions Radio</h1>
 
-    <img
-      src="bandtroductions-radio-badge.png"
-      alt="BANDtroductions Radio"
-      class="radio-brand-logo"
-    >
+    <p>Where Local Music Lives</p>
 
-    <h2>Where Local Music Lives</h2>
-
-    <p>
-      No algorithms.<br>
-      No admin approval.<br>
-      No bullshit.<br>
-      Just music.
+    <p class="radio-tagline">
+      Independent bands. Local music. Underground artists. Venue spotlights.
+      No algorithms. No admin approval. No bullshit. Just music.
     </p>
-
-  </div>
-
-  <div class="radio-card now-playing">
-
-    <h2>Now Playing</h2>
-
-    <img id="trackCover"
-         src="IMG_9367.png"
-         alt="Album Art">
-
-    <h3 id="trackTitle">
-      BANDtroductions Radio Beta
-    </h3>
-
-    <p id="trackArtist">
-      Independent Music Discovery
-    </p>
-
-    <audio id="audioPlayer" controls></audio>
-
-    <a id="profileLink"
-       class="radio-btn"
-       href="bands.html">
-      View Band Profile
-    </a>
-
-  </div>
-
-</section>
+  </section>
 
   <section class="genre-bar">
     <button class="active" data-genre="all">All</button>
