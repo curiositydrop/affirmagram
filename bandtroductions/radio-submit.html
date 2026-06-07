@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Music | BANDtroductions Radio</title>
+
+<link rel="stylesheet" href="style.css?v=10">
+
+<style>
+body {
+  background: #050505;
+  color: white;
+}
+
+.radio-submit-page {
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.radio-submit-card {
+  background: #111;
+  border: 1px solid rgba(0,200,180,0.35);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.radio-submit-card h1 {
+  color: #00c8b4;
+}
+
+.radio-submit-card label {
+  display: block;
+  margin-top: 16px;
+  font-weight: 800;
+}
+
+.radio-submit-card input,
+.radio-submit-card select,
+.radio-submit-card textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,200,180,0.35);
+  background: #050505;
+  color: white;
+}
+
+.radio-submit-card button {
+  margin-top: 22px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 999px;
+  background: #00c8b4;
+  color: #000;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.back-link {
+  color: #00c8b4;
+  text-decoration: none;
+  font-weight: 800;
+}
+</style>
+</head>
+
+<body>
+
+<main class="radio-submit-page">
+
+  <a class="back-link" href="radio.html">← Back to BANDtroductions Radio</a>
+
+  <section class="radio-submit-card">
+    <h1>Submit Music</h1>
+    <p>Submit your song for consideration on BANDtroductions Radio.</p>
+
+    <form id="radioSubmitForm">
+
+      <label>Band / Artist Name</label>
+      <input id="artist" type="text" required>
+
+      <label>Song Title</label>
+      <input id="title" type="text" required>
+
+      <label>Album Name</label>
+      <input id="album" type="text" placeholder="Single, EP, Album name, etc.">
+
+      <label>Genre</label>
+      <select id="genre" required>
+        <option value="">Select Genre</option>
+        <option value="rock">Rock</option>
+        <option value="metal">Metal</option>
+        <option value="country">Country</option>
+        <option value="alternative">Alternative</option>
+        <option value="acoustic">Acoustic</option>
+        <option value="punk">Punk</option>
+        <option value="blues">Blues</option>
+        <option value="hiphop">Hip-Hop</option>
+        <option value="folk">Folk</option>
+        <option value="pop">Pop</option>
+      </select>
+
+      <label>BANDtroductions Profile Link</label>
+      <input id="profileUrl" type="text" placeholder="burning-time.html">
+
+      <label>Cover Image URL / File Name</label>
+      <input id="coverUrl" type="text" placeholder="IMG_9382.jpeg">
+
+      <label>Audio MP3 URL / File Name</label>
+      <input id="audioUrl" type="text" placeholder="song.mp3">
+
+      <label>Are you signed to a record label?</label>
+      <select id="signedToLabel">
+        <option value="false">No</option>
+        <option value="true">Yes</option>
+      </select>
+
+      <label>Label Name / Contact Info</label>
+      <textarea id="labelContact" placeholder="Leave blank if not signed"></textarea>
+
+      <label>
+        <input id="permissionConfirmed" type="checkbox" required>
+        I confirm I own or control the rights to submit this song, or I have permission from the rights holder.
+      </label>
+
+      <button type="submit">Submit Song</button>
+
+      <p id="submitMessage"></p>
+
+    </form>
+  </section>
+
+</main>
+
+</body>
+</html>
