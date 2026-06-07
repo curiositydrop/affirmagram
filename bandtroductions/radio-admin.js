@@ -3,7 +3,8 @@ import {
   getDatabase,
   ref,
   onValue,
-  set
+  set,
+  remove
 } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -70,15 +71,17 @@ onValue(submissionsRef, (snapshot) => {
       try {
 
         await set(
-          ref(db, `RadioTracks/${trackKey}`),
-          {
-            ...song,
-            approved: true
-          }
-        );
+  ref(db, `RadioTracks/${trackKey}`),
+  {
+    ...song,
+    approved: true,
+    approvedAt: Date.now()
+  }
+);
 
-        alert(`${song.title} approved and added to RadioTracks`);
+await remove(ref(db, `RadioSubmissions/${submissionKey}`));
 
+alert(`${song.title} approved and added to RadioTracks`);
       } catch (error) {
 
         console.error(error);
