@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BANDtroductions Radio | Independent Music Discovery</title>
+
+<meta name="description" content="BANDtroductions Radio is an independent music discovery station featuring local bands, underground artists, venue spotlights, interviews, fan requests, and more.">
+
+<meta property="og:title" content="BANDtroductions Radio">
+<meta property="og:description" content="Independent music. Local bands. No algorithms. No bullshit. Just music.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.bandtroductions.com/radio.html">
+<meta property="og:site_name" content="BANDtroductions">
+<meta property="og:image" content="https://www.bandtroductions.com/bandtroductions-radio-badge.png">
+
+<link rel="stylesheet" href="style.css?v=7">
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-60112G8RH3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-60112G8RH3');
+</script>
+
+<style>
+.radio-page {
+  background: #050505;
+  color: #fff;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.radio-hero {
+  text-align: center;
+  padding: 70px 20px 35px;
+  background:
+    radial-gradient(circle at center, rgba(0,200,180,0.22), transparent 35%),
+    linear-gradient(180deg, #050505 0%, #101010 100%);
+}
+
+.radio-hero img {
+  width: 260px;
+  max-width: 80%;
+  margin-bottom: 22px;
+  filter: drop-shadow(0 0 25px rgba(0,200,180,0.35));
+}
+
+.radio-hero h1 {
+  font-size: clamp(2.3rem, 6vw, 4.5rem);
+  margin: 0;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.radio-hero p {
+  color: #00c8b4;
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.radio-tagline {
+  color: #aaa !important;
+  max-width: 700px;
+  margin: 16px auto 0 !important;
+  font-size: 1rem !important;
+  line-height: 1.6;
+}
+
+.genre-bar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 25px 15px;
+  background: #0b0b0b;
+  border-top: 1px solid rgba(0,200,180,0.25);
+  border-bottom: 1px solid rgba(0,200,180,0.25);
+}
+
+.genre-bar button {
+  background: #151515;
+  color: #ddd;
+  border: 1px solid rgba(0,200,180,0.35);
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.genre-bar button.active,
+.genre-bar button:hover {
+  background: #00c8b4;
+  color: #000;
+  box-shadow: 0 0 18px rgba(0,200,180,0.35);
+}
+
+.radio-layout {
+  max-width: 1200px;
+  margin: 35px auto 0;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.radio-card,
+.side-card {
+  background: #111;
+  border: 1px solid rgba(0,200,180,0.28);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.35);
+}
+
+.now-playing {
+  text-align: center;
+}
+
+.radio-card h2,
+.side-card h3 {
+  color: #00c8b4;
+  margin-top: 0;
+}
+
+#trackCover {
+  width: 280px;
+  max-width: 100%;
+  border-radius: 18px;
+  margin: 15px auto;
+  display: block;
+  border: 1px solid rgba(0,200,180,0.35);
+}
+
+#trackTitle {
+  font-size: 2rem;
+  margin: 12px 0 5px;
+}
+
+#trackArtist {
+  color: #aaa;
+  font-size: 1.1rem;
+}
+
+#audioPlayer {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.radio-btn,
+.side-btn {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #00c8b4;
+  color: #000;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.queue-list li {
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  color: #ddd;
+}
+
+.queue-list span {
+  color: #00c8b4;
+  font-weight: 800;
+}
+
+.radio-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.radio-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.side-card p {
+  color: #bbb;
+  line-height: 1.5;
+}
+
+.beta-note {
+  margin-top: 30px;
+  text-align: center;
+  color: #888;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 850px) {
+  .radio-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-hero {
+    padding-top: 45px;
+  }
+}
+</style>
+
+</head>
+
+<body class="hamburger-active">
+
+<div id="global-header"></div>
+
+<main class="radio-page">
+
+  <section class="radio-hero">
+    <img src="bandtroductions-radio-badge.png" alt="BANDtroductions Radio">
+
+    <h1>BANDtroductions Radio</h1>
+
+    <p>Where Local Music Lives</p>
+
+    <p class="radio-tagline">
+      Independent bands. Local music. Underground artists. Venue spotlights.
+      No algorithms. No admin approval. No bullshit. Just music.
+    </p>
+  </section>
+
+  <section class="genre-bar">
+    <button class="active" data-genre="all">All</button>
+    <button data-genre="rock">Rock</button>
+    <button data-genre="metal">Metal</button>
+    <button data-genre="country">Country</button>
+    <button data-genre="alternative">Alternative</button>
+    <button data-genre="acoustic">Acoustic</button>
+  </section>
+
+  <section class="radio-layout">
+
+    <div class="radio-main">
+
+      <div class="radio-card now-playing">
+        <h2>Now Playing</h2>
+
+        <img id="trackCover" src="IMG_9367.png" alt="Album Art">
+
+        <h3 id="trackTitle">BANDtroductions Radio Beta</h3>
+        <p id="trackArtist">Independent Music Discovery</p>
+
+        <audio id="audioPlayer" controls></audio>
+
+        <br>
+
+        <a id="profileLink" class="radio-btn" href="bands.html">
+          View Band Profile
+        </a>
+      </div>
+
+      <div class="radio-card">
+        <h2>Up Next</h2>
+        <ul id="upNextList" class="queue-list"></ul>
+      </div>
+
+      <div class="radio-card">
+        <h2>Recently Played</h2>
+        <ul id="recentList" class="queue-list"></ul>
+      </div>
+
+    </div>
+
+    <aside class="radio-sidebar">
+
+      <div class="side-card">
+        <h3>🎵 Submit Music</h3>
+        <p>
+          Want your band featured on BANDtroductions Radio?
+          Submit your tracks, genre, album info, and permission to play.
+        </p>
+        <a href="#" class="side-btn">Submit Songs</a>
+      </div>
+
+      <div class="side-card">
+        <h3>🔥 Featured Band</h3>
+        <p>
+          Spotlighting independent artists from Maine and beyond.
+        </p>
+        <a href="bands.html" class="side-btn">Browse Bands</a>
+      </div>
+
+      <div class="side-card">
+        <h3>💀 Sponsor Spotlight</h3>
+        <p>
+          Your business could sponsor BANDtroductions Radio and support independent music.
+        </p>
+        <a href="#" class="side-btn">Sponsor Radio</a>
+      </div>
+
+    </aside>
+
+  </section>
+
+  <p class="beta-note">
+    BANDtroductions Radio is currently in beta. Full playlists coming soon.
+  </p>
+
+</main>
+
+<div id="global-footer"></div>
+
+<script src="global.js?v=2"></script>
+
+<script>
+const tracks = [
+  {
+    title: "Hard to Follow",
+    artist: "Burning Time",
+    genre: "rock",
+    album: "Single",
+    cover: "IMG_9382.jpeg",
+    audio: "",
+    profile: "burning-time.html"
+  },
+  {
+    title: "Featured Track",
+    artist: "Paradise Is Cancelled",
+    genre: "rock",
+    album: "Live",
+    cover: "att.ROrnlmqwZqzAJUKGiPaQbvv-mFxw07_gqBXN9jjWGuw.jpeg",
+    audio: "",
+    profile: "pic.html"
+  },
+  {
+    title: "Sygnal To Noise Track",
+    artist: "Sygnal To Noise",
+    genre: "metal",
+    album: "Coming Soon",
+    cover: "IMG_9367.png",
+    audio: "",
+    profile: "sygnaltonoise.html"
+  }
+];
+
+let currentGenre = "all";
+let playlist = [...tracks];
+let currentIndex = 0;
+let recentlyPlayed = [];
+
+const audioPlayer = document.getElementById("audioPlayer");
+const trackCover = document.getElementById("trackCover");
+const trackTitle = document.getElementById("trackTitle");
+const trackArtist = document.getElementById("trackArtist");
+const profileLink = document.getElementById("profileLink");
+const upNextList = document.getElementById("upNextList");
+const recentList = document.getElementById("recentList");
+
+function loadTrack(index) {
+  const track = playlist[index];
+
+  if (!track) return;
+
+  trackCover.src = track.cover;
+  trackTitle.textContent = track.title;
+  trackArtist.textContent = track.artist + " • " + track.album;
+  profileLink.href = track.profile;
+
+  if (track.audio) {
+    audioPlayer.src = track.audio;
+  } else {
+    audioPlayer.removeAttribute("src");
+  }
+
+  renderUpNext();
+}
+
+function renderUpNext() {
+  upNextList.innerHTML = "";
+
+  playlist.forEach((track, index) => {
+    if (index > currentIndex) {
+      const li = document.createElement("li");
+      li.innerHTML = `<span>${track.artist}</span> — ${track.title}`;
+      upNextList.appendChild(li);
+    }
+  });
+
+  if (!upNextList.innerHTML) {
+    upNextList.innerHTML = "<li>More tracks coming soon.</li>";
+  }
+}
+
+function renderRecentlyPlayed() {
+  recentList.innerHTML = "";
+
+  if (recentlyPlayed.length === 0) {
+    recentList.innerHTML = "<li>No tracks played yet.</li>";
+    return;
+  }
+
+  recentlyPlayed.forEach(track => {
+    const li = document.createElement("li");
+    li.innerHTML = `<span>${track.artist}</span> — ${track.title}`;
+    recentList.appendChild(li);
+  });
+}
+
+function filterGenre(genre) {
+  currentGenre = genre;
+
+  playlist = genre === "all"
+    ? [...tracks]
+    : tracks.filter(track => track.genre === genre);
+
+  currentIndex = 0;
+  loadTrack(currentIndex);
+  renderRecentlyPlayed();
+}
+
+document.querySelectorAll(".genre-bar button").forEach(button => {
+  button.addEventListener("click", function () {
+    document.querySelectorAll(".genre-bar button").forEach(btn => btn.classList.remove("active"));
+    this.classList.add("active");
+
+    filterGenre(this.dataset.genre);
+  });
+});
+
+audioPlayer.addEventListener("ended", function () {
+  recentlyPlayed.unshift(playlist[currentIndex]);
+  recentlyPlayed = recentlyPlayed.slice(0, 5);
+
+  currentIndex++;
+
+  if (currentIndex >= playlist.length) {
+    currentIndex = 0;
+  }
+
+  loadTrack(currentIndex);
+  renderRecentlyPlayed();
+
+  if (audioPlayer.src) {
+    audioPlayer.play();
+  }
+});
+
+loadTrack(currentIndex);
+renderRecentlyPlayed();
+</script>
+
+</body>
+</html>
