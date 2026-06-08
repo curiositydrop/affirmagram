@@ -167,26 +167,22 @@ function loadTrack(index, shouldAutoplay = false) {
   profileLink.href = track.profileUrl || "bands.html";
 
   if (track.audioUrl) {
-  audioPlayer.src = track.audioUrl;
-  audioPlayer.load();
+    audioPlayer.src = track.audioUrl;
+    audioPlayer.load();
 
-  audioPlayer.onloadeddata = () => {
-    console.log("Audio loaded successfully:", track.audioUrl);
-  };
+    audioPlayer.onloadeddata = () => {
+      console.log("Audio loaded successfully:", track.audioUrl);
+    };
 
-  audioPlayer.onerror = () => {
-    console.error("Audio failed to load:", track.audioUrl);
-  };
+    audioPlayer.onerror = () => {
+      console.error("Audio failed to load:", track.audioUrl);
+    };
 
-  if (shouldAutoplay) {
-    audioPlayer.play().catch(error => {
-      console.warn("Autoplay blocked or failed:", error);
-    });
-  }
-} else {
-  audioPlayer.removeAttribute("src");
-  audioPlayer.load();
-}
+    if (shouldAutoplay) {
+      audioPlayer.play().catch(error => {
+        console.warn("Autoplay blocked or failed:", error);
+      });
+    }
   } else {
     audioPlayer.removeAttribute("src");
     audioPlayer.load();
