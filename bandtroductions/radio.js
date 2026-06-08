@@ -167,8 +167,10 @@ function loadTrack(index, shouldAutoplay = false) {
   profileLink.href = track.profileUrl || "bands.html";
 
   if (track.audioUrl) {
-    audioPlayer.src = track.audioUrl;
-    audioPlayer.load();
+    if (audioPlayer.src !== track.audioUrl) {
+      audioPlayer.src = track.audioUrl;
+      audioPlayer.load();
+    }
 
     audioPlayer.onloadeddata = () => {
       console.log("Audio loaded successfully:", track.audioUrl);
@@ -271,6 +273,8 @@ if (genreSelect) {
 if (audioPlayer) {
   audioPlayer.addEventListener("play", () => {
     const track = playlist[currentIndex];
+
+    console.log("Playing:", track?.title);
     trackPlay(track);
   });
 
