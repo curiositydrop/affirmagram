@@ -172,8 +172,16 @@ function loadTrack(index, shouldAutoplay = false) {
   if (track.audioUrl) {
   alert("Audio URL loaded: " + track.audioUrl);
 
-  audioPlayer.src = track.audioUrl;
-  audioPlayer.load();
+ audioPlayer.src = track.audioUrl;
+audioPlayer.load();
+
+audioPlayer.onloadeddata = () => {
+  alert("Audio loaded successfully");
+};
+
+audioPlayer.onerror = () => {
+  alert("Audio failed to load");
+};
 
     if (shouldAutoplay) {
       audioPlayer.play().catch(() => {});
