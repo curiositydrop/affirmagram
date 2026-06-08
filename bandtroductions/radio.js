@@ -170,8 +170,10 @@ function loadTrack(index, shouldAutoplay = false) {
   profileLink.href = track.profileUrl || "bands.html";
 
   if (track.audioUrl) {
-    audioPlayer.src = track.audioUrl;
-    audioPlayer.load();
+  alert("Audio URL loaded: " + track.audioUrl);
+
+  audioPlayer.src = track.audioUrl;
+  audioPlayer.load();
 
     if (shouldAutoplay) {
       audioPlayer.play().catch(() => {});
