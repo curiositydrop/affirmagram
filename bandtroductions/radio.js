@@ -48,7 +48,6 @@ onValue(radioTracksRef, (snapshot) => {
     .map(([id, track]) => ({
       id,
 
-      // Required display/player fields
       title: track.title || "Untitled Track",
       artist: track.artist || "Unknown Artist",
       album: track.album || "Single",
@@ -61,7 +60,6 @@ onValue(radioTracksRef, (snapshot) => {
 
       approved: track.approved === true,
 
-      // Live365 / future metadata
       isrc: track.isrc || "",
       label: track.label || "",
       releaseYear: track.releaseYear || "",
@@ -69,7 +67,6 @@ onValue(radioTracksRef, (snapshot) => {
       publisher: track.publisher || "",
       explicit: track.explicit === true,
 
-      // BANDtroductions metadata
       bandId: track.bandId || "",
       submittedBy: track.submittedBy || "",
       permissionConfirmed: track.permissionConfirmed === true,
@@ -77,7 +74,6 @@ onValue(radioTracksRef, (snapshot) => {
       labelContact: track.labelContact || "",
       dateAdded: track.dateAdded || 0,
 
-      // Stats
       playCount: track.playCount || 0
     }))
     .filter(track => track.approved)
@@ -96,6 +92,7 @@ function normalizeGenre(value) {
 
 function prettyGenre(value) {
   if (!value) return "";
+
   return String(value)
     .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -170,21 +167,17 @@ function loadTrack(index, shouldAutoplay = false) {
   profileLink.href = track.profileUrl || "bands.html";
 
   if (track.audioUrl) {
-  alert("Audio URL loaded: " + track.audioUrl);
+    audioPlayer.src = track.audioUrl;
+    audioPlayer.load();
 
- audioPlayer.src = track.audioUrl;
-audioPlayer.load();
-
-audioPlayer.onloadeddata = () => {
-  alert("Audio loaded successfully");
-};
-
-audioPlayer.onerror = () => {
-  alert("Audio failed to load");
-};
+    audioPlayer.onerror = () => {
+      console.error("Audio failed to load:", track.audioUrl);
+    };
 
     if (shouldAutoplay) {
-      audioPlayer.play().catch(() => {});
+      audioPlayer.play().catch(error => {
+        console.warn("Autoplay blocked or failed:", error);
+      });
     }
   } else {
     audioPlayer.removeAttribute("src");
@@ -199,6 +192,7 @@ function showEmptyState() {
   trackTitle.textContent = "BANDtroductions Radio Beta";
   trackArtist.textContent = "Tracks coming soon";
   profileLink.href = "bands.html";
+
   audioPlayer.removeAttribute("src");
   audioPlayer.load();
 
