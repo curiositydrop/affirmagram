@@ -23,7 +23,7 @@ if (band) {
     const profile = snapshot.val();
 
     if (!profile) {
-      console.log(`No editable profile data found for ${band}. Using hardcoded page content.`);
+      console.log(`No profile data found for ${band}.`);
       return;
     }
 
@@ -47,47 +47,9 @@ if (band) {
 
     setIframe("featured-video", profile.featuredVideo);
 
-    if (Array.isArray(profile.members)) {
-      const membersList = document.getElementById("band-members");
-
-      if (membersList) {
-        membersList.innerHTML = "";
-
-        profile.members.forEach((member) => {
-          const li = document.createElement("li");
-          li.textContent = member;
-          membersList.appendChild(li);
-        });
-      }
-    }
-
-    if (Array.isArray(profile.links)) {
-      const linksBox = document.getElementById("band-links");
-
-      if (linksBox) {
-        linksBox.innerHTML = "";
-
-        profile.links.forEach((link) => {
-          if (!link.label || !link.url) return;
-
-          const a = document.createElement("a");
-          a.href = link.url;
-          a.textContent = link.label;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-          linksBox.appendChild(a);
-        });
-      }
-    }
-
-    if (profile.bookingEmail) {
-      const emailLink = document.getElementById("booking-email");
-
-      if (emailLink) {
-        emailLink.href = `mailto:${profile.bookingEmail}`;
-        emailLink.textContent = profile.name ? `Email ${profile.name}` : "Email Band";
-      }
-    }
+    updateMembers(profile.members);
+    updateLinks(profile.links);
+    updateBookingEmail(profile.bookingEmail, profile.name);
   });
 }
 
@@ -117,4 +79,48 @@ function setIframe(id, src) {
   if (el && src) {
     el.src = src;
   }
+}
+
+function updateMembers(members) {
+  const membersList = document.getElementById("band-members");
+
+  if (!membersList || !Array.isArray(members)) return;
+
+  membersList.innerHTML = "";
+
+  members.forEach((member) => {
+    const li = document.createElement("li");
+    li.textContent = member;
+    membersList.appendChild(li);
+  });
+}
+
+function updateLinks(links) {
+  const linksBox = document.getElementById("band-links");
+
+  if (!linksBox || !Array.isArray(links)) return;
+
+  linksBox.innerHTML = "";
+
+  links.forEach((link) => {
+    if (!link.label || !link.url) return;
+
+    const a = document.createElement("a");
+    a.href = link.url;
+    a.textContent = link.label;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    linksBox.appendChild(a);
+  });
+}
+
+function updateBookingEmail(email, bandName) {
+  const emailLink = document.getElementById("booking-email");
+
+  if (!emailLink || !email) return;
+
+  const subject = encodeURIComponent("Booking Inquiry via BANDtroductions");
+
+  emailLink.href = `mailto:${email}?subject=${subject}`;
+  emailLink.textContent = bandName ? `Email ${bandName}` : "Email Band";
 }
