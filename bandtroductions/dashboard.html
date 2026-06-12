@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Band Dashboard | BANDtroductions</title>
+<link rel="stylesheet" href="style.css?v=8">
+</head>
+
+<body class="new-band-profile-page">
+
+<div id="global-header"></div>
+
+<main class="new-band-profile" style="max-width:700px; margin:40px auto; padding:20px;">
+
+  <section class="profile-action-card">
+    <h1>Band Dashboard</h1>
+    <p class="profile-meta">Update your BANDtroductions profile.</p>
+
+    <div id="dashboard-content" style="display:none; flex-direction:column; gap:14px; margin-top:25px;">
+      <label>Band Name</label>
+      <input id="band-name-input" type="text" style="padding:14px; border-radius:10px; border:1px solid #333;">
+
+      <button id="save-btn" class="profile-action support-action" type="button">
+        Save Changes
+      </button>
+
+      <button id="logout-btn" class="profile-action share-action" type="button">
+        Log Out
+      </button>
+
+      <p id="dashboard-message" style="margin-top:10px;"></p>
+    </div>
+
+    <p id="loading-message">Checking login...</p>
+  </section>
+
+</main>
+
+<div id="global-footer"></div>
+
+<script src="global.js"></script>
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
+import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyApLiiJsKTw1Fp8J3aQatMqiSZoP_6EycE",
+  authDomain: "bandfanwall.firebaseapp.com",
+  databaseURL: "https://bandfanwall-default-rtdb.firebaseio.com",
+  projectId: "bandfanwall",
+  storageBucket: "bandfanwall.firebasestorage.app",
+  messagingSenderId: "619241154826",
+  appId: "1:619241154826:web:25ddc58eef094e3c0732f3"
+};
+
+const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+// TEMP TEST: for now, this dashboard controls Burning Time.
+// Later, we will connect each user account to their own band ID.
+const band = "burning-time";
+
+const dashboardContent = document.getElementById("dashboard-content");
+const loadingMessage = document.getElementById("loading-message");
+const message = document.getElementById("dashboard-message");
+
+const bandNameInput = document.getElementById("band-name-input");
+const saveBtn = document.getElementById("save-btn");
+const logoutBtn = document.getElementById("logout-btn");
+
+onAuthStateChanged(auth, (user) => {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  loadingMessage.style.display = "none";
+  dashboardContent.style.display = "flex";
+
+  const bandRef = ref(db, `Bands/${band}`);
+
+  onValue(bandRef, (snapshot) => {
+    const data = snapshot.val();
+
+    if (data && data.name) {
+      bandNameInput.value = data.name;
+    }
+  });
+});
+
+saveBtn.addEventListener("click", async () => {
+  const newName = bandNameInput.value.trim();
+
+  if (!newName) {
+    message.textContent = "Band name cannot be blank.";
+    return;
+  }
+
+  message.textContent = "Saving...";
+
+  try {
+    await update(ref(db, `Bands/${band}`), {
+      name: newName
+    });
+
+    message.textContent = "Saved! Refresh test.html to see the update.";
+  } catch (error) {
+    console.error(error);
+    message.textContent = "Save failed. Check the console.";
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  await signOut(auth);
+  window.location.href = "login.html";
+});
+</script>
+
+</body>
+</html>
