@@ -17,7 +17,7 @@ const db = getDatabase(app);
 const band = document.body.dataset.band;
 
 if (band) {
-  const profileRef = ref(db, `Bands/${band}/profile`);
+  const profileRef = ref(db, `Bands/${band}`);
 
   onValue(profileRef, (snapshot) => {
     const profile = snapshot.val();
