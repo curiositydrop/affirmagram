@@ -12,15 +12,70 @@
 
 <div id="global-header"></div>
 
-<main class="new-band-profile" style="max-width:700px; margin:40px auto; padding:20px;">
+<main class="new-band-profile" style="max-width:850px; margin:40px auto; padding:20px;">
 
   <section class="profile-action-card">
     <h1>Band Dashboard</h1>
     <p class="profile-meta">Update your BANDtroductions profile.</p>
 
-    <div id="dashboard-content" style="display:none; flex-direction:column; gap:14px; margin-top:25px;">
+    <div id="dashboard-content" style="display:none; flex-direction:column; gap:14px; margin-top:25px; text-align:left;">
+
       <label>Band Name</label>
-      <input id="band-name-input" type="text" style="padding:14px; border-radius:10px; border:1px solid #333;">
+      <input id="name" type="text">
+
+      <label>Genre / Location</label>
+      <input id="meta" type="text" placeholder="Rock / Metal • Maine">
+
+      <label>Badge Text</label>
+      <input id="badge" type="text">
+
+      <label>Banner Image File</label>
+      <input id="bannerImage" type="text" placeholder="IMG_0389.jpeg">
+
+      <label>Profile Image File</label>
+      <input id="avatarImage" type="text" placeholder="IMG_5121.jpeg">
+
+      <label>Featured Title</label>
+      <input id="featuredTitle" type="text">
+
+      <label>Featured Description</label>
+      <input id="featuredDescription" type="text">
+
+      <label>Featured YouTube Embed URL</label>
+      <input id="featuredVideo" type="text" placeholder="https://www.youtube.com/embed/...">
+
+      <label>Band Bio</label>
+      <textarea id="bio" rows="6"></textarea>
+
+      <label>Availability</label>
+      <input id="availability" type="text" placeholder="🎤 Available for gigs">
+
+      <label>Location</label>
+      <input id="location" type="text" placeholder="📍 Based in Maine">
+
+      <label>Booking Text</label>
+      <textarea id="bookingText" rows="3"></textarea>
+
+      <label>Booking Email</label>
+      <input id="bookingEmail" type="email">
+
+      <label>Spotify URL</label>
+      <input id="spotifyUrl" type="text">
+
+      <label>YouTube URL</label>
+      <input id="youtubeUrl" type="text">
+
+      <label>Instagram URL</label>
+      <input id="instagramUrl" type="text">
+
+      <label>Facebook URL</label>
+      <input id="facebookUrl" type="text">
+
+      <label>Website URL</label>
+      <input id="websiteUrl" type="text">
+
+      <label>Band Members</label>
+      <textarea id="members" rows="6" placeholder="One member per line"></textarea>
 
       <button id="save-btn" class="profile-action support-action" type="button">
         Save Changes
@@ -30,7 +85,7 @@
         Log Out
       </button>
 
-      <p id="dashboard-message" style="margin-top:10px;"></p>
+      <p id="dashboard-message" style="margin-top:10px; text-align:center;"></p>
     </div>
 
     <p id="loading-message">Checking login...</p>
@@ -61,17 +116,35 @@ const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// TEMP TEST: for now, this dashboard controls Burning Time.
-// Later, we will connect each user account to their own band ID.
 const band = "burning-time";
 
 const dashboardContent = document.getElementById("dashboard-content");
 const loadingMessage = document.getElementById("loading-message");
 const message = document.getElementById("dashboard-message");
 
-const bandNameInput = document.getElementById("band-name-input");
-const saveBtn = document.getElementById("save-btn");
-const logoutBtn = document.getElementById("logout-btn");
+const fields = [
+  "name",
+  "meta",
+  "badge",
+  "bannerImage",
+  "avatarImage",
+  "featuredTitle",
+  "featuredDescription",
+  "featuredVideo",
+  "bio",
+  "availability",
+  "location",
+  "bookingText",
+  "bookingEmail"
+];
+
+const socialFields = {
+  spotifyUrl: "Spotify",
+  youtubeUrl: "YouTube",
+  instagramUrl: "Instagram",
+  facebookUrl: "Facebook",
+  websiteUrl: "Website"
+};
 
 onAuthStateChanged(auth, (user) => {
   if (!user) {
@@ -85,29 +158,54 @@ onAuthStateChanged(auth, (user) => {
   const bandRef = ref(db, `Bands/${band}`);
 
   onValue(bandRef, (snapshot) => {
-    const data = snapshot.val();
+    const data = snapshot.val() || {};
 
-    if (data && data.name) {
-      bandNameInput.value = data.name;
+    fields.forEach((field) => {
+      const input = document.getElementById(field);
+      if (input) input.value = data[field] || "";
+    });
+
+    if (Array.isArray(data.members)) {
+      document.getElementById("members").value = data.members.join("\n");
+    }
+
+    if (Array.isArray(data.links)) {
+      data.links.forEach((link) => {
+        if (!link.label || !link.url) return;
+
+        if (link.label === "Spotify") document.getElementById("spotifyUrl").value = link.url;
+        if (link.label === "YouTube") document.getElementById("youtubeUrl").value = link.url;
+        if (link.label === "Instagram") document.getElementById("instagramUrl").value = link.url;
+        if (link.label === "Facebook") document.getElementById("facebookUrl").value = link.url;
+        if (link.label === "Website") document.getElementById("websiteUrl").value = link.url;
+      });
     }
   });
 });
 
-saveBtn.addEventListener("click", async () => {
-  const newName = bandNameInput.value.trim();
-
-  if (!newName) {
-    message.textContent = "Band name cannot be blank.";
-    return;
-  }
-
+document.getElementById("save-btn").addEventListener("click", async () => {
   message.textContent = "Saving...";
 
-  try {
-    await update(ref(db, `Bands/${band}`), {
-      name: newName
-    });
+  const updates = {};
 
+  fields.forEach((field) => {
+    updates[field] = document.getElementById(field).value.trim();
+  });
+
+  updates.members = document.getElementById("members").value
+    .split("\n")
+    .map(member => member.trim())
+    .filter(member => member);
+
+  updates.links = Object.entries(socialFields)
+    .map(([inputId, label]) => {
+      const url = document.getElementById(inputId).value.trim();
+      return url ? { label, url } : null;
+    })
+    .filter(Boolean);
+
+  try {
+    await update(ref(db, `Bands/${band}`), updates);
     message.textContent = "Saved! Refresh test.html to see the update.";
   } catch (error) {
     console.error(error);
@@ -115,11 +213,28 @@ saveBtn.addEventListener("click", async () => {
   }
 });
 
-logoutBtn.addEventListener("click", async () => {
+document.getElementById("logout-btn").addEventListener("click", async () => {
   await signOut(auth);
   window.location.href = "login.html";
 });
 </script>
+
+<style>
+#dashboard-content input,
+#dashboard-content textarea {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  font-size: 1rem;
+}
+
+#dashboard-content label {
+  font-weight: 800;
+  color: #00c8b4;
+  margin-top: 8px;
+}
+</style>
 
 </body>
 </html>
