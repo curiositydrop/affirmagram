@@ -29,11 +29,13 @@
       <label>Badge Text</label>
       <input id="badge" type="text">
 
-      <label>Banner Image File</label>
-      <input id="bannerImage" type="text" placeholder="IMG_0389.jpeg">
+      <label>Banner Image</label>
+      <input id="bannerImage" type="text" placeholder="Image URL will appear here after upload">
+      <input id="bannerImageUpload" type="file" accept="image/*">
 
-      <label>Profile Image File</label>
-      <input id="avatarImage" type="text" placeholder="IMG_5121.jpeg">
+      <label>Profile Image</label>
+      <input id="avatarImage" type="text" placeholder="Image URL will appear here after upload">
+      <input id="avatarImageUpload" type="file" accept="image/*">
 
       <label>Featured Title</label>
       <input id="featuredTitle" type="text">
@@ -101,6 +103,7 @@
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 import { getDatabase, ref, onValue, update } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-database.js";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyApLiiJsKTw1Fp8J3aQatMqiSZoP_6EycE",
@@ -115,6 +118,7 @@ const firebaseConfig = {
 const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
+const storage = getStorage(app);
 
 const band = "burning-time";
 
@@ -183,8 +187,46 @@ onAuthStateChanged(auth, (user) => {
   });
 });
 
+async function uploadFileIfSelected(fileInputId, saveFieldName, folderName) {
+  const fileInput = document.getElementById(fileInputId);
+
+  if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+    return null;
+  }
+
+  const file = fileInput.files[0];
+  const cleanFileName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+  const filePath = `band-uploads/${band}/${folderName}/${Date.now()}-${cleanFileName}`;
+  const fileRef = storageRef(storage, filePath);
+
+  await uploadBytes(fileRef, file);
+
+  const downloadUrl = await getDownloadURL(fileRef);
+
+  document.getElementById(saveFieldName).value = downloadUrl;
+
+  return downloadUrl;
+}
+
 document.getElementById("save-btn").addEventListener("click", async () => {
   message.textContent = "Saving...";
+
+  try {
+    const uploadedBannerUrl = await uploadFileIfSelected("bannerImageUpload", "bannerImage", "banner");
+    const uploadedAvatarUrl = await uploadFileIfSelected("avatarImageUpload", "avatarImage", "avatar");
+
+    if (uploadedBannerUrl) {
+      message.textContent = "Banner uploaded...";
+    }
+
+    if (uploadedAvatarUrl) {
+      message.textContent = "Profile image uploaded...";
+    }
+  } catch (error) {
+    console.error(error);
+    message.textContent = "Image upload failed. Check Firebase Storage rules.";
+    return;
+  }
 
   const updates = {};
 
