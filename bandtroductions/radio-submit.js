@@ -22,21 +22,28 @@ form.addEventListener("submit", async function (e) {
 
   const submission = {
     artist: document.getElementById("artist").value.trim(),
+    contactName: document.getElementById("contactName").value.trim(),
+    contactEmail: document.getElementById("contactEmail").value.trim(),
+
     title: document.getElementById("title").value.trim(),
     album: document.getElementById("album").value.trim() || "Single",
     genre: document.getElementById("genre").value,
+    location: document.getElementById("location").value.trim(),
+
     profileUrl: document.getElementById("profileUrl").value.trim(),
     coverUrl: document.getElementById("coverUrl").value.trim(),
     audioUrl: document.getElementById("audioUrl").value.trim(),
 
     signedToLabel: document.getElementById("signedToLabel").value === "true",
     labelContact: document.getElementById("labelContact").value.trim(),
+    notes: document.getElementById("notes").value.trim(),
+
     permissionConfirmed: document.getElementById("permissionConfirmed").checked,
+    agreementAccepted: document.getElementById("agreementAccepted").checked,
 
     approved: false,
     submittedAt: Date.now(),
 
-    // Future Live365 / licensing metadata placeholders
     isrc: "",
     label: "",
     releaseYear: "",
@@ -45,8 +52,17 @@ form.addEventListener("submit", async function (e) {
     explicit: false
   };
 
-  if (!submission.artist || !submission.title || !submission.genre || !submission.permissionConfirmed) {
-    submitMessage.textContent = "Please fill out the required fields and confirm permission.";
+  if (
+    !submission.artist ||
+    !submission.contactName ||
+    !submission.contactEmail ||
+    !submission.title ||
+    !submission.genre ||
+    !submission.audioUrl ||
+    !submission.permissionConfirmed ||
+    !submission.agreementAccepted
+  ) {
+    submitMessage.textContent = "Please fill out all required fields and accept the agreement.";
     submitMessage.style.color = "#ff7777";
     return;
   }
