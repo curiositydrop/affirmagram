@@ -47,6 +47,7 @@ body {
   border: 1px solid rgba(0,200,180,0.35);
   background: #050505;
   color: white;
+  box-sizing: border-box;
 }
 
 .radio-submit-card button {
@@ -60,10 +61,23 @@ body {
   cursor: pointer;
 }
 
-.back-link {
+.back-link,
+.agreement-link {
   color: #00c8b4;
   text-decoration: none;
   font-weight: 800;
+}
+
+.checkbox-label {
+  display: flex !important;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+
+.checkbox-label input {
+  width: auto;
+  margin-top: 3px;
 }
 </style>
 </head>
@@ -80,16 +94,22 @@ body {
 
     <form id="radioSubmitForm">
 
-      <label>Band / Artist Name</label>
+      <label>Band / Artist Name *</label>
       <input id="artist" type="text" required>
 
-      <label>Song Title</label>
+      <label>Contact Name *</label>
+      <input id="contactName" type="text" required>
+
+      <label>Contact Email *</label>
+      <input id="contactEmail" type="email" required>
+
+      <label>Song Title *</label>
       <input id="title" type="text" required>
 
       <label>Album Name</label>
       <input id="album" type="text" placeholder="Single, EP, Album name, etc.">
 
-      <label>Genre</label>
+      <label>Genre *</label>
       <select id="genre" required>
         <option value="">Select Genre</option>
         <option value="rock">Rock</option>
@@ -102,7 +122,11 @@ body {
         <option value="hiphop">Hip-Hop</option>
         <option value="folk">Folk</option>
         <option value="pop">Pop</option>
+        <option value="other">Other</option>
       </select>
+
+      <label>Location</label>
+      <input id="location" type="text" placeholder="City, State">
 
       <label>BANDtroductions Profile Link</label>
       <input id="profileUrl" type="text" placeholder="burning-time.html">
@@ -110,8 +134,8 @@ body {
       <label>Cover Image URL / File Name</label>
       <input id="coverUrl" type="text" placeholder="IMG_9382.jpeg">
 
-      <label>Audio MP3 URL / File Name</label>
-      <input id="audioUrl" type="text" placeholder="song.mp3">
+      <label>Audio MP3 URL / File Name *</label>
+      <input id="audioUrl" type="text" placeholder="song.mp3" required>
 
       <label>Are you signed to a record label?</label>
       <select id="signedToLabel">
@@ -122,9 +146,22 @@ body {
       <label>Label Name / Contact Info</label>
       <textarea id="labelContact" placeholder="Leave blank if not signed"></textarea>
 
-      <label>
+      <label>Anything else we should know?</label>
+      <textarea id="notes" placeholder="Optional notes, links, release info, explicit content, etc."></textarea>
+
+      <label class="checkbox-label">
         <input id="permissionConfirmed" type="checkbox" required>
-        I confirm I own or control the rights to submit this song, or I have permission from the rights holder.
+        <span>
+          I confirm I own or control the rights to submit this song, or I have permission from the rights holder.
+        </span>
+      </label>
+
+      <label class="checkbox-label">
+        <input id="agreementAccepted" type="checkbox" required>
+        <span>
+          I have read and agree to the
+          <a href="#" class="agreement-link">BANDtroductions Radio Music Submission & Broadcast Agreement</a>.
+        </span>
       </label>
 
       <button type="submit">Submit Song</button>
@@ -135,6 +172,7 @@ body {
   </section>
 
 </main>
-<script type="module" src="radio-submit.js?v=1"></script>
+
+<script type="module" src="radio-submit.js?v=2"></script>
 </body>
 </html>
