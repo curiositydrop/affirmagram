@@ -459,6 +459,210 @@
     font-size: 0.66rem;
   }
 }
+/* FLOATING SPONSOR BAR */
+
+.sponsor-bar {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(5,5,5,0.94);
+  border: 1px solid rgba(0,200,180,0.35);
+  box-shadow: 0 0 22px rgba(0,0,0,0.65), 0 0 18px rgba(0,200,180,0.12);
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.sponsor-bar.expanded {
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  width: min(760px, calc(100% - 24px));
+  min-height: 86px;
+  border-radius: 18px;
+  padding: 10px 44px 12px;
+}
+
+.sponsor-bar.minimized {
+  left: 12px;
+  bottom: 12px;
+  transform: none;
+  width: 145px;
+  min-height: 68px;
+  border-radius: 14px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.sponsor-bar-inner {
+  width: 100%;
+  text-align: center;
+}
+
+.sponsor-message {
+  color: #d7d7d7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+.sponsor-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.sponsor-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 31%;
+  height: 42px;
+  text-decoration: none;
+}
+
+.sponsor-logo-link img {
+  max-width: 100%;
+  max-height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(0,200,180,0.12));
+}
+
+.sponsor-toggle {
+  position: absolute;
+  top: 7px;
+  right: 9px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0,200,180,0.35);
+  border-radius: 999px;
+  background: #111;
+  color: #00f0d0;
+  font-weight: 900;
+  line-height: 20px;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.sponsor-toggle:hover {
+  background: #00c8b4;
+  color: #000;
+}
+
+.sponsor-bar.minimized .sponsor-message {
+  display: none;
+}
+
+.sponsor-bar.minimized .sponsor-logo-row {
+  gap: 0;
+}
+
+.sponsor-bar.minimized .sponsor-toggle {
+  top: -8px;
+  right: -8px;
+  background: #00c8b4;
+  color: #000;
+}
+
+.mini-sponsor-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 100%;
+  min-height: 52px;
+  text-decoration: none;
+}
+
+.mini-sponsor-label {
+  color: #00f0d0;
+  font-size: 0.62rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mini-sponsor-link img {
+  max-width: 112px;
+  max-height: 34px;
+  object-fit: contain;
+}
+
+.sponsor-slide-out {
+  opacity: 0;
+  transform: translateX(-18px);
+}
+
+.sponsor-slide-in {
+  opacity: 1;
+  transform: translateX(18px);
+}
+
+body {
+  padding-bottom: 105px;
+}
+
+@media (max-width: 850px) {
+
+  .sponsor-bar.expanded {
+    bottom: 8px;
+    width: calc(100% - 16px);
+    min-height: 74px;
+    border-radius: 14px;
+    padding: 8px 34px 9px;
+  }
+
+  .sponsor-message {
+    font-size: 0.64rem;
+    margin-bottom: 6px;
+  }
+
+  .sponsor-logo-row {
+    gap: 9px;
+  }
+
+  .sponsor-logo-link {
+    height: 34px;
+  }
+
+  .sponsor-logo-link img {
+    max-height: 34px;
+  }
+
+  .sponsor-bar.minimized {
+    width: 118px;
+    min-height: 58px;
+    left: 8px;
+    bottom: 8px;
+    padding: 7px 8px;
+  }
+
+  .mini-sponsor-link {
+    min-height: 44px;
+  }
+
+  .mini-sponsor-label {
+    font-size: 0.56rem;
+  }
+
+  .mini-sponsor-link img {
+    max-width: 92px;
+    max-height: 28px;
+  }
+
+  .sponsor-toggle {
+    width: 22px;
+    height: 22px;
+    font-size: 0.8rem;
+  }
+
+  body {
+    padding-bottom: 92px;
+  }
+}
+  
 </style>
 
 </head>
