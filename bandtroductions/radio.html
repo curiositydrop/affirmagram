@@ -194,88 +194,111 @@
   font-size: 0.95rem;
 }
 
-/* RADIO PATH GRID */
+/* RADIO PATH GRID - HOME PAGE STYLE */
 
 .radio-path-section {
-  max-width: 1200px;
+  max-width: 760px;
   margin: 38px auto 0;
-  padding: 0 20px;
+  padding: 0 14px;
 }
 
 .radio-section-title {
   text-align: center;
-  color: #00c8b4;
+  color: #ffffff;
   font-size: 2rem;
   margin: 0 0 8px;
-  text-shadow: 0 0 18px rgba(0,200,180,0.35);
+  text-shadow: 0 0 12px rgba(0,0,0,0.8);
 }
 
 .radio-section-subtitle {
   text-align: center;
   color: #aaa;
-  max-width: 680px;
-  margin: 0 auto 28px;
-  line-height: 1.6;
+  max-width: 620px;
+  margin: 0 auto 24px;
+  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
 .radio-path-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
 }
 
 .radio-path-card {
-  background: #111;
-  border: 1px solid rgba(0,200,180,0.28);
-  border-radius: 20px;
-  padding: 24px;
-  min-height: 210px;
-  box-shadow: 0 0 25px rgba(0,0,0,0.35);
+  background: linear-gradient(145deg, #181818, #101010);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 12px;
+  min-height: 118px;
+  box-shadow: 0 0 14px rgba(0,0,0,0.45);
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .radio-path-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(0,200,180,0.65);
-  box-shadow: 0 0 28px rgba(0,200,180,0.15);
+  transform: translateY(-2px);
+  border-color: rgba(0,200,180,0.55);
+  box-shadow: 0 0 18px rgba(0,200,180,0.14);
 }
 
 .radio-path-card h3 {
-  color: #00c8b4;
-  margin-top: 0;
-  font-size: 1.25rem;
+  color: #ffffff;
+  margin: 0 0 6px;
+  font-size: 0.88rem;
+  line-height: 1.2;
 }
 
 .radio-path-card p {
-  color: #bbb;
-  line-height: 1.55;
-  margin-bottom: 0;
+  color: #d7d7d7;
+  line-height: 1.35;
+  margin: 0 0 10px;
+  font-size: 0.72rem;
 }
 
 .radio-path-card .side-btn {
-  margin-top: 20px;
+  display: inline-block;
+  margin-top: 4px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  color: #00f0d0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.radio-path-card .side-btn:hover {
+  color: #ffffff;
 }
 
 .radio-path-card .queue-list {
-  margin-top: 10px;
+  margin-top: 4px;
 }
 
 .radio-path-card .queue-list li {
-  padding: 12px 0;
+  padding: 6px 0;
   border-bottom: 1px solid rgba(255,255,255,0.08);
   color: #ddd;
+  font-size: 0.72rem;
+  line-height: 1.3;
 }
 
 .radio-path-card .queue-list li:last-child {
   border-bottom: none;
 }
 
+.radio-path-card .queue-list span {
+  color: #00f0d0;
+  font-weight: 800;
+}
+
 .radio-path-card .queue-list:empty::before {
   content: "More tracks coming soon.";
-  color: #bbb;
+  color: #d7d7d7;
   display: block;
-  padding-top: 10px;
-  line-height: 1.5;
+  padding-top: 2px;
+  line-height: 1.35;
+  font-size: 0.72rem;
 }
 
 #recentList:empty::before {
@@ -400,27 +423,40 @@
   }
 
   .radio-path-section {
-    margin-top: 34px;
-    padding: 0 20px;
+    margin-top: 32px;
+    padding: 0 7px;
   }
 
   .radio-section-title {
-    font-size: 1.65rem;
+    font-size: 1.55rem;
   }
 
   .radio-section-subtitle {
-    font-size: 0.95rem;
-    margin-bottom: 22px;
+    font-size: 0.82rem;
+    margin-bottom: 18px;
+    padding: 0 8px;
   }
 
   .radio-path-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 7px;
   }
 
   .radio-path-card {
-    min-height: auto;
-    padding: 24px;
+    min-height: 112px;
+    padding: 10px;
+    border-radius: 9px;
+  }
+
+  .radio-path-card h3 {
+    font-size: 0.78rem;
+  }
+
+  .radio-path-card p,
+  .radio-path-card .side-btn,
+  .radio-path-card .queue-list li,
+  .radio-path-card .queue-list:empty::before {
+    font-size: 0.66rem;
   }
 }
 </style>
@@ -514,7 +550,7 @@
           Want your band featured on BANDtroductions Radio?
           Submit your tracks, genre, album info, and permission to play.
         </p>
-        <a href="radio-submit.html" class="side-btn">Submit Songs</a>
+        <a href="radio-submit.html" class="side-btn">Submit Songs →</a>
       </div>
 
       <div class="radio-path-card">
@@ -522,7 +558,7 @@
         <p>
           Find independent bands, local artists, and musicians already part of the BANDtroductions family.
         </p>
-        <a href="bands.html" class="side-btn">Browse Bands</a>
+        <a href="bands.html" class="side-btn">Browse →</a>
       </div>
 
       <div class="radio-path-card">
@@ -530,7 +566,7 @@
         <p>
           Put your business in front of music fans while helping support local and independent artists.
         </p>
-        <a href="mailto:bandtroductions@gmail.com?subject=BANDtroductions Radio Sponsorship" class="side-btn">Sponsor Radio</a>
+        <a href="mailto:bandtroductions@gmail.com?subject=BANDtroductions Radio Sponsorship" class="side-btn">Sponsor →</a>
       </div>
 
       <div class="radio-path-card">
@@ -538,7 +574,7 @@
         <p>
           Featured artists, station updates, interviews, shoutouts, and special BANDtroductions Radio moments.
         </p>
-        <a href="bands.html" class="side-btn">View Spotlights</a>
+        <a href="bands.html" class="side-btn">View →</a>
       </div>
 
     </div>
