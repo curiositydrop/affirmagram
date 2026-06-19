@@ -593,5 +593,163 @@
 
 <script type="module" src="radio.js?v=3"></script>
 
+<!-- FLOATING SPONSOR BAR -->
+<div id="floatingSponsorBar" class="sponsor-bar expanded">
+
+  <button id="sponsorToggle" class="sponsor-toggle" aria-label="Minimize sponsor bar">
+    −
+  </button>
+
+  <div class="sponsor-bar-inner">
+
+    <div class="sponsor-message">
+      Thank you to our sponsors helping keep BANDtroductions free
+    </div>
+
+    <div id="sponsorLogoRow" class="sponsor-logo-row"></div>
+
+  </div>
+
+</div>
+
+<script>
+const sponsorGroups = [
+  [
+    {
+      name: "Rock Rage Radio",
+      logo: "rock-rage-radio-logo.png",
+      url: "#"
+    },
+    {
+      name: "The Plowzone Radio Show",
+      logo: "plowzone-logo.png",
+      url: "#"
+    },
+    {
+      name: "Gone Rogue Records",
+      logo: "gone-rogue-records-logo.png",
+      url: "#"
+    }
+  ],
+  [
+    {
+      name: "Sponsor Logo 4",
+      logo: "sponsor-4.png",
+      url: "#"
+    },
+    {
+      name: "Sponsor Logo 5",
+      logo: "sponsor-5.png",
+      url: "#"
+    },
+    {
+      name: "Sponsor Logo 6",
+      logo: "sponsor-6.png",
+      url: "#"
+    }
+  ]
+];
+
+let sponsorGroupIndex = 0;
+let miniSponsorIndex = 0;
+let sponsorMinimized = false;
+
+const sponsorBar = document.getElementById("floatingSponsorBar");
+const sponsorLogoRow = document.getElementById("sponsorLogoRow");
+const sponsorToggle = document.getElementById("sponsorToggle");
+
+function renderSponsors() {
+  sponsorLogoRow.innerHTML = "";
+
+  if (sponsorMinimized) {
+    const flatSponsors = sponsorGroups.flat();
+    const sponsor = flatSponsors[miniSponsorIndex % flatSponsors.length];
+
+    const link = document.createElement("a");
+    link.href = sponsor.url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.className = "mini-sponsor-link";
+
+    link.innerHTML = `
+      <span class="mini-sponsor-label">Sponsor</span>
+      <img src="${sponsor.logo}" alt="${sponsor.name}">
+    `;
+
+    sponsorLogoRow.appendChild(link);
+
+  } else {
+    const currentGroup = sponsorGroups[sponsorGroupIndex % sponsorGroups.length];
+
+    currentGroup.forEach(sponsor => {
+      const link = document.createElement("a");
+      link.href = sponsor.url;
+      link.target = "_blank";
+      link.rel = "noopener";
+      link.className = "sponsor-logo-link";
+
+      link.innerHTML = `
+        <img src="${sponsor.logo}" alt="${sponsor.name}">
+      `;
+
+      sponsorLogoRow.appendChild(link);
+    });
+  }
+}
+
+function rotateSponsors() {
+  if (sponsorMinimized) {
+    miniSponsorIndex++;
+  } else {
+    sponsorGroupIndex++;
+  }
+
+  sponsorLogoRow.classList.add("sponsor-slide-out");
+
+  setTimeout(() => {
+    renderSponsors();
+    sponsorLogoRow.classList.remove("sponsor-slide-out");
+    sponsorLogoRow.classList.add("sponsor-slide-in");
+
+    setTimeout(() => {
+      sponsorLogoRow.classList.remove("sponsor-slide-in");
+    }, 500);
+  }, 350);
+}
+
+sponsorToggle.addEventListener("click", function(e) {
+  e.stopPropagation();
+
+  sponsorMinimized = !sponsorMinimized;
+
+  if (sponsorMinimized) {
+    sponsorBar.classList.remove("expanded");
+    sponsorBar.classList.add("minimized");
+    sponsorToggle.textContent = "+";
+    sponsorToggle.setAttribute("aria-label", "Expand sponsor bar");
+  } else {
+    sponsorBar.classList.remove("minimized");
+    sponsorBar.classList.add("expanded");
+    sponsorToggle.textContent = "−";
+    sponsorToggle.setAttribute("aria-label", "Minimize sponsor bar");
+  }
+
+  renderSponsors();
+});
+
+sponsorBar.addEventListener("click", function() {
+  if (sponsorMinimized) {
+    sponsorMinimized = false;
+    sponsorBar.classList.remove("minimized");
+    sponsorBar.classList.add("expanded");
+    sponsorToggle.textContent = "−";
+    sponsorToggle.setAttribute("aria-label", "Minimize sponsor bar");
+    renderSponsors();
+  }
+});
+
+renderSponsors();
+setInterval(rotateSponsors, 14000);
+</script>
 </body>
 </html>
