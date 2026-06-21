@@ -56,6 +56,15 @@ h1{
   box-shadow:0 0 18px rgba(0,245,212,.25);
 }
 
+.sponsor-logo{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+  vertical-align:middle;
+  margin-right:10px;
+  border-radius:50%;
+}
+
 .buttons{
   margin-bottom:30px;
 }
@@ -178,11 +187,12 @@ button{
 <h1>Puzzle Drop</h1>
 
 <p class="tagline">
-Think you can solve it? The real reward is hidden behind the puzzle.
+Discover local music. Unlock sponsored rewards.
 </p>
 
-<div class="sponsor">
-Sponsored by: [Your Business Here]
+<div class="sponsor" id="sponsorArea">
+<img class="sponsor-logo" id="sponsorLogo" src="" alt="" style="display:none;">
+<span>Sponsored by: <span id="sponsorName">[Your Business Here]</span></span>
 </div>
 
 <div class="buttons">
@@ -238,7 +248,60 @@ Powered by BANDtroductions
 </div>
 
 <script>
-const puzzleImage = "IMG_5121.jpeg";
+const bands = [
+  {
+    name: "Burning Time",
+    image: "images/puzzles/burning-time.jpg",
+    profileUrl: "burning-time.html"
+  },
+  {
+    name: "Paradise Is Cancelled",
+    image: "images/puzzles/paradise-is-cancelled.jpg",
+    profileUrl: "paradise-is-cancelled.html"
+  },
+  {
+    name: "Ascent To Power",
+    image: "images/puzzles/ascent-to-power.jpg",
+    profileUrl: "ascent-to-power.html"
+  },
+  {
+    name: "Scotty Saints and the TrueBelievers",
+    image: "images/puzzles/scotty-saints-and-the-truebelievers.jpg",
+    profileUrl: "scotty-saints-and-the-truebelievers.html"
+  }
+];
+
+const sponsors = [
+  {
+    name: "New Leaf Painting Company",
+    logo: "images/sponsors/new-leaf.png",
+    offerText: "Show this reward to unlock this week’s sponsor offer.",
+    claimUrl: "https://bandtroductions.com/sponsors"
+  },
+  {
+    name: "Rock Rage Radio",
+    logo: "images/sponsors/rock-rage-radio.png",
+    offerText: "Claim a featured local music shoutout opportunity.",
+    claimUrl: "https://bandtroductions.com/sponsors"
+  },
+  {
+    name: "The Plowzone Radio Show",
+    logo: "images/sponsors/plowzone.png",
+    offerText: "Unlock a sponsor-backed music discovery reward.",
+    claimUrl: "https://bandtroductions.com/sponsors"
+  },
+  {
+    name: "Gone Rogue Records",
+    logo: "images/sponsors/gone-rogue-records.png",
+    offerText: "Claim this week’s sponsor reward for puzzle challengers.",
+    claimUrl: "https://bandtroductions.com/sponsors"
+  }
+];
+
+let puzzleImage = "IMG_5121.jpeg";
+let selectedBand = null;
+let selectedSponsor = null;
+
 const gridSize = 4;
 const board = document.getElementById("puzzleBoard");
 
@@ -248,6 +311,106 @@ let startX = 0;
 let startY = 0;
 let pieceRect = null;
 let puzzleLocked = false;
+
+function selectWithNoRepeat(items, storageKey, uniqueKey){
+  if(!Array.isArray(items) || items.length === 0) return null;
+
+  const repeatWindow = Math.min(3, items.length - 1);
+  let recentItems = [];
+
+  try{
+    recentItems = JSON.parse(localStorage.getItem(storageKey)) || [];
+  }
+  catch(error){
+    recentItems = [];
+  }
+
+  if(repeatWindow <= 0){
+    const onlyChoice = items[0];
+    localStorage.setItem(storageKey, JSON.stringify([onlyChoice[uniqueKey]]));
+    return onlyChoice;
+  }
+
+  const blockedItems = recentItems.slice(-repeatWindow);
+  let eligibleItems = items.filter(item => !blockedItems.includes(item[uniqueKey]));
+
+  if(eligibleItems.length === 0){
+    eligibleItems = items;
+  }
+
+  const selectedItem = eligibleItems[Math.floor(Math.random() * eligibleItems.length)];
+  const updatedRecentItems = recentItems
+    .filter(itemKey => itemKey !== selectedItem[uniqueKey])
+    .concat(selectedItem[uniqueKey])
+    .slice(-repeatWindow);
+
+  localStorage.setItem(storageKey, JSON.stringify(updatedRecentItems));
+
+  return selectedItem;
+}
+
+function selectWeeklyPuzzleContent(){
+  selectedBand = selectWithNoRepeat(
+    bands,
+    "bandtroductionsPuzzleRecentBands",
+    "image"
+  ) || {
+    name: "BANDtroductions Featured Artist",
+    image: "IMG_5121.jpeg",
+    profileUrl: "bands.html"
+  };
+
+  selectedSponsor = selectWithNoRepeat(
+    sponsors,
+    "bandtroductionsPuzzleRecentSponsors",
+    "name"
+  ) || {
+    name: "BANDtroductions Sponsor",
+    logo: "",
+    offerText: "You unlocked this week’s sponsored reward.",
+    claimUrl: "sponsors.html"
+  };
+
+  puzzleImage = selectedBand.image || "IMG_5121.jpeg";
+  updateSponsorArea();
+}
+
+function updateSponsorArea(){
+  const sponsorName = document.getElementById("sponsorName");
+  const sponsorLogo = document.getElementById("sponsorLogo");
+
+  if(sponsorName && selectedSponsor){
+    sponsorName.textContent = selectedSponsor.name;
+  }
+
+  if(sponsorLogo && selectedSponsor && selectedSponsor.logo){
+    sponsorLogo.src = selectedSponsor.logo;
+    sponsorLogo.alt = selectedSponsor.name + " logo";
+    sponsorLogo.style.display = "inline-block";
+  }
+  else if(sponsorLogo){
+    sponsorLogo.style.display = "none";
+  }
+}
+
+function updateRewardContent(){
+  const rewardBox = document.getElementById("rewardBox");
+
+  if(!rewardBox || !selectedSponsor || !selectedBand) return;
+
+  rewardBox.innerHTML = `
+    <div class="win">Reward unlocked!</div>
+    <p>You unlocked this week’s sponsored reward from <strong>${selectedSponsor.name}</strong>.</p>
+    <p>${selectedSponsor.offerText}</p>
+    <a class="reward-btn" href="${selectedSponsor.claimUrl}" target="_top">
+      Claim Sponsor Offer
+    </a>
+    <p style="margin-top:20px;">You also discovered: <strong>${selectedBand.name}</strong>.</p>
+    <a class="reward-btn" href="${selectedBand.profileUrl}" target="_top">
+      View Band Profile
+    </a>
+  `;
+}
 
 function startPuzzle(){
   puzzleLocked = false;
@@ -383,6 +546,8 @@ function checkSolved(showMessage = false){
   if(solved){
     puzzleLocked = true;
 
+    updateRewardContent();
+
     document.getElementById("rewardBox").style.display = "block";
     document.getElementById("skipBox").style.display = "none";
     document.getElementById("statusText").innerHTML =
@@ -394,6 +559,7 @@ function checkSolved(showMessage = false){
   }
 }
 
+selectWeeklyPuzzleContent();
 startPuzzle();
 </script>
 
