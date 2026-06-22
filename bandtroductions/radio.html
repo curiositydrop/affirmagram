@@ -87,9 +87,8 @@
   margin: 12px auto 0;
 }
 
-.genre-bar button,
-.genre-select {
-  height: 38px;
+.genre-bar button {
+  height: 43px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -97,14 +96,23 @@
   background: #151515;
   color: #ddd;
   border: 1px solid rgba(0,200,180,0.35);
-  padding: 0 14px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.genre-select {
+  background: #151515;
+  color: #ddd;
+  border: 1px solid rgba(0,200,180,0.35);
+  padding: 11px 18px;
   border-radius: 999px;
   font-weight: 800;
   cursor: pointer;
   outline: none;
-  line-height: 1;
 }
-
 .genre-bar button.active,
 .genre-bar button:hover {
   background: #00c8b4;
@@ -445,16 +453,16 @@
     margin: 4px 0 0;
   }
 
-  .radio-card-genres {
-    grid-area: genres;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    margin: 6px auto 0;
-    flex-wrap: nowrap;
-  }
+ .radio-card-genres {
+  grid-area: genres;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 2px auto 0;
+  flex-wrap: nowrap;
+}
 
   .radio-card-genres button,
   .radio-card-genres select {
@@ -602,8 +610,6 @@
     <option value="all">Select Genre</option>
   </select>
 </section>
-
-<br>
 
       <a id="profileLink" class="radio-btn" href="bands.html">
         View Band Profile
