@@ -519,11 +519,28 @@ function startPuzzle(){
   document.getElementById("statusText").innerHTML = "Drag one piece onto another to swap them.";
   createPuzzle();
 }
+function revealPuzzleImage(){
+  const pieces = document.querySelectorAll(".piece");
 
+  pieces.forEach((piece, index) => {
+    const x = index % gridSize;
+    const y = Math.floor(index / gridSize);
+
+    piece.dataset.correct = index;
+    piece.style.backgroundImage = `url("${puzzleImage}")`;
+    piece.style.backgroundPosition =
+      `${(x / (gridSize - 1)) * 100}% ${(y / (gridSize - 1)) * 100}%`;
+  });
+
+  puzzleLocked = true;
+}
 function skipPuzzle(){
+  revealPuzzleImage();
+
   document.getElementById("skipBox").style.display = "block";
   document.getElementById("rewardBox").style.display = "none";
-  document.getElementById("statusText").innerHTML = "You chose the standard path.";
+  document.getElementById("statusText").innerHTML =
+    `Puzzle revealed: ${selectedBand.name}`;
 }
 
 function createPuzzle(){
