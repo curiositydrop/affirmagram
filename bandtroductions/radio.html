@@ -75,11 +75,16 @@
   padding: 0;
   background: transparent;
   border: none;
+  width: 100%;
 }
 
 .radio-card-genres {
-  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
   width: 100%;
+  margin: 12px auto 0;
 }
 
 .genre-bar button {
@@ -445,11 +450,12 @@
 
   .radio-card-genres {
     grid-area: genres;
-    margin-top: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    width: 100%;
+    margin: 6px auto 0;
     flex-wrap: nowrap;
   }
 
