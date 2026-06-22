@@ -465,11 +465,24 @@
 }
 
   .radio-card-genres button,
-  .radio-card-genres select {
-    font-size: 0.68rem;
-    padding: 8px 12px;
-  }
+.radio-card-genres select {
+  height: 34px;
+  min-height: 34px;
+  padding: 0 14px;
+  font-size: 0.68rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+  .radio-card-genres button {
+  min-width: 92px;
+}
 
+.radio-card-genres select {
+  min-width: 150px;
+}
   .radio-btn {
     grid-area: button;
     margin: 0;
